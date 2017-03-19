@@ -25,14 +25,9 @@ On iOS, you must add location usage descriptions and background modes to your `I
 ```objc
 #import <RadarSDK/RadarSDK.h>
 
-@implementation AppDelegate
+// ...
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [Radar initializeWithPublishableKey:"org_test_pk_108c97506e7549bdbffd68cc4512a7df1fc1c469"];
-  // ...
-}
-
-@end
+[Radar initializeWithPublishableKey:publishableKey];
 ```
 
 On Android, you must add the Google Play Services library to your project, then add the SDK to your project, preferably using Gradle. Finally, initialize the SDK in `onCreate()` in `MainApplication.java`, passing in your publishable API key:
@@ -40,21 +35,12 @@ On Android, you must add the Google Play Services library to your project, then 
 ```java
 import com.onradar.sdk.Radar;
 
-public class MainApplication extends Application implements ReactApplication {
+// ...
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    Radar.initialize(getApplicationContext(), "org_test_pk_108c97506e7549bdbffd68cc4512a7df1fc1c469");
-    // ...
-  }
-
-}
+Radar.initialize(getApplicationContext(), publishableKey);
 ```
 
 ## Usage
-
-Now you're ready to write some JavaScript.
 
 ### Import module
 
@@ -162,6 +148,7 @@ Radar.on('events', (result) => {
 Radar.on('error', (err) => {
   // do something with err
 });
+```
 
 You should remove event listeners when you are done with them (e.g., in `componentWillUnmount()`):
 
