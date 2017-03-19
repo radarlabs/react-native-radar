@@ -1,10 +1,191 @@
 ![Radar](https://raw.githubusercontent.com/radarlabs/react-native-radar/master/logo.png)
 
+[![npm version](https://badge.fury.io/js/react-native-radar.svg)](https://badge.fury.io/js/react-native-radar)
+
 [Radar](https://www.onradar.com) is the location platform for mobile apps.
 
-## Documentation
+## Installation
 
-Coming soon.
+Install the package from npm:
+
+```bash
+npm install --save react-native-radar
+```
+
+Then, install the native dependencies:
+
+```bash
+react-native link
+```
+
+Before writing any JavaScript, you must integrate the Radar SDK with your iOS and Android apps by following the *Configure project* and *Add SDK to project* steps in the [SDK documentation](https://www.onradar.com/documentation/sdk).
+
+On iOS, you must add location usage descriptions and background modes to your `Info.plist`, then add the SDK to your project, preferably using CocoaPods. Finally, initialize the SDK in `application:didFinishLaunchingWithOptions:` in `AppDelegate.m`, passing in your publishable API key.
+
+```objc
+#import <RadarSDK/RadarSDK.h>
+
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [Radar initializeWithPublishableKey:"org_test_pk_108c97506e7549bdbffd68cc4512a7df1fc1c469"];
+  // ...
+}
+
+@end
+```
+
+On Android, you must add the Google Play Services library to your project, then add the SDK to your project, preferably using Gradle. Finally, initialize the SDK in `onCreate()` in `MainApplication.java`, passing in your publishable API key:
+
+```java
+import com.onradar.sdk.Radar;
+
+public class MainApplication extends Application implements ReactApplication {
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    Radar.initialize(getApplicationContext(), "org_test_pk_108c97506e7549bdbffd68cc4512a7df1fc1c469");
+    // ...
+  }
+
+}
+```
+
+## Usage
+
+Now you're ready to write some JavaScript.
+
+### Import module
+
+First, import the module:
+
+```js
+import Radar from 'react-native-radar';
+```
+
+### Identify user
+
+Before tracking the user's location, you must identify the user to Radar. To identify the user, call:
+
+```js
+Radar.setUserId(userId);
+```
+
+where `userId` is a stable unique ID string for the user.
+
+To set an optional description for the user, displayed in the dashboard, call:
+
+```js
+Radar.setDescription(description);
+```
+
+where `description` is a string.
+
+You only need to call these methods once, as these settings will be persisted across app sessions.
+
+### Request permissions
+
+Before tracking the user's location, the user must have granted location permissions for the app.
+
+To determine the whether user has granted location permissions for the app, call:
+
+```js
+Radar.getPermissionsStatus().then((status) => {
+  // do something with status
+});
+```
+
+`status` will be a string, one of:
+
+- `'GRANTED'`
+- `'DENIED'`
+- `'UNKNOWN'`
+
+To request location permissions for the app, call:
+
+```js
+Radar.requestPermissions(background);
+```
+
+where `background` is a boolean indicating whether to request background location permissions or foreground location permissions. On Android, `background` will be ignored.
+
+### Foreground tracking
+
+Once you have initialized the SDK, you have identified the user, and the user has granted permissions, you can track the user's location.
+
+To track the user's location in the foreground, call:
+
+```js
+Radar.trackOnce().then((result) => {
+  // do something with result.location, result.events, result.user
+}).catch((err) => {
+  // optionally, do something with err
+});
+```
+
+`err` will be a string, one of:
+
+- `'ERROR_PUBLISHABLE_KEY'`: the SDK was not initialized
+- `'ERROR_USER_ID'`: the user was not identified
+- `'ERROR_PERMISSIONS'`: the user has not granted location permissions for the app
+- `'ERROR_LOCATION'`: location services were unavailable, or the location request timed out
+- `'ERROR_NETWORK'`: the network was unavailable, or the network connection timed out
+- `'ERROR_UNAUTHORIZED'`: the publishable API key is invalid
+- `'ERROR_SERVER'`: an internal server error occurred
+- `'ERROR_UNKNOWN'`: an unknown error occurred
+
+### Background tracking
+
+Once you have initialized the SDK, you have identified the user, and the user has granted permissions, you can start tracking the user's location in the background.
+
+To start tracking the user's location in the background, call:
+
+```js
+Radar.startTracking();
+```
+
+To stop tracking the user's location in the background (e.g., when the user logs out), call:
+
+```js
+Radar.stopTracking();
+```
+
+You only need to call these methods once, as these settings will be persisted across app sessions.
+
+To listen for events and errors, you can add event listeners:
+
+```js
+Radar.on('events', (result) => {
+  // do something with result.events and result.user
+});
+Radar.on('error', (err) => {
+  // do something with err
+});
+
+You should remove event listeners when you are done with them (e.g., in `componentWillUnmount()`):
+
+```js
+Radar.off('events');
+Radar.off('error');
+```
+
+### Manual tracking
+
+You can manually update the user's location by calling:
+
+```js
+const location = {
+  latitude: 39.2904,
+  longitude: -76.6122,
+  accuracy: 65
+};
+Radar.updateLocation(location).then((result) => {
+  // do something with result.location, result.events, result.user
+}).catch((err) => {
+  // optionally, do something with err
+});
+```
 
 ## Support
 
