@@ -1,0 +1,27 @@
+{
+  "name": "react-native-radar",
+  "description": "React Native module for Radar, the location platform for mobile apps",
+  "homepage": "https://www.onradar.com",
+  "license": "Apache-2.0",
+  "version": "1.0.0",
+  "main": "js/index.js",
+  "dependencies": {},
+  "peerDependencies": {
+    "react": ">= 15.4.2",
+    "react-native": ">= 0.40.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.14.0",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-react": "^6.9.0"
+  },
+  "bugs": {
+    "url": "https://github.com/radarlabs/react-native-radar/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/radarlabs/react-native-radar.git"
+  }
+}

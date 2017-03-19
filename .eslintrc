@@ -1,0 +1,9 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "rules": {
+    "import/extensions": 0,
+    "import/no-unresolved": [2, { "ignore": ["react"] }],
+    "no-underscore-dangle": 0
+  }
+}
