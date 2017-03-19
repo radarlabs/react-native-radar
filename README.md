@@ -84,9 +84,9 @@ Radar.getPermissionsStatus().then((status) => {
 
 `status` will be a string, one of:
 
-- `'GRANTED'`
-- `'DENIED'`
-- `'UNKNOWN'`
+- `GRANTED`
+- `DENIED`
+- `UNKNOWN`
 
 To request location permissions for the app, call:
 
@@ -112,14 +112,14 @@ Radar.trackOnce().then((result) => {
 
 `err` will be a string, one of:
 
-- `'ERROR_PUBLISHABLE_KEY'`: the SDK was not initialized
-- `'ERROR_USER_ID'`: the user was not identified
-- `'ERROR_PERMISSIONS'`: the user has not granted location permissions for the app
-- `'ERROR_LOCATION'`: location services were unavailable, or the location request timed out
-- `'ERROR_NETWORK'`: the network was unavailable, or the network connection timed out
-- `'ERROR_UNAUTHORIZED'`: the publishable API key is invalid
-- `'ERROR_SERVER'`: an internal server error occurred
-- `'ERROR_UNKNOWN'`: an unknown error occurred
+- `ERROR_PUBLISHABLE_KEY`: the SDK was not initialized
+- `ERROR_USER_ID`: the user was not identified
+- `ERROR_PERMISSIONS`: the user has not granted location permissions for the app
+- `ERROR_LOCATION`: location services were unavailable, or the location request timed out
+- `ERROR_NETWORK`: the network was unavailable, or the network connection timed out
+- `ERROR_UNAUTHORIZED`: the publishable API key is invalid
+- `ERROR_SERVER`: an internal server error occurred
+- `ERROR_UNKNOWN`: an unknown error occurred
 
 ### Background tracking
 
