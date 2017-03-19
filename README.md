@@ -145,6 +145,7 @@ To listen for events and errors, you can add event listeners:
 Radar.on('events', (result) => {
   // do something with result.events and result.user
 });
+
 Radar.on('error', (err) => {
   // do something with err
 });
@@ -154,6 +155,7 @@ You should remove event listeners when you are done with them (e.g., in `compone
 
 ```js
 Radar.off('events');
+
 Radar.off('error');
 ```
 
@@ -167,6 +169,7 @@ const location = {
   longitude: -76.6122,
   accuracy: 65
 };
+
 Radar.updateLocation(location).then((result) => {
   // do something with result.location, result.events, result.user
 }).catch((err) => {
