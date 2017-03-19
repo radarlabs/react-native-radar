@@ -151,7 +151,7 @@ Radar.on('error', (err) => {
 });
 ```
 
-You should remove event listeners when you are done with them (e.g., in `componentWillUnmount()`):
+You should remove event listeners when you are done with them (e.g., in `componentWillUnmount`):
 
 ```js
 Radar.off('events');
