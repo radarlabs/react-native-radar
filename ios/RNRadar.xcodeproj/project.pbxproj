@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B3E7B58A1CC2AC0600A0062D /* RNRadar.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNRadar.m */; };
-		DD406B9E1E7C4D57000526DF /* RadarSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD406B9D1E7C4D57000526DF /* RadarSDK.framework */; };
 		DD475C181E7F3277001275E5 /* RNRadarUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DD475C171E7F3277001275E5 /* RNRadarUtils.m */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +27,6 @@
 		134814201AA4EA6300B7C361 /* libRNRadar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNRadar.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* RNRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNRadar.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNRadar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNRadar.m; sourceTree = "<group>"; };
-		DD406B9D1E7C4D57000526DF /* RadarSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RadarSDK.framework; sourceTree = "<group>"; };
 		DD475C161E7F3277001275E5 /* RNRadarUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNRadarUtils.h; sourceTree = "<group>"; };
 		DD475C171E7F3277001275E5 /* RNRadarUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNRadarUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -38,7 +36,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD406B9E1E7C4D57000526DF /* RadarSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,7 +53,6 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				DD406B9D1E7C4D57000526DF /* RadarSDK.framework */,
 				B3E7B5881CC2AC0600A0062D /* RNRadar.h */,
 				B3E7B5891CC2AC0600A0062D /* RNRadar.m */,
 				DD475C161E7F3277001275E5 /* RNRadarUtils.h */,
@@ -215,6 +211,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../../../ios/Pods/Headers/Public/**",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
@@ -235,6 +232,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../../../ios/Pods/Headers/Public/**",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
