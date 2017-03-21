@@ -171,7 +171,7 @@ const location = {
 };
 
 Radar.updateLocation(location).then((result) => {
-  // do something with result.location, result.events, result.user
+  // do something with result.events, result.user
 }).catch((err) => {
   // optionally, do something with err
 });
