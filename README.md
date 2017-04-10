@@ -104,7 +104,7 @@ To track the user's location in the foreground, call:
 
 ```js
 Radar.trackOnce().then((result) => {
-  // do something with result.location, result.events, result.user
+  // do something with result.location, result.events, result.user.geofences
 }).catch((err) => {
   // optionally, do something with err
 });
@@ -143,7 +143,7 @@ To listen for events and errors, you can add event listeners:
 
 ```js
 Radar.on('events', (result) => {
-  // do something with result.events and result.user
+  // do something with result.events, result.user
 });
 
 Radar.on('error', (err) => {
@@ -171,7 +171,7 @@ const location = {
 };
 
 Radar.updateLocation(location).then((result) => {
-  // do something with result.location, result.events, result.user
+  // do something with result.events, result.user.geofences
 }).catch((err) => {
   // optionally, do something with err
 });
