@@ -9,6 +9,9 @@ import com.onradar.sdk.Radar;
 import com.onradar.sdk.model.RadarEvent;
 import com.onradar.sdk.model.RadarGeofence;
 import com.onradar.sdk.model.RadarUser;
+import com.onradar.sdk.model.RadarUserInsights;
+import com.onradar.sdk.model.RadarUserInsightsLocation;
+import com.onradar.sdk.model.RadarUserInsightsState;
 
 class RNRadarUtils {
 
@@ -20,6 +23,66 @@ class RNRadarUtils {
 
     static String stringForStatus(Radar.RadarStatus status) {
         return status.toString();
+    }
+
+    static String stringForEventType(RadarEvent.RadarEventType type) {
+        switch (type) {
+            case USER_ENTERED_GEOFENCE:
+                return "user.entered_geofence";
+            case USER_EXITED_GEOFENCE:
+                return "user.exited_geofence";
+            case USER_ENTERED_HOME:
+                return "user.entered_home";
+            case USER_EXITED_HOME:
+                return "user.exited_home";
+            case USER_ENTERED_OFFICE:
+                return "user.entered_office";
+            case USER_EXITED_OFFICE:
+                return "user.exited_office";
+            case USER_STARTED_TRAVELING:
+                return "user.started_traveling";
+            case USER_STOPPED_TRAVELING:
+                return "user.stopped_traveling";
+            default:
+                return null;
+        }
+    }
+
+    static int numberForEventConfidence(RadarEvent.RadarEventConfidence confidence) {
+        switch (confidence) {
+            case HIGH:
+                return 3;
+            case MEDIUM:
+                return 2;
+            case LOW:
+                return 1;
+            default:
+                return 0;
+        }
+    }
+
+    static String stringForUserInsightsLocationType(RadarUserInsightsLocation.RadarUserInsightsLocationType type) {
+        switch (type) {
+            case HOME:
+                return "home";
+            case OFFICE:
+                return "office";
+            default:
+                return null;
+        }
+    }
+
+    static int numberForUserInsightsLocationConfidence(RadarUserInsightsLocation.RadarUserInsightsLocationConfidence confidence) {
+        switch (confidence) {
+            case HIGH:
+                return 3;
+            case MEDIUM:
+                return 2;
+            case LOW:
+                return 1;
+            default:
+                return 0;
+        }
     }
 
     static WritableMap mapForUser(RadarUser user) {
@@ -38,6 +101,53 @@ class RNRadarUtils {
             geofencesArr.pushMap(geofenceMap);
         }
         map.putArray("geofences", geofencesArr);
+        WritableMap insightsMap = RNRadarUtils.mapForUserInsights(user.getInsights());
+        if (insightsMap != null)
+            map.putMap("insights", insightsMap);
+        return map;
+    }
+
+    private static WritableMap mapForUserInsights(RadarUserInsights insights) {
+        if (insights == null)
+            return null;
+
+        WritableMap map = Arguments.createMap();
+        WritableMap homeLocationMap = RNRadarUtils.mapForUserInsightsLocation(insights.getHomeLocation());
+        if (homeLocationMap != null)
+            map.putMap("homeLocation", homeLocationMap);
+        WritableMap officeLocationMap = RNRadarUtils.mapForUserInsightsLocation(insights.getOfficeLocation());
+        if (officeLocationMap != null)
+            map.putMap("officeLocation", officeLocationMap);
+        WritableMap stateMap = RNRadarUtils.mapForUserInsightsState(insights.getState());
+        if (stateMap != null)
+            map.putMap("state", stateMap);
+        return map;
+    }
+
+    private static WritableMap mapForUserInsightsLocation(RadarUserInsightsLocation location) {
+        if (location == null)
+            return null;
+
+        WritableMap map = Arguments.createMap();
+        String type = RNRadarUtils.stringForUserInsightsLocationType(location.getType());
+        if (type != null)
+            map.putString("type", type);
+        WritableMap locationMap = RNRadarUtils.mapForLocation(location.getLocation());
+        if (locationMap != null)
+            map.putMap("location", locationMap);
+        int confidence = RNRadarUtils.numberForUserInsightsLocationConfidence(location.getConfidence());
+        map.putInt("confidence", confidence);
+        return map;
+    }
+
+    private static WritableMap mapForUserInsightsState(RadarUserInsightsState state) {
+        if (state == null)
+            return null;
+
+        WritableMap map = Arguments.createMap();
+        map.putBoolean("home", state.getHome());
+        map.putBoolean("office", state.getOffice());
+        map.putBoolean("traveling", state.getTraveling());
         return map;
     }
 
@@ -76,20 +186,16 @@ class RNRadarUtils {
         WritableMap map = Arguments.createMap();
         map.putString("_id", event.getId());
         map.putBoolean("live", event.getLive());
-        map.putString("type", event.getType() == RadarEvent.RadarEventType.USER_ENTERED_GEOFENCE ? "user.entered_geofence" : "user.exited_geofence");
+        String type = RNRadarUtils.stringForEventType(event.getType());
+        if (type != null)
+            map.putString("type", type);
         WritableMap geofenceMap = RNRadarUtils.mapForGeofence(event.getGeofence());
-        map.putMap("geofence", geofenceMap);
-        int confidence;
-        if (event.getConfidence() == RadarEvent.RadarEventConfidence.HIGH)
-            confidence = 3;
-        else if (event.getConfidence() == RadarEvent.RadarEventConfidence.MEDIUM)
-            confidence = 2;
-        else if (event.getConfidence() == RadarEvent.RadarEventConfidence.LOW)
-            confidence = 1;
-        else
-            confidence = 0;
+        if (geofenceMap != null)
+            map.putMap("geofence", geofenceMap);
+        int confidence = RNRadarUtils.numberForEventConfidence(event.getConfidence());
         map.putInt("confidence", confidence);
-        map.putDouble("duration", event.getDuration());
+        if (event.getDuration() != 0)
+            map.putDouble("duration", event.getDuration());
         return map;
     }
 
@@ -100,7 +206,8 @@ class RNRadarUtils {
         WritableMap map = Arguments.createMap();
         map.putDouble("latitude", location.getLatitude());
         map.putDouble("longitude", location.getLongitude());
-        map.putDouble("accuracy", location.getAccuracy());
+        if (location.getAccuracy() != 0)
+            map.putDouble("accuracy", location.getAccuracy());
         return map;
     }
 
