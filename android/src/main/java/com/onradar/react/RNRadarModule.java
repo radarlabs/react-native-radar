@@ -39,6 +39,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setPlacesProvider(String providerStr) {
+        Radar.setPlacesProvider(RNRadarUtils.placesProviderForString(providerStr));
+    }
+
+    @ReactMethod
     public void getPermissionsStatus(Promise promise) {
         promise.resolve(RNRadarUtils.stringForPermissionsStatus(Radar.checkSelfPermissions()));
     }
@@ -72,9 +77,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     WritableMap map = Arguments.createMap();
                     map.putString("status", RNRadarUtils.stringForStatus(status));
-                    map.putMap("location", RNRadarUtils.mapForLocation(location));
-                    map.putArray("events", RNRadarUtils.arrayForEvents(events));
-                    map.putMap("user", RNRadarUtils.mapForUser(user));
+                    if (location != null)
+                        map.putMap("location", RNRadarUtils.mapForLocation(location));
+                    if (events != null)
+                        map.putArray("events", RNRadarUtils.arrayForEvents(events));
+                    if (user != null)
+                        map.putMap("user", RNRadarUtils.mapForUser(user));
                     promise.resolve(map);
                 } else {
                     promise.reject(RNRadarUtils.stringForStatus(status), RNRadarUtils.stringForStatus(status));
@@ -101,9 +109,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     WritableMap map = Arguments.createMap();
                     map.putString("status", RNRadarUtils.stringForStatus(status));
-                    map.putMap("location", RNRadarUtils.mapForLocation(location));
-                    map.putArray("events", RNRadarUtils.arrayForEvents(events));
-                    map.putMap("user", RNRadarUtils.mapForUser(user));
+                    if (location != null)
+                        map.putMap("location", RNRadarUtils.mapForLocation(location));
+                    if (events != null)
+                        map.putArray("events", RNRadarUtils.arrayForEvents(events));
+                    if (user != null)
+                        map.putMap("user", RNRadarUtils.mapForUser(user));
                     promise.resolve(map);
                 } else {
                     promise.reject(RNRadarUtils.stringForStatus(status), RNRadarUtils.stringForStatus(status));

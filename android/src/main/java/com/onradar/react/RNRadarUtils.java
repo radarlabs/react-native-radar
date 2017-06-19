@@ -85,6 +85,12 @@ class RNRadarUtils {
         }
     }
 
+    static Radar.RadarPlacesProvider placesProviderForString(String providerStr) {
+        if (providerStr.equals("facebook"))
+            return Radar.RadarPlacesProvider.FACEBOOK;
+        return Radar.RadarPlacesProvider.NONE;
+    }
+
     static WritableMap mapForUser(RadarUser user) {
         if (user == null)
             return null;
@@ -167,6 +173,30 @@ class RNRadarUtils {
         return map;
     }
 
+    private static WritableMap mapForPlace(RadarPlace place) {
+        if (geofence == null)
+            return null;
+
+        WritableMap map = Arguments.createMap();
+        map.putString("_id", place.getId());
+        String facebookId = place.getFacebookId();
+        if (facebookId != null)
+            map.putString("facebookId", facebookId);
+        map.putString("name", place.getName());
+        if (place.getCategories() && place.getCategories().length) {
+            WritableArray categories = Arguments.createArray();
+            for (String category : place.getCategories()) {
+                arr.pushString(category);
+            }
+        }
+        if (place.getChain()) {
+            WritableMap map = Arguments.createMap();
+            map.putString("slug", place.getChain().getSlug());
+            map.putString("name", place.getChain().getName());
+        }
+        return map;
+    }
+
     static WritableArray arrayForEvents(RadarEvent[] events) {
         if (events == null)
             return null;
@@ -192,6 +222,9 @@ class RNRadarUtils {
         WritableMap geofenceMap = RNRadarUtils.mapForGeofence(event.getGeofence());
         if (geofenceMap != null)
             map.putMap("geofence", geofenceMap);
+        WritableMap placeMap = RNRadarUtils.mapForPlace(event.getPlace());
+        if (placeMap != null)
+            map.putMap("place", placeMap);
         int confidence = RNRadarUtils.numberForEventConfidence(event.getConfidence());
         map.putInt("confidence", confidence);
         if (event.getDuration() != 0)

@@ -11,6 +11,7 @@
 + (NSDictionary *)dictionaryForUserInsightsLocation:(RadarUserInsightsLocation *)location;
 + (NSDictionary *)dictionaryForUserInsightsState:(RadarUserInsightsState *)state;
 + (NSDictionary *)dictionaryForGeofence:(RadarGeofence *)geofence;
++ (NSDictionary *)dictionaryForPlace:(RadarPlace *)place;
 + (NSArray *)arrayForEvents:(NSArray<RadarEvent *> *)events;
 + (NSDictionary *)dictionaryForEvent:(RadarEvent *)event;
 + (NSDictionary *)dictionaryForLocation:(CLLocation *)location;

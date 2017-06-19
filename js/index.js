@@ -14,6 +14,10 @@ const setDescription = (description) => {
   NativeModules.RNRadar.setDescription(description);
 };
 
+const setPlacesProvider = (provider) => {
+  NativeModules.RNRadar.setPlacesProvider(provider);
+};
+
 const getPermissionsStatus = () => (
   NativeModules.RNRadar.getPermissionsStatus()
 );
@@ -53,6 +57,7 @@ const off = (event, callback) => {
 const Radar = {
   setUserId,
   setDescription,
+  setPlacesProvider,
   getPermissionsStatus,
   requestPermissions,
   startTracking,

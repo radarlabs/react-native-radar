@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the location platform for mobile apps",
   "homepage": "https://www.onradar.com",
   "license": "Apache-2.0",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "js/index.js",
   "dependencies": {},
   "peerDependencies": {

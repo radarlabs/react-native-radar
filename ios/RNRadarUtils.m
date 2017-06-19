@@ -58,6 +58,10 @@
             return @"user.started_traveling";
         case RadarEventTypeUserStoppedTraveling:
             return @"user.stopped_traveling";
+        case RadarEventTypeUserEnteredPlace:
+            return @"user.entered_place";
+        case RadarEventTypeUserExitedPlace:
+            return @"user.exited_place";
         default:
             return nil;
 
@@ -101,11 +105,17 @@
     }
 }
 
++ (RadarPlacesProvider)placesProviderForString:(NSString *)providerStr {
+    if ([providerStr isEqualToString:"facebook"])
+        return RadarPlacesProviderFacebook;
+    return RadarPlacesProviderNone;
+}
+
 + (NSDictionary *)dictionaryForUser:(RadarUser *)user {
     if (!user)
         return nil;
 
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setValue:user._id forKey:@"_id"];
     [dict setValue:user.userId forKey:@"userId"];
     NSString *description = user._description;
@@ -126,7 +136,7 @@
     if (!insights)
         return nil;
 
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary new];
     NSDictionary *homeLocationDict = [RNRadarUtils dictionaryForUserInsightsLocation:insights.homeLocation];
     if (homeLocationDict)
         [dict setObject:homeLocationDict forKey:@"homeLocation"];
@@ -143,7 +153,7 @@
     if (!location)
         return nil;
 
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary new];
     NSString *type = [RNRadarUtils stringForUserInsightsLocationType:location.type];
     if (type)
         [dict setValue:type forKey:@"type"];
@@ -159,7 +169,7 @@
     if (!state)
         return nil;
 
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setValue:@(state.home) forKey:@"home"];
     [dict setValue:@(state.office) forKey:@"office"];
     [dict setValue:@(state.traveling) forKey:@"traveling"];
@@ -170,7 +180,7 @@
     if (!geofence)
         return nil;
 
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setValue:geofence._id forKey:@"_id"];
     NSString *tag = geofence.tag;
     if (tag)
@@ -179,6 +189,30 @@
     if (externalId)
         [dict setValue:externalId forKey:@"externalId"];
     [dict setValue:geofence._description forKey:@"description"];
+    return dict;
+}
+
++ (NSDictionary *)dictionaryForPlace:(RadarPlace *)place {
+    if (!geofence)
+        return nil;
+
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setValue:place._id forKey:@"_id"];
+    NSString *facebookId = place.facebookId;
+    if (facebookId)
+        [dict setValue:facebookId forKey:@"facebookId"];
+    [dict setValue:place.name forKey:@"name"];
+    if (place.categories && place.categories.count) {
+        NSMutableArray *categories = [[NSMutableArray alloc] initWithCapacity:place.categories.count];
+        for (NSString *category in place.categories) {
+            [categories addObject:category];
+        }
+        [dict setValue:categories forKey:@"categories"];
+    }
+    if (place.chain) {
+      NSDictionary *chain = @{@"slug": place.chain.slug, @"name": place.chain.name};
+      [dict setValue:chain forKey:@"chain"];
+    }
     return dict;
 }
 
@@ -198,7 +232,7 @@
     if (!event)
         return nil;
 
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setValue:event._id forKey:@"_id"];
     [dict setValue:@(event.live) forKey:@"live"];
     NSString *type = [RNRadarUtils stringForEventType:event.type];
@@ -207,10 +241,13 @@
     NSDictionary *geofenceDict = [RNRadarUtils dictionaryForGeofence:event.geofence];
     if (geofenceDict)
         [dict setValue:geofenceDict forKey:@"geofence"];
+    NSDictionary *placeDict = [RNRadarUtils dictionaryForPlace:event.place];
+    if (placeDict)
+        [dict setValue:placeDict forKey:@"place"];
     NSNumber *confidence = [RNRadarUtils numberForEventConfidence:event.confidence];
     [dict setValue:confidence forKey:@"confidence"];
     if (event.duration)
-      [dict setValue:@(event.duration) forKey:@"duration"];
+        [dict setValue:@(event.duration) forKey:@"duration"];
     return dict;
 }
 
@@ -218,11 +255,11 @@
     if (!location)
         return nil;
 
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setValue:@(location.coordinate.latitude) forKey:@"latitude"];
     [dict setValue:@(location.coordinate.longitude) forKey:@"longitude"];
     if (location.horizontalAccuracy)
-      [dict setValue:@(location.horizontalAccuracy) forKey:@"accuracy"];
+        [dict setValue:@(location.horizontalAccuracy) forKey:@"accuracy"];
     return dict;
 }
 
