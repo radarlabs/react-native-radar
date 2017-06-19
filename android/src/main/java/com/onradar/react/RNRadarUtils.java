@@ -8,6 +8,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.onradar.sdk.Radar;
 import com.onradar.sdk.model.RadarEvent;
 import com.onradar.sdk.model.RadarGeofence;
+import com.onradar.sdk.model.RadarPlace;
 import com.onradar.sdk.model.RadarUser;
 import com.onradar.sdk.model.RadarUserInsights;
 import com.onradar.sdk.model.RadarUserInsightsLocation;
@@ -178,7 +179,7 @@ class RNRadarUtils {
     }
 
     private static WritableMap mapForPlace(RadarPlace place) {
-        if (geofence == null)
+        if (place == null)
             return null;
 
         WritableMap map = Arguments.createMap();
@@ -187,16 +188,18 @@ class RNRadarUtils {
         if (facebookId != null)
             map.putString("facebookId", facebookId);
         map.putString("name", place.getName());
-        if (place.getCategories() && place.getCategories().length) {
+        if (place.getCategories() != null && place.getCategories().length > 0) {
             WritableArray categories = Arguments.createArray();
             for (String category : place.getCategories()) {
-                arr.pushString(category);
+                categories.pushString(category);
             }
+            map.putArray("categories", categories);
         }
-        if (place.getChain()) {
-            WritableMap map = Arguments.createMap();
-            map.putString("slug", place.getChain().getSlug());
-            map.putString("name", place.getChain().getName());
+        if (place.getChain() != null) {
+            WritableMap chain = Arguments.createMap();
+            chain.putString("slug", place.getChain().getSlug());
+            chain.putString("name", place.getChain().getName());
+            map.putMap("chain", chain);
         }
         return map;
     }
