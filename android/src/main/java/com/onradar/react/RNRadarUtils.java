@@ -43,6 +43,10 @@ class RNRadarUtils {
                 return "user.started_traveling";
             case USER_STOPPED_TRAVELING:
                 return "user.stopped_traveling";
+            case USER_ENTERED_PLACE:
+                return "user.entered_place";
+            case USER_EXITED_PLACE:
+                return "user.exited_place";
             default:
                 return null;
         }
