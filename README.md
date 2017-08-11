@@ -151,7 +151,9 @@ Radar.on('error', (err) => {
 });
 ```
 
-You should remove event listeners when you are done with them (e.g., in `componentWillUnmount`):
+Add event listeners outside of your component lifecycle (e.g., not in `componentDidMount`) if you want them to work even when the app is in the background.
+
+You can remove event listeners later:
 
 ```js
 Radar.off('events');

@@ -14,7 +14,6 @@ public class RNRadarPackage implements ReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        RNRadarEventEmitter.initialize(reactContext);
         return Arrays.<NativeModule>asList(new RNRadarModule(reactContext));
     }
 

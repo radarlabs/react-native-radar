@@ -31,5 +31,5 @@ repositories {
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
-    compile 'com.onradar:sdk:1.1.+'
+    compile 'com.onradar:sdk:1.2.+'
 }

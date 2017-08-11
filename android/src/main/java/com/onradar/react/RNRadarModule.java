@@ -1,6 +1,8 @@
 package com.onradar.react;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
@@ -11,9 +13,11 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.ReactContext;
 
 import com.onradar.sdk.Radar;
 import com.onradar.sdk.RadarCallback;
+import com.onradar.sdk.RadarReceiver;
 import com.onradar.sdk.model.RadarEvent;
 import com.onradar.sdk.model.RadarUser;
 
