@@ -151,9 +151,9 @@ Radar.on('error', (err) => {
 });
 ```
 
-Add event listeners outside of your component lifecycle (e.g., not in `componentDidMount`) if you want them to work even when the app is in the background.
+Add event listeners outside of your component lifecycle (e.g., outside of `componentDidMount`) if you want them to work when the app is in the background.
 
-You can remove event listeners later:
+You can also remove event listeners:
 
 ```js
 Radar.off('events');
