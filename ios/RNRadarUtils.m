@@ -193,7 +193,7 @@
 }
 
 + (NSDictionary *)dictionaryForPlace:(RadarPlace *)place {
-    if (!geofence)
+    if (!place)
         return nil;
 
     NSMutableDictionary *dict = [NSMutableDictionary new];
