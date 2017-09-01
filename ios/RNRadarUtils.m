@@ -106,7 +106,7 @@
 }
 
 + (RadarPlacesProvider)placesProviderForString:(NSString *)providerStr {
-    if ([providerStr isEqualToString:"facebook"])
+    if ([providerStr isEqualToString:@"facebook"])
         return RadarPlacesProviderFacebook;
     return RadarPlacesProviderNone;
 }
