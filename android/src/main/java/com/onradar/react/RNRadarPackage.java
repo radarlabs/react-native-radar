@@ -17,7 +17,7 @@ public class RNRadarPackage implements ReactPackage {
         return Arrays.<NativeModule>asList(new RNRadarModule(reactContext));
     }
 
-    @Override
+    //@Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
     }
