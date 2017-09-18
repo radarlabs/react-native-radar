@@ -17,7 +17,7 @@ If you are using `create-react-app`, you must run `npm run eject` to [eject](htt
 Then, install the native dependencies:
 
 ```bash
-react-native link
+react-native link react-native-radar
 ```
 
 If you do not install the native dependencies, you will get an error at run time: `NativeModules.RNRadar is undefined`
