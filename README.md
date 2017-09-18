@@ -12,13 +12,19 @@ Install the package from npm:
 npm install --save react-native-radar
 ```
 
+If you are using [Expo](https://expo.io/), you must [detach](https://docs.expo.io/versions/latest/guides/detach.html) your project:
+
+```bash
+exp detach
+```
+
 Then, install the native dependencies:
 
 ```bash
 react-native link
 ```
 
-Before writing any JavaScript, you must integrate the Radar SDK with your iOS and Android apps by following the *Configure project* and *Add SDK to project* steps in the [SDK documentation](https://www.onradar.com/documentation/sdk).
+Finally, before writing any JavaScript, you must integrate the Radar SDK with your iOS and Android apps by following the *Configure project* and *Add SDK to project* steps in the [SDK documentation](https://www.onradar.com/documentation/sdk).
 
 On iOS, you must add location usage descriptions and background modes to your `Info.plist`, then add the SDK to your project, preferably using CocoaPods. Finally, initialize the SDK in `application:didFinishLaunchingWithOptions:` in `AppDelegate.m`, passing in your publishable API key.
 
