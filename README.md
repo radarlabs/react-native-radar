@@ -20,7 +20,7 @@ Then, install the native dependencies:
 react-native link
 ```
 
-If you do not install the native dependencies, you will get a `NativeModules.RNRadar is undefined` error.
+If you do not install the native dependencies, you will see an error: `NativeModules.RNRadar is undefined`
 
 Finally, before writing any JavaScript, you must integrate the Radar SDK with your iOS and Android apps by following the *Configure project* and *Add SDK to project* steps in the [SDK documentation](https://www.onradar.com/documentation/sdk).
 
