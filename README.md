@@ -24,6 +24,8 @@ Then, install the native dependencies:
 react-native link
 ```
 
+If you do not detach your project and install the native depencies, you will get a `NativeModules.RNRadar is undefined` error.
+
 Finally, before writing any JavaScript, you must integrate the Radar SDK with your iOS and Android apps by following the *Configure project* and *Add SDK to project* steps in the [SDK documentation](https://www.onradar.com/documentation/sdk).
 
 On iOS, you must add location usage descriptions and background modes to your `Info.plist`, then add the SDK to your project, preferably using CocoaPods. Finally, initialize the SDK in `application:didFinishLaunchingWithOptions:` in `AppDelegate.m`, passing in your publishable API key.
