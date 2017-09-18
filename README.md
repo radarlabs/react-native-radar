@@ -12,7 +12,7 @@ Install the package from npm:
 npm install --save react-native-radar
 ```
 
-If you are using `create-react-app`, you must run `npm eject` to [eject](https://github.com/facebookincubator/create-react-app#converting-to-a-custom-setup) and expose native code. Or, if you are using Expo, you must run `exp detach` to [detach](https://docs.expo.io/versions/latest/guides/detach.html) and expose native code.
+If you are using `create-react-app`, you must run `npm run eject` to [eject](https://github.com/facebookincubator/create-react-app#converting-to-a-custom-setup) and expose native code. Or, if you are using Expo, you must run `exp detach` to [detach](https://docs.expo.io/versions/latest/guides/detach.html) and expose native code.
 
 Then, install the native dependencies:
 
