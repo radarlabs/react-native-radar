@@ -12,13 +12,17 @@ Install the package from npm:
 npm install --save react-native-radar
 ```
 
+If you are using `create-react-app`, you must run `npm run eject` to [eject](https://github.com/facebookincubator/create-react-app#converting-to-a-custom-setup) and expose native code. Or, if you are using Expo, you must run `exp detach` to [detach](https://docs.expo.io/versions/latest/guides/detach.html) and expose native code.
+
 Then, install the native dependencies:
 
 ```bash
-react-native link
+react-native link react-native-radar
 ```
 
-Before writing any JavaScript, you must integrate the Radar SDK with your iOS and Android apps by following the *Configure project* and *Add SDK to project* steps in the [SDK documentation](https://www.onradar.com/documentation/sdk).
+If you do not install the native dependencies, you will get an error at run time: `NativeModules.RNRadar is undefined`
+
+Finally, before writing any JavaScript, you must integrate the Radar SDK with your iOS and Android apps by following the *Configure project* and *Add SDK to project* steps in the [SDK documentation](https://www.onradar.com/documentation/sdk).
 
 On iOS, you must add location usage descriptions and background modes to your `Info.plist`, then add the SDK to your project, preferably using CocoaPods. Finally, initialize the SDK in `application:didFinishLaunchingWithOptions:` in `AppDelegate.m`, passing in your publishable API key.
 
