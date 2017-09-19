@@ -42,6 +42,14 @@ const updateLocation = location => (
   NativeModules.RNRadar.updateLocation(location)
 );
 
+const acceptEvent = (eventId, verifiedPlaceId) => {
+  NativeModules.RNRadar.acceptEvent(eventId, verifiedPlaceId);
+};
+
+const rejectEvent = (eventId) => {
+  NativeModules.RNRadar.rejectEvent(eventId);
+};
+
 const on = (event, callback) => (
   eventEmitter.addListener(event, callback)
 );
@@ -64,6 +72,8 @@ const Radar = {
   stopTracking,
   trackOnce,
   updateLocation,
+  acceptEvent,
+  rejectEvent,
   on,
   off,
 };

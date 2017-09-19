@@ -17,8 +17,9 @@ import com.onradar.sdk.model.RadarUserInsightsState;
 class RNRadarUtils {
 
     static String stringForPermissionsStatus(boolean hasGrantedPermissions) {
-        if (hasGrantedPermissions)
+        if (hasGrantedPermissions) {
             return "GRANTED";
+        }
         return "DENIED";
     }
 
@@ -91,21 +92,24 @@ class RNRadarUtils {
     }
 
     static Radar.RadarPlacesProvider placesProviderForString(String providerStr) {
-        if (providerStr.equals("facebook"))
+        if (providerStr.equals("facebook")) {
             return Radar.RadarPlacesProvider.FACEBOOK;
+        }
         return Radar.RadarPlacesProvider.NONE;
     }
 
     static WritableMap mapForUser(RadarUser user) {
-        if (user == null)
+        if (user == null) {
             return null;
+        }
 
         WritableMap map = Arguments.createMap();
         map.putString("_id", user.getId());
         map.putString("userId", user.getUserId());
         String description = user.getDescription();
-        if (description != null)
+        if (description != null) {
             map.putString("description", description);
+        }
         WritableArray geofencesArr = Arguments.createArray();
         for (RadarGeofence geofence : user.getGeofences()) {
             WritableMap geofenceMap = RNRadarUtils.mapForGeofence(geofence);
@@ -113,47 +117,56 @@ class RNRadarUtils {
         }
         map.putArray("geofences", geofencesArr);
         WritableMap insightsMap = RNRadarUtils.mapForUserInsights(user.getInsights());
-        if (insightsMap != null)
+        if (insightsMap != null) {
             map.putMap("insights", insightsMap);
+        }
         return map;
     }
 
     private static WritableMap mapForUserInsights(RadarUserInsights insights) {
-        if (insights == null)
+        if (insights == null) {
             return null;
+        }
 
         WritableMap map = Arguments.createMap();
         WritableMap homeLocationMap = RNRadarUtils.mapForUserInsightsLocation(insights.getHomeLocation());
-        if (homeLocationMap != null)
+        if (homeLocationMap != null) {
             map.putMap("homeLocation", homeLocationMap);
+        }
         WritableMap officeLocationMap = RNRadarUtils.mapForUserInsightsLocation(insights.getOfficeLocation());
-        if (officeLocationMap != null)
+        if (officeLocationMap != null) {
             map.putMap("officeLocation", officeLocationMap);
+        }
         WritableMap stateMap = RNRadarUtils.mapForUserInsightsState(insights.getState());
-        if (stateMap != null)
+        if (stateMap != null) {
             map.putMap("state", stateMap);
+        }
         return map;
     }
 
     private static WritableMap mapForUserInsightsLocation(RadarUserInsightsLocation location) {
-        if (location == null)
+        if (location == null) {
             return null;
+        }
 
         WritableMap map = Arguments.createMap();
         String type = RNRadarUtils.stringForUserInsightsLocationType(location.getType());
-        if (type != null)
+        if (type != null) {
             map.putString("type", type);
+        }
         WritableMap locationMap = RNRadarUtils.mapForLocation(location.getLocation());
-        if (locationMap != null)
+        if (locationMap != null) {
             map.putMap("location", locationMap);
+        }
         int confidence = RNRadarUtils.numberForUserInsightsLocationConfidence(location.getConfidence());
         map.putInt("confidence", confidence);
         return map;
     }
 
     private static WritableMap mapForUserInsightsState(RadarUserInsightsState state) {
-        if (state == null)
+        if (state == null) {
             return null;
+        }
 
         WritableMap map = Arguments.createMap();
         map.putBoolean("home", state.getHome());
@@ -163,30 +176,35 @@ class RNRadarUtils {
     }
 
     private static WritableMap mapForGeofence(RadarGeofence geofence) {
-        if (geofence == null)
+        if (geofence == null) {
             return null;
+        }
 
         WritableMap map = Arguments.createMap();
         map.putString("_id", geofence.getId());
         String tag = geofence.getTag();
-        if (tag != null)
+        if (tag != null) {
             map.putString("tag", tag);
+        }
         String externalId = geofence.getExternalId();
-        if (externalId != null)
+        if (externalId != null) {
             map.putString("externalId", externalId);
+        }
         map.putString("description", geofence.getDescription());
         return map;
     }
 
     private static WritableMap mapForPlace(RadarPlace place) {
-        if (place == null)
+        if (place == null) {
             return null;
+        }
 
         WritableMap map = Arguments.createMap();
         map.putString("_id", place.getId());
         String facebookId = place.getFacebookId();
-        if (facebookId != null)
+        if (facebookId != null) {
             map.putString("facebookId", facebookId);
+        }
         map.putString("name", place.getName());
         if (place.getCategories() != null && place.getCategories().length > 0) {
             WritableArray categories = Arguments.createArray();
@@ -205,8 +223,9 @@ class RNRadarUtils {
     }
 
     static WritableArray arrayForEvents(RadarEvent[] events) {
-        if (events == null)
+        if (events == null) {
             return null;
+        }
 
         WritableArray arr = Arguments.createArray();
         for (RadarEvent event : events) {
@@ -217,37 +236,44 @@ class RNRadarUtils {
     }
 
     private static WritableMap mapForEvent(RadarEvent event) {
-        if (event == null)
+        if (event == null) {
             return null;
+        }
 
         WritableMap map = Arguments.createMap();
         map.putString("_id", event.getId());
         map.putBoolean("live", event.getLive());
         String type = RNRadarUtils.stringForEventType(event.getType());
-        if (type != null)
+        if (type != null) {
             map.putString("type", type);
+        }
         WritableMap geofenceMap = RNRadarUtils.mapForGeofence(event.getGeofence());
-        if (geofenceMap != null)
+        if (geofenceMap != null) {
             map.putMap("geofence", geofenceMap);
+        }
         WritableMap placeMap = RNRadarUtils.mapForPlace(event.getPlace());
-        if (placeMap != null)
+        if (placeMap != null) {
             map.putMap("place", placeMap);
+        }
         int confidence = RNRadarUtils.numberForEventConfidence(event.getConfidence());
         map.putInt("confidence", confidence);
-        if (event.getDuration() != 0)
+        if (event.getDuration() != 0) {
             map.putDouble("duration", event.getDuration());
+        }
         return map;
     }
 
     static WritableMap mapForLocation(Location location) {
-        if (location == null)
+        if (location == null) {
             return null;
+        }
 
         WritableMap map = Arguments.createMap();
         map.putDouble("latitude", location.getLatitude());
         map.putDouble("longitude", location.getLongitude());
-        if (location.getAccuracy() != 0)
+        if (location.getAccuracy() != 0) {
             map.putDouble("accuracy", location.getAccuracy());
+        }
         return map;
     }
 

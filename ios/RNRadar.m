@@ -61,10 +61,11 @@ RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTProm
 }
 
 RCT_EXPORT_METHOD(requestPermissions:(BOOL)background) {
-    if (background)
+    if (background) {
         [Radar requestAlwaysAuthorization];
-    else
+    } else {
         [Radar requestWhenInUseAuthorization];
+    }
 }
 
 RCT_EXPORT_METHOD(startTracking) {
@@ -80,12 +81,15 @@ RCT_REMAP_METHOD(trackOnce, trackOnceWithResolver:(RCTPromiseResolveBlock)resolv
         if (status == RadarStatusSuccess && resolve) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[RNRadarUtils stringForStatus:status] forKey:@"status"];
-            if (location)
+            if (location) {
                 [dict setObject:[RNRadarUtils dictionaryForLocation:location] forKey:@"location"];
-            if (events)
+            }
+            if (events) {
                 [dict setObject:[RNRadarUtils arrayForEvents:events] forKey:@"events"];
-            if (user)
+            }
+            if (user) {
                 [dict setObject:[RNRadarUtils dictionaryForUser:user] forKey:@"user"];
+            }
             resolve(dict);
         } else if (reject) {
             reject([RNRadarUtils stringForStatus:status], [RNRadarUtils stringForStatus:status], nil);
@@ -102,17 +106,28 @@ RCT_EXPORT_METHOD(updateLocation:(NSDictionary *)locationDict resolve:(RCTPromis
         if (status == RadarStatusSuccess && resolve) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[RNRadarUtils stringForStatus:status] forKey:@"status"];
-            if (location)
+            if (location) {
                 [dict setObject:[RNRadarUtils dictionaryForLocation:location] forKey:@"location"];
-            if (events)
+            }
+            if (events) {
                 [dict setObject:[RNRadarUtils arrayForEvents:events] forKey:@"events"];
-            if (user)
+            }
+            if (user) {
                 [dict setObject:[RNRadarUtils dictionaryForUser:user] forKey:@"user"];
+            }
             resolve(dict);
         } else if (reject) {
             reject([RNRadarUtils stringForStatus:status], [RNRadarUtils stringForStatus:status], nil);
         }
     }];
+}
+
+RCT_EXPORT_METHOD(acceptEvent:(NSString *)eventId, withVerifiedPlaceId:(NSString *)verifiedPlaceId) {
+    [Radar acceptEventId:eventId withVerifiedPlaceId:verifiedPlaceId];
+}
+
+RCT_EXPORT_METHOD(rejectEvent:(NSString *)eventId) {
+    [Radar rejectEventId:eventId];
 }
 
 @end

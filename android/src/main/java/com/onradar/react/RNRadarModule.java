@@ -127,4 +127,14 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void acceptEvent(String eventId, String verifiedPlaceId) {
+        Radar.acceptEvent(eventId, verifiedPlaceId);
+    }
+
+    @ReactMethod
+    public void rejectEvent(String eventId) {
+        Radar.rejectEvent(eventId);
+    }
+
 }

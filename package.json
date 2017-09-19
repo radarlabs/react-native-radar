@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the location platform for mobile apps",
   "homepage": "https://www.onradar.com",
   "license": "Apache-2.0",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "js/index.js",
   "dependencies": {},
   "peerDependencies": {
@@ -15,6 +15,7 @@
     "eslint": "^3.14.0",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0"
   },
   "bugs": {
