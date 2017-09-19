@@ -101,7 +101,8 @@ RCT_EXPORT_METHOD(updateLocation:(NSDictionary *)locationDict resolve:(RCTPromis
     double latitude = [RCTConvert double:locationDict[@"latitude"]];
     double longitude = [RCTConvert double:locationDict[@"longitude"]];
     double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
-    CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:nil];
+    NSDate *timestamp = [NSDate date];
+    CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
     [Radar updateLocation:location withCompletionHandler:^(RadarStatus status, CLLocation *location, NSArray<RadarEvent *> *events, RadarUser *user) {
         if (status == RadarStatusSuccess && resolve) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
@@ -122,7 +123,7 @@ RCT_EXPORT_METHOD(updateLocation:(NSDictionary *)locationDict resolve:(RCTPromis
     }];
 }
 
-RCT_EXPORT_METHOD(acceptEvent:(NSString *)eventId, withVerifiedPlaceId:(NSString *)verifiedPlaceId) {
+RCT_EXPORT_METHOD(acceptEvent:(NSString *)eventId withVerifiedPlaceId:(NSString *)verifiedPlaceId) {
     [Radar acceptEventId:eventId withVerifiedPlaceId:verifiedPlaceId];
 }
 
