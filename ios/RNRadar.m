@@ -21,7 +21,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"events", @"error"];
+    return @[@"events", @"location", @"error"];
 }
 
 - (void)startObserving {
@@ -35,6 +35,12 @@ RCT_EXPORT_MODULE();
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser *)user {
     if (hasListeners) {
         [self sendEventWithName:@"events" body:@{@"events": [RNRadarUtils arrayForEvents:events], @"user": [RNRadarUtils dictionaryForUser:user]}];
+    }
+}
+
+- (void)didUpdateLocation:(CLLocation *)location user:(RadarUser *)user {
+    if (hasListeners) {
+        [self sendEventWithName:@"location" body:@{@"location": [RNRadarUtils dictionaryForLocation:location], @"user": [RNRadarUtils dictionaryForUser:user]}];
     }
 }
 

@@ -143,11 +143,15 @@ Radar.stopTracking();
 
 You only need to call these methods once, as these settings will be persisted across app sessions.
 
-To listen for events and errors, you can add event listeners:
+To listen for events, location updates, and errors, you can add event listeners:
 
 ```js
 Radar.on('events', (result) => {
   // do something with result.events, result.user
+});
+
+Radar.on('location', (result) => {
+  // do something with result.location, result.user
 });
 
 Radar.on('error', (err) => {
@@ -161,6 +165,8 @@ You can also remove event listeners:
 
 ```js
 Radar.off('events');
+
+Radar.off('location');
 
 Radar.off('error');
 ```

@@ -1,6 +1,7 @@
 package com.onradar.react;
 
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
@@ -45,22 +46,46 @@ public class RNRadarReceiver extends RadarReceiver {
 
     @Override
     public void onEventsReceived(@NonNull Context context, @NonNull RadarEvent[] events, @NonNull RadarUser user) {
-        ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
-        mReactNativeHost = reactApplication.getReactNativeHost();
+        try {
+            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            mReactNativeHost = reactApplication.getReactNativeHost();
 
-        WritableMap map = Arguments.createMap();
-        map.putArray("events", RNRadarUtils.arrayForEvents(events));
-        map.putMap("user", RNRadarUtils.mapForUser(user));
+            WritableMap map = Arguments.createMap();
+            map.putArray("events", RNRadarUtils.arrayForEvents(events));
+            map.putMap("user", RNRadarUtils.mapForUser(user));
 
-        sendEvent("events", map);
+            sendEvent("events", map);
+        } catch (Exception e) {
+
+        }
+    }
+
+    @Override
+    public void onLocationUpdated(@NonNull Context context, @NonNull Location location, @NonNull RadarUser user) {
+        try {
+            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            mReactNativeHost = reactApplication.getReactNativeHost();
+
+            WritableMap map = Arguments.createMap();
+            map.putMap("location", RNRadarUtils.mapForLocation(location));
+            map.putMap("user", RNRadarUtils.mapForUser(user));
+
+            sendEvent("location", map);
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
     public void onError(@NonNull Context context, @NonNull Radar.RadarStatus status) {
-        ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
-        mReactNativeHost = reactApplication.getReactNativeHost();
+        try {
+            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            mReactNativeHost = reactApplication.getReactNativeHost();
 
-        sendEvent("error", RNRadarUtils.stringForStatus(status));
+            sendEvent("error", RNRadarUtils.stringForStatus(status));
+        } catch (Exception e) {
+
+        }
     }
 
 }
