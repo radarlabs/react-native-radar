@@ -206,7 +206,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					${SRCROOT}/../../../ios/Pods/RadarSDK/Frameworks"
+					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -230,7 +230,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					${SRCROOT}/../../../ios/Pods/RadarSDK/Frameworks",
+					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
