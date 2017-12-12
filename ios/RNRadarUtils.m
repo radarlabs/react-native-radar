@@ -132,6 +132,10 @@
     [dict setValue:geofencesArr forKey:@"geofences"];
     NSDictionary *insightsDict = [RNRadarUtils dictionaryForUserInsights:user.insights];
     [dict setValue:insightsDict forKey:@"insights"];
+    if (user.place) {
+      NSDictionary *placeDict = [RNRadarUtils dictionaryForPlace:user.place];
+      [dict setValue:placeDict forKey:@"place"];
+    }
     return dict;
 }
 

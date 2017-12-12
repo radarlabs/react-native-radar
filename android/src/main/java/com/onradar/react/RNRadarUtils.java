@@ -113,12 +113,21 @@ class RNRadarUtils {
         WritableArray geofencesArr = Arguments.createArray();
         for (RadarGeofence geofence : user.getGeofences()) {
             WritableMap geofenceMap = RNRadarUtils.mapForGeofence(geofence);
-            geofencesArr.pushMap(geofenceMap);
+            if (geofenceMap != null) {
+              geofencesArr.pushMap(geofenceMap);
+            }
         }
         map.putArray("geofences", geofencesArr);
         WritableMap insightsMap = RNRadarUtils.mapForUserInsights(user.getInsights());
         if (insightsMap != null) {
             map.putMap("insights", insightsMap);
+        }
+        RadarPlace place = user.getPlace();
+        if (place != null) {
+          WritableMap placeMap = RNRadarUtils.mapForPlace(place);
+          if (placeMap != null) {
+              map.putMap("place", placeMap);
+          }
         }
         return map;
     }
