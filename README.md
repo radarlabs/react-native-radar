@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/react-native-radar.svg)](https://badge.fury.io/js/react-native-radar)
 
-[Radar](https://www.onradar.com) is the location platform for mobile apps.
+[Radar](https://radar.io) is the location platform for mobile apps.
 
 ## Installation
 
@@ -22,7 +22,7 @@ react-native link react-native-radar
 
 If you do not install the native dependencies, you will get an error at run time: `NativeModules.RNRadar is undefined`
 
-Finally, before writing any JavaScript, you must integrate the Radar SDK with your iOS and Android apps by following the *Configure project* and *Add SDK to project* steps in the [SDK documentation](https://www.onradar.com/documentation/sdk).
+Finally, before writing any JavaScript, you must integrate the Radar SDK with your iOS and Android apps by following the *Configure project* and *Add SDK to project* steps in the [SDK documentation](https://radar.io/documentation/sdk).
 
 On iOS, you must add location usage descriptions and background modes to your `Info.plist`, then add the SDK to your project, preferably using CocoaPods. Finally, initialize the SDK in `application:didFinishLaunchingWithOptions:` in `AppDelegate.m`, passing in your publishable API key.
 
@@ -191,4 +191,4 @@ Radar.updateLocation(location).then((result) => {
 
 ## Support
 
-Have questions? We're here to help! Email us at [support@onradar.com](mailto:support@onradar.com).
+Have questions? We're here to help! Email us at [support@radar.io](mailto:support@radar.io).
