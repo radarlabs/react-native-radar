@@ -1,9 +1,9 @@
 {
   "name": "react-native-radar",
   "description": "React Native module for Radar, the location platform for mobile apps",
-  "homepage": "https://www.onradar.com",
+  "homepage": "https://radar.io",
   "license": "Apache-2.0",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "main": "js/index.js",
   "dependencies": {},
   "peerDependencies": {

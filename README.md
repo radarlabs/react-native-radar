@@ -24,7 +24,7 @@ If you do not install the native dependencies, you will get an error at run time
 
 Finally, before writing any JavaScript, you must integrate the Radar SDK with your iOS and Android apps by following the *Configure project* and *Add SDK to project* steps in the [SDK documentation](https://radar.io/documentation/sdk).
 
-On iOS, you must add location usage descriptions and background modes to your `Info.plist`, then add the SDK to your project, preferably using CocoaPods. Finally, initialize the SDK in `application:didFinishLaunchingWithOptions:` in `AppDelegate.m`, passing in your publishable API key.
+On iOS, you must add location usage descriptions and background modes to your `Info.plist`, then add the SDK to your project, preferably using CocoaPods. Finally, initialize the SDK in `application:didFinishLaunchingWithOptions:` in `AppDelegate.m`, passing in your Radar publishable API key.
 
 ```objc
 #import <RadarSDK/RadarSDK.h>
@@ -34,7 +34,7 @@ On iOS, you must add location usage descriptions and background modes to your `I
 [Radar initializeWithPublishableKey:publishableKey];
 ```
 
-On Android, you must add the Google Play Services library to your project, then add the SDK to your project, preferably using Gradle. Finally, initialize the SDK in `onCreate()` in `MainApplication.java`, passing in your publishable API key:
+On Android, you must add the Google Play Services library to your project, then add the SDK to your project, preferably using Gradle. Finally, initialize the SDK in `onCreate()` in `MainApplication.java`, passing in your Radar publishable API key:
 
 ```java
 import com.onradar.sdk.Radar;
@@ -44,21 +44,43 @@ import com.onradar.sdk.Radar;
 Radar.initialize(getApplicationContext(), publishableKey);
 ```
 
+To get a Radar publishable API key, [sign up for a Radar account](https://radar.io).
+
 ## Usage
 
 ### Import module
 
 First, import the module:
 
-```js
+```javascript
 import Radar from 'react-native-radar';
 ```
 
+### Enable Places
+
+If you are using Places, you must set Facebook as your place data provider.
+
+To set Facebook as your place data provider, call:
+
+```javascript
+Radar.setPlacesProvider('facebook');
+```
+
+To disable Places later, call:
+
+```javascript
+Radar.setPlacesProvider('none');
+```
+
+Learn more about [Places](https://radar.io/documentation/places).
+
 ### Identify user
 
-Before tracking the user's location, you must identify the user to Radar. To identify the user, call:
+Until you identify the user, Radar will automatically identify the user by device ID.
 
-```js
+To identify the user when logged in, call:
+
+```javascript
 Radar.setUserId(userId);
 ```
 
@@ -66,13 +88,13 @@ where `userId` is a stable unique ID string for the user.
 
 To set an optional description for the user, displayed in the dashboard, call:
 
-```js
+```javascript
 Radar.setDescription(description);
 ```
 
 where `description` is a string.
 
-You only need to call these methods once, as these settings will be persisted across app sessions.
+You only need to call these functions once, as these settings will be persisted across app sessions.
 
 ### Request permissions
 
@@ -80,7 +102,7 @@ Before tracking the user's location, the user must have granted location permiss
 
 To determine the whether user has granted location permissions for the app, call:
 
-```js
+```javascript
 Radar.getPermissionsStatus().then((status) => {
   // do something with status
 });
@@ -94,7 +116,7 @@ Radar.getPermissionsStatus().then((status) => {
 
 To request location permissions for the app, call:
 
-```js
+```javascript
 Radar.requestPermissions(background);
 ```
 
@@ -106,7 +128,7 @@ Once you have initialized the SDK, you have identified the user, and the user ha
 
 To track the user's location in the foreground, call:
 
-```js
+```javascript
 Radar.trackOnce().then((result) => {
   // do something with result.location, result.events, result.user.geofences
 }).catch((err) => {
@@ -131,13 +153,13 @@ Once you have initialized the SDK, you have identified the user, and the user ha
 
 To start tracking the user's location in the background, call:
 
-```js
+```javascript
 Radar.startTracking();
 ```
 
 To stop tracking the user's location in the background (e.g., when the user logs out), call:
 
-```js
+```javascript
 Radar.stopTracking();
 ```
 
@@ -145,7 +167,7 @@ You only need to call these methods once, as these settings will be persisted ac
 
 To listen for events, location updates, and errors, you can add event listeners:
 
-```js
+```javascript
 Radar.on('events', (result) => {
   // do something with result.events, result.user
 });
@@ -163,7 +185,7 @@ Add event listeners outside of your component lifecycle (e.g., outside of `compo
 
 You can also remove event listeners:
 
-```js
+```javascript
 Radar.off('events');
 
 Radar.off('location');
@@ -175,7 +197,7 @@ Radar.off('error');
 
 You can manually update the user's location by calling:
 
-```js
+```javascript
 const location = {
   latitude: 39.2904,
   longitude: -76.6122,
