@@ -16,5 +16,5 @@
 + (NSDictionary *)dictionaryForEvent:(RadarEvent *)event;
 + (NSDictionary *)dictionaryForLocation:(CLLocation *)location;
 + (RadarPlacesProvider)placesProviderForString:(NSString *)providerStr;
-
++ (NSArray *)arrayForAlterantePlaces:(NSArray<RadarPlace *> *)places;
 @end
