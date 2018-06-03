@@ -17,4 +17,5 @@
 + (NSDictionary *)dictionaryForLocation:(CLLocation *)location;
 + (RadarPlacesProvider)placesProviderForString:(NSString *)providerStr;
 + (NSArray *)arrayForAlterantePlaces:(NSArray<RadarPlace *> *)places;
+
 @end
