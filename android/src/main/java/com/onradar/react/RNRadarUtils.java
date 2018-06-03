@@ -269,7 +269,7 @@ class RNRadarUtils {
         if (event.getDuration() != 0) {
             map.putDouble("duration", event.getDuration());
         }
-        WritableArray alternatePlaces = RNRadarUtils.arrayForAlternatePlaces(event.alternatePlaces);
+        WritableArray alternatePlaces = RNRadarUtils.arrayForAlternatePlaces(event.getAlternatePlaces());
         if (alternatePlaces != null) {
             map.putArray("alternatePlaces", alternatePlaces);
         }
