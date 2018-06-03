@@ -269,7 +269,24 @@ class RNRadarUtils {
         if (event.getDuration() != 0) {
             map.putDouble("duration", event.getDuration());
         }
+        WritableArray alternatePlaces = RNRadarUtils.arrayForAlternatePlaces(event.alternatePlaces);
+        if (alternatePlaces != null) {
+            map.putArray("alternatePlaces", alternatePlaces);
+        }
         return map;
+    }
+
+    private static arrayForAlternatePlaces(RadarPlace[] places) {
+        if (places == null) {
+            return null;
+        }
+    
+        WritableArray arr = Arguments.createArray();
+        for (RadarPlace place : places) {
+            WritableMap map = RNRadarUtils.mapForPlace(place);
+            arr.pushMap(map);
+        }
+        return arr;
     }
 
     static WritableMap mapForLocation(Location location) {
