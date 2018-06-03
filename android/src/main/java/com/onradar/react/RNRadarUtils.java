@@ -276,11 +276,11 @@ class RNRadarUtils {
         return map;
     }
 
-    private static arrayForAlternatePlaces(RadarPlace[] places) {
+    private static WritableArray arrayForAlternatePlaces(RadarPlace[] places) {
         if (places == null) {
             return null;
         }
-    
+
         WritableArray arr = Arguments.createArray();
         for (RadarPlace place : places) {
             WritableMap map = RNRadarUtils.mapForPlace(place);
