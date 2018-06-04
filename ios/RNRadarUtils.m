@@ -274,7 +274,24 @@
     if (event.duration) {
         [dict setValue:@(event.duration) forKey:@"duration"];
     }
+    NSArray *alternatePlaces = [RNRadarUtils arrayForAlterantePlaces:event.alternatePlaces];
+    if (alternatePlaces) {
+        [dict setValue:alternatePlaces forKey:@"alternatePlaces"];
+    }
     return dict;
+}
+
++ (NSArray *)arrayForAlterantePlaces:(NSArray<RadarPlace *> *)places {
+    if (!places) {
+        return nil;
+    }
+    
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:places.count];
+    for (RadarPlace *place in places) {
+        NSDictionary *dict = [RNRadarUtils dictionaryForPlace:place];
+        [arr addObject:dict];
+    }
+    return arr;
 }
 
 + (NSDictionary *)dictionaryForLocation:(CLLocation *)location {
