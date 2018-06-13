@@ -281,7 +281,7 @@
     return dict;
 }
 
-+ (NSArray *)arrayForAlterantePlaces:(NSArray<RadarPlace *> *)places {
++ (NSArray *)arrayForAlternatePlaces:(NSArray<RadarPlace *> *)places {
     if (!places) {
         return nil;
     }
