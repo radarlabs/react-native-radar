@@ -274,7 +274,7 @@
     if (event.duration) {
         [dict setValue:@(event.duration) forKey:@"duration"];
     }
-    NSArray *alternatePlaces = [RNRadarUtils arrayForAlterantePlaces:event.alternatePlaces];
+    NSArray *alternatePlaces = [RNRadarUtils arrayForAlternatePlaces:event.alternatePlaces];
     if (alternatePlaces) {
         [dict setValue:alternatePlaces forKey:@"alternatePlaces"];
     }
