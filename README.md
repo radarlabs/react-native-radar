@@ -37,11 +37,11 @@ On iOS, you must add location usage descriptions and background modes to your `I
 On Android, you must add the Google Play Services library to your project, then add the SDK to your project, preferably using Gradle. Finally, initialize the SDK in `onCreate()` in `MainApplication.java`, passing in your Radar publishable API key:
 
 ```java
-import com.onradar.sdk.Radar;
+import io.radar.sdk.Radar;
 
 // ...
 
-Radar.initialize(getApplicationContext(), publishableKey);
+Radar.initialize(publishableKey);
 ```
 
 To get a Radar publishable API key, [sign up for a Radar account](https://radar.io).
@@ -139,7 +139,6 @@ Radar.trackOnce().then((result) => {
 `err` will be a string, one of:
 
 - `ERROR_PUBLISHABLE_KEY`: the SDK was not initialized
-- `ERROR_USER_ID`: the user was not identified
 - `ERROR_PERMISSIONS`: the user has not granted location permissions for the app
 - `ERROR_LOCATION`: location services were unavailable, or the location request timed out
 - `ERROR_NETWORK`: the network was unavailable, or the network connection timed out
