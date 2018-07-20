@@ -8,6 +8,7 @@
 
 @implementation RNRadar {
     BOOL hasListeners;
+    CLLocationManager *locationManager;
 }
 
 RCT_EXPORT_MODULE();
@@ -16,8 +17,13 @@ RCT_EXPORT_MODULE();
     self = [super init];
     if (self) {
         [Radar setDelegate:self];
+        locationManager = [CLLocationManager new];
     }
     return self;
+}
+
++ (BOOL)requiresMainQueueSetup {
+    return YES;
 }
 
 - (NSArray<NSString *> *)supportedEvents {
@@ -63,14 +69,14 @@ RCT_EXPORT_METHOD(setPlacesProvider:(NSString *)providerStr) {
 }
 
 RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-    resolve([RNRadarUtils stringForPermissionsStatus:[Radar authorizationStatus]]);
+    resolve([RNRadarUtils stringForPermissionsStatus:[CLLocationManager authorizationStatus]]);
 }
 
 RCT_EXPORT_METHOD(requestPermissions:(BOOL)background) {
     if (background) {
-        [Radar requestAlwaysAuthorization];
+        [locationManager requestAlwaysAuthorization];
     } else {
-        [Radar requestWhenInUseAuthorization];
+        [locationManager requestWhenInUseAuthorization];
     }
 }
 

@@ -23,8 +23,6 @@
             return @"SUCCESS";
         case RadarStatusErrorPublishableKey:
             return @"ERROR_PUBLISHABLE_KEY";
-        case RadarStatusErrorUserId:
-            return @"ERROR_USER_ID";
         case RadarStatusErrorPermissions:
             return @"ERROR_PERMISSIONS";
         case RadarStatusErrorLocation:

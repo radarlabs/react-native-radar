@@ -1,4 +1,4 @@
-package com.onradar.react;
+package io.radar.react;
 
 import android.content.Context;
 import android.location.Location;
@@ -12,10 +12,10 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import com.onradar.sdk.Radar;
-import com.onradar.sdk.RadarReceiver;
-import com.onradar.sdk.model.RadarEvent;
-import com.onradar.sdk.model.RadarUser;
+import io.radar.sdk.Radar;
+import io.radar.sdk.RadarReceiver;
+import io.radar.sdk.model.RadarEvent;
+import io.radar.sdk.model.RadarUser;
 
 public class RNRadarReceiver extends RadarReceiver {
 

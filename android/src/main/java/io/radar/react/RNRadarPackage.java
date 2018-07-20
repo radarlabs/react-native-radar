@@ -1,4 +1,4 @@
-package com.onradar.react;
+package io.radar.react;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -1,18 +1,18 @@
-package com.onradar.react;
+package io.radar.react;
 
 import android.location.Location;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.onradar.sdk.Radar;
-import com.onradar.sdk.model.RadarEvent;
-import com.onradar.sdk.model.RadarGeofence;
-import com.onradar.sdk.model.RadarPlace;
-import com.onradar.sdk.model.RadarUser;
-import com.onradar.sdk.model.RadarUserInsights;
-import com.onradar.sdk.model.RadarUserInsightsLocation;
-import com.onradar.sdk.model.RadarUserInsightsState;
+import io.radar.sdk.Radar;
+import io.radar.sdk.model.RadarEvent;
+import io.radar.sdk.model.RadarGeofence;
+import io.radar.sdk.model.RadarPlace;
+import io.radar.sdk.model.RadarUser;
+import io.radar.sdk.model.RadarUserInsights;
+import io.radar.sdk.model.RadarUserInsightsLocation;
+import io.radar.sdk.model.RadarUserInsightsState;
 
 class RNRadarUtils {
 
