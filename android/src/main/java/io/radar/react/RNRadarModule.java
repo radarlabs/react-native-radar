@@ -1,11 +1,11 @@
-package com.onradar.react;
+package io.radar.react;
 
+import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
-import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
-
+import android.support.v4.app.ActivityCompat;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -13,13 +13,10 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.ReactContext;
-
-import com.onradar.sdk.Radar;
-import com.onradar.sdk.RadarCallback;
-import com.onradar.sdk.RadarReceiver;
-import com.onradar.sdk.model.RadarEvent;
-import com.onradar.sdk.model.RadarUser;
+import io.radar.sdk.Radar;
+import io.radar.sdk.Radar.RadarCallback;
+import io.radar.sdk.model.RadarEvent;
+import io.radar.sdk.model.RadarUser;
 
 public class RNRadarModule extends ReactContextBaseJavaModule {
 
@@ -49,14 +46,16 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getPermissionsStatus(Promise promise) {
-        promise.resolve(RNRadarUtils.stringForPermissionsStatus(Radar.checkSelfPermissions()));
+        promise.resolve(RNRadarUtils.stringForPermissionsStatus(
+            ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ));
     }
 
     @ReactMethod
     public void requestPermissions(boolean background) {
         Activity activity = getCurrentActivity();
         if (activity != null) {
-            Radar.requestPermissions(activity);
+            ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 0);
         }
     }
 
@@ -74,7 +73,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     public void trackOnce(final Promise promise) {
         Radar.trackOnce(new RadarCallback() {
             @Override
-            public void onCallback(@NonNull Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
+            public void onComplete(@NonNull Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
                 if (promise == null)
                     return;
 
@@ -106,7 +105,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         location.setAccuracy(accuracy);
         Radar.updateLocation(location, new RadarCallback() {
             @Override
-            public void onCallback(@NonNull Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
+            public void onComplete(@NonNull Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
                 if (promise == null)
                     return;
 

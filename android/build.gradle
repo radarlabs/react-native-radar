@@ -1,24 +1,27 @@
 buildscript {
     repositories {
+        maven {
+            url 'https://maven.google.com'
+        }
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.1'
+        classpath 'com.android.tools.build:gradle:3.1.3'
     }
 }
 
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.1'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
-        versionName '1.0.9'
+        versionName '2.0.0'
     }
     lintOptions {
         abortOnError false
@@ -27,9 +30,17 @@ android {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://maven.google.com'
+    }
+    jcenter()
+    maven {
+        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        url "$rootDir/../node_modules/react-native/android"
+    }
 }
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
-    compile 'com.onradar:sdk:1.2.+'
+    compile 'io.radar:sdk:2.0.+'
 }
