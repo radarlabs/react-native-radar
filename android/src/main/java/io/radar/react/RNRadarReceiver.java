@@ -29,11 +29,13 @@ public class RNRadarReceiver extends RadarReceiver {
         final ReactInstanceManager reactInstanceManager = mReactNativeHost.getReactInstanceManager();
         ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
         if (reactContext == null) {
+            final PendingResult result = goAsync();
             reactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
                 @Override
                 public void onReactContextInitialized(ReactContext reactContext) {
                     invokeSendEvent(reactContext, eventName, data);
                     reactInstanceManager.removeReactInstanceEventListener(this);
+                    result.finish();
                 }
             });
             if (!reactInstanceManager.hasStartedCreatingInitialContext()) {
