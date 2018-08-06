@@ -207,7 +207,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
-					"${SRCROOT}/../../../ios/**",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -216,8 +215,6 @@
 					"$(SRCROOT)/../../react-native/React/**",
 					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
 					"${SRCROOT}/../../../ios/RadarSDK/**",
-					"${SRCROOT}/../../../ios/**",
-					"$(PROJECT_DIR)",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
@@ -234,7 +231,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
-					"${SRCROOT}/../../../ios/**",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -243,8 +239,6 @@
 					"$(SRCROOT)/../../react-native/React/**",
 					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
 					"${SRCROOT}/../../../ios/RadarSDK/**",
-					"${SRCROOT}/../../../ios/**",
-					"$(PROJECT_DIR)",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
