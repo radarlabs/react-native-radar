@@ -16,26 +16,35 @@ import io.radar.sdk.Radar;
 import io.radar.sdk.RadarReceiver;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarUser;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RNRadarReceiver extends RadarReceiver {
 
-    private ReactNativeHost mReactNativeHost;
+    private ReactNativeHost reactNativeHost;
+    private PendingResult result;
+    private AtomicInteger pendingCount = new AtomicInteger(0);
 
     private void invokeSendEvent(ReactContext reactContext, String eventName, Object data) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
     }
 
     private void sendEvent(final String eventName, final Object data) {
-        final ReactInstanceManager reactInstanceManager = mReactNativeHost.getReactInstanceManager();
+        final ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
         ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
         if (reactContext == null) {
-            final PendingResult result = goAsync();
+            if (result == null) {
+                result = goAsync();
+            }
+            // Increment pending event count
+            pendingCount.incrementAndGet();
             reactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
                 @Override
                 public void onReactContextInitialized(ReactContext reactContext) {
                     invokeSendEvent(reactContext, eventName, data);
                     reactInstanceManager.removeReactInstanceEventListener(this);
-                    result.finish();
+                    if (pendingCount.decrementAndGet() == 0) {
+                        result.finish();
+                    }
                 }
             });
             if (!reactInstanceManager.hasStartedCreatingInitialContext()) {
@@ -50,7 +59,7 @@ public class RNRadarReceiver extends RadarReceiver {
     public void onEventsReceived(@NonNull Context context, @NonNull RadarEvent[] events, @NonNull RadarUser user) {
         try {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
-            mReactNativeHost = reactApplication.getReactNativeHost();
+            reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
             map.putArray("events", RNRadarUtils.arrayForEvents(events));
@@ -66,7 +75,7 @@ public class RNRadarReceiver extends RadarReceiver {
     public void onLocationUpdated(@NonNull Context context, @NonNull Location location, @NonNull RadarUser user) {
         try {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
-            mReactNativeHost = reactApplication.getReactNativeHost();
+            reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
             map.putMap("location", RNRadarUtils.mapForLocation(location));
@@ -82,7 +91,7 @@ public class RNRadarReceiver extends RadarReceiver {
     public void onError(@NonNull Context context, @NonNull Radar.RadarStatus status) {
         try {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
-            mReactNativeHost = reactApplication.getReactNativeHost();
+            reactNativeHost = reactApplication.getReactNativeHost();
 
             sendEvent("error", RNRadarUtils.stringForStatus(status));
         } catch (Exception e) {
