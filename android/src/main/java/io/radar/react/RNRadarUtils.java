@@ -1,6 +1,7 @@
 package io.radar.react;
 
 import android.location.Location;
+import java.util.Iterator;
 import org.json.JSONObject;
 
 import com.facebook.react.bridge.Arguments;
@@ -101,9 +102,9 @@ class RNRadarUtils {
 
     static WritableMap mapForJSONObject(JSONObject obj) {
         WritableMap map = Arguments.createMap();
-        Iterator<?> keys = obj.keys();
+        Iterator<String> keys = obj.keys();
         while(keys.hasNext()) {
-            String key = (String)keys.next();
+            String key = keys.next();
             Object val = obj.get(key);
             if (obj instanceof String) {
                 String valStr = (String)val;
