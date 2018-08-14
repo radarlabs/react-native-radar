@@ -205,6 +205,10 @@
         [dict setValue:externalId forKey:@"externalId"];
     }
     [dict setValue:geofence._description forKey:@"description"];
+    NSDictionary *metadata = geofence.metadata;
+    if (metadata) {
+        [dict setValue:metadata forKey:@"metadata"];
+    }
     return dict;
 }
 
@@ -283,7 +287,7 @@
     if (!places) {
         return nil;
     }
-    
+
     NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:places.count];
     for (RadarPlace *place in places) {
         NSDictionary *dict = [RNRadarUtils dictionaryForPlace:place];

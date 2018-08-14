@@ -1,6 +1,7 @@
 package io.radar.react;
 
 import android.location.Location;
+import org.json.JSONObject;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
@@ -96,6 +97,26 @@ class RNRadarUtils {
             return Radar.RadarPlacesProvider.FACEBOOK;
         }
         return Radar.RadarPlacesProvider.NONE;
+    }
+
+    static WritableMap mapForJSONObject(JSONObject obj) {
+        WritableMap map = Arguments.createMap();
+        Iterator<?> keys = obj.keys();
+        while(keys.hasNext()) {
+            String key = (String)keys.next();
+            Object val = obj.get(key);
+            if (obj instanceof String) {
+                String valStr = (String)val;
+                map.putString(key, valStr);
+            } else if (obj instanceof Number) {
+                Number valNum = (Number)val;
+                map.putInt(key, valNum.intValue());
+            } else if (obj instanceof Boolean) {
+                Boolean valBool = (Boolean)obj;
+                map.putBoolean(valBool.booleanValue());
+            }
+        }
+        return map;
     }
 
     static WritableMap mapForUser(RadarUser user) {
@@ -200,6 +221,11 @@ class RNRadarUtils {
             map.putString("externalId", externalId);
         }
         map.putString("description", geofence.getDescription());
+        JSONObject metadataObj = geofence.getMetadata();
+        if (metadataObj != null) {
+            WritableMap metadata = RNRadarUtils.mapForJSONObject(metadataObj);
+            map.putMap("metadata", metadata);
+        }
         return map;
     }
 
