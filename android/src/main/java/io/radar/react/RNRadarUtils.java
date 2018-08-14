@@ -114,7 +114,7 @@ class RNRadarUtils {
                 map.putInt(key, valNum.intValue());
             } else if (val instanceof Boolean) {
                 Boolean valBool = (Boolean)val;
-                map.putBoolean(valBool.booleanValue());
+                map.putBoolean(key, valBool.booleanValue());
             }
         }
         return map;
