@@ -105,16 +105,16 @@ class RNRadarUtils {
         Iterator<String> keys = obj.keys();
         while(keys.hasNext()) {
             String key = keys.next();
-            Object val = obj.get(key);
+            Object val = obj.opt(key);
             if (val instanceof String) {
-                String valStr = (String)val;
+                String valStr = (String) val;
                 map.putString(key, valStr);
             } else if (val instanceof Number) {
-                Number valNum = (Number)val;
-                map.putInt(key, valNum.intValue());
+                Number valNum = (Number) val;
+                map.putDouble(key, valNum.doubleValue());
             } else if (val instanceof Boolean) {
-                Boolean valBool = (Boolean)val;
-                map.putBoolean(key, valBool.booleanValue());
+                Boolean valBool = (Boolean) val;
+                map.putBoolean(key, valBool);
             }
         }
         return map;
