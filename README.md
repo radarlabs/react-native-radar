@@ -111,6 +111,7 @@ Radar.getPermissionsStatus().then((status) => {
 `status` will be a string, one of:
 
 - `GRANTED`
+- `GRANTED_ALWAYS` (iOS)
 - `DENIED`
 - `UNKNOWN`
 
