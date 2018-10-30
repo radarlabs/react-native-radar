@@ -9,7 +9,7 @@
         case kCLAuthorizationStatusRestricted:
             return @"DENIED";
         case kCLAuthorizationStatusAuthorizedAlways:
-            return @"GRANTED";
+            return @"GRANTED_ALWAYS";
         case kCLAuthorizationStatusAuthorizedWhenInUse:
             return @"GRANTED";
         default:
