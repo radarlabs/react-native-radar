@@ -19,13 +19,13 @@ import io.radar.sdk.model.RadarUserInsightsState;
 class RNRadarUtils {
 
     static String stringForPermissionsStatus(boolean hasGrantedPermissions, boolean showRationale) {
-        if (showRationale) {
-            return "DENIED";
+        if (hasGrantedPermissions) {
+            return "GRANTED";
         } else {
-            if (hasGrantedPermissions) {
-                return "GRANTED";
+            if (!showRationale) {
+                return "DENIED_NOT_RATIONALE";
             } else {
-                return "DENIED_FOREVER";
+                return "DENIED";
             }
         }
     }
