@@ -46,9 +46,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getPermissionsStatus(Promise promise) {
+        Activity activity = getCurrentActivity();
         promise.resolve(RNRadarUtils.stringForPermissionsStatus(
             ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED,
-            ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+            ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)
         ));
     }
 
