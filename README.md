@@ -113,7 +113,8 @@ Radar.getPermissionsStatus().then((status) => {
 - `GRANTED`
 - `GRANTED_ALWAYS` (iOS)
 - `DENIED`
-- `UNKNOWN`
+- `DENIED_FOREVER` (Android, this will be returned if the user seleced the `never ask again` checkbox)
+- `UNKNOWN` (iOS)
 
 To request location permissions for the app, call:
 
