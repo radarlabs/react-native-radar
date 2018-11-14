@@ -40,6 +40,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.facebook.react:react-native:+'
-    implementation 'io.radar:sdk:2.1.+'
+    api 'com.facebook.react:react-native:+'
+    api 'io.radar:sdk:2.1.+'
 }
