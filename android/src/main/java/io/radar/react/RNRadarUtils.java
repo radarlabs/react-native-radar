@@ -51,6 +51,8 @@ class RNRadarUtils {
                 return "user.entered_place";
             case USER_EXITED_PLACE:
                 return "user.exited_place";
+            case USER_NEARBY_PLACE_CHAIN:
+                return "user.nearby_place_chain";
             default:
                 return null;
         }

@@ -15,13 +15,12 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
-        versionName '2.0.0'
+        versionName '2.1.0'
     }
     lintOptions {
         abortOnError false
@@ -41,6 +40,6 @@ repositories {
 }
 
 dependencies {
-    compile 'com.facebook.react:react-native:+'
-    compile 'io.radar:sdk:2.0.+'
+    implementation 'com.facebook.react:react-native:+'
+    implementation 'io.radar:sdk:2.1.+'
 }

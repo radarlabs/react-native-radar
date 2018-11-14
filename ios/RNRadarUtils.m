@@ -60,6 +60,8 @@
             return @"user.entered_place";
         case RadarEventTypeUserExitedPlace:
             return @"user.exited_place";
+        case RadarEventTypeUserNearbyPlaceChain:
+            return @"user.nearby_place_chain";
         default:
             return nil;
 
