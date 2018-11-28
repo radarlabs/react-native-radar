@@ -60,8 +60,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startTracking() {
-        Radar.startTracking();
+    public void startTracking(ReadableMap optionsMap) {
+        Radar.startTracking(RNRadarUtils.optionsForMap(optionsMap));
     }
 
     @ReactMethod

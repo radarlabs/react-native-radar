@@ -80,8 +80,8 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background) {
     }
 }
 
-RCT_EXPORT_METHOD(startTracking) {
-    [Radar startTracking];
+RCT_EXPORT_METHOD(startTracking:(NSDictionary *)optionsDict) {
+    [Radar startTrackingWithOptions:[RNRadarUtils optionsForDictionary:optionsDict]];
 }
 
 RCT_EXPORT_METHOD(stopTracking) {

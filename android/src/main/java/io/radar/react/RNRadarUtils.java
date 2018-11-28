@@ -5,12 +5,16 @@ import java.util.Iterator;
 import org.json.JSONObject;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import io.radar.sdk.Radar;
+import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarGeofence;
 import io.radar.sdk.model.RadarPlace;
+import io.radar.sdk.Radar.RadarTrackingOffline;
+import io.radar.sdk.Radar.RadarTrackingSync;
 import io.radar.sdk.model.RadarUser;
 import io.radar.sdk.model.RadarUserInsights;
 import io.radar.sdk.model.RadarUserInsightsLocation;
@@ -330,6 +334,33 @@ class RNRadarUtils {
             map.putDouble("accuracy", location.getAccuracy());
         }
         return map;
+    }
+
+    static RadarTrackingOptions optionsForMap(ReadableMap optionsMap) {
+        RadarTrackingOptions.Builder options = new RadarTrackingOptions.Builder();
+        if (optionsMap != null) {
+            if (optionsMap.hasKey("sync")) {
+                switch (optionsMap.getString("sync")) {
+                    case "possibleStateChanges":
+                        options.sync(RadarTrackingSync.POSSIBLE_STATE_CHANGES);
+                        break;
+                    case "all":
+                        options.sync(RadarTrackingSync.ALL);
+                        break;
+                }
+            }
+            if (optionsMap.hasKey("offline")) {
+                switch (optionsMap.getString("offline")) {
+                    case "replayStopped":
+                        options.offline(RadarTrackingOffline.REPLAY_STOPPED);
+                        break;
+                    case "replayOff":
+                        options.offline(RadarTrackingOffline.REPLAY_OFF);
+                        break;
+                }
+            }
+        }
+        return options.build();
     }
 
 }
