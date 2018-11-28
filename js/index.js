@@ -28,7 +28,7 @@ const requestPermissions = (background) => {
 
 const startTracking = (options) => {
   NativeModules.RNRadar.startTracking(options);
-}
+};
 
 const stopTracking = () => {
   NativeModules.RNRadar.stopTracking();

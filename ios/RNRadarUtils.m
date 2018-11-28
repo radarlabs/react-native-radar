@@ -1,4 +1,5 @@
 #import "RNRadarUtils.h"
+#import <React/RCTConvert.h>
 
 @implementation RNRadarUtils
 
@@ -311,5 +312,29 @@
     }
     return dict;
 }
+
++ (RadarTrackingOptions *)optionsForDictionary:(NSDictionary *)optionsDict {
+    RadarTrackingOptions *options = [RadarTrackingOptions new];
+    if (optionsDict) {
+        if (optionsDict[@"sync"]) {
+            NSString *sync = [RCTConvert NSString:optionsDict[@"sync"]];
+            if ([sync isEqualToString:@"possibleStateChanges"]) {
+                options.sync = RadarTrackingSyncPossibleStateChanges;
+            } else if ([sync isEqualToString:@"all"]) {
+                options.sync = RadarTrackingSyncAll;
+            }
+        }
+        if (optionsDict[@"offline"]) {
+            NSString *offline = [RCTConvert NSString:optionsDict[@"offline"]];
+            if ([offline isEqualToString:@"replayStopped"]) {
+                options.offline = RadarTrackingOfflineReplayStopped;
+            } else if ([offline isEqualToString:@"replayOff"]) {
+                options.offline = RadarTrackingOfflineReplayOff;
+            }
+        }
+    }
+    return options;
+}
+
 
 @end
