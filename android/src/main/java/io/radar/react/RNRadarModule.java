@@ -14,6 +14,9 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import io.radar.sdk.Radar;
+import io.radar.sdk.Radar.RadarTrackingOffline;
+import io.radar.sdk.Radar.RadarTrackingSync;
+import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.Radar.RadarCallback;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarUser;
@@ -60,8 +63,31 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startTracking() {
-        Radar.startTracking();
+    public void startTracking(ReadableMap optionsMap) {
+        RadarTrackingOptions.Builder options = new RadarTrackingOptions.Builder();
+        if (optionsMap != null) {
+            if (optionsMap.hasKey("sync")) {
+                switch (optionsMap.getString("sync")) {
+                    case "possibleStateChanges":
+                        options.sync(RadarTrackingSync.POSSIBLE_STATE_CHANGES);
+                        break;
+                    case "all":
+                        options.sync(RadarTrackingSync.ALL);
+                        break;
+                }
+            }
+            if (optionsMap.hasKey("offline")) {
+                switch (optionsMap.getString("offline")) {
+                    case "replayStopped":
+                        options.offline(RadarTrackingOffline.REPLAY_STOPPED);
+                        break;
+                    case "replayOff":
+                        options.offline(RadarTrackingOffline.REPLAY_OFF);
+                        break;
+                }
+            }
+        }
+        Radar.startTracking(options.build());
     }
 
     @ReactMethod
