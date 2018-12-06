@@ -143,4 +143,9 @@ RCT_EXPORT_METHOD(rejectEvent:(NSString *)eventId) {
     [Radar rejectEventId:eventId];
 }
 
++(BOOL)requiresMainQueueSetup
+{
+  return YES;
+}
+
 @end
