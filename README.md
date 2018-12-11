@@ -160,9 +160,8 @@ Optionally, you can configure advanced tracking options. See the [iOS background
 
 ```javascript
 Radar.startTracking({
-  priority: 'responsiveness', // Android only, use 'efficiency' to avoid Android vitals bad behavior thresholds
-  sync: 'possibleStateChanges', // use 'replayOff' to disable offline replay ('replayStopped' recommended)
-  offline: 'replayStopped' // use 'all' to sync all location updates ('possibleStateChanges' recommended)
+  sync: 'possibleStateChanges', // use 'all' to sync all location updates ('possibleStateChanges' recommended)
+  offline: 'replayStopped' // use 'replayOff' to disable offline replay ('replayStopped' recommended)
 });
 ```
 
