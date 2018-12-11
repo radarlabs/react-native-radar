@@ -156,6 +156,15 @@ To start tracking the user's location in the background, call:
 Radar.startTracking();
 ```
 
+Optionally, you can configure advanced tracking options. See the [iOS background tracking documentation](https://radar.io/documentation/sdk#ios-background) and [Android background tracking documentation](https://radar.io/documentation/sdk#android-background) for descriptions of these options.
+
+```javascript
+Radar.startTracking({
+  sync: 'possibleStateChanges', // use 'all' to sync all location updates ('possibleStateChanges' recommended)
+  offline: 'replayStopped' // use 'replayOff' to disable offline replay ('replayStopped' recommended)
+});
+```
+
 To stop tracking the user's location in the background (e.g., when the user logs out), call:
 
 ```javascript
