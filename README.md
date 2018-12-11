@@ -156,7 +156,7 @@ To start tracking the user's location in the background, call:
 Radar.startTracking();
 ```
 
-Optionally, you can use RadarTrackingOptions to configure advanced tracking options. See the [iOS background tracking documentation](https://radar.io/documentation/sdk#ios-background) and [Android background tracking documentation](https://radar.io/documentation/sdk#android-background) for descriptions of these options.
+Optionally, you can configure advanced tracking options. See the [iOS background tracking documentation](https://radar.io/documentation/sdk#ios-background) and [Android background tracking documentation](https://radar.io/documentation/sdk#android-background) for descriptions of these options.
 
 ```javascript
 Radar.startTracking({
