@@ -1,9 +1,77 @@
 {
+  "env": {
+    "browser": true,
+    "mocha": true
+  },
   "extends": "airbnb",
   "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ],
   "rules": {
-    "import/extensions": 0,
-    "import/no-unresolved": [2, { "ignore": ["react"] }],
-    "no-underscore-dangle": 0
+    "consistent-return": 0,
+    "func-names": 0,
+    "jsx-a11y/accessible-emoji": 0,
+    "jsx-a11y/alt-text": 0,
+    "jsx-a11y/anchor-has-content": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "jsx-a11y/aria-activedescendant-has-tabindex": 0,
+    "jsx-a11y/aria-props": 0,
+    "jsx-a11y/aria-proptypes": 0,
+    "jsx-a11y/aria-role": 0,
+    "jsx-a11y/aria-unsupported-elements": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/heading-has-content": 0,
+    "jsx-a11y/html-has-lang": 0,
+    "jsx-a11y/iframe-has-title": 0,
+    "jsx-a11y/img-redundant-alt": 0,
+    "jsx-a11y/interactive-supports-focus": 0,
+    "jsx-a11y/label-has-for": 0,
+    "jsx-a11y/label-has-associated-control": 0,
+    "jsx-a11y/media-has-caption": 0,
+    "jsx-a11y/mouse-events-have-key-events": 0,
+    "jsx-a11y/no-access-key": 0,
+    "jsx-a11y/no-autofocus": 0,
+    "jsx-a11y/no-distracting-elements": 0,
+    "jsx-a11y/no-interactive-element-to-noninteractive-role": 0,
+    "jsx-a11y/no-noninteractive-element-interactions": 0,
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": 0,
+    "jsx-a11y/no-noninteractive-tabindex": 0,
+    "jsx-a11y/no-onchange": 0,
+    "jsx-a11y/no-redundant-roles": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "jsx-a11y/role-has-required-aria-props": 0,
+    "jsx-a11y/role-supports-aria-props": 0,
+    "jsx-a11y/scope": 0,
+    "jsx-a11y/tabindex-no-positive": 0,
+    "global-require": 0,
+    "max-len": 0,
+    "no-alert": 0,
+    "no-param-reassign": 0,
+    "no-plusplus": 0,
+    "no-shadow": 0,
+    "no-throw-literal": 0,
+    "no-underscore-dangle": 0,
+    "no-unused-vars": ["error", {
+      "argsIgnorePattern": "_",
+      "varsIgnorePattern": "_"
+    }],
+    "object-curly-newline": 0,
+    "operator-linebreak": 0,
+    "prefer-destructuring": ["error", {
+      "VariableDeclarator": { "array": false, "object": true },
+      "AssignmentExpression": { "array": false, "object": false }
+    }],
+    "react/jsx-one-expression-per-line": 0,
+    "react/jsx-wrap-multilines": 0,
+    "react/no-array-index-key": 0,
+    "react/no-danger": 0,
+    "react/prop-types": 0,
+    "no-restricted-properties": [0, {
+      "object": "Math",
+      "property": "pow"
+    }],
+    "no-bitwise": 0,
+    "padded-blocks": 0
   }
 }
