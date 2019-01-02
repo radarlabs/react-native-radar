@@ -5,18 +5,36 @@
   "license": "Apache-2.0",
   "version": "2.1.2",
   "main": "js/index.js",
+  "scripts": {
+    "test": "jest ./test/*.test.js"
+  },
+  "jest": {
+    "preset": "react-native",
+    "clearMocks": true
+  },
   "dependencies": {},
   "peerDependencies": {
     "react": ">= 15.4.2",
     "react-native": ">= 0.40.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.4.2",
     "eslint": "^5.6.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.1.2",
     "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-react": "^7.11.1"
+    "eslint-plugin-react": "^7.11.1",
+    "jest": "^23.6.0",
+    "metro-react-native-babel-preset": "^0.51.1",
+    "react": "^16.7.0",
+    "react-native": "^0.57.8"
   },
   "bugs": {
     "url": "https://github.com/radarlabs/react-native-radar/issues"
