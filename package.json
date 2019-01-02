@@ -5,6 +5,12 @@
   "license": "Apache-2.0",
   "version": "2.1.2",
   "main": "js/index.js",
+  "files": [
+    "android",
+    "ios",
+    "js",
+    "README.md"
+  ],
   "scripts": {
     "test": "jest ./test/*.test.js"
   },
