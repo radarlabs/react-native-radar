@@ -12,7 +12,9 @@
     "README.md"
   ],
   "scripts": {
-    "test": "jest ./test/*.test.js"
+    "testJs": "jest ./test/*.test.js",
+    "testAndroid": "./android/gradlew test -p android",
+    "testAll": "run-p testJs testAndroid"
   },
   "jest": {
     "preset": "react-native",
@@ -39,6 +41,7 @@
     "eslint-plugin-react": "^7.11.1",
     "jest": "^23.6.0",
     "metro-react-native-babel-preset": "^0.51.1",
+    "npm-run-all": "^4.1.5",
     "react": "^16.7.0",
     "react-native": "^0.57.8"
   },
