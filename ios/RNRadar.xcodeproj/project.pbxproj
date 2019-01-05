@@ -137,6 +137,13 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
+		469A19D521E1324D00F7F1F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 466EF49621DFC34600ED0E09 /* React.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 83CBBA2D1A601D0E00E9B192;
+			remoteInfo = React;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -169,7 +176,6 @@
 		466EF48E21DFC28700ED0E09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		466EF49621DFC34600ED0E09 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		466EF4CA21DFCB8F00ED0E09 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = Carthage/Build/iOS/OCMock.framework; sourceTree = "<group>"; };
-		466EF4CC21DFCE7500ED0E09 /* RadarSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RadarSDK.framework; sourceTree = "<group>"; };
 		466EF4CE21DFCF4500ED0E09 /* RadarSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RadarSDK.framework; path = Carthage/Build/iOS/RadarSDK.framework; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* RNRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNRadar.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNRadar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNRadar.m; sourceTree = "<group>"; };
@@ -219,7 +225,6 @@
 		466EF49521DFC34600ED0E09 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				466EF4CC21DFCE7500ED0E09 /* RadarSDK.framework */,
 				466EF4CE21DFCF4500ED0E09 /* RadarSDK.framework */,
 				466EF4CA21DFCB8F00ED0E09 /* OCMock.framework */,
 				466EF49621DFC34600ED0E09 /* React.xcodeproj */,
@@ -279,6 +284,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				469A19D621E1324D00F7F1F7 /* PBXTargetDependency */,
 				466EF49121DFC28700ED0E09 /* PBXTargetDependency */,
 			);
 			name = RNRadarTests;
@@ -498,6 +504,11 @@
 			target = 58B511DA1A9E6C8500147676 /* RNRadar */;
 			targetProxy = 466EF49021DFC28700ED0E09 /* PBXContainerItemProxy */;
 		};
+		469A19D621E1324D00F7F1F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = React;
+			targetProxy = 469A19D521E1324D00F7F1F7 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -685,6 +696,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -693,6 +705,7 @@
 					"$(SRCROOT)/../../react-native/React/**",
 					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
 					"${SRCROOT}/../../../ios/RadarSDK/**",
+					"$(SRCROOT)/Carthage/Build/iOS/**",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
@@ -711,6 +724,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -719,6 +733,7 @@
 					"$(SRCROOT)/../../react-native/React/**",
 					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
 					"${SRCROOT}/../../../ios/RadarSDK/**",
+					"$(SRCROOT)/Carthage/Build/iOS/**",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";

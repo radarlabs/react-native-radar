@@ -42,7 +42,7 @@ jobs:
 
   ios:
     macos: 
-      xcode: "9.0"
+      xcode: "10.1.0"
     working_directory: ~/react-native-radar
     
     steps:
@@ -59,6 +59,23 @@ jobs:
           key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
           paths:
             - node_modules
+
+      - restore_cache:
+          name: Restore brew cache
+          key: brew-cache-v1
+
+      - run: brew update
+      - run: brew upgrade
+      - run: brew install carthage
+      - run:
+          command: carthage bootstrap
+          working_directory: ios
+      
+      - save_cache:
+          name: Save homebrew cache
+          key: brew-cache-v1
+          paths:
+            - /usr/local/Homebrew
 
       - run: npm run testIOS
 
