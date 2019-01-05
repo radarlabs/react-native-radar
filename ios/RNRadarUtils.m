@@ -32,6 +32,8 @@
             return @"ERROR_NETWORK";
         case RadarStatusErrorUnauthorized:
             return @"ERROR_UNAUTHORIZED";
+        case RadarStatusErrorRateLimit:
+            return @"ERROR_RATE_LIMIT";
         case RadarStatusErrorServer:
             return @"ERROR_SERVER";
         default:
@@ -127,14 +129,14 @@
     }
     NSMutableArray *geofencesArr = [[NSMutableArray alloc] initWithCapacity:user.geofences.count];
     for (RadarGeofence *geofence in user.geofences) {
-        NSDictionary *geofenceDict = [RNRadarUtils dictionaryForGeofence:geofence];
+        NSDictionary *geofenceDict = [self dictionaryForGeofence:geofence];
         [geofencesArr addObject:geofenceDict];
     }
     [dict setValue:geofencesArr forKey:@"geofences"];
-    NSDictionary *insightsDict = [RNRadarUtils dictionaryForUserInsights:user.insights];
+    NSDictionary *insightsDict = [self dictionaryForUserInsights:user.insights];
     [dict setValue:insightsDict forKey:@"insights"];
     if (user.place) {
-      NSDictionary *placeDict = [RNRadarUtils dictionaryForPlace:user.place];
+      NSDictionary *placeDict = [self dictionaryForPlace:user.place];
       [dict setValue:placeDict forKey:@"place"];
     }
     return dict;
@@ -146,7 +148,7 @@
     }
 
     NSMutableDictionary *dict = [NSMutableDictionary new];
-    NSDictionary *homeLocationDict = [RNRadarUtils dictionaryForUserInsightsLocation:insights.homeLocation];
+    NSDictionary *homeLocationDict = [self dictionaryForUserInsightsLocation:insights.homeLocation];
     if (homeLocationDict) {
         [dict setObject:homeLocationDict forKey:@"homeLocation"];
     }
@@ -154,7 +156,7 @@
     if (officeLocationDict) {
         [dict setObject:officeLocationDict forKey:@"officeLocation"];
     }
-    NSDictionary *stateDict = [RNRadarUtils dictionaryForUserInsightsState:insights.state];
+    NSDictionary *stateDict = [self dictionaryForUserInsightsState:insights.state];
     if (stateDict) {
         [dict setObject:stateDict forKey:@"state"];
     }
@@ -248,7 +250,7 @@
 
     NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:events.count];
     for (RadarEvent *event in events) {
-        NSDictionary *dict = [RNRadarUtils dictionaryForEvent:event];
+        NSDictionary *dict = [self dictionaryForEvent:event];
         [arr addObject:dict];
     }
     return arr;
@@ -266,7 +268,7 @@
     if (type) {
         [dict setValue:type forKey:@"type"];
     }
-    NSDictionary *geofenceDict = [RNRadarUtils dictionaryForGeofence:event.geofence];
+    NSDictionary *geofenceDict = [self dictionaryForGeofence:event.geofence];
     if (geofenceDict) {
         [dict setValue:geofenceDict forKey:@"geofence"];
     }
@@ -279,7 +281,7 @@
     if (event.duration) {
         [dict setValue:@(event.duration) forKey:@"duration"];
     }
-    NSArray *alternatePlaces = [RNRadarUtils arrayForAlternatePlaces:event.alternatePlaces];
+    NSArray *alternatePlaces = [self arrayForAlternatePlaces:event.alternatePlaces];
     if (alternatePlaces) {
         [dict setValue:alternatePlaces forKey:@"alternatePlaces"];
     }

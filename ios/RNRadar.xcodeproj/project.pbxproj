@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		466EF48D21DFC28700ED0E09 /* RNRadarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 466EF48C21DFC28700ED0E09 /* RNRadarTests.m */; };
+		46256DBD21E01B6F00E10B7F /* RNRadarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 46256DBC21E01B6F00E10B7F /* RNRadarTests.m */; };
+		466EF48D21DFC28700ED0E09 /* RNRadarUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 466EF48C21DFC28700ED0E09 /* RNRadarUtilsTests.m */; };
 		466F032321DFE559001EBC47 /* OCMock.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 466EF4CA21DFCB8F00ED0E09 /* OCMock.framework */; };
 		46B8EB3121DFDDAE009DFE97 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 466EF4CA21DFCB8F00ED0E09 /* OCMock.framework */; };
 		46B8EB3421DFE009009DFE97 /* libRNRadar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 134814201AA4EA6300B7C361 /* libRNRadar.a */; };
@@ -162,8 +163,9 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNRadar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNRadar.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		46256DBC21E01B6F00E10B7F /* RNRadarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNRadarTests.m; sourceTree = "<group>"; };
 		466EF48A21DFC28700ED0E09 /* RNRadarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNRadarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		466EF48C21DFC28700ED0E09 /* RNRadarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNRadarTests.m; sourceTree = "<group>"; };
+		466EF48C21DFC28700ED0E09 /* RNRadarUtilsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNRadarUtilsTests.m; sourceTree = "<group>"; };
 		466EF48E21DFC28700ED0E09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		466EF49621DFC34600ED0E09 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		466EF4CA21DFCB8F00ED0E09 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = Carthage/Build/iOS/OCMock.framework; sourceTree = "<group>"; };
@@ -207,7 +209,8 @@
 		466EF48B21DFC28700ED0E09 /* RNRadarTests */ = {
 			isa = PBXGroup;
 			children = (
-				466EF48C21DFC28700ED0E09 /* RNRadarTests.m */,
+				46256DBC21E01B6F00E10B7F /* RNRadarTests.m */,
+				466EF48C21DFC28700ED0E09 /* RNRadarUtilsTests.m */,
 				466EF48E21DFC28700ED0E09 /* Info.plist */,
 			);
 			path = RNRadarTests;
@@ -473,7 +476,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				466EF48D21DFC28700ED0E09 /* RNRadarTests.m in Sources */,
+				46256DBD21E01B6F00E10B7F /* RNRadarTests.m in Sources */,
+				466EF48D21DFC28700ED0E09 /* RNRadarUtilsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

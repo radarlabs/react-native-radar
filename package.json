@@ -14,7 +14,8 @@
   "scripts": {
     "testJs": "jest ./test/*.test.js",
     "testAndroid": "./android/gradlew test -p android",
-    "testAll": "run-p testJs testAndroid"
+    "testIOS": "xcodebuild test -project ios/RNRadar.xcodeproj -scheme RNRadarTests -destination 'platform=iOS Simulator,OS=12.1,name=iPhone 8'",
+    "testAll": "run-p testJs testAndroid testIOS"
   },
   "jest": {
     "preset": "react-native",
