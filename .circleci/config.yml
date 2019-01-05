@@ -1,0 +1,73 @@
+version: 2
+jobs:
+  node:
+    working_directory: ~/react-native-radar
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+    
+      - restore_cache:
+          name: Restore node modules cache
+          key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
+
+      - run: npm install 
+
+      - save_cache:
+          name: Save node modules cache
+          key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - run:
+          name: jest tests
+          command: npm run testJs
+
+      - persist_to_workspace:
+          root: ~/react-native-radar
+
+  android:
+    working_directory: ~/react-native-radar
+    docker:
+      - image: circleci/android:api-28-node8-alpha
+    steps:
+      - checkout:
+
+      - attach_workspace:
+          at: ~/demo-react-native
+      
+      - run: npm run testAndroid
+
+  ios:
+    macos: 
+      xcode: "9.0"
+    working_directory: ~/react-native-radar
+    
+    steps:
+      - checkout
+
+      - restore_cache:
+          name: Restore node modules cache
+          key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
+
+      - run: npm install
+ 
+      - save_cache:
+          name: Save node modules cache
+          key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - run: npm run testIOS
+
+workflows:
+  version: 2
+  node-android-ios:
+    jobs:
+      - node
+      - android:
+          requires:
+            - node
+      - ios:
+          requires:
+            - node
