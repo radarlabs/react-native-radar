@@ -26,6 +26,10 @@ RCT_EXPORT_MODULE();
     return YES;
 }
 
+- (dispatch_queue_t)methodQueue {
+    return dispatch_get_main_queue();
+}
+
 - (NSArray<NSString *> *)supportedEvents {
     return @[@"events", @"location", @"error"];
 }
