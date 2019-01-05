@@ -25,6 +25,8 @@ jobs:
 
       - persist_to_workspace:
           root: ~/react-native-radar
+          paths:
+            - node_modules
 
   android:
     working_directory: ~/react-native-radar
@@ -34,7 +36,7 @@ jobs:
       - checkout:
 
       - attach_workspace:
-          at: ~/demo-react-native
+          at: ~/react-native-radar
       
       - run: npm run testAndroid
 
