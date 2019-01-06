@@ -21,12 +21,22 @@ jobs:
 
       - run:
           name: jest tests
-          command: npm run testJs
+          command: |
+            mkdir -p test-results/jest
+            npm run testJs
+          environment:
+            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
       - persist_to_workspace:
           root: ~/react-native-radar
           paths:
             - node_modules
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: test-results
 
   android:
     working_directory: ~/react-native-radar
@@ -39,6 +49,19 @@ jobs:
           at: ~/react-native-radar
       
       - run: npm run testAndroid
+
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p test-results/android/
+            find ./android -type f -regex ".*/build/test-results/.*xml" -exec cp {} ./test-results/android/ \;
+          when: always
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: test-results
 
   ios:
     macos: 
@@ -77,7 +100,17 @@ jobs:
           paths:
             - /usr/local/Homebrew
 
-      - run: npm run testIOS
+      - run:
+          name: Run iOS tests
+          command: |
+            mkdir -p test-results/ios
+            npm run testIOS | xcpretty -r junit --output test-results/ios/junit.xml
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: test-results
 
 workflows:
   version: 2
