@@ -1,11 +1,3 @@
-//
-//  RNRadarTests.m
-//  RNRadarTests
-//
-//  Created by Russell Cullen on 1/4/19.
-//  Copyright © 2019 Facebook. All rights reserved.
-//
-
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 
