@@ -52,7 +52,7 @@
 - (void)testSetUserId {
     OCMStub([radar setUserId:[OCMArg any]]).andDo(nil);
     
-    NSString* userId = @"someUserId123";
+    NSString *userId = @"someUserId123";
     [module setUserId:userId];
     
     OCMVerify([radar setUserId:userId]);
@@ -61,14 +61,14 @@
 - (void)testSetDescription {
     OCMStub([radar setDescription:[OCMArg any]]).andDo(nil);
     
-    NSString* description = @"some random user description";
+    NSString *description = @"some random user description";
     [module setDescription:description];
     
     OCMVerify([radar setDescription:description]);
 }
 
 - (void)testSetPlacesProvider {
-    NSString* providerStr = @"facebook";
+    NSString *providerStr = @"facebook";
     RadarPlacesProvider provider = RadarPlacesProviderFacebook;
     OCMStub([radarUtils placesProviderForString:providerStr]).andReturn(provider);
     OCMStub([radar setPlacesProvider:provider]).andDo(nil);
@@ -79,21 +79,21 @@
 }
 
 - (void)testGetPermissionsStatus {
-    NSString* permissionSatus = @"Granted";
+    NSString *permissionSatus = @"Granted";
     OCMStub([[radarUtils ignoringNonObjectArgs] stringForPermissionsStatus:0]).andReturn(permissionSatus);
 
     id handlerExpectation = [self expectationWithDescription:@"Resolver called"];
     [module getPermissionsStatusWithResolver:^(id result){
         XCTAssertEqual(permissionSatus, result);
         [handlerExpectation fulfill];
-    } rejecter:^(NSString* code, NSString* message, NSError* error){}];
+    } rejecter:^(NSString *code, NSString *message, NSError *error){}];
     
     [self waitForExpectations:@[handlerExpectation] timeout:0];
 }
 
 - (void)testStartTracking {
-    NSDictionary* optionsDict = @{};
-    RadarTrackingOptions* options = [RadarTrackingOptions new];
+    NSDictionary *optionsDict = @{};
+    RadarTrackingOptions *options = [RadarTrackingOptions new];
     OCMStub([radarUtils optionsForDictionary:optionsDict]).andReturn(options);
     OCMStub([radar startTrackingWithOptions:[OCMArg any]]).andDo(nil);
     
@@ -112,7 +112,7 @@
 
 - (void)testTrackOnce {
     RadarStatus status = RadarStatusSuccess;
-    NSString* statusStr = @"SUCCESS";
+    NSString *statusStr = @"SUCCESS";
     OCMStub([radarUtils stringForStatus:status]).andReturn(statusStr);
     OCMStub([radar trackOnceWithCompletionHandler:([OCMArg invokeBlockWithArgs:@(status), [NSNull null], [NSNull null], [NSNull null], nil])]);
     
@@ -120,20 +120,20 @@
     [module trackOnceWithResolver:^(id result){
         XCTAssertEqual(statusStr, result[@"status"]);
         [handlerExpectation fulfill];
-    } rejecter:^(NSString* code, NSString* message, NSError* error){}];
+    } rejecter:^(NSString *code, NSString *message, NSError *error){}];
     
     [self waitForExpectations:@[handlerExpectation] timeout:0];
 }
 
 - (void)testTrackOnce_fail {
     RadarStatus status = RadarStatusErrorServer;
-    NSString* statusStr = @"ERROR_SERVER";
+    NSString *statusStr = @"ERROR_SERVER";
     OCMStub([radarUtils stringForStatus:status]).andReturn(statusStr);
     OCMStub([radar trackOnceWithCompletionHandler:([OCMArg invokeBlockWithArgs:@(status), [NSNull null], [NSNull null], [NSNull null], nil])]);
     
     id handlerExpectation = [self expectationWithDescription:@"Rejecter called"];
     [module trackOnceWithResolver:^(id result){}
-                         rejecter:^(NSString* code, NSString* message, NSError* error){
+                         rejecter:^(NSString *code, NSString *message, NSError *error){
         XCTAssertEqual(statusStr, code);
         XCTAssertEqual(statusStr, message);
         XCTAssertNil(error);
@@ -145,8 +145,8 @@
 
 - (void)testUpdateLocation {
     RadarStatus status = RadarStatusSuccess;
-    NSString* statusStr = @"SUCCESS";
-    NSDictionary* locationDict = @{@"latitude" : @10.0, @"longitude" : @20.0, @"accuracy" : @10.0};
+    NSString *statusStr = @"SUCCESS";
+    NSDictionary *locationDict = @{@"latitude" : @10.0, @"longitude" : @20.0, @"accuracy" : @10.0};
     OCMStub([radarUtils stringForStatus:status]).andReturn(statusStr);
     OCMStub([radar updateLocation:[OCMArg any] withCompletionHandler:([OCMArg invokeBlockWithArgs:@(status), [NSNull null], [NSNull null], [NSNull null], nil])]);
     
@@ -154,7 +154,7 @@
     [module updateLocation:(NSDictionary *)locationDict resolve:^(id result){
         XCTAssertEqual(statusStr, result[@"status"]);
         [handlerExpectation fulfill];
-    } rejecter:^(NSString* code, NSString* message, NSError* error){}];
+    } rejecter:^(NSString *code, NSString *message, NSError *error){}];
     
     [self waitForExpectations:@[handlerExpectation] timeout:0];
     OCMVerify([radar updateLocation:[OCMArg checkWithBlock:^BOOL(id arg) {
@@ -167,8 +167,8 @@
 }
 
 - (void)testAcceptEvent {
-    NSString* eventId = @"eventId";
-    NSString* verifiedId = @"verifiedId";
+    NSString *eventId = @"eventId";
+    NSString *verifiedId = @"verifiedId";
     OCMStub([radar acceptEventId:[OCMArg any] withVerifiedPlaceId:[OCMArg any]]).andDo(nil);
     
     [module acceptEvent:eventId withVerifiedPlaceId:verifiedId];
@@ -177,7 +177,7 @@
 }
 
 - (void)testRejectEvent {
-    NSString* eventId = @"eventId";
+    NSString *eventId = @"eventId";
     OCMStub([radar rejectEventId:[OCMArg any]]).andDo(nil);
     
     [module rejectEvent:eventId];
