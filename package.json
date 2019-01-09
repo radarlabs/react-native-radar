@@ -3,13 +3,14 @@
   "description": "React Native module for Radar, the location context platform",
   "homepage": "https://radar.io",
   "license": "Apache-2.0",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "main": "js/index.js",
   "files": [
     "android",
     "ios",
     "js",
-    "README.md"
+    "README.md",
+    "react-native-radar.podspec"
   ],
   "scripts": {
     "testJs": "jest ./test/*.test.js",
