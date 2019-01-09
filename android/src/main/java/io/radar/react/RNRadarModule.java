@@ -47,10 +47,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getPermissionsStatus(Promise promise) {
         Activity activity = getCurrentActivity();
-        promise.resolve(RNRadarUtils.stringForPermissionsStatus(
-            ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED,
-            ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)
-        ));
+        if (activity != null) {
+            promise.resolve(RNRadarUtils.stringForPermissionsStatus(
+                    ActivityCompat.checkSelfPermission(getReactApplicationContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED,
+                    ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                            Manifest.permission.ACCESS_FINE_LOCATION)));
+        }
     }
 
     @ReactMethod
@@ -75,7 +78,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     public void trackOnce(final Promise promise) {
         Radar.trackOnce(new RadarCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
+            public void onComplete(@NonNull Radar.RadarStatus status, Location location, RadarEvent[] events,
+                    RadarUser user) {
                 if (promise == null)
                     return;
 
@@ -100,14 +104,15 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     public void updateLocation(ReadableMap locationMap, final Promise promise) {
         double latitude = locationMap.getDouble("latitude");
         double longitude = locationMap.getDouble("longitude");
-        float accuracy = (float)locationMap.getDouble("accuracy");
+        float accuracy = (float) locationMap.getDouble("accuracy");
         Location location = new Location("RNRadarModule");
         location.setLatitude(latitude);
         location.setLongitude(longitude);
         location.setAccuracy(accuracy);
         Radar.updateLocation(location, new RadarCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
+            public void onComplete(@NonNull Radar.RadarStatus status, Location location, RadarEvent[] events,
+                    RadarUser user) {
                 if (promise == null)
                     return;
 
