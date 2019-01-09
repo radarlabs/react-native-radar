@@ -93,8 +93,10 @@ RCT_EXPORT_METHOD(stopTracking) {
 }
 
 RCT_REMAP_METHOD(trackOnce, trackOnceWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
     [Radar trackOnceWithCompletionHandler:^(RadarStatus status, CLLocation *location, NSArray<RadarEvent *> *events, RadarUser *user) {
-        if (status == RadarStatusSuccess && resolve) {
+        if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[RNRadarUtils stringForStatus:status] forKey:@"status"];
             if (location) {
@@ -106,9 +108,13 @@ RCT_REMAP_METHOD(trackOnce, trackOnceWithResolver:(RCTPromiseResolveBlock)resolv
             if (user) {
                 [dict setObject:[RNRadarUtils dictionaryForUser:user] forKey:@"user"];
             }
-            resolve(dict);
-        } else if (reject) {
-            reject([RNRadarUtils stringForStatus:status], [RNRadarUtils stringForStatus:status], nil);
+            resolver(dict);
+            resolver = nil;
+            rejecter = nil;
+        } else if (rejecter) {
+            rejecter([RNRadarUtils stringForStatus:status], [RNRadarUtils stringForStatus:status], nil);
+            resolver = nil;
+            rejecter = nil;
         }
     }];
 }
@@ -119,8 +125,10 @@ RCT_EXPORT_METHOD(updateLocation:(NSDictionary *)locationDict resolve:(RCTPromis
     double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
     NSDate *timestamp = [NSDate date];
     CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
     [Radar updateLocation:location withCompletionHandler:^(RadarStatus status, CLLocation *location, NSArray<RadarEvent *> *events, RadarUser *user) {
-        if (status == RadarStatusSuccess && resolve) {
+        if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[RNRadarUtils stringForStatus:status] forKey:@"status"];
             if (location) {
@@ -132,9 +140,13 @@ RCT_EXPORT_METHOD(updateLocation:(NSDictionary *)locationDict resolve:(RCTPromis
             if (user) {
                 [dict setObject:[RNRadarUtils dictionaryForUser:user] forKey:@"user"];
             }
-            resolve(dict);
-        } else if (reject) {
-            reject([RNRadarUtils stringForStatus:status], [RNRadarUtils stringForStatus:status], nil);
+            resolver(dict);
+            resolver = nil;
+            rejecter = nil;
+        } else if (rejecter) {
+            rejecter([RNRadarUtils stringForStatus:status], [RNRadarUtils stringForStatus:status], nil);
+            resolver = nil;
+            rejecter = nil;
         }
     }];
 }
