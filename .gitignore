@@ -23,3 +23,6 @@ local.properties
 node_modules/
 npm-debug.log
 *.framework
+
+ios/Carthage/Checkouts
+ios/Carthage/Build

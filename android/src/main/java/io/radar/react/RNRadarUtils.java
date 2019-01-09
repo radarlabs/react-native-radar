@@ -106,7 +106,7 @@ class RNRadarUtils {
         return Radar.RadarPlacesProvider.NONE;
     }
 
-    static WritableMap mapForJSONObject(JSONObject obj) {
+    private static WritableMap mapForJSONObject(JSONObject obj) {
         WritableMap map = Arguments.createMap();
         Iterator<String> keys = obj.keys();
         while(keys.hasNext()) {

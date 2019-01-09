@@ -25,6 +25,9 @@ android {
     lintOptions {
         abortOnError false
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 repositories {
@@ -42,4 +45,8 @@ repositories {
 dependencies {
     api 'com.facebook.react:react-native:+'
     api 'io.radar:sdk:2.1.+'
+
+    testImplementation 'org.mockito:mockito-core:2.23.4'
+    testImplementation 'org.powermock:powermock-module-junit4:2.0.0-beta.5'
+    testImplementation 'org.powermock:powermock-api-mockito2:2.0.0-beta.5'
 }
