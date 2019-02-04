@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the location context platform",
   "homepage": "https://radar.io",
   "license": "Apache-2.0",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "main": "js/index.js",
   "files": [
     "android",

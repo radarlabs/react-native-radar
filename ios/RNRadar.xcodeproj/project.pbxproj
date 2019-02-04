@@ -320,7 +320,6 @@
 				TargetAttributes = {
 					466EF48921DFC28700ED0E09 = {
 						CreatedOnToolsVersion = 10.1;
-						DevelopmentTeam = 96GHH65B9D;
 						ProvisioningStyle = Automatic;
 					};
 					58B511DA1A9E6C8500147676 = {
@@ -535,7 +534,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 96GHH65B9D;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -588,7 +587,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 96GHH65B9D;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
