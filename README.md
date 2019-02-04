@@ -156,6 +156,8 @@ To start tracking the user's location in the background, call:
 Radar.startTracking();
 ```
 
+**Assuming you have configured your project properly, the SDK will wake up while the user is moving (usually every 2-3 minutes), then shut down when the user stops (usually within 3-5 minutes). To save battery, the SDK will not wake up when stopped, and the user must move at least 100 meters from a stop (sometimes more) to wake up the SDK.**
+
 Optionally, you can configure advanced tracking options. See the [iOS background tracking documentation](https://radar.io/documentation/sdk#ios-background) and [Android background tracking documentation](https://radar.io/documentation/sdk#android-background) for descriptions of these options.
 
 ```javascript
