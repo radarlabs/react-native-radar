@@ -171,7 +171,7 @@
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNRadar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNRadar.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		46256DBC21E01B6F00E10B7F /* RNRadarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNRadarTests.m; sourceTree = "<group>"; };
-		466EF48A21DFC28700ED0E09 /* RNRadarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNRadarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		466EF48A21DFC28700ED0E09 /* RNRadarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = RNRadarTests.xctest; path = "/Users/russell/Workspace/react-native-radar/ios/build/Debug-iphoneos/RNRadarTests.xctest"; sourceTree = "<absolute>"; };
 		466EF48C21DFC28700ED0E09 /* RNRadarUtilsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNRadarUtilsTests.m; sourceTree = "<group>"; };
 		466EF48E21DFC28700ED0E09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		466EF49621DFC34600ED0E09 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
@@ -264,7 +264,6 @@
 				DD475C171E7F3277001275E5 /* RNRadarUtils.m */,
 				466EF48B21DFC28700ED0E09 /* RNRadarTests */,
 				134814211AA4EA7D00B7C361 /* Products */,
-				466EF48A21DFC28700ED0E09 /* RNRadarTests.xctest */,
 				466EF49521DFC34600ED0E09 /* Frameworks */,
 			);
 			sourceTree = "<group>";

@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.authors = package[:author] || "radarlabs"
   s.summary = package[:description]
   s.source = { git: package[:repository][:url] }
-  s.source_files = "ios/**/*.{h,m}"
+  s.source_files = "ios/*.{h,m}"
   s.platform = :ios, "9.0"
 
   s.dependency "React"
