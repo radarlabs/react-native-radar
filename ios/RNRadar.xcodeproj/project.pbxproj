@@ -171,12 +171,12 @@
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNRadar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNRadar.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		46256DBC21E01B6F00E10B7F /* RNRadarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNRadarTests.m; sourceTree = "<group>"; };
-		466EF48A21DFC28700ED0E09 /* RNRadarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNRadarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		466EF48C21DFC28700ED0E09 /* RNRadarUtilsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNRadarUtilsTests.m; sourceTree = "<group>"; };
 		466EF48E21DFC28700ED0E09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		466EF49621DFC34600ED0E09 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		466EF4CA21DFCB8F00ED0E09 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = Carthage/Build/iOS/OCMock.framework; sourceTree = "<group>"; };
 		466EF4CE21DFCF4500ED0E09 /* RadarSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RadarSDK.framework; path = Carthage/Build/iOS/RadarSDK.framework; sourceTree = "<group>"; };
+		467AFDBD2209D3E1006E2D87 /* RNRadarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNRadarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* RNRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNRadar.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNRadar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNRadar.m; sourceTree = "<group>"; };
 		DD475C161E7F3277001275E5 /* RNRadarUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNRadarUtils.h; sourceTree = "<group>"; };
@@ -264,8 +264,8 @@
 				DD475C171E7F3277001275E5 /* RNRadarUtils.m */,
 				466EF48B21DFC28700ED0E09 /* RNRadarTests */,
 				134814211AA4EA7D00B7C361 /* Products */,
-				466EF48A21DFC28700ED0E09 /* RNRadarTests.xctest */,
 				466EF49521DFC34600ED0E09 /* Frameworks */,
+				467AFDBD2209D3E1006E2D87 /* RNRadarTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -289,7 +289,7 @@
 			);
 			name = RNRadarTests;
 			productName = RNRadarTests;
-			productReference = 466EF48A21DFC28700ED0E09 /* RNRadarTests.xctest */;
+			productReference = 467AFDBD2209D3E1006E2D87 /* RNRadarTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		58B511DA1A9E6C8500147676 /* RNRadar */ = {
