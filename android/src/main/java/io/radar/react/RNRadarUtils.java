@@ -1,6 +1,7 @@
 package io.radar.react;
 
 import android.location.Location;
+import io.radar.sdk.Radar.RadarTrackingPriority;
 import java.util.Iterator;
 import org.json.JSONObject;
 
@@ -356,6 +357,16 @@ class RNRadarUtils {
                         break;
                     case "replayOff":
                         options.offline(RadarTrackingOffline.REPLAY_OFF);
+                        break;
+                }
+            }
+            if (optionsMap.hasKey("priority")) {
+                switch (optionsMap.getString("priority")) {
+                    case "efficiency":
+                        options.priority(RadarTrackingPriority.EFFICIENCY);
+                        break;
+                    case "responsiveness":
+                        options.priority(RadarTrackingPriority.RESPONSIVENESS);
                         break;
                 }
             }

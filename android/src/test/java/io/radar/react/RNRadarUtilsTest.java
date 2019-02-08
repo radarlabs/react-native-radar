@@ -11,6 +11,7 @@ import com.facebook.react.bridge.WritableMap;
 import io.radar.sdk.Radar.RadarPlacesProvider;
 import io.radar.sdk.Radar.RadarStatus;
 import io.radar.sdk.Radar.RadarTrackingOffline;
+import io.radar.sdk.Radar.RadarTrackingPriority;
 import io.radar.sdk.Radar.RadarTrackingSync;
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.model.RadarEvent;
@@ -204,11 +205,25 @@ public class RNRadarUtilsTest {
     WritableMap optionsMap = new JavaOnlyMap();
     optionsMap.putString("sync", "all");
     optionsMap.putString("offline", "replayOff");
+    optionsMap.putString("priority", "efficiency");
     optionsMap.putString("invalid", "shouldBeIgnored");
 
     RadarTrackingOptions options = RNRadarUtils.optionsForMap(optionsMap);
 
     assertEquals(RadarTrackingSync.ALL, options.getSync());
     assertEquals(RadarTrackingOffline.REPLAY_OFF, options.getOffline());
+    assertEquals(RadarTrackingPriority.EFFICIENCY, options.getPriority());
+  }
+
+  @Test
+  public void defaultOptionsForMap() {
+    WritableMap optionsMap = new JavaOnlyMap();
+    optionsMap.putString("invalid", "shouldBeIgnored");
+
+    RadarTrackingOptions options = RNRadarUtils.optionsForMap(optionsMap);
+
+    assertEquals(RadarTrackingSync.POSSIBLE_STATE_CHANGES, options.getSync());
+    assertEquals(RadarTrackingOffline.REPLAY_STOPPED, options.getOffline());
+    assertEquals(RadarTrackingPriority.RESPONSIVENESS, options.getPriority());
   }
 }
