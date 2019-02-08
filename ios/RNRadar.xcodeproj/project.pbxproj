@@ -694,6 +694,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"${SRCROOT}/../../../ios/**",
 					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
@@ -723,6 +724,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"${SRCROOT}/../../../ios/**",
 					"${SRCROOT}/../../../ios/Pods/RadarSDK/**",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
