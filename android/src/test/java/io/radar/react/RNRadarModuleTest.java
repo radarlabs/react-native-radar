@@ -23,6 +23,8 @@ import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarGeofence;
 import io.radar.sdk.model.RadarUser;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -101,6 +103,19 @@ public class RNRadarModuleTest {
 
     verifyStatic(Radar.class);
     Radar.setDescription(description);
+  }
+
+  @Test
+  public void setMetadata() throws JSONException {
+    ReadableMap metadataMap = new JavaOnlyMap();
+    JSONObject metadata = new JSONObject("{test:123}");
+    when(RNRadarUtils.jsonObjectForMap(metadataMap)).thenReturn(metadata);
+
+    System.err.println(metadata.toString());
+    module.setMetadata(metadataMap);
+
+    verifyStatic(Radar.class);
+    Radar.setMetadata(metadata);
   }
 
   @Test

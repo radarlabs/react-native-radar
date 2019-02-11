@@ -17,6 +17,7 @@ import io.radar.sdk.Radar;
 import io.radar.sdk.Radar.RadarCallback;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarUser;
+import org.json.JSONException;
 
 public class RNRadarModule extends ReactContextBaseJavaModule {
 
@@ -37,6 +38,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setDescription(String description) {
         Radar.setDescription(description);
+    }
+
+    @ReactMethod
+    public void setMetadata(ReadableMap metadataMap) throws JSONException {
+        Radar.setMetadata(RNRadarUtils.jsonObjectForMap(metadataMap));
     }
 
     @ReactMethod
