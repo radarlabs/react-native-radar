@@ -220,7 +220,7 @@ For most users, background tracking with the native iOS and Android SDKs uses 1-
 
 Because React Native loads and parses your JavaScript bundle on each app launch, and because background tracking may launch the app in the background, background tracking with the React Native module can increase battery usage.
 
-On iOS, the app loads and parses the JavaScript bundle when the app is launched. If you do not want to receive events in JavaScript and you want to disable this, check `launchOptions` for the `UIApplicationLaunchOptionsLocationKey` to conditionally parse and load the JavaScript bundle. Learn more [here](https://developer.apple.com/documentation/uikit/uiapplicationlaunchoptionslocationkey).
+On iOS, the app loads and parses the JavaScript bundle when the app is launched. If you do not want to receive events in JavaScript and you want to disable this in the background, check `launchOptions` for the `UIApplicationLaunchOptionsLocationKey` to conditionally parse and load the JavaScript bundle. Learn more about this key [here](https://developer.apple.com/documentation/uikit/uiapplicationlaunchoptionslocationkey).
 
 On Android, a receiver in the React Native module parses the JavaScript bundle when the app is launched in the background. If you do not want to receive events in JavaScript and you want to disable this, add an override to your manifest:
 
