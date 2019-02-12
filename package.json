@@ -13,10 +13,10 @@
     "react-native-radar.podspec"
   ],
   "scripts": {
-    "testJs": "jest ./test/*.test.js",
-    "testAndroid": "./android/gradlew test -p android",
-    "testIOS": "xcodebuild test -project ios/RNRadar.xcodeproj -scheme RNRadarTests -destination 'platform=iOS Simulator,name=iPhone 8'",
-    "testAll": "run-p testJs testAndroid testIOS"
+    "test-js": "jest ./test/*.test.js",
+    "test-android": "./android/gradlew test -p android",
+    "test-ios": "xcodebuild test -project ios/RNRadar.xcodeproj -scheme RNRadarTests -destination 'platform=iOS Simulator,name=iPhone 8'",
+    "test-all": "run-p test-js test-android test-ios"
   },
   "jest": {
     "preset": "react-native",
