@@ -86,7 +86,17 @@ Radar.setUserId(userId);
 
 where `userId` is a stable unique ID string for the user.
 
-To set an optional description for the user, displayed in the dashboard, call:
+Do not send any PII, like names, email addresses, or publicly available IDs, for `userId`. See [privacy best practices](https://help.radar.io/privacy/what-are-privacy-best-practices-for-radar) for more information.
+
+To set an optional dictionary of custom metadata for the user, call:
+
+```javascript
+Radar.setMetadata(metadata);
+```
+
+where `metadata` is a JSON object with up to 16 keys and values of type string, boolean, or number.
+
+Finally, to set an optional description for the user, displayed in the dashboard, call:
 
 ```javascript
 Radar.setDescription(description);
@@ -162,6 +172,7 @@ Optionally, you can configure advanced tracking options. See the [iOS background
 
 ```javascript
 Radar.startTracking({
+  priority: 'responsiveness', // // use 'efficiency' to avoid Android vitals bad behavior thresholds (ignored on iOS)
   sync: 'possibleStateChanges', // use 'all' to sync all location updates ('possibleStateChanges' recommended)
   offline: 'replayStopped' // use 'replayOff' to disable offline replay ('replayStopped' recommended)
 });
@@ -203,6 +214,24 @@ Radar.off('location');
 Radar.off('error');
 ```
 
+### Battery usage
+
+For most users, background tracking with the native iOS and Android SDKs uses 1-2% battery per day. Learn more in the in the [SDK documentation](https://radar.io/documentation/sdk).
+
+Because React Native loads and parses your JavaScript bundle on each app launch, and because background tracking may launch the app in the background, background tracking with the React Native module can increase battery usage.
+
+On iOS, the app loads and parses the JavaScript bundle when the app is launched. If you do not want to receive events in JavaScript and you want to disable this, check `launchOptions` for the `UIApplicationLaunchOptionsLocationKey` to conditionally parse and load the JavaScript bundle. Learn more [here](https://developer.apple.com/documentation/uikit/uiapplicationlaunchoptionslocationkey).
+
+On Android, a receiver in the React Native module parses the JavaScript bundle when the app is launched in the background. If you do not want to receive events in JavaScript and you want to disable this, add an override to your manifest:
+
+```xml
+<receiver
+  tools:replace="android:enabled"
+  android:name="io.radar.react.RNRadarReceiver"
+  android:enabled="false"
+  android:exported="false" />
+```
+
 ### Manual tracking
 
 You can manually update the user's location by calling:
@@ -220,7 +249,3 @@ Radar.updateLocation(location).then((result) => {
   // optionally, do something with err
 });
 ```
-
-## Support
-
-Have questions? We're here to help! Email us at [support@radar.io](mailto:support@radar.io).
