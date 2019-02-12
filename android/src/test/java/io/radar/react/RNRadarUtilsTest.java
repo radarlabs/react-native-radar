@@ -11,6 +11,7 @@ import com.facebook.react.bridge.WritableMap;
 import io.radar.sdk.Radar.RadarPlacesProvider;
 import io.radar.sdk.Radar.RadarStatus;
 import io.radar.sdk.Radar.RadarTrackingOffline;
+import io.radar.sdk.Radar.RadarTrackingPriority;
 import io.radar.sdk.Radar.RadarTrackingSync;
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.model.RadarEvent;
@@ -22,6 +23,8 @@ import io.radar.sdk.model.RadarUser;
 import io.radar.sdk.model.RadarUserInsightsLocation.RadarUserInsightsLocationConfidence;
 import io.radar.sdk.model.RadarUserInsightsLocation.RadarUserInsightsLocationType;
 import java.util.Date;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,8 +35,10 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -204,11 +209,43 @@ public class RNRadarUtilsTest {
     WritableMap optionsMap = new JavaOnlyMap();
     optionsMap.putString("sync", "all");
     optionsMap.putString("offline", "replayOff");
+    optionsMap.putString("priority", "efficiency");
     optionsMap.putString("invalid", "shouldBeIgnored");
 
     RadarTrackingOptions options = RNRadarUtils.optionsForMap(optionsMap);
 
     assertEquals(RadarTrackingSync.ALL, options.getSync());
     assertEquals(RadarTrackingOffline.REPLAY_OFF, options.getOffline());
+    assertEquals(RadarTrackingPriority.EFFICIENCY, options.getPriority());
+  }
+
+  @Test
+  public void defaultOptionsForMap() {
+    WritableMap optionsMap = new JavaOnlyMap();
+    optionsMap.putString("invalid", "shouldBeIgnored");
+
+    RadarTrackingOptions options = RNRadarUtils.optionsForMap(optionsMap);
+
+    assertEquals(RadarTrackingSync.POSSIBLE_STATE_CHANGES, options.getSync());
+    assertEquals(RadarTrackingOffline.REPLAY_STOPPED, options.getOffline());
+    assertEquals(RadarTrackingPriority.RESPONSIVENESS, options.getPriority());
+  }
+
+  @Test
+  public void jsonObjectForMap() throws JSONException {
+    WritableMap optionsMap = new JavaOnlyMap();
+    optionsMap.putString("stringKey", "some string");
+    optionsMap.putInt("intKey", 123);
+    optionsMap.putDouble("doubleKey", 1.23);
+    optionsMap.putBoolean("boolKey", true);
+    optionsMap.putMap("otherTypeKey", new JavaOnlyMap());
+
+    JSONObject obj = RNRadarUtils.jsonObjectForMap(optionsMap);
+
+    assertEquals("some string", obj.getString("stringKey"));
+    assertEquals(123, obj.getInt("intKey"));
+    assertEquals(1.23, obj.getDouble("doubleKey"), 0.01);
+    assertTrue(obj.getBoolean("boolKey"));
+    assertFalse(obj.has("otherTypeKey"));
   }
 }

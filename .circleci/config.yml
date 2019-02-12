@@ -23,7 +23,7 @@ jobs:
           name: jest tests
           command: |
             mkdir -p test-results/jest
-            npm run testJs
+            npm run test-js
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
@@ -48,7 +48,7 @@ jobs:
       - attach_workspace:
           at: ~/react-native-radar
       
-      - run: npm run testAndroid
+      - run: npm run test-android
 
       - run:
           name: Save test results
@@ -104,7 +104,7 @@ jobs:
           name: Run iOS tests
           command: |
             mkdir -p test-results/ios
-            npm run testIOS | xcpretty -r junit --output test-results/ios/junit.xml
+            npm run test-ios | xcpretty -r junit --output test-results/ios/junit.xml
 
       - store_test_results:
           path: test-results

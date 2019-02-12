@@ -59,6 +59,21 @@
     OCMVerify([radar setDescription:description]);
 }
 
+- (void)testSetMetadata {
+    OCMStub([radar setMetadata:[OCMArg any]]).andDo(nil);
+    
+    NSDictionary *metadata = @{
+                               @"stringKey":@"some string",
+                               @"intKey": @(123),
+                               @"doubleKey": @1.23,
+                               @"boolKey": @YES,
+                               @"unsupportedKey": @{}
+                               };
+    [module setMetadata:metadata];
+    
+    OCMVerify([radar setMetadata:metadata]);
+}
+
 - (void)testSetPlacesProvider {
     NSString *providerStr = @"facebook";
     RadarPlacesProvider provider = RadarPlacesProviderFacebook;
