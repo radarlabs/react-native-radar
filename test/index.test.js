@@ -11,6 +11,7 @@ jest.mock('NativeModules', () => (
     RNRadar: {
       setUserId: jest.fn(),
       setDescription: jest.fn(),
+      setMetadata: jest.fn(),
       setPlacesProvider: jest.fn(),
       getPermissionsStatus: jest.fn(),
       requestPermissions: jest.fn(),
@@ -43,6 +44,19 @@ describe('Calls native implementation', () => {
     expect(mockNative.setDescription).toHaveBeenCalledTimes(1);
     expect(mockNative.setDescription).toBeCalledWith(description);
   });
+
+  test('setMetadata', () => {
+    const metadata = {
+      'key': 'some string',
+      'bool': true,
+      'int': 123,
+      'double': 1.23
+    }
+    Radar.setMetadata(metadata)
+
+    expect(mockNative.setMetadata).toHaveBeenCalledTimes(1)
+    expect(mockNative.setMetadata).toBeCalledWith(metadata)
+  })
 
   test('setPlacesProvider', () => {
     const provider = 'facebook';

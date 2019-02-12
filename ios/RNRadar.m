@@ -68,6 +68,10 @@ RCT_EXPORT_METHOD(setDescription:(NSString *)description) {
     [Radar setDescription:description];
 }
 
+RCT_EXPORT_METHOD(setMetadata:(NSDictionary *)metadataDict) {
+    [Radar setMetadata:metadataDict];
+}
+
 RCT_EXPORT_METHOD(setPlacesProvider:(NSString *)providerStr) {
     [Radar setPlacesProvider:[RNRadarUtils placesProviderForString:providerStr]];
 }

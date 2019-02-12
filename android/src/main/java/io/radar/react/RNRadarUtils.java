@@ -1,7 +1,11 @@
 package io.radar.react;
 
 import android.location.Location;
+import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.ReadableType;
+import io.radar.sdk.Radar.RadarTrackingPriority;
 import java.util.Iterator;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.facebook.react.bridge.Arguments;
@@ -104,6 +108,27 @@ class RNRadarUtils {
             return Radar.RadarPlacesProvider.FACEBOOK;
         }
         return Radar.RadarPlacesProvider.NONE;
+    }
+
+    static JSONObject jsonObjectForMap(ReadableMap map) throws JSONException {
+        JSONObject obj = new JSONObject();
+        ReadableMapKeySetIterator keys = map.keySetIterator();
+        while (keys.hasNextKey()) {
+            String key = keys.nextKey();
+            ReadableType type = map.getType(key);
+            switch (type) {
+                case Number:
+                    obj.put(key, map.getDouble(key));
+                    break;
+                case String:
+                    obj.put(key, map.getString(key));
+                    break;
+                case Boolean:
+                    obj.put(key, map.getBoolean(key));
+                    break;
+            }
+        }
+        return obj;
     }
 
     private static WritableMap mapForJSONObject(JSONObject obj) {
@@ -356,6 +381,16 @@ class RNRadarUtils {
                         break;
                     case "replayOff":
                         options.offline(RadarTrackingOffline.REPLAY_OFF);
+                        break;
+                }
+            }
+            if (optionsMap.hasKey("priority")) {
+                switch (optionsMap.getString("priority")) {
+                    case "efficiency":
+                        options.priority(RadarTrackingPriority.EFFICIENCY);
+                        break;
+                    case "responsiveness":
+                        options.priority(RadarTrackingPriority.RESPONSIVENESS);
                         break;
                 }
             }
