@@ -21,7 +21,10 @@
   "jest": {
     "preset": "react-native",
     "clearMocks": true,
-    "reporters": ["default", "jest-junit"]
+    "reporters": [
+      "default",
+      "jest-junit"
+    ]
   },
   "dependencies": {},
   "peerDependencies": {

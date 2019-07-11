@@ -184,7 +184,7 @@ public class RNRadarModuleTest {
     final RadarEvent[] events = new RadarEvent[3];
     final RadarUser user =
         new RadarUser("someId123", "userId321", "deviceId231", "description - 123", null,
-            mock(Location.class), new RadarGeofence[]{}, null, null, true, true);
+            mock(Location.class), new RadarGeofence[]{}, null, null, true, true, null, null, null, null, null);
     doAnswer(new Answer<Void>() {
       @Override
       public Void answer(InvocationOnMock invocation) {

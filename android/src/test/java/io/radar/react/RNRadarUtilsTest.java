@@ -157,7 +157,7 @@ public class RNRadarUtilsTest {
   public void mapForUser() {
     RadarUser user =
         new RadarUser("someId123", "userId321", "deviceId231", "description - 123", null,
-            mock(Location.class), new RadarGeofence[]{}, null, null, true, true);
+            mock(Location.class), new RadarGeofence[]{}, null, null, true, true, null, null, null, null, null);
 
     ReadableMap userMap = RNRadarUtils.mapForUser(user);
 
@@ -176,7 +176,7 @@ public class RNRadarUtilsTest {
     for (int i = 0; i < events.length; i++) {
       events[i] =
           new RadarEvent("" + i, new Date(), new Date(), true, RadarEventType.USER_ENTERED_HOME,
-              null, null, null, null, RadarEventVerification.UNVERIFY, RadarEventConfidence.HIGH,
+              null, null, null, null, null, RadarEventVerification.UNVERIFY, RadarEventConfidence.HIGH,
               1000f, mock(Location.class));
     }
 
