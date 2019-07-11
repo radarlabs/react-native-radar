@@ -61,6 +61,18 @@ class RNRadarUtils {
                 return "user.exited_place";
             case USER_NEARBY_PLACE_CHAIN:
                 return "user.nearby_place_chain";
+            case USER_ENTERED_REGION_STATE:
+                return "user.entered_region_state";
+            case USER_EXITED_REGION_STATE:
+                return "user.exited_region_state";
+            case USER_ENTERED_REGION_COUNTRY:
+                return "user.entered_region_country";
+            case USER_EXITED_REGION_COUNTRY:
+                return "user.exited_region_country";
+            case USER_ENTERED_REGION_DMA:
+                return "user.entered_region_dma";
+            case USER_EXITED_REGION_DMA:
+                return "user.exited_region_dma";
             default:
                 return null;
         }
