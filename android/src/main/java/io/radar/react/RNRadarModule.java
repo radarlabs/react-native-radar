@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import com.facebook.react.bridge.Arguments;
@@ -52,16 +53,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getPermissionsStatus(Promise promise) {
+        boolean backgroundPermissionAvailable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
         promise.resolve(RNRadarUtils.stringForPermissionsStatus(
-            ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED,
+            !backgroundPermissionAvailable || ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
         ));
     }
 
     @ReactMethod
     public void requestPermissions(boolean background) {
         Activity activity = getCurrentActivity();
+        String[] permissions = new String[] { Manifest.permission.ACCESS_FINE_LOCATION };
+        if (background) {
+            permissions = new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION };
+        }
         if (activity != null) {
-            ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 0);
+            ActivityCompat.requestPermissions(activity, permissions, 0);
         }
     }
 

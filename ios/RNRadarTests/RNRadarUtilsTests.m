@@ -11,10 +11,10 @@
 
 - (void)testStringForPermissionsStatus {
     NSString *granted = [RNRadarUtils stringForPermissionsStatus:kCLAuthorizationStatusAuthorizedAlways];
-    XCTAssertEqual(@"GRANTED", granted);
+    XCTAssertEqual(@"GRANTED_BACKGROUND", granted);
     
     granted = [RNRadarUtils stringForPermissionsStatus:kCLAuthorizationStatusAuthorizedWhenInUse];
-    XCTAssertEqual(@"GRANTED", granted);
+    XCTAssertEqual(@"GRANTED_FOREGROUND", granted);
     
     NSString *denied = [RNRadarUtils stringForPermissionsStatus:kCLAuthorizationStatusDenied];
     XCTAssertEqual(@"DENIED", denied);

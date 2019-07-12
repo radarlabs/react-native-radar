@@ -135,7 +135,7 @@ public class RNRadarModuleTest {
     when(ContextCompat.checkSelfPermission(any(Context.class), anyString()))
         .thenReturn(PackageManager.PERMISSION_GRANTED);
     String statusString = "granted";
-    when(RNRadarUtils.stringForPermissionsStatus(anyBoolean())).thenReturn(statusString);
+    when(RNRadarUtils.stringForPermissionsStatus(anyBoolean(), anyBoolean())).thenReturn(statusString);
 
     Promise promise = mock(Promise.class);
     module.getPermissionsStatus(promise);
@@ -152,7 +152,7 @@ public class RNRadarModuleTest {
     PowerMockito.verifyStatic(ActivityCompat.class);
     ActivityCompat.requestPermissions(
         any(Activity.class),
-        eq(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}),
+        eq(new String[]{ Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION }),
         anyInt()
     );
   }

@@ -120,7 +120,8 @@ Radar.getPermissionsStatus().then((status) => {
 
 `status` will be a string, one of:
 
-- `GRANTED`
+- `GRANTED_BACKGROUND`
+- `GRANTED_FOREGROUND`
 - `DENIED`
 - `UNKNOWN`
 
@@ -130,7 +131,7 @@ To request location permissions for the app, call:
 Radar.requestPermissions(background);
 ```
 
-where `background` is a boolean indicating whether to request background location permissions or foreground location permissions. On Android, `background` will be ignored.
+where `background` is a boolean indicating whether to request background location permissions or foreground location permissions. On Android OS versions prior to `Q`, `background` will be ignored.
 
 ### Foreground tracking
 

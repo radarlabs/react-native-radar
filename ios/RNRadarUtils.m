@@ -10,9 +10,9 @@
         case kCLAuthorizationStatusRestricted:
             return @"DENIED";
         case kCLAuthorizationStatusAuthorizedAlways:
-            return @"GRANTED";
+            return @"GRANTED_BACKGROUND";
         case kCLAuthorizationStatusAuthorizedWhenInUse:
-            return @"GRANTED";
+            return @"GRANTED_FOREGROUND";
         default:
             return @"UNKNOWN";
     }

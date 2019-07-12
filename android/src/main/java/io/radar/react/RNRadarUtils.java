@@ -26,9 +26,11 @@ import io.radar.sdk.model.RadarUserInsightsState;
 
 class RNRadarUtils {
 
-    static String stringForPermissionsStatus(boolean hasGrantedPermissions) {
-        if (hasGrantedPermissions) {
-            return "GRANTED";
+    static String stringForPermissionsStatus(boolean hasFineLocation, boolean hasBackgroundLocation) {
+        if (hasBackgroundLocation && hasFineLocation) {
+            return "GRANTED_BACKGROUND";
+        } else if (hasFineLocation) {
+            return "GRANTED_FOREGROUND";
         }
         return "DENIED";
     }

@@ -65,11 +65,17 @@ public class RNRadarUtilsTest {
 
   @Test
   public void stringForPermissionStatus() {
-    final String granted = RNRadarUtils.stringForPermissionsStatus(true);
-    assertEquals("GRANTED", granted);
+    final String grantedBg = RNRadarUtils.stringForPermissionsStatus(true, true);
+    assertEquals("GRANTED_BACKGROUND", grantedBg);
 
-    final String denied = RNRadarUtils.stringForPermissionsStatus(false);
+    final String grantedFg = RNRadarUtils.stringForPermissionsStatus(true, false);
+    assertEquals("GRANTED_FOREGROUND", grantedFg);
+
+    final String denied = RNRadarUtils.stringForPermissionsStatus(false, false);
     assertEquals("DENIED", denied);
+
+    final String denied2 = RNRadarUtils.stringForPermissionsStatus(false, true);
+    assertEquals("DENIED", denied2);
   }
 
   @Test
