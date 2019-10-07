@@ -334,6 +334,14 @@
                 options.offline = RadarTrackingOfflineReplayOff;
             }
         }
+        if (optionsDict[@"priority"]) {
+            NSString *offline = [RCTConvert NSString:optionsDict[@"priority"]];
+            if ([offline isEqualToString:@"efficiency"]) {
+                options.priority = RadarTrackingPriorityEfficiency;
+            } else if ([offline isEqualToString:@"responsiveness"]) {
+                options.priority = RadarTrackingPriorityResponsiveness;
+            }
+        }
     }
     return options;
 }
