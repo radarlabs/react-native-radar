@@ -73,12 +73,13 @@
 }
 
 - (void)testOptionsForDictionary {
-    NSDictionary *optionsDict = @{@"sync": @"all", @"offline": @"replayOff", @"invalid": @"ingore me"};
+    NSDictionary *optionsDict = @{@"sync": @"all", @"offline": @"replayOff", @"invalid": @"ingore me", @"priority":"responsiveness"};
     
     RadarTrackingOptions *options = [RNRadarUtils optionsForDictionary:optionsDict];
     
     XCTAssertEqual(RadarTrackingSyncAll, options.sync);
     XCTAssertEqual(RadarTrackingOfflineReplayOff, options.offline);
+    XCTAssertEqual(RadarTrackingPriorityResponsiveness, options.responsiveness);
 }
 
 @end

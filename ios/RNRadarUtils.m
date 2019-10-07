@@ -335,10 +335,10 @@
             }
         }
         if (optionsDict[@"priority"]) {
-            NSString *offline = [RCTConvert NSString:optionsDict[@"priority"]];
-            if ([offline isEqualToString:@"efficiency"]) {
+            NSString *priority = [RCTConvert NSString:optionsDict[@"priority"]];
+            if ([priority isEqualToString:@"efficiency"]) {
                 options.priority = RadarTrackingPriorityEfficiency;
-            } else if ([offline isEqualToString:@"responsiveness"]) {
+            } else if ([priority isEqualToString:@"responsiveness"]) {
                 options.priority = RadarTrackingPriorityResponsiveness;
             }
         }
