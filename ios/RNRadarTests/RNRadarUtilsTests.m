@@ -73,7 +73,7 @@
 }
 
 - (void)testOptionsForDictionary {
-    NSDictionary *optionsDict = @{@"sync": @"all", @"offline": @"replayOff", @"invalid": @"ingore me", @"priority":@"responsiveness"};
+    NSDictionary *optionsDict = @{@"sync": @"all", @"offline": @"replayOff", @"invalid": @"ingore me", @"priority": @"responsiveness"};
     
     RadarTrackingOptions *options = [RNRadarUtils optionsForDictionary:optionsDict];
     
