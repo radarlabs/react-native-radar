@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the location context platform",
   "homepage": "https://radar.io",
   "license": "Apache-2.0",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "main": "js/index.js",
   "files": [
     "android",
@@ -15,7 +15,7 @@
   "scripts": {
     "test-js": "jest ./test/*.test.js",
     "test-android": "./android/gradlew test -p android",
-    "test-ios": "xcodebuild test -project ios/RNRadar.xcodeproj -scheme RNRadarTests -destination 'platform=iOS Simulator,name=iPhone 8'",
+    "test-ios": "xcodebuild test -project ios/RNRadar.xcodeproj -scheme RNRadarTests -destination 'platform=iOS Simulator,name=iPhone 11'",
     "test-all": "run-p test-js test-android test-ios"
   },
   "jest": {

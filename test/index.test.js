@@ -84,6 +84,7 @@ describe('Calls native implementation', () => {
     const options = {
       sync: 'all',
       offline: 'replayOff',
+      priority: 'efficiency',
     };
     Radar.startTracking(options);
 

@@ -56,24 +56,6 @@ First, import the module:
 import Radar from 'react-native-radar';
 ```
 
-### Enable Places
-
-If you are using Places, you must set Facebook as your place data provider.
-
-To set Facebook as your place data provider, call:
-
-```javascript
-Radar.setPlacesProvider('facebook');
-```
-
-To disable Places later, call:
-
-```javascript
-Radar.setPlacesProvider('none');
-```
-
-Learn more about [Places](https://radar.io/documentation/places).
-
 ### Identify user
 
 Until you identify the user, Radar will automatically identify the user by device ID.
@@ -172,7 +154,7 @@ Optionally, you can configure advanced tracking options. See the [iOS background
 
 ```javascript
 Radar.startTracking({
-  priority: 'responsiveness', // // use 'efficiency' to avoid Android vitals bad behavior thresholds (ignored on iOS)
+  priority: 'responsiveness', // // use 'efficiency' to avoid Android vitals bad behavior thresholds
   sync: 'possibleStateChanges', // use 'all' to sync all location updates ('possibleStateChanges' recommended)
   offline: 'replayStopped' // use 'replayOff' to disable offline replay ('replayStopped' recommended)
 });
