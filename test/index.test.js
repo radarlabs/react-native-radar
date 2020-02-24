@@ -6,151 +6,143 @@ jest.mock('NativeEventEmitter', () => jest.fn(() => ({
   removeListener: jest.fn(),
   removeAllListeners: jest.fn(),
 })));
-jest.mock('NativeModules', () => (
-  {
-    RNRadar: {
-      setUserId: jest.fn(),
-      setDescription: jest.fn(),
-      setMetadata: jest.fn(),
-      setPlacesProvider: jest.fn(),
-      getPermissionsStatus: jest.fn(),
-      requestPermissions: jest.fn(),
-      startTracking: jest.fn(),
-      stopTracking: jest.fn(),
-      trackOnce: jest.fn(),
-      updateLocation: jest.fn(),
-      acceptEvent: jest.fn(),
-      rejectEvent: jest.fn(),
-    },
-  }
-));
 
-const mockNative = NativeModules.RNRadar;
+jest.mock('NativeModules', () => ({
+  RNRadar: {
+    setUserId: jest.fn(),
+    setDescription: jest.fn(),
+    setMetadata: jest.fn(),
+    getPermissionsStatus: jest.fn(),
+    requestPermissions: jest.fn(),
+    startTracking: jest.fn(),
+    stopTracking: jest.fn(),
+    trackOnce: jest.fn(),
+    acceptEvent: jest.fn(),
+    rejectEvent: jest.fn(),
+  },
+}));
+
+const mockModule = NativeModules.RNRadar;
 const mockEmitter = NativeEventEmitter.mock.results[0].value;
 
-describe('Calls native implementation', () => {
+describe('calls native implementation', () => {
   test('setUserId', () => {
-    const userId = 'some-user-id123';
+    const userId = 'userId';
     Radar.setUserId(userId);
 
-    expect(mockNative.setUserId).toHaveBeenCalledTimes(1);
-    expect(mockNative.setUserId).toBeCalledWith(userId);
+    expect(mockModule.setUserId).toHaveBeenCalledTimes(1);
+    expect(mockModule.setUserId).toBeCalledWith(userId);
   });
 
   test('setDescription', () => {
     const description = 'some user description';
     Radar.setDescription(description);
 
-    expect(mockNative.setDescription).toHaveBeenCalledTimes(1);
-    expect(mockNative.setDescription).toBeCalledWith(description);
+    expect(mockModule.setDescription).toHaveBeenCalledTimes(1);
+    expect(mockModule.setDescription).toBeCalledWith(description);
   });
 
   test('setMetadata', () => {
     const metadata = {
-      'key': 'some string',
-      'bool': true,
-      'int': 123,
-      'double': 1.23
-    }
+      'foo': 'bar',
+      'baz': true,
+      'qux': 1,
+    };
     Radar.setMetadata(metadata)
 
-    expect(mockNative.setMetadata).toHaveBeenCalledTimes(1)
-    expect(mockNative.setMetadata).toBeCalledWith(metadata)
-  })
-
-  test('setPlacesProvider', () => {
-    const provider = 'facebook';
-    Radar.setPlacesProvider(provider);
-
-    expect(mockNative.setPlacesProvider).toHaveBeenCalledTimes(1);
-    expect(mockNative.setPlacesProvider).toBeCalledWith(provider);
+    expect(mockModule.setMetadata).toHaveBeenCalledTimes(1)
+    expect(mockModule.setMetadata).toBeCalledWith(metadata)
   });
 
   test('getPermissionsStatus', () => {
     Radar.getPermissionsStatus();
 
-    expect(mockNative.getPermissionsStatus).toHaveBeenCalledTimes(1);
+    expect(mockModule.getPermissionsStatus).toHaveBeenCalledTimes(1);
   });
 
   test('requestPermissions', () => {
     const background = true;
     Radar.requestPermissions(background);
 
-    expect(mockNative.requestPermissions).toHaveBeenCalledTimes(1);
-    expect(mockNative.requestPermissions).toBeCalledWith(background);
+    expect(mockModule.requestPermissions).toHaveBeenCalledTimes(1);
+    expect(mockModule.requestPermissions).toBeCalledWith(background);
   });
 
   test('startTracking', () => {
     const options = {
-      sync: 'all',
-      offline: 'replayOff',
-      priority: 'efficiency',
+      desiredStoppedUpdateInterval: 0,
+      desiredMovingUpdateInterval: 150,
+      desiredSyncInterval: 140,
+      desiredAccuracy: 'medium',
+      stopDuration: 140,
+      stopDistance: 70,
+      sync: 'stopsAndExits',
+      replay: 'stops',
+      showBlueBar: false,
+      useStoppedGeofence: true,
+      stoppedGeofenceRadius: 200,
+      useMovingGeofence: false,
+      movingGeofenceRadius: 0,
+      useVisits: true,
+      useSignificantLocationChanges: true,
     };
     Radar.startTracking(options);
 
-    expect(mockNative.startTracking).toHaveBeenCalledTimes(1);
-    expect(mockNative.startTracking).toBeCalledWith(options);
+    expect(mockModule.startTracking).toHaveBeenCalledTimes(1);
+    expect(mockModule.startTracking).toBeCalledWith(options);
   });
 
   test('stopTracking', () => {
     Radar.stopTracking();
 
-    expect(mockNative.stopTracking).toHaveBeenCalledTimes(1);
+    expect(mockModule.stopTracking).toHaveBeenCalledTimes(1);
   });
 
-  test('requestPetrackOncermissions', () => {
+  test('trackOnce', () => {
     Radar.trackOnce();
 
-    expect(mockNative.trackOnce).toHaveBeenCalledTimes(1);
+    expect(mockModule.trackOnce).toHaveBeenCalledTimes(1);
   });
 
-  test('updateLocation', () => {
+  test('trackOnceWithLocation', () => {
     const location = {
-      latitude: 10.0,
-      longitude: 11.0,
+      latitude: 40.783826,
+      longitude: -73.975363,
+      accuracy: 65,
     };
-    Radar.updateLocation(location);
+    Radar.trackOnce(location);
 
-    expect(mockNative.updateLocation).toHaveBeenCalledTimes(1);
-    expect(mockNative.updateLocation).toBeCalledWith(location);
+    expect(mockModule.trackOnce).toHaveBeenCalledTimes(1);
+    expect(mockModule.trackOnce).toBeCalledWith(location);
   });
 
   test('acceptEvent', () => {
-    const eventId = '123';
-    const verifiedPlaceId = 'placeId';
+    const eventId = 'eventId';
+    const verifiedPlaceId = 'verifiedPlaceId';
     Radar.acceptEvent(eventId, verifiedPlaceId);
 
-    expect(mockNative.acceptEvent).toHaveBeenCalledTimes(1);
-    expect(mockNative.acceptEvent).toBeCalledWith(eventId, verifiedPlaceId);
+    expect(mockModule.acceptEvent).toHaveBeenCalledTimes(1);
+    expect(mockModule.acceptEvent).toBeCalledWith(eventId, verifiedPlaceId);
   });
 
   test('rejectEvent', () => {
-    const eventId = '123';
+    const eventId = 'eventId';
     Radar.rejectEvent(eventId);
 
-    expect(mockNative.rejectEvent).toHaveBeenCalledTimes(1);
-    expect(mockNative.rejectEvent).toBeCalledWith(eventId);
+    expect(mockModule.rejectEvent).toHaveBeenCalledTimes(1);
+    expect(mockModule.rejectEvent).toBeCalledWith(eventId);
   });
 
   test('on', () => {
     const event = 'events';
-    const cb = function () {};
-    Radar.on(event, cb);
+    const callback = () => {};
+    Radar.on(event, callback);
 
     expect(mockEmitter.addListener).toHaveBeenCalledTimes(1);
-    expect(mockEmitter.addListener).toHaveBeenCalledWith(event, cb);
+    expect(mockEmitter.addListener).toHaveBeenCalledWith(event, callback);
   });
 
-  test('off - with callback', () => {
-    const event = 'locations';
-    const cb = function () {};
-    Radar.off(event, cb);
-
-    expect(mockEmitter.removeListener).toHaveBeenCalledTimes(1);
-    expect(mockEmitter.removeListener).toHaveBeenCalledWith(event, cb);
-  });
-
-  test('off - without callback', () => {
+  test('off', () => {
     const event = 'locations';
     Radar.off(event);
 

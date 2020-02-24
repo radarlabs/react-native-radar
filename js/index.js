@@ -18,10 +18,6 @@ const setMetadata = (metadata) => {
   NativeModules.RNRadar.setMetadata(metadata);
 };
 
-const setPlacesProvider = (provider) => {
-  NativeModules.RNRadar.setPlacesProvider(provider);
-};
-
 const getPermissionsStatus = () => (
   NativeModules.RNRadar.getPermissionsStatus()
 );
@@ -42,8 +38,12 @@ const trackOnce = () => (
   NativeModules.RNRadar.trackOnce()
 );
 
-const updateLocation = location => (
-  NativeModules.RNRadar.updateLocation(location)
+const trackOnce = location => (
+  if (location) {
+    NativeModules.RNRadar.trackOnce(location);
+  } else {
+    NativeModules.RNRadar.trackOnce();
+  }
 );
 
 const acceptEvent = (eventId, verifiedPlaceId) => {
@@ -70,13 +70,11 @@ const Radar = {
   setUserId,
   setDescription,
   setMetadata,
-  setPlacesProvider,
   getPermissionsStatus,
   requestPermissions,
   startTracking,
   stopTracking,
   trackOnce,
-  updateLocation,
   acceptEvent,
   rejectEvent,
   on,

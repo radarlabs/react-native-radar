@@ -4,8 +4,6 @@
 #import <React/RCTConvert.h>
 #import <React/RCTUtils.h>
 
-#import "RNRadarUtils.h"
-
 @implementation RNRadar {
     BOOL hasListeners;
     CLLocationManager *locationManager;
@@ -44,19 +42,25 @@ RCT_EXPORT_MODULE();
 
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser *)user {
     if (hasListeners) {
-        [self sendEventWithName:@"events" body:@{@"events": [RNRadarUtils arrayForEvents:events], @"user": [RNRadarUtils dictionaryForUser:user]}];
+        [self sendEventWithName:@"events" body:@{@"events": [RadarEvent arrayForEvents:events], @"user": [user dictionaryValue]}];
     }
 }
 
 - (void)didUpdateLocation:(CLLocation *)location user:(RadarUser *)user {
     if (hasListeners) {
-        [self sendEventWithName:@"location" body:@{@"location": [RNRadarUtils dictionaryForLocation:location], @"user": [RNRadarUtils dictionaryForUser:user]}];
+        [self sendEventWithName:@"location" body:@{@"location": [Radar dictionaryForLocation:location], @"user": [user dictionaryValue]}];
+    }
+}
+
+- (void)didUpdateClientLocation:(CLLocation *)location stopped:(BOOL)stopped source:(RadarLocationSource)source {
+    if (hasListeners) {
+        [self sendEventWithName:@"location" body:@{@"location": [Radar dictionaryForLocation:location], @"stopped": @(stopped), @"source": [Radar stringForSource:source]}];
     }
 }
 
 - (void)didFailWithStatus:(RadarStatus)status {
     if (hasListeners) {
-        [self sendEventWithName:@"error" body:[RNRadarUtils stringForStatus:status]];
+        [self sendEventWithName:@"error" body:[Radar stringForStatus:status]];
     }
 }
 
@@ -72,12 +76,22 @@ RCT_EXPORT_METHOD(setMetadata:(NSDictionary *)metadataDict) {
     [Radar setMetadata:metadataDict];
 }
 
-RCT_EXPORT_METHOD(setPlacesProvider:(NSString *)providerStr) {
-    [Radar setPlacesProvider:[RNRadarUtils placesProviderForString:providerStr]];
-}
-
 RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-    resolve([RNRadarUtils stringForPermissionsStatus:[CLLocationManager authorizationStatus]]);
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    NSString *statusStr;
+    switch (status) {
+        case kCLAuthorizationStatusDenied:
+            statusStr = @"DENIED";
+        case kCLAuthorizationStatusRestricted:
+            statusStr = @"DENIED";
+        case kCLAuthorizationStatusAuthorizedAlways:
+            statusStr = @"GRANTED_BACKGROUND";
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            statusStr = @"GRANTED_FOREGROUND";
+        default:
+            statusStr = @"DENIED";
+    }
+    resolve(statusStr);
 }
 
 RCT_EXPORT_METHOD(requestPermissions:(BOOL)background) {
@@ -89,7 +103,8 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background) {
 }
 
 RCT_EXPORT_METHOD(startTracking:(NSDictionary *)optionsDict) {
-    [Radar startTrackingWithOptions:[RNRadarUtils optionsForDictionary:optionsDict]];
+    RadarTrackingOptions *options = [RadarTrackingOptions optionsFromDictionary:optionsDict];
+    [Radar startTrackingWithOptions:options];
 }
 
 RCT_EXPORT_METHOD(stopTracking) {
@@ -102,53 +117,53 @@ RCT_REMAP_METHOD(trackOnce, trackOnceWithResolver:(RCTPromiseResolveBlock)resolv
     [Radar trackOnceWithCompletionHandler:^(RadarStatus status, CLLocation *location, NSArray<RadarEvent *> *events, RadarUser *user) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:[RNRadarUtils stringForStatus:status] forKey:@"status"];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
             if (location) {
-                [dict setObject:[RNRadarUtils dictionaryForLocation:location] forKey:@"location"];
+                [dict setObject:[Radar dictionaryForLocation:location] forKey:@"location"];
             }
             if (events) {
-                [dict setObject:[RNRadarUtils arrayForEvents:events] forKey:@"events"];
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
             }
             if (user) {
-                [dict setObject:[RNRadarUtils dictionaryForUser:user] forKey:@"user"];
+                [dict setObject:[user dictionaryValue] forKey:@"user"];
             }
             resolver(dict);
             resolver = nil;
             rejecter = nil;
         } else if (rejecter) {
-            rejecter([RNRadarUtils stringForStatus:status], [RNRadarUtils stringForStatus:status], nil);
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
             resolver = nil;
             rejecter = nil;
         }
     }];
 }
 
-RCT_EXPORT_METHOD(updateLocation:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     double latitude = [RCTConvert double:locationDict[@"latitude"]];
     double longitude = [RCTConvert double:locationDict[@"longitude"]];
     double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
-    NSDate *timestamp = [NSDate date];
+    NSDate *timestamp = ;
     CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
-    [Radar updateLocation:location withCompletionHandler:^(RadarStatus status, CLLocation *location, NSArray<RadarEvent *> *events, RadarUser *user) {
+    [Radar trackOnceWithLocation:location withCompletionHandler:^(RadarStatus status, CLLocation *location, NSArray<RadarEvent *> *events, RadarUser *user) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:[RNRadarUtils stringForStatus:status] forKey:@"status"];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
             if (location) {
-                [dict setObject:[RNRadarUtils dictionaryForLocation:location] forKey:@"location"];
+                [dict setObject:[Radar dictionaryForLocation:location] forKey:@"location"];
             }
             if (events) {
-                [dict setObject:[RNRadarUtils arrayForEvents:events] forKey:@"events"];
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
             }
             if (user) {
-                [dict setObject:[RNRadarUtils dictionaryForUser:user] forKey:@"user"];
+                [dict setObject:[user dictionaryValue] forKey:@"user"];
             }
             resolver(dict);
             resolver = nil;
             rejecter = nil;
         } else if (rejecter) {
-            rejecter([RNRadarUtils stringForStatus:status], [RNRadarUtils stringForStatus:status], nil);
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
             resolver = nil;
             rejecter = nil;
         }

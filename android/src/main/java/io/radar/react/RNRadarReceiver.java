@@ -62,8 +62,8 @@ public class RNRadarReceiver extends RadarReceiver {
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
-            map.putArray("events", RNRadarUtils.arrayForEvents(events));
-            map.putMap("user", RNRadarUtils.mapForUser(user));
+            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
 
             sendEvent("events", map);
         } catch (Exception e) {
@@ -78,10 +78,27 @@ public class RNRadarReceiver extends RadarReceiver {
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
-            map.putMap("location", RNRadarUtils.mapForLocation(location));
-            map.putMap("user", RNRadarUtils.mapForUser(user));
+            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
 
             sendEvent("location", map);
+        } catch (Exception e) {
+
+        }
+    }
+
+    @Override
+    public void onClientLocationUpdated(@NonNull Context context, bool stopped, @NonNull Radar.RadarLocationSource source) {
+        try {
+            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            reactNativeHost = reactApplication.getReactNativeHost();
+
+            WritableMap map = Arguments.createMap();
+            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+            map.putBoolean("stopped", stopped);
+            map.putString("source", source.toString());
+
+            sendEvent("clientLocation", map);
         } catch (Exception e) {
 
         }
@@ -93,7 +110,7 @@ public class RNRadarReceiver extends RadarReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("error", RNRadarUtils.stringForStatus(status));
+            sendEvent("error", status.toString());
         } catch (Exception e) {
 
         }

@@ -42,32 +42,44 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setMetadata(ReadableMap metadataMap) throws JSONException {
-        Radar.setMetadata(RNRadarUtils.jsonObjectForMap(metadataMap));
-    }
-
-    @ReactMethod
-    public void setPlacesProvider(String providerStr) {
-        Radar.setPlacesProvider(RNRadarUtils.placesProviderForString(providerStr));
+        Radar.setMetadata(RNRadarUtils.jsonForMap(metadataMap));
     }
 
     @ReactMethod
     public void getPermissionsStatus(Promise promise) {
-        promise.resolve(RNRadarUtils.stringForPermissionsStatus(
-            ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        ));
+        boolean foreground = ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (Build.VERSION.SDK_INT >= 29) {
+            if (foreground) {
+                boolean background = ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                return background ? "GRANTED_BACKGROUND" : "GRANTED_FOREGROUND";
+            } else {
+                return "DENIED";
+            }
+        } else {
+            return foreground ? "GRANTED_BACKGROUND" : "DENIED";
+        }
     }
 
     @ReactMethod
     public void requestPermissions(boolean background) {
         Activity activity = getCurrentActivity();
         if (activity != null) {
-            ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 0);
+            if (Build.VERSION.SDK_INT >= 23) {
+                int requestCode = 0;
+                if (Build.VERSION.SDK_INT >= 29) {
+                    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION }, requestCode)
+                } else {
+                    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, requestCode)
+                }
+            }
         }
     }
 
     @ReactMethod
     public void startTracking(ReadableMap optionsMap) {
-        Radar.startTracking(RNRadarUtils.optionsForMap(optionsMap));
+        JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+        RaarTrackingOptions options = RadarTrackingOptions.fromJson(optionsObj);
+        Radar.startTracking(options);
     }
 
     @ReactMethod
@@ -79,29 +91,33 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     public void trackOnce(final Promise promise) {
         Radar.trackOnce(new RadarCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
-                if (promise == null)
+            public void onComplete(@NonNull RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+                if (promise == null) {
                     return;
+                }
 
                 if (status == Radar.RadarStatus.SUCCESS) {
                     WritableMap map = Arguments.createMap();
-                    map.putString("status", RNRadarUtils.stringForStatus(status));
-                    if (location != null)
-                        map.putMap("location", RNRadarUtils.mapForLocation(location));
-                    if (events != null)
-                        map.putArray("events", RNRadarUtils.arrayForEvents(events));
-                    if (user != null)
-                        map.putMap("user", RNRadarUtils.mapForUser(user));
+                    map.putString("status", status.toString();
+                    if (location != null) {
+                        map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                    }
+                    if (events != null) {
+                        map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.jsonForArray(events)));
+                    }
+                    if (user != null) {
+                        map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                    }
                     promise.resolve(map);
                 } else {
-                    promise.reject(RNRadarUtils.stringForStatus(status), RNRadarUtils.stringForStatus(status));
+                    promise.reject(status.toString(), status.toString());
                 }
             }
         });
     }
 
     @ReactMethod
-    public void updateLocation(ReadableMap locationMap, final Promise promise) {
+    public void trackOnce(ReadableMap locationMap, final Promise promise) {
         double latitude = locationMap.getDouble("latitude");
         double longitude = locationMap.getDouble("longitude");
         float accuracy = (float)locationMap.getDouble("accuracy");
@@ -109,24 +125,28 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         location.setLatitude(latitude);
         location.setLongitude(longitude);
         location.setAccuracy(accuracy);
-        Radar.updateLocation(location, new RadarCallback() {
+        Radar.trackOnce(location, new RadarCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, Location location, RadarEvent[] events, RadarUser user) {
-                if (promise == null)
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+                if (promise == null) {
                     return;
+                }
 
                 if (status == Radar.RadarStatus.SUCCESS) {
                     WritableMap map = Arguments.createMap();
-                    map.putString("status", RNRadarUtils.stringForStatus(status));
-                    if (location != null)
-                        map.putMap("location", RNRadarUtils.mapForLocation(location));
-                    if (events != null)
-                        map.putArray("events", RNRadarUtils.arrayForEvents(events));
-                    if (user != null)
-                        map.putMap("user", RNRadarUtils.mapForUser(user));
+                    map.putString("status", status.toString());
+                    if (location != null) {
+                        map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                    }
+                    if (events != null) {
+                        map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.jsonForArray(events)));
+                    }
+                    if (user != null) {
+                        map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                    }
                     promise.resolve(map);
                 } else {
-                    promise.reject(RNRadarUtils.stringForStatus(status), RNRadarUtils.stringForStatus(status));
+                    promise.reject(status.toString(), status.toString());
                 }
             }
         });
