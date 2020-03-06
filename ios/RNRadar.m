@@ -128,13 +128,11 @@ RCT_REMAP_METHOD(trackOnce, trackOnceWithResolver:(RCTPromiseResolveBlock)resolv
                 [dict setObject:[user dictionaryValue] forKey:@"user"];
             }
             resolver(dict);
-            resolver = nil;
-            rejecter = nil;
         } else if (rejecter) {
             rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
-            resolver = nil;
-            rejecter = nil;
         }
+        resolver = nil;
+        rejecter = nil;
     }];
 }
 
@@ -142,7 +140,7 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict resolve:(RCTPromiseReso
     double latitude = [RCTConvert double:locationDict[@"latitude"]];
     double longitude = [RCTConvert double:locationDict[@"longitude"]];
     double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
-    NSDate *timestamp = ;
+    NSDate *timestamp = [NSDate new];
     CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;

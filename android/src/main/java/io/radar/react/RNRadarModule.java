@@ -56,7 +56,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                 return "DENIED";
             }
         } else {
-            return foreground ? "GRANTED_BACKGROUND" : "DENIED";
+            return foreground ? "GRANTED_FOREGROUND" : "DENIED";
         }
     }
 
@@ -125,6 +125,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         location.setLatitude(latitude);
         location.setLongitude(longitude);
         location.setAccuracy(accuracy);
+
         Radar.trackOnce(location, new RadarCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {

@@ -1,4 +1,5 @@
 import { NativeEventEmitter, NativeModules } from 'react-native';
+
 import Radar from '../js/index';
 
 jest.mock('NativeEventEmitter', () => jest.fn(() => ({
@@ -44,14 +45,14 @@ describe('calls native implementation', () => {
 
   test('setMetadata', () => {
     const metadata = {
-      'foo': 'bar',
-      'baz': true,
-      'qux': 1,
+      foo: 'bar',
+      baz: true,
+      qux: 1,
     };
-    Radar.setMetadata(metadata)
+    Radar.setMetadata(metadata);
 
-    expect(mockModule.setMetadata).toHaveBeenCalledTimes(1)
-    expect(mockModule.setMetadata).toBeCalledWith(metadata)
+    expect(mockModule.setMetadata).toHaveBeenCalledTimes(1);
+    expect(mockModule.setMetadata).toBeCalledWith(metadata);
   });
 
   test('getPermissionsStatus', () => {

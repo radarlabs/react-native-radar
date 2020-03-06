@@ -35,7 +35,6 @@ public class RNRadarReceiver extends RadarReceiver {
             if (result == null) {
                 result = goAsync();
             }
-            // Increment pending event count
             pendingCount.incrementAndGet();
             reactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
                 @Override

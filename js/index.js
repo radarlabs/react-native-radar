@@ -34,17 +34,13 @@ const stopTracking = () => {
   NativeModules.RNRadar.stopTracking();
 };
 
-const trackOnce = () => (
-  NativeModules.RNRadar.trackOnce()
-);
-
-const trackOnce = location => (
+const trackOnce = (location) => {
   if (location) {
     NativeModules.RNRadar.trackOnce(location);
   } else {
     NativeModules.RNRadar.trackOnce();
   }
-);
+};
 
 const acceptEvent = (eventId, verifiedPlaceId) => {
   NativeModules.RNRadar.acceptEvent(eventId, verifiedPlaceId);
