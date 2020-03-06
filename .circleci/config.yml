@@ -6,12 +6,12 @@ jobs:
       - image: circleci/node:8
     steps:
       - checkout
-    
+
       - restore_cache:
           name: Restore node modules cache
           key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
 
-      - run: npm install 
+      - run: npm install
 
       - save_cache:
           name: Save node modules cache
@@ -47,7 +47,7 @@ jobs:
 
       - attach_workspace:
           at: ~/react-native-radar
-      
+
       - run: npm run test-android
 
       - run:
@@ -64,10 +64,10 @@ jobs:
           path: test-results
 
   ios:
-    macos: 
+    macos:
       xcode: "11.0.0"
     working_directory: ~/react-native-radar
-    
+
     steps:
       - checkout
 
@@ -76,7 +76,7 @@ jobs:
           key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
 
       - run: npm install
- 
+
       - save_cache:
           name: Save node modules cache
           key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
@@ -88,12 +88,11 @@ jobs:
           key: brew-cache-v1
 
       - run: brew update
-      - run: brew upgrade
       - run: brew install carthage
       - run:
           command: carthage bootstrap
           working_directory: ios
-      
+
       - save_cache:
           name: Save homebrew cache
           key: brew-cache-v1
