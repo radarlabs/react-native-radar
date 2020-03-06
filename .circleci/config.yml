@@ -88,6 +88,7 @@ jobs:
           key: brew-cache-v1
 
       - run: brew update
+      - run: brew upgrade
       - run: brew install carthage
       - run:
           command: carthage bootstrap
