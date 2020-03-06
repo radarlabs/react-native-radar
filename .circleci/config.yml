@@ -7,7 +7,17 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          name: Restore node modules cache
+          key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
+
       - run: npm install
+
+      - save_cache:
+          name: Save node modules cache
+          key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
+          paths:
+            - node_modules
 
       - run:
           name: jest tests
@@ -61,14 +71,35 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          name: Restore node modules cache
+          key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
+
       - run: npm install
 
+      - save_cache:
+          name: Save node modules cache
+          key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - restore_cache:
+          name: Restore brew cache
+          key: brew-cache-v1
+
       - run: brew update
+      - run: brew unlink python@2
       - run: brew upgrade
       - run: brew install carthage
       - run:
           command: carthage bootstrap
           working_directory: ios
+
+      - save_cache:
+          name: Save homebrew cache
+          key: brew-cache-v1
+          paths:
+            - /usr/local/Homebrew
 
       - run:
           name: Run iOS tests
