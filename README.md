@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/react-native-radar.svg)](https://www.npmjs.com/package/react-native-radar)
 
-[Radar](https://radar.io) is the location platform for mobile apps.
+[Radar](https://radar.io) is location data infrastructure.
 
 ## Installation
 

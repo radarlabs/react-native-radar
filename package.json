@@ -1,9 +1,9 @@
 {
   "name": "react-native-radar",
-  "description": "React Native module for Radar, the location context platform",
+  "description": "React Native module for Radar, location data infrastructure",
   "homepage": "https://radar.io",
   "license": "Apache-2.0",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "main": "js/index.js",
   "files": [
     "android",
