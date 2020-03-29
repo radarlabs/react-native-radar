@@ -29,7 +29,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"events", @"location", @"error"];
+    return @[@"events", @"location", @"clientLocation", @"error"];
 }
 
 - (void)startObserving {
@@ -54,7 +54,7 @@ RCT_EXPORT_MODULE();
 
 - (void)didUpdateClientLocation:(CLLocation *)location stopped:(BOOL)stopped source:(RadarLocationSource)source {
     if (hasListeners) {
-        [self sendEventWithName:@"location" body:@{@"location": [Radar dictionaryForLocation:location], @"stopped": @(stopped), @"source": [Radar stringForSource:source]}];
+        [self sendEventWithName:@"clientLocation" body:@{@"location": [Radar dictionaryForLocation:location], @"stopped": @(stopped), @"source": [Radar stringForSource:source]}];
     }
 }
 
