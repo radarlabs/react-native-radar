@@ -31,11 +31,7 @@ const getLocation = () => {
 };
 
 const trackOnce = (location) => {
-  if (location) {
-    NativeModules.RNRadar.trackOnce(location);
-  } else {
-    NativeModules.RNRadar.trackOnce();
-  }
+  NativeModules.RNRadar.trackOnce(location);
 };
 
 const startTracking = (options) => {
@@ -70,20 +66,22 @@ const getContext = (location) => {
   NativeModules.RNRadar.getContext(location);
 };
 
-const searchPlaces = (near, radius, chains, categories, groups, limit) => {
-  NativeModules.RNRadar.searchPlaces(radius, chains, categories, groups, limit, near);
+const searchPlaces = (options) => {
+  NativeModules.RNRadar.searchPlaces(options);
 };
 
-const searchGeofences = (near, radius, tags, limit) => {
-  NativeModules.RNRadar.searchGeofences(radius, tags, limit, near);
+const searchGeofences = (options) => {
+  NativeModules.RNRadar.searchGeofences(options);
 };
 
-const searchPoints = (near, radius, tags, limit) => {
-  NativeModules.RNRadar.searchGeofences(radius, tags, limit, near);
+/*
+const searchPoints = (options) => {
+  NativeModules.RNRadar.searchPoints(options);
 };
+*/
 
-const autocomplete = (query, near, limit) => {
-  NativeModules.RNRadar.searchGeofences(query, near, limit);
+const autocomplete = (options) => {
+  NativeModules.RNRadar.autocomplete(options);
 };
 
 const geocode = (address) => {
@@ -98,8 +96,8 @@ const ipGeocode = () => {
   NativeModules.RNRadar.ipGeocode();
 };
 
-const getDistance = (origin, destination) => {
-  NativeModules.RNRadar.getDistance(origin, destination);
+const getDistance = (options) => {
+  NativeModules.RNRadar.getDistance(options);
 };
 
 const Radar = {
@@ -119,7 +117,7 @@ const Radar = {
   getContext,
   searchPlaces,
   searchGeofences,
-  searchPoints,
+  // searchPoints,
   autocomplete,
   geocode,
   reverseGeocode,
