@@ -1,0 +1,52 @@
+<testsuites name="jest tests" tests="24" failures="0" time="0.858">
+  <testsuite name="calls native implementation" errors="0" failures="0" skipped="0" timestamp="2020-03-29T23:55:34" time="0.775" tests="24">
+    <testcase classname="calls native implementation setUserId" name="calls native implementation setUserId" time="0.003">
+    </testcase>
+    <testcase classname="calls native implementation setDescription" name="calls native implementation setDescription" time="0">
+    </testcase>
+    <testcase classname="calls native implementation setMetadata" name="calls native implementation setMetadata" time="0">
+    </testcase>
+    <testcase classname="calls native implementation getPermissionsStatus" name="calls native implementation getPermissionsStatus" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation requestPermissions" name="calls native implementation requestPermissions" time="0">
+    </testcase>
+    <testcase classname="calls native implementation getLocation" name="calls native implementation getLocation" time="0">
+    </testcase>
+    <testcase classname="calls native implementation trackOnce" name="calls native implementation trackOnce" time="0">
+    </testcase>
+    <testcase classname="calls native implementation trackOnce(location)" name="calls native implementation trackOnce(location)" time="0.003">
+    </testcase>
+    <testcase classname="calls native implementation startTracking" name="calls native implementation startTracking" time="0">
+    </testcase>
+    <testcase classname="calls native implementation stopTracking" name="calls native implementation stopTracking" time="0">
+    </testcase>
+    <testcase classname="calls native implementation acceptEvent" name="calls native implementation acceptEvent" time="0">
+    </testcase>
+    <testcase classname="calls native implementation rejectEvent" name="calls native implementation rejectEvent" time="0">
+    </testcase>
+    <testcase classname="calls native implementation getContext" name="calls native implementation getContext" time="0">
+    </testcase>
+    <testcase classname="calls native implementation getContext(location)" name="calls native implementation getContext(location)" time="0">
+    </testcase>
+    <testcase classname="calls native implementation searchPlaces" name="calls native implementation searchPlaces" time="0">
+    </testcase>
+    <testcase classname="calls native implementation searchGeofences" name="calls native implementation searchGeofences" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation searchPoints" name="calls native implementation searchPoints" time="0">
+    </testcase>
+    <testcase classname="calls native implementation autocomplete" name="calls native implementation autocomplete" time="0">
+    </testcase>
+    <testcase classname="calls native implementation geocode" name="calls native implementation geocode" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation reverseGeocode" name="calls native implementation reverseGeocode" time="0">
+    </testcase>
+    <testcase classname="calls native implementation ipGeocode" name="calls native implementation ipGeocode" time="0">
+    </testcase>
+    <testcase classname="calls native implementation getDistance" name="calls native implementation getDistance" time="0">
+    </testcase>
+    <testcase classname="calls native implementation on" name="calls native implementation on" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation off" name="calls native implementation off" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>
