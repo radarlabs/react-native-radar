@@ -103,7 +103,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
                     }
                     if (events != null) {
-                        map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.jsonForArray(events)));
+                        map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
                     }
                     if (user != null) {
                         map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
@@ -140,7 +140,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
                     }
                     if (events != null) {
-                        map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.jsonForArray(events)));
+                        map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
                     }
                     if (user != null) {
                         map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
