@@ -1,125 +1,37 @@
 version: 2
 jobs:
-  node:
+  test:
     working_directory: ~/react-native-radar
     docker:
       - image: circleci/node:8
     steps:
       - checkout
-    
       - restore_cache:
           name: Restore node modules cache
           key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
-
-      - run: npm install 
-
+      - run: npm install
       - save_cache:
           name: Save node modules cache
           key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
           paths:
             - node_modules
-
       - run:
-          name: jest tests
+          name: Test
           command: |
             mkdir -p test-results/jest
-            npm run test-js
+            npm run test
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
-
       - persist_to_workspace:
           root: ~/react-native-radar
           paths:
             - node_modules
-
       - store_test_results:
           path: test-results
-
       - store_artifacts:
           path: test-results
-
-  android:
-    working_directory: ~/react-native-radar
-    docker:
-      - image: circleci/android:api-28-node
-    steps:
-      - checkout:
-
-      - attach_workspace:
-          at: ~/react-native-radar
-      
-      - run: npm run test-android
-
-      - run:
-          name: Save test results
-          command: |
-            mkdir -p test-results/android/
-            find ./android -type f -regex ".*/build/test-results/.*xml" -exec cp {} ./test-results/android/ \;
-          when: always
-
-      - store_test_results:
-          path: test-results
-
-      - store_artifacts:
-          path: test-results
-
-  ios:
-    macos: 
-      xcode: "11.0.0"
-    working_directory: ~/react-native-radar
-    
-    steps:
-      - checkout
-
-      - restore_cache:
-          name: Restore node modules cache
-          key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
-
-      - run: npm install
- 
-      - save_cache:
-          name: Save node modules cache
-          key: lock-v1-{{ checksum "package-lock.json" }}-{{ arch }}
-          paths:
-            - node_modules
-
-      - restore_cache:
-          name: Restore brew cache
-          key: brew-cache-v1
-
-      - run: brew update
-      - run: brew upgrade
-      - run: brew install carthage
-      - run:
-          command: carthage bootstrap
-          working_directory: ios
-      
-      - save_cache:
-          name: Save homebrew cache
-          key: brew-cache-v1
-          paths:
-            - /usr/local/Homebrew
-
-      - run:
-          name: Run iOS tests
-          command: |
-            mkdir -p test-results/ios
-            npm run test-ios | xcpretty -r junit --output test-results/ios/junit.xml
-
-      - store_test_results:
-          path: test-results
-
-      - store_artifacts:
-          path: test-results
-
 workflows:
   version: 2
   node-android-ios:
     jobs:
-      - node
-      - android:
-          requires:
-            - node
-      - ios:
-          requires:
-            - node
+      - test
