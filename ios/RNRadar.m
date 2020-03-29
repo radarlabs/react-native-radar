@@ -338,7 +338,6 @@ RCT_REMAP_METHOD(searchGeofences:(NSDictionary *)optionsDict, searchGeofencesWit
     }
 }
 
-/*
 RCT_REMAP_METHOD(searchPoints:(NSDictionary *)optionsDict, searchPointsWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
@@ -395,7 +394,6 @@ RCT_REMAP_METHOD(searchPoints:(NSDictionary *)optionsDict, searchPointsWithResol
         [Radar searchPointsWithRadius:radius tags:tags limit:limit completionHandler:completionHandler];
     }
 }
-*/
 
 RCT_REMAP_METHOD(autocomplete:(NSDictionary *)optionsDict, autocompleteWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {

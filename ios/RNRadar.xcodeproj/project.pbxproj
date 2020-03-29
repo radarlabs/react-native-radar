@@ -11,7 +11,7 @@
 		466EF48D21DFC28700ED0E09 /* RNRadarUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 466EF48C21DFC28700ED0E09 /* RNRadarUtilsTests.m */; };
 		46B8EB3421DFE009009DFE97 /* libRNRadar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 134814201AA4EA6300B7C361 /* libRNRadar.a */; };
 		B3E7B58A1CC2AC0600A0062D /* RNRadar.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNRadar.m */; };
-		DDD9848F24313C740042F1A1 /* RadarSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDD9848E24313C740042F1A1 /* RadarSDK.framework */; };
+		DDD98492243153160042F1A1 /* RadarSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDD98491243153160042F1A1 /* RadarSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +53,7 @@
 		B3E7B5881CC2AC0600A0062D /* RNRadar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNRadar.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNRadar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNRadar.m; sourceTree = "<group>"; };
 		DDD9848B243135300042F1A1 /* RNRadarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNRadarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DDD9848E24313C740042F1A1 /* RadarSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RadarSDK.framework; sourceTree = "<group>"; };
+		DDD98491243153160042F1A1 /* RadarSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RadarSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDD9848F24313C740042F1A1 /* RadarSDK.framework in Frameworks */,
+				DDD98492243153160042F1A1 /* RadarSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +97,7 @@
 		466EF49521DFC34600ED0E09 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DDD9848E24313C740042F1A1 /* RadarSDK.framework */,
+				DDD98491243153160042F1A1 /* RadarSDK.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

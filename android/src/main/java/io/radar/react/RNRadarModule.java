@@ -4,8 +4,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import android.os.Build;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -14,7 +18,6 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import io.radar.sdk.Radar;
-import io.radar.sdk.Radar.RadarCallback;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarUser;
 import org.json.JSONException;
@@ -76,39 +79,31 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startTracking(ReadableMap optionsMap) {
-        JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
-        RaarTrackingOptions options = RadarTrackingOptions.fromJson(optionsObj);
-        Radar.startTracking(options);
-    }
-
-    @ReactMethod
-    public void stopTracking() {
-        Radar.stopTracking();
-    }
-
-    @ReactMethod
     public void trackOnce(final Promise promise) {
-        Radar.trackOnce(new RadarCallback() {
+        Radar.trackOnce(new Radar.RadarTrackCallback() {
             @Override
-            public void onComplete(@NonNull RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
                 if (promise == null) {
                     return;
                 }
 
                 if (status == Radar.RadarStatus.SUCCESS) {
-                    WritableMap map = Arguments.createMap();
-                    map.putString("status", status.toString();
-                    if (location != null) {
-                        map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                    try {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (location != null) {
+                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                        }
+                        if (events != null) {
+                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent(events)));
+                        }
+                        if (user != null) {
+                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                        }
+                        promise.resolve(map);
+                    } catch (JSONException e) {
+                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
-                    if (events != null) {
-                        map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                    }
-                    if (user != null) {
-                        map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
-                    }
-                    promise.resolve(map);
                 } else {
                     promise.reject(status.toString(), status.toString());
                 }
@@ -151,6 +146,18 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                 }
             }
         });
+    }
+
+    @ReactMethod
+    public void startTracking(ReadableMap optionsMap) {
+        JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+        RaarTrackingOptions options = RadarTrackingOptions.fromJson(optionsObj);
+        Radar.startTracking(options);
+    }
+
+    @ReactMethod
+    public void stopTracking() {
+        Radar.stopTracking();
     }
 
     @ReactMethod

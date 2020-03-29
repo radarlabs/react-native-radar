@@ -74,11 +74,9 @@ const searchGeofences = (options) => {
   NativeModules.RNRadar.searchGeofences(options);
 };
 
-/*
 const searchPoints = (options) => {
   NativeModules.RNRadar.searchPoints(options);
 };
-*/
 
 const autocomplete = (options) => {
   NativeModules.RNRadar.autocomplete(options);
@@ -117,7 +115,7 @@ const Radar = {
   getContext,
   searchPlaces,
   searchGeofences,
-  // searchPoints,
+  searchPoints,
   autocomplete,
   geocode,
   reverseGeocode,
