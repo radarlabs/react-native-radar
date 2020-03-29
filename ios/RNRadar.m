@@ -64,6 +64,10 @@ RCT_EXPORT_MODULE();
     }
 }
 
+(void)didLogMessage:(NSString *)message {
+    
+}
+
 RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {
     [Radar setUserId:userId];
 }
@@ -220,7 +224,9 @@ RCT_REMAP_METHOD(getContext:(NSDictionary *)locationDict, getContextWithResolver
 
 RCT_REMAP_METHOD(searchPlaces:(NSDictionary *)optionsDict, searchPlacesWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
-        reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
         
         return;
     }
@@ -281,7 +287,9 @@ RCT_REMAP_METHOD(searchPlaces:(NSDictionary *)optionsDict, searchPlacesWithResol
 
 RCT_REMAP_METHOD(searchGeofences:(NSDictionary *)optionsDict, searchGeofencesWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
-        reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
         
         return;
     }
@@ -340,7 +348,11 @@ RCT_REMAP_METHOD(searchGeofences:(NSDictionary *)optionsDict, searchGeofencesWit
 
 RCT_REMAP_METHOD(searchPoints:(NSDictionary *)optionsDict, searchPointsWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
-        reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+        
+        return;
     }
     
     NSDictionary *nearDict = [optionsDict valueForKey:@"near"];
@@ -397,14 +409,18 @@ RCT_REMAP_METHOD(searchPoints:(NSDictionary *)optionsDict, searchPointsWithResol
 
 RCT_REMAP_METHOD(autocomplete:(NSDictionary *)optionsDict, autocompleteWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
-        reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
         
         return;
     }
     
     NSDictionary *nearDict = [optionsDict valueForKey:@"near"];
     if (nearDict == nil || ![[nearDict class] isKindOfClass:[NSDictionary class]]) {
-        reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
         
         return;
     }
@@ -517,14 +533,18 @@ RCT_REMAP_METHOD(ipGeocode, ipGeocodeWithResolver:(RCTPromiseResolveBlock)resolv
 
 RCT_REMAP_METHOD(getDistance:(NSDictionary *)optionsDict, getDistanceWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
-        reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
         
         return;
     }
     
     NSDictionary *destinationDict = [optionsDict valueForKey:@"destination"];
     if (destinationDict == nil || ![[destinationDict class] isKindOfClass:[NSDictionary class]]) {
-        reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
         
         return;
     }
@@ -544,16 +564,16 @@ RCT_REMAP_METHOD(getDistance:(NSDictionary *)optionsDict, getDistanceWithResolve
     NSArray *modesArr = [optionsDict valueForKey:"modes"];
     RadarRouteMode modes;
     if (modesArr != nil && [[modesArr class] isKindOfClass:[NSArray class]]) {
-        if ([modesArr containsObject: @"foot"]) {
+        if ([modesArr containsObject:@"foot"]) {
             modes = modes | RadarRouteModeFoot;
         }
-        if ([modesArr containsObject: @"bike"]) {
+        if ([modesArr containsObject:@"bike"]) {
             modes = modes | RadarRouteModeBike;
         }
-        if ([modesArr containsObject: @"car"]) {
+        if ([modesArr containsObject:@"car"]) {
             modes = modes | RadarRouteModeCar;
         }
-        if ([modesArr containsObject: @"transit"]) {
+        if ([modesArr containsObject:@"transit"]) {
             modes = modes | RadarRouteModeTransit;
         }
     } else {

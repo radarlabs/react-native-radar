@@ -2,7 +2,8 @@ package io.radar.react;
 
 import android.content.Context;
 import android.location.Location;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -87,7 +88,7 @@ public class RNRadarReceiver extends RadarReceiver {
     }
 
     @Override
-    public void onClientLocationUpdated(@NonNull Context context, bool stopped, @NonNull Radar.RadarLocationSource source) {
+    public void onClientLocationUpdated(@NonNull Context context, @NonNull Location location, boolean stopped, @NonNull Radar.RadarLocationSource source) {
         try {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
@@ -113,6 +114,11 @@ public class RNRadarReceiver extends RadarReceiver {
         } catch (Exception e) {
 
         }
+    }
+
+    @Override
+    public void onLog(@NonNull Context context, @NonNull String message) {
+
     }
 
 }

@@ -50,18 +50,6 @@ const rejectEvent = (eventId) => {
   NativeModules.RNRadar.rejectEvent(eventId);
 };
 
-const on = (event, callback) => (
-  eventEmitter.addListener(event, callback)
-);
-
-const off = (event, callback) => {
-  if (callback) {
-    eventEmitter.removeListener(event, callback);
-  } else {
-    eventEmitter.removeAllListeners(event);
-  }
-};
-
 const getContext = (location) => {
   NativeModules.RNRadar.getContext(location);
 };
@@ -98,6 +86,18 @@ const getDistance = (options) => {
   NativeModules.RNRadar.getDistance(options);
 };
 
+const on = (event, callback) => (
+  eventEmitter.addListener(event, callback)
+);
+
+const off = (event, callback) => {
+  if (callback) {
+    eventEmitter.removeListener(event, callback);
+  } else {
+    eventEmitter.removeAllListeners(event);
+  }
+};
+
 const Radar = {
   setUserId,
   setDescription,
@@ -110,8 +110,6 @@ const Radar = {
   stopTracking,
   acceptEvent,
   rejectEvent,
-  on,
-  off,
   getContext,
   searchPlaces,
   searchGeofences,
@@ -121,6 +119,8 @@ const Radar = {
   reverseGeocode,
   ipGeocode,
   getDistance,
+  on,
+  off,
 };
 
 export default Radar;
