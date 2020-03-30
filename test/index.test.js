@@ -149,10 +149,10 @@ describe('calls native implementation', () => {
       useVisits: true,
       useSignificantLocationChanges: true,
     };
-    Radar.startTracking(options);
+    Radar.startTrackingCustom(options);
 
-    expect(mockModule.startTracking).toHaveBeenCalledTimes(1);
-    expect(mockModule.startTracking).toBeCalledWith(options);
+    expect(mockModule.startTrackingCustom).toHaveBeenCalledTimes(1);
+    expect(mockModule.startTrackingCustom).toBeCalledWith(options);
   });
 
   test('stopTracking', () => {
