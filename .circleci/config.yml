@@ -41,6 +41,7 @@ jobs:
           name: Restore node modules cache
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
       - run: sudo yarn install
+      - run: sudo npm install -g react-native
       - save_cache:
           name: Save node modules cache
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -58,6 +59,7 @@ jobs:
           name: Restore node modules cache
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
       - run: sudo yarn install
+      - run: sudo npm install -g react-native
       - save_cache:
           name: Save node modules cache
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
