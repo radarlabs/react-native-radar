@@ -18,6 +18,10 @@ jest.mock('NativeModules', () => ({
     getLocation: jest.fn(),
     trackOnce: jest.fn(),
     startTracking: jest.fn(),
+    startTrackingEfficient: jest.fn(),
+    startTrackingResponsive: jest.fn(),
+    startTrackingContinuous: jest.fn(),
+    startTrackingCustom: jest.fn(),
     stopTracking: jest.fn(),
     acceptEvent: jest.fn(),
     rejectEvent: jest.fn(),
@@ -104,6 +108,30 @@ describe('calls native implementation', () => {
   });
 
   test('startTracking', () => {
+    Radar.startTracking();
+
+    expect(mockModule.startTracking).toHaveBeenCalledTimes(1);
+  });
+
+  test('startTrackingEfficient', () => {
+    Radar.startTrackingEfficient();
+
+    expect(mockModule.startTrackingEfficient).toHaveBeenCalledTimes(1);
+  });
+
+  test('startTrackingResponsive', () => {
+    Radar.startTrackingResponsive();
+
+    expect(mockModule.startTrackingResponsive).toHaveBeenCalledTimes(1);
+  });
+
+  test('startTrackingContinuous', () => {
+    Radar.startTrackingContinuous();
+
+    expect(mockModule.startTrackingContinuous).toHaveBeenCalledTimes(1);
+  });
+
+  test('startTrackingCustom', () => {
     const options = {
       desiredStoppedUpdateInterval: 0,
       desiredMovingUpdateInterval: 150,

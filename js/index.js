@@ -34,8 +34,24 @@ const trackOnce = (location) => {
   NativeModules.RNRadar.trackOnce(location);
 };
 
-const startTracking = (options) => {
-  NativeModules.RNRadar.startTracking(options);
+const startTracking = () => {
+  NativeModules.RNRadar.startTrackingEfficient();
+};
+
+const startTrackingEfficient = () => {
+  NativeModules.RNRadar.startTrackingEfficient();
+};
+
+const startTrackingResponsive = () => {
+  NativeModules.RNRadar.startTrackingResponsive();
+};
+
+const startTrackingContinuous = () => {
+  NativeModules.RNRadar.startTrackingContinuous();
+};
+
+const startTrackingCustom = (options) => {
+  NativeModules.RNRadar.startTrackingCustom(options);
 };
 
 const stopTracking = () => {
@@ -107,6 +123,10 @@ const Radar = {
   getLocation,
   trackOnce,
   startTracking,
+  startTrackingEfficient,
+  startTrackingResponsive,
+  startTrackingContinuous,
+  startTrackingCustom,
   stopTracking,
   acceptEvent,
   rejectEvent,
