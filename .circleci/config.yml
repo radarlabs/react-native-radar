@@ -66,7 +66,7 @@ jobs:
           paths:
             - node_modules
       - run: cd ios && pod install
-      - run: cd ios && xcodebuild -workspace Example.xcworkspace -configuration Debug -scheme Example
+      - run: react-native run-ios
 workflows:
   version: 2
   node-android-ios:
