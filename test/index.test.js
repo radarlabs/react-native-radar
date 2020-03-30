@@ -107,12 +107,6 @@ describe('calls native implementation', () => {
     expect(mockModule.trackOnce).toBeCalledWith(location);
   });
 
-  test('startTracking', () => {
-    Radar.startTracking();
-
-    expect(mockModule.startTrackingEfficient).toHaveBeenCalledTimes(1);
-  });
-
   test('startTrackingEfficient', () => {
     Radar.startTrackingEfficient();
 

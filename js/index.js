@@ -34,10 +34,6 @@ const trackOnce = (location) => {
   NativeModules.RNRadar.trackOnce(location);
 };
 
-const startTracking = () => {
-  NativeModules.RNRadar.startTrackingEfficient();
-};
-
 const startTrackingEfficient = () => {
   NativeModules.RNRadar.startTrackingEfficient();
 };
@@ -122,7 +118,6 @@ const Radar = {
   requestPermissions,
   getLocation,
   trackOnce,
-  startTracking,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,
