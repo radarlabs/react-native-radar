@@ -662,10 +662,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                 modes.add(Radar.RadarRouteMode.FOOT);
             }
             if (modeStr.equals("bike")) {
-                modes.add(Radar.RadarRouteMode.FOOT);
+                modes.add(Radar.RadarRouteMode.BIKE);
             }
             if (modeStr.equals("car")) {
-                modes.add(Radar.RadarRouteMode.FOOT);
+                modes.add(Radar.RadarRouteMode.CAR);
+            }
+            if (modeStr.equals("transit")) {
+                modes.add(Radar.RadarRouteMode.TRANSIT);
             }
         }
         String unitsStr = optionsMap.getString("units");
