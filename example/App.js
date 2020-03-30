@@ -37,6 +37,7 @@ const App: () => React$Node = () => {
     console.error(err);
   });
 
+  /*
   Radar.trackOnce({
     latitude: 40.783826,
     longitude: -73.975363,
@@ -46,14 +47,11 @@ const App: () => React$Node = () => {
   }).catch((err) => {
     console.error(err);
   });
-
-  /*
-  Radar.ipGeocode().then((result) => {
-    console.log(result);
-  }).catch((err) => {
-    console.error(err);
-  });
   */
+
+  console.log('here1');
+  console.log(Radar.ipGeocode());
+  console.log('here2');
 
   /*
   Radar.searchGeofences({

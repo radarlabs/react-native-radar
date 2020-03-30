@@ -26,81 +26,77 @@ const requestPermissions = (background) => {
   NativeModules.RNRadar.requestPermissions(background);
 };
 
-const getLocation = () => {
-  NativeModules.RNRadar.getLocation();
-};
+const getLocation = () => (
+  NativeModules.RNRadar.getLocation()
+);
 
-const trackOnce = (location) => {
-  if (location) {
-    NativeModules.RNRadar.updateLocation(location);
-  } else {
-    NativeModules.RNRadar.trackOnce();
-  }
-};
+const trackOnce = location => (
+  location ? NativeModules.RNRadar.updateLocation(location) : NativeModules.RNRadar.trackOnce()
+);
 
-const startTrackingEfficient = () => {
-  NativeModules.RNRadar.startTrackingEfficient();
-};
+const startTrackingEfficient = () => (
+  NativeModules.RNRadar.startTrackingEfficient()
+);
 
-const startTrackingResponsive = () => {
-  NativeModules.RNRadar.startTrackingResponsive();
-};
+const startTrackingResponsive = () => (
+  NativeModules.RNRadar.startTrackingResponsive()
+);
 
-const startTrackingContinuous = () => {
-  NativeModules.RNRadar.startTrackingContinuous();
-};
+const startTrackingContinuous = () => (
+  NativeModules.RNRadar.startTrackingContinuous()
+);
 
-const startTrackingCustom = (options) => {
-  NativeModules.RNRadar.startTrackingCustom(options);
-};
+const startTrackingCustom = options => (
+  NativeModules.RNRadar.startTrackingCustom(options)
+);
 
-const stopTracking = () => {
-  NativeModules.RNRadar.stopTracking();
-};
+const stopTracking = () => (
+  NativeModules.RNRadar.stopTracking()
+);
 
-const acceptEvent = (eventId, verifiedPlaceId) => {
-  NativeModules.RNRadar.acceptEvent(eventId, verifiedPlaceId);
-};
+const acceptEvent = (eventId, verifiedPlaceId) => (
+  NativeModules.RNRadar.acceptEvent(eventId, verifiedPlaceId)
+);
 
-const rejectEvent = (eventId) => {
-  NativeModules.RNRadar.rejectEvent(eventId);
-};
+const rejectEvent = eventId => (
+  NativeModules.RNRadar.rejectEvent(eventId)
+);
 
-const getContext = (location) => {
-  NativeModules.RNRadar.getContext(location);
-};
+const getContext = location => (
+  NativeModules.RNRadar.getContext(location)
+);
 
-const searchPlaces = (options) => {
-  NativeModules.RNRadar.searchPlaces(options);
-};
+const searchPlaces = options => (
+  NativeModules.RNRadar.searchPlaces(options)
+);
 
-const searchGeofences = (options) => {
-  NativeModules.RNRadar.searchGeofences(options);
-};
+const searchGeofences = options => (
+  NativeModules.RNRadar.searchGeofences(options)
+);
 
-const searchPoints = (options) => {
-  NativeModules.RNRadar.searchPoints(options);
-};
+const searchPoints = options => (
+  NativeModules.RNRadar.searchPoints(options)
+);
 
-const autocomplete = (options) => {
-  NativeModules.RNRadar.autocomplete(options);
-};
+const autocomplete = options => (
+  NativeModules.RNRadar.autocomplete(options)
+);
 
-const geocode = (address) => {
-  NativeModules.RNRadar.geocode(address);
-};
+const geocode = address => (
+  NativeModules.RNRadar.geocode(address)
+);
 
-const reverseGeocode = (location) => {
-  NativeModules.RNRadar.reverseGeocode(location);
-};
+const reverseGeocode = location => (
+  NativeModules.RNRadar.reverseGeocode(location)
+);
 
-const ipGeocode = () => {
-  NativeModules.RNRadar.ipGeocode();
-};
+const ipGeocode = () => (
+  NativeModules.RNRadar.ipGeocode()
+);
 
-const getDistance = (options) => {
-  NativeModules.RNRadar.getDistance(options);
-};
+const getDistance = options => (
+  NativeModules.RNRadar.getDistance(options)
+);
 
 const on = (event, callback) => (
   eventEmitter.addListener(event, callback)
