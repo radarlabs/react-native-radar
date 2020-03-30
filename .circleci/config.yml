@@ -37,6 +37,7 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
+      - run: npm install -g react-native
       - restore_cache:
           name: Restore node modules cache
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -54,6 +55,7 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
+      - run: npm install -g react-native
       - restore_cache:
           name: Restore node modules cache
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}

@@ -41,6 +41,7 @@ const App: () => React$Node = () => {
     console.error(err);
   });
 
+  /*
   Radar.searchGeofences({
     near: {
       latitude: 40.783826,
@@ -55,6 +56,7 @@ const App: () => React$Node = () => {
   }, (err) => {
     console.error(err);
   });
+  */
 
   return (
     <>

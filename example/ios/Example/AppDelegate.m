@@ -32,7 +32,7 @@ static void InitializeFlipper(UIApplication *application) {
   InitializeFlipper(application);
 #endif
 
-  [Radar initializeWithPublishableKey:@"prj_test_pk_0000000000000000000000000000000000000000"];
+  [Radar initializeWithPublishableKey:@"org_test_pk_5857c63d9c1565175db8b00750808a66a002acb8"];
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
