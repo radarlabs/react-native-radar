@@ -31,15 +31,31 @@ const App: () => React$Node = () => {
 
   Radar.requestPermissions(true);
 
+  Radar.getPermissionsStatus().then((result) => {
+    console.log(result);
+  }).catch((err) => {
+    console.error(err);
+  });
+
+  /*
   Radar.trackOnce({
     latitude: 40.783826,
     longitude: -73.975363,
     accuracy: 65,
-  }, (result) => {
+  }).then((result) => {
     console.log(result);
-  }, (err) => {
+  }).catch((err) => {
     console.error(err);
   });
+  */
+
+  /*
+  Radar.ipGeocode().then((result) => {
+    console.log(result);
+  }).catch((err) => {
+    console.error(err);
+  });
+  */
 
   /*
   Radar.searchGeofences({

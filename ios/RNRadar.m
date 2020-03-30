@@ -86,14 +86,19 @@ RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTProm
     switch (status) {
         case kCLAuthorizationStatusDenied:
             statusStr = @"DENIED";
+            break;
         case kCLAuthorizationStatusRestricted:
             statusStr = @"DENIED";
+            break;
         case kCLAuthorizationStatusAuthorizedAlways:
             statusStr = @"GRANTED_BACKGROUND";
+            break;
         case kCLAuthorizationStatusAuthorizedWhenInUse:
             statusStr = @"GRANTED_FOREGROUND";
+            break;
         default:
             statusStr = @"DENIED";
+            break;
     }
     resolve(statusStr);
 }
@@ -106,7 +111,7 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background) {
     }
 }
 
-RCT_REMAP_METHOD(getLocation, getLocationWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getLocation:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -127,7 +132,7 @@ RCT_REMAP_METHOD(getLocation, getLocationWithResolver:(RCTPromiseResolveBlock)re
     }];
 }
 
-RCT_REMAP_METHOD(trackOnce, trackOnceWithLocationDict:(NSDictionary *)locationDict resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(trackOnce:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLLocation *location;
     if (locationDict != nil && [[locationDict class] isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:locationDict[@"latitude"]];
@@ -140,7 +145,7 @@ RCT_REMAP_METHOD(trackOnce, trackOnceWithLocationDict:(NSDictionary *)locationDi
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    __block RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, CLLocation *location, NSArray<RadarEvent *> *events, RadarUser *user) {
+    [Radar trackOnceWithLocation:location completionHandler:{
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -159,13 +164,42 @@ RCT_REMAP_METHOD(trackOnce, trackOnceWithLocationDict:(NSDictionary *)locationDi
         }
         resolver = nil;
         rejecter = nil;
-    };
+    }];
+}
 
-    if (location) {
-        [Radar trackOnceWithLocation:location completionHandler:completionHandler];
-    } else {
-        [Radar trackOnceWithCompletionHandler:completionHandler];
+RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    CLLocation *location;
+    if (locationDict != nil && [[locationDict class] isKindOfClass:[NSDictionary class]]) {
+        double latitude = [RCTConvert double:locationDict[@"latitude"]];
+        double longitude = [RCTConvert double:locationDict[@"longitude"]];
+        double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
+        NSDate *timestamp = [NSDate new];
+        location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
     }
+
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    [Radar trackOnceWithLocation:location completionHandler:{
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (location) {
+                [dict setObject:[Radar dictionaryForLocation:location] forKey:@"location"];
+            }
+            if (events) {
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
+            }
+            if (user) {
+                [dict setObject:[user dictionaryValue] forKey:@"user"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    }];
 }
 
 RCT_EXPORT_METHOD(startTracking) {
@@ -184,8 +218,7 @@ RCT_EXPORT_METHOD(startTracking:(NSString *)optionsStr) {
     }
 }
 
-RCT_EXPORT_METHOD(startTracking:(NSDictionary *)options) {
-    NSDictionary *optionsDict = (NSDictionary *)options;
+RCT_EXPORT_METHOD(startTracking:(NSDictionary *)optionsDict) {
     RadarTrackingOptions *options = [RadarTrackingOptions trackingOptionsFromDictionary:optionsDict];
     [Radar startTrackingWithOptions:options];
 }
@@ -202,7 +235,7 @@ RCT_EXPORT_METHOD(rejectEvent:(NSString *)eventId) {
     [Radar rejectEventId:eventId];
 }
 
-RCT_REMAP_METHOD(getContext, getContextWithLocationDict:(NSDictionary *)locationDict resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getContext:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLLocation *location;
     if (locationDict != nil && [[locationDict class] isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:locationDict[@"latitude"]];
@@ -239,7 +272,7 @@ RCT_REMAP_METHOD(getContext, getContextWithLocationDict:(NSDictionary *)location
     }
 }
 
-RCT_REMAP_METHOD(searchPlaces, searchPlacesWithOptionsDict:(NSDictionary *)optionsDict resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
             reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
@@ -302,7 +335,7 @@ RCT_REMAP_METHOD(searchPlaces, searchPlacesWithOptionsDict:(NSDictionary *)optio
     }
 }
 
-RCT_REMAP_METHOD(searchGeofences, searchGeofencesWithOptionsDict:(NSDictionary *)optionsDict resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
             reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
@@ -363,7 +396,7 @@ RCT_REMAP_METHOD(searchGeofences, searchGeofencesWithOptionsDict:(NSDictionary *
     }
 }
 
-RCT_REMAP_METHOD(searchPoints, searchPointsWithOptionsDict:(NSDictionary *)optionsDict resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(searchPoints:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
             reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
@@ -424,7 +457,7 @@ RCT_REMAP_METHOD(searchPoints, searchPointsWithOptionsDict:(NSDictionary *)optio
     }
 }
 
-RCT_REMAP_METHOD(autocomplete, autocompleteWithOptionsDict:(NSDictionary *)optionsDict resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
             reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
@@ -474,7 +507,7 @@ RCT_REMAP_METHOD(autocomplete, autocompleteWithOptionsDict:(NSDictionary *)optio
     }];
 }
 
-RCT_REMAP_METHOD(geocode, geocodeWithQuery:(NSString *)query resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(geocode:(NSString *)query resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -494,7 +527,7 @@ RCT_REMAP_METHOD(geocode, geocodeWithQuery:(NSString *)query resolver:(RCTPromis
     }];
 }
 
-RCT_REMAP_METHOD(reverseGeocode, reverseGeocodeWithLocationDict:(NSDictionary *)locationDict resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(reverseGeocode:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLLocation *location;
     if (locationDict != nil && [[locationDict class] isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:locationDict[@"latitude"]];
@@ -528,7 +561,7 @@ RCT_REMAP_METHOD(reverseGeocode, reverseGeocodeWithLocationDict:(NSDictionary *)
     }
 }
 
-RCT_REMAP_METHOD(ipGeocode, ipGeocodeWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(ipGeocode:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -548,7 +581,7 @@ RCT_REMAP_METHOD(ipGeocode, ipGeocodeWithResolver:(RCTPromiseResolveBlock)resolv
     }];
 }
 
-RCT_REMAP_METHOD(getDistance, getDistanceWithOptionsDict:(NSDictionary *)optionsDict resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
             reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
