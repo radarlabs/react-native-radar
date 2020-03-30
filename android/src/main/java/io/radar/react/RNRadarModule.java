@@ -74,7 +74,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                 promise.resolve("DENIED");
             }
         } else {
-            promise.resolve(foreground ? "GRANTED_FOREGROUND" : "DENIED");
+            promise.resolve(foreground ? "GRANTED_BACKGROUND" : "DENIED");
         }
     }
 
@@ -665,9 +665,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                 modes.add(Radar.RadarRouteMode.FOOT);
             }
             if (modeStr.equals("car")) {
-                modes.add(Radar.RadarRouteMode.FOOT);
-            }
-            if (modeStr.equals("transit")) {
                 modes.add(Radar.RadarRouteMode.FOOT);
             }
         }
