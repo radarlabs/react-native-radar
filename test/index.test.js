@@ -17,6 +17,7 @@ jest.mock('NativeModules', () => ({
     requestPermissions: jest.fn(),
     getLocation: jest.fn(),
     trackOnce: jest.fn(),
+    updateLocation: jest.fn(),
     startTracking: jest.fn(),
     startTrackingEfficient: jest.fn(),
     startTrackingResponsive: jest.fn(),
@@ -103,8 +104,8 @@ describe('calls native implementation', () => {
     };
     Radar.trackOnce(location);
 
-    expect(mockModule.trackOnce).toHaveBeenCalledTimes(1);
-    expect(mockModule.trackOnce).toBeCalledWith(location);
+    expect(mockModule.updateLocation).toHaveBeenCalledTimes(1);
+    expect(mockModule.updateLocation).toBeCalledWith(location);
   });
 
   test('startTrackingEfficient', () => {
