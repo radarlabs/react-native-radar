@@ -235,7 +235,7 @@ PODS:
     - React-jsi (= 0.62.0)
   - React-jsinspector (0.62.0)
   - react-native-radar (3.0.0-alpha.1):
-    - RadarSDK (~> 3.0.0-beta.5)
+    - RadarSDK (~> 3.0.0-beta.6)
     - React
   - React-RCTActionSheet (0.62.0):
     - React-Core/RCTActionSheetHeaders (= 0.62.0)
@@ -433,7 +433,7 @@ SPEC CHECKSUMS:
   React-jsi: bc8166d6833cdcb0848c80710b26ce63fad2c099
   React-jsiexecutor: 8bf0b2707f05865113415088c398a7f98c0cf546
   React-jsinspector: 8e5913c4c6c54f0d3f9c9fc630c465a89cded65d
-  react-native-radar: 186abc0506ef666d5d52c80365f2596f80701f0a
+  react-native-radar: 43d708cd1fc7a1abbf545a51e405e06a22215301
   React-RCTActionSheet: 674afbc8b9c76e0a83520e0a51da29a70802c03f
   React-RCTAnimation: f5f24330d09ee677fb49e0782f8321868f4df431
   React-RCTBlob: b773ce6138ab0d172ebd8a455fd4efd200a92549
@@ -447,6 +447,6 @@ SPEC CHECKSUMS:
   Yoga: 9db9ff2025ad21d1ac0a8b3c85d5ac4e7c29d525
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 7b78091ece500e95cf93838ad47528e7e23955bf
+PODFILE CHECKSUM: dbba463ba98f9486072eed435acb2ff318da5a53
 
 COCOAPODS: 1.8.4

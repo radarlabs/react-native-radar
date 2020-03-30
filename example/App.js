@@ -24,13 +24,17 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import Radar from 'react-native-radar';
+import { Radar } from 'react-native-radar';
 
 const App: () => React$Node = () => {
-  Radar.trackOnce().then((result) => {
+  Radar.trackOnce({
+    latitude: 40.783826,
+    longitude: -73.975363,
+    accuracy: 65,
+  }).then((result) => {
     console.log(result);
   }).catch((err) => {
-    consle.error(err);
+    console.log(err);
   });
 
   return (
