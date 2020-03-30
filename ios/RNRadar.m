@@ -133,19 +133,10 @@ RCT_EXPORT_METHOD(getLocation:(RCTPromiseResolveBlock)resolve reject:(RCTPromise
 }
 
 RCT_EXPORT_METHOD(trackOnce:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    CLLocation *location;
-    if (locationDict != nil && [[locationDict class] isKindOfClass:[NSDictionary class]]) {
-        double latitude = [RCTConvert double:locationDict[@"latitude"]];
-        double longitude = [RCTConvert double:locationDict[@"longitude"]];
-        double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
-        NSDate *timestamp = [NSDate new];
-        location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
-    }
-
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar trackOnceWithLocation:location completionHandler:{
+    [Radar trackOnceWithCompletionHandler:{
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -168,14 +159,11 @@ RCT_EXPORT_METHOD(trackOnce:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRe
 }
 
 RCT_EXPORT_METHOD(updateLocation:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    CLLocation *location;
-    if (locationDict != nil && [[locationDict class] isKindOfClass:[NSDictionary class]]) {
-        double latitude = [RCTConvert double:locationDict[@"latitude"]];
-        double longitude = [RCTConvert double:locationDict[@"longitude"]];
-        double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
-        NSDate *timestamp = [NSDate new];
-        location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
-    }
+    double latitude = [RCTConvert double:locationDict[@"latitude"]];
+    double longitude = [RCTConvert double:locationDict[@"longitude"]];
+    double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
+    NSDate *timestamp = [NSDate new];
+    CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
