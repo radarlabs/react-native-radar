@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  react-native: react-native-community/react-native@3.0.1
 jobs:
   node:
     working_directory: ~/react-native-radar
@@ -42,6 +40,7 @@ jobs:
       - restore_cache:
           name: Restore node modules cache
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - run: sudo npm install -g react-native
       - run: yarn install
       - save_cache:
           name: Save node modules cache
@@ -59,6 +58,7 @@ jobs:
       - restore_cache:
           name: Restore node modules cache
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - run: sudo npm install -g react-native
       - run: yarn install
       - save_cache:
           name: Save node modules cache
