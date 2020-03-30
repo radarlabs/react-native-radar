@@ -47,7 +47,7 @@ jobs:
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
             - node_modules
-      - run: ./gradlew assembleDebug
+      - run: cd android && ./gradlew assembleDebug
   ios:
     macos:
       xcode: "11.2.1"
