@@ -35,9 +35,12 @@ const App: () => React$Node = () => {
     latitude: 40.783826,
     longitude: -73.975363,
     accuracy: 65,
+  }, (result) => {
+    console.log(result);
+  }, (err) => {
+    console.error(err);
   });
 
-  /*
   Radar.searchGeofences({
     near: {
       latitude: 40.783826,
@@ -47,12 +50,11 @@ const App: () => React$Node = () => {
     radius: 1000,
     tags: "store",
     limit: 10,
-  }).then((result) => {
+  }, (result) => {
     console.log(result);
-  }).catch((err) => {
-    console.log(err);
+  }, (err) => {
+    console.error(err);
   });
-  */
 
   return (
     <>

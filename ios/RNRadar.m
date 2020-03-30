@@ -168,23 +168,26 @@ RCT_REMAP_METHOD(trackOnce, trackOnceWithLocationDict:(NSDictionary *)locationDi
     }
 }
 
-RCT_EXPORT_METHOD(startTracking:(NSObject *)options) {
-    if (options == nil) {
-        [Radar startTrackingWithOptions:RadarTrackingOptions.efficient];
-    } else if ([[options class] isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *optionsDict = (NSDictionary *)options;
-        RadarTrackingOptions *options = [RadarTrackingOptions trackingOptionsFromDictionary:optionsDict];
-        [Radar startTrackingWithOptions:options];
-    } else if ([[options class] isKindOfClass:[NSString class]]) {
-        NSString *optionsStr = (NSString *)options;
+RCT_EXPORT_METHOD(startTracking) {
+    [Radar startTrackingWithOptions:RadarTrackingOptions.efficient];
+}
+
+RCT_EXPORT_METHOD(startTracking:(NSString *)optionsStr) {
+    if (optionsStr) {
         if ([optionsStr isEqualToString:@"CONTINUOUS"]) {
             [Radar startTrackingWithOptions:RadarTrackingOptions.continuous];
         } else if ([optionsStr isEqualToString:@"RESPONSIVE"]) {
             [Radar startTrackingWithOptions:RadarTrackingOptions.responsive];
-        } else {
-            [Radar startTrackingWithOptions:RadarTrackingOptions.efficient];
         }
+    } else {
+        [Radar startTrackingWithOptions:RadarTrackingOptions.efficient];
     }
+}
+
+RCT_EXPORT_METHOD(startTracking:(NSDictionary *)options) {
+    NSDictionary *optionsDict = (NSDictionary *)options;
+    RadarTrackingOptions *options = [RadarTrackingOptions trackingOptionsFromDictionary:optionsDict];
+    [Radar startTrackingWithOptions:options];
 }
 
 RCT_EXPORT_METHOD(stopTracking) {

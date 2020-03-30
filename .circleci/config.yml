@@ -31,12 +31,12 @@ jobs:
       - store_artifacts:
           path: test-results
   android:
-    working_directory: ~/react-native-radar
+    working_directory: ~/react-native-radar/example
     docker:
       - image: circleci/android:api-28-node
     steps:
       - checkout
-      - run: cd example
+          path: ~/react-native-radar
       - restore_cache:
           name: Restore node modules cache
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -50,10 +50,10 @@ jobs:
   ios:
     macos:
       xcode: "11.2.1"
-    working_directory: ~/react-native-radar
+    working_directory: ~/react-native-radar/example
     steps:
       - checkout
-      - run: cd example
+          path: ~/react-native-radar
       - restore_cache:
           name: Restore node modules cache
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -63,7 +63,7 @@ jobs:
           key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
             - node_modules
-      - run: cd ios && pod install && cd ..
+      - run: cd ios && pod install
       - run: react-native run-ios
 workflows:
   version: 2
