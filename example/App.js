@@ -24,7 +24,15 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import Radar from 'react-native-radar';
+
 const App: () => React$Node = () => {
+  Radar.trackOnce().then((result) => {
+    console.log(result);
+  }).catch((err) => {
+    consle.error(err);
+  });
+
   return (
     <>
       <StatusBar barStyle="dark-content" />

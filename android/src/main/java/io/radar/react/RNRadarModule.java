@@ -196,6 +196,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void startTracking() {
+        Radar.startTracking(RadarTrackingOptions.EFFICIENT);
+    }
+
+    @ReactMethod
+    public void startTracking(String optionsStr) {
+        if (optionsStr.equals("CONTINUOUS")) {
+            Radar.startTracking(RadarTrackingOptions.CONTINUOUS);
+        } else if (optionsStr.equals("RESPONSIVE")) {
+            Radar.startTracking(RadarTrackingOptions.RESPONSIVE);
+        } else {
+            Radar.startTracking(RadarTrackingOptions.EFFICIENT);
+        }
+    }
+
+    @ReactMethod
     public void startTracking(ReadableMap optionsMap) {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);

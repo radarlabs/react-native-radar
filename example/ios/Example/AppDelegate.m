@@ -3,6 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <RadarSDK/RadarSDK.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -30,6 +31,8 @@ static void InitializeFlipper(UIApplication *application) {
 #if DEBUG
   InitializeFlipper(application);
 #endif
+
+  [Radar initializeWithPublishableKey:@"prj_test_pk_0000000000000000000000000000000000000000"];
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
