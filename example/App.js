@@ -24,18 +24,35 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { Radar } from 'react-native-radar';
+import Radar from 'react-native-radar';
 
 const App: () => React$Node = () => {
+  Radar.setUserId("foo");
+
+  Radar.requestPermissions(true);
+
   Radar.trackOnce({
     latitude: 40.783826,
     longitude: -73.975363,
     accuracy: 65,
+  });
+
+  /*
+  Radar.searchGeofences({
+    near: {
+      latitude: 40.783826,
+      longitude: -73.975363,
+      accuracy: 65,
+    },
+    radius: 1000,
+    tags: "store",
+    limit: 10,
   }).then((result) => {
     console.log(result);
   }).catch((err) => {
     console.log(err);
   });
+  */
 
   return (
     <>

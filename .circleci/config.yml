@@ -36,12 +36,35 @@ jobs:
       - image: circleci/android:api-28-node
     steps:
       - checkout
+      - run: cd example
+      - restore_cache:
+          name: Restore node modules cache
+          key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - run: yarn install
+      - save_cache:
+          name: Save node modules cache
+          key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - node_modules
+      - run: react-native run-android
   ios:
     macos:
       xcode: "11.2.1"
     working_directory: ~/react-native-radar
     steps:
       - checkout
+      - run: cd example
+      - restore_cache:
+          name: Restore node modules cache
+          key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - run: yarn install
+      - save_cache:
+          name: Save node modules cache
+          key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - node_modules
+      - run: cd ios && pod install && cd ..
+      - run: react-native run-ios
 workflows:
   version: 2
   node-android-ios:
