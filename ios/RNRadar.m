@@ -167,7 +167,7 @@ RCT_EXPORT_METHOD(trackOnce:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRe
     }];
 }
 
-RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(updateLocation:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLLocation *location;
     if (locationDict != nil && [[locationDict class] isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:locationDict[@"latitude"]];

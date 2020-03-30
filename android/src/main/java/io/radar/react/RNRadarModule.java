@@ -155,7 +155,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void trackOnce(ReadableMap locationMap, final Promise promise) {
+    public void updateLocation(ReadableMap locationMap, final Promise promise) {
         double latitude = locationMap.getDouble("latitude");
         double longitude = locationMap.getDouble("longitude");
         float accuracy = (float)locationMap.getDouble("accuracy");

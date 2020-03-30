@@ -37,7 +37,6 @@ const App: () => React$Node = () => {
     console.error(err);
   });
 
-  /*
   Radar.trackOnce({
     latitude: 40.783826,
     longitude: -73.975363,
@@ -47,7 +46,6 @@ const App: () => React$Node = () => {
   }).catch((err) => {
     console.error(err);
   });
-  */
 
   /*
   Radar.ipGeocode().then((result) => {
@@ -65,7 +63,7 @@ const App: () => React$Node = () => {
       accuracy: 65,
     },
     radius: 1000,
-    tags: "store",
+    tags: ["store"],
     limit: 10,
   }, (result) => {
     console.log(result);
