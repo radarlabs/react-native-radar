@@ -84,7 +84,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         if (activity != null) {
             if (Build.VERSION.SDK_INT >= 23) {
                 int requestCode = 0;
-                if (Build.VERSION.SDK_INT >= 29) {
+                if (background && Build.VERSION.SDK_INT >= 29) {
                     ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION }, requestCode);
                 } else {
                     ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, requestCode);
