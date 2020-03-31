@@ -560,7 +560,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         location.setLatitude(latitude);
         location.setLongitude(longitude);
 
-        Radar.reverseGeocode(new Radar.RadarGeocodeCallback() {
+        Radar.reverseGeocode(location, new Radar.RadarGeocodeCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
