@@ -27,7 +27,7 @@ import {
 import Radar from 'react-native-radar';
 
 const stringify = obj => (
-  JSON.stringify(result, null, 2)
+  JSON.stringify(obj, null, 2)
 );
 
 Radar.on('events', (result) => {
