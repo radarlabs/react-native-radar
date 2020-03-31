@@ -279,11 +279,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
         double latitude = locationMap.getDouble("latitude");
         double longitude = locationMap.getDouble("longitude");
-        float accuracy = (float)locationMap.getDouble("accuracy");
         Location location = new Location("RNRadarModule");
         location.setLatitude(latitude);
         location.setLongitude(longitude);
-        location.setAccuracy(accuracy);
 
         Radar.getContext(location, new Radar.RadarContextCallback() {
             @Override
@@ -324,11 +322,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             near.setLatitude(latitude);
             near.setLongitude(longitude);
         }
-        int radius = optionsMap.getInt("radius");
-        String[] chains = RNRadarUtils.stringArrayForArray(optionsMap.getArray("chains"));
-        String[] categories = RNRadarUtils.stringArrayForArray(optionsMap.getArray("categories"));
-        String[] groups = RNRadarUtils.stringArrayForArray(optionsMap.getArray("groups"));
-        int limit = optionsMap.getInt("limit");
+        int radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : 1000;
+        String[] chains = optionsMap.hasKey("chains") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("chains")) : null;
+        String[] categories = optionsMap.hasKey("categories") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("categories")) : null;
+        String[] groups = optionsMap.hasKey("groups") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("groups")) : null;
+        int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
         Radar.RadarSearchPlacesCallback callback = new Radar.RadarSearchPlacesCallback() {
             @Override
@@ -375,9 +373,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             near.setLatitude(latitude);
             near.setLongitude(longitude);
         }
-        int radius = optionsMap.getInt("radius");
-        String[] tags = RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags"));
-        int limit = optionsMap.getInt("limit");
+        int radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : 1000;
+        String[] tags = optionsMap.hasKey("tags") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags")) : null;
+        int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
         Radar.RadarSearchGeofencesCallback callback = new Radar.RadarSearchGeofencesCallback() {
             @Override
@@ -424,9 +422,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             near.setLatitude(latitude);
             near.setLongitude(longitude);
         }
-        int radius = optionsMap.getInt("radius");
-        String[] tags = RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags"));
-        int limit = optionsMap.getInt("limit");
+        int radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : 1000;
+        String[] tags = optionsMap.hasKey("tags") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags")) : null;
+        int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
         Radar.RadarSearchPointsCallback callback = new Radar.RadarSearchPointsCallback() {
             @Override
@@ -472,12 +470,17 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             return;
         }
 
+        if (!nearMap.hasKey("latitude") || !nearMap.hasKey("longitude")) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+
+            return;
+        }
         double latitude = nearMap.getDouble("latitude");
         double longitude = nearMap.getDouble("longitude");
         Location near = new Location("RNRadarModule");
         near.setLatitude(latitude);
         near.setLongitude(longitude);
-        int limit = optionsMap.getInt("limit");
+        int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
         Radar.autocomplete(query, near, limit, new Radar.RadarGeocodeCallback() {
             @Override
@@ -560,6 +563,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             return;
         }
 
+        if (!locationMap.hasKey("latitude") || !locationMap.hasKey("longitude")) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+
+            return;
+        }
         double latitude = locationMap.getDouble("latitude");
         double longitude = locationMap.getDouble("longitude");
         Location location = new Location("RNRadarModule");
@@ -629,12 +637,18 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
         ReadableMap originMap = optionsMap.getMap("origin");
         Location origin = null;
-        if (originMap != null) {
+        if (originMap != null && originMap.hasKey("latitude") && originMap.hasKey("longitude")) {
             double latitude = originMap.getDouble("latitude");
             double longitude = originMap.getDouble("longitude");
             origin = new Location("RNRadarModule");
             origin.setLatitude(latitude);
             origin.setLongitude(longitude);
+        }
+
+        if (!destinationMap.hasKey("latitude") || !destinationMap.hasKey("longitude")) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+
+            return;
         }
         double latitude = destinationMap.getDouble("latitude");
         double longitude = destinationMap.getDouble("longitude");

@@ -32,8 +32,8 @@ jobs:
           name: Build example
           command: |
             cd example
-            yarn install
-            npm install -g react-native
+            sudo yarn install
+            sudo npm install -g react-native
             cd android
             ./gradlew assembleDebug
   ios:
@@ -46,8 +46,8 @@ jobs:
           name: Build example
           command: |
             cd example
-            yarn install
-            npm install -g react-native
+            sudo yarn install
+            sudo npm install -g react-native
             pod install
             react-native run-ios
 workflows:
