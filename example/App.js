@@ -67,7 +67,7 @@ const App: () => React$Node = () => {
   });
 
   Radar.getLocation().then((result) => {
-    console.log('getLocation:', result);
+    console.log('getLocation:', stringify(result));
   }).catch((err) => {
     console.log('getLocation:', err);
   });
