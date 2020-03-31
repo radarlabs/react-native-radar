@@ -196,11 +196,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startTracking() {
-        Radar.startTracking(RadarTrackingOptions.EFFICIENT);
-    }
-
-    @ReactMethod
     public void startTrackingEfficient() {
         Radar.startTracking(RadarTrackingOptions.EFFICIENT);
     }

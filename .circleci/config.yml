@@ -34,6 +34,7 @@ jobs:
             cd example
             sudo yarn install
             sudo npm install -g react-native
+            chmod -R +w android
             cd android
             ./gradlew assembleDebug
   ios:
