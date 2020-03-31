@@ -2,6 +2,7 @@ package io.radar.react;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -24,6 +25,7 @@ public class RNRadarReceiver extends RadarReceiver {
     private ReactNativeHost reactNativeHost;
     private PendingResult result;
     private AtomicInteger pendingCount = new AtomicInteger(0);
+    private static final String TAG = "RNRadarReceiver";
 
     private void invokeSendEvent(ReactContext reactContext, String eventName, Object data) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
@@ -67,7 +69,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
             sendEvent("events", map);
         } catch (Exception e) {
-
+            Log.e(TAG, "exception handling events:", e);
         }
     }
 
@@ -83,7 +85,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
             sendEvent("location", map);
         } catch (Exception e) {
-
+            Log.e(TAG, "exception handling location:", e);
         }
     }
 
@@ -100,7 +102,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
             sendEvent("clientLocation", map);
         } catch (Exception e) {
-
+            Log.e(TAG, "exception handling clientLocation:", e);
         }
     }
 
@@ -112,7 +114,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
             sendEvent("error", status.toString());
         } catch (Exception e) {
-
+            Log.e(TAG, "exception handling error:", e);
         }
     }
 
@@ -124,7 +126,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
             sendEvent("message", message);
         } catch (Exception e) {
-
+            Log.e(TAG, "exception handling log:", e);
         }
     }
 
