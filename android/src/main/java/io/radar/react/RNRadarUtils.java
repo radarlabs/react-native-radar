@@ -37,7 +37,10 @@ class RNRadarUtils {
             } else if (value instanceof Double) {
                 writableMap.putDouble(key, (Double)value);
             } else if (value instanceof String)  {
-                writableMap.putString(key, (String)value);
+                String valueStr = (String)value;
+                if (valueStr.trim().length() > 0) {
+                    writableMap.putString(key, (String)value);
+                }
             }
         }
         return writableMap;
@@ -62,7 +65,10 @@ class RNRadarUtils {
             } else if (value instanceof Double) {
                 writableArr.pushDouble((Double)value);
             } else if (value instanceof String)  {
-                writableArr.pushString((String)value);
+                String valueStr = (String)value;
+                if (valueStr.trim().length() > 0) {
+                    writableArr.pushString((String) value);
+                }
             }
         }
         return writableArr;
