@@ -70,7 +70,7 @@ PODS:
   - OpenSSL-Universal (1.0.2.19):
     - OpenSSL-Universal/Static (= 1.0.2.19)
   - OpenSSL-Universal/Static (1.0.2.19)
-  - RadarSDK (3.0.0-beta.6)
+  - RadarSDK (3.0.0)
   - RCTRequired (0.62.0)
   - RCTTypeSafety (0.62.0):
     - FBLazyVector (= 0.62.0)
@@ -234,8 +234,8 @@ PODS:
     - React-cxxreact (= 0.62.0)
     - React-jsi (= 0.62.0)
   - React-jsinspector (0.62.0)
-  - react-native-radar (3.0.0-alpha.1):
-    - RadarSDK (~> 3.0.0-beta.6)
+  - react-native-radar (3.0.0-beta.1):
+    - RadarSDK (~> 3.0.0)
     - React
   - React-RCTActionSheet (0.62.0):
     - React-Core/RCTActionSheetHeaders (= 0.62.0)
