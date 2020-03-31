@@ -320,11 +320,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         if (nearMap != null) {
             double latitude = nearMap.getDouble("latitude");
             double longitude = nearMap.getDouble("longitude");
-            float accuracy = (float)nearMap.getDouble("accuracy");
             near = new Location("RNRadarModule");
             near.setLatitude(latitude);
             near.setLongitude(longitude);
-            near.setAccuracy(accuracy);
         }
         int radius = optionsMap.getInt("radius");
         String[] chains = RNRadarUtils.stringArrayForArray(optionsMap.getArray("chains"));
@@ -373,11 +371,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         if (nearMap != null) {
             double latitude = nearMap.getDouble("latitude");
             double longitude = nearMap.getDouble("longitude");
-            float accuracy = (float)nearMap.getDouble("accuracy");
             near = new Location("RNRadarModule");
             near.setLatitude(latitude);
             near.setLongitude(longitude);
-            near.setAccuracy(accuracy);
         }
         int radius = optionsMap.getInt("radius");
         String[] tags = RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags"));
@@ -424,11 +420,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         if (nearMap != null) {
             double latitude = nearMap.getDouble("latitude");
             double longitude = nearMap.getDouble("longitude");
-            float accuracy = (float)nearMap.getDouble("accuracy");
             near = new Location("RNRadarModule");
             near.setLatitude(latitude);
             near.setLongitude(longitude);
-            near.setAccuracy(accuracy);
         }
         int radius = optionsMap.getInt("radius");
         String[] tags = RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags"));
@@ -480,11 +474,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
         double latitude = nearMap.getDouble("latitude");
         double longitude = nearMap.getDouble("longitude");
-        float accuracy = (float)nearMap.getDouble("accuracy");
         Location near = new Location("RNRadarModule");
         near.setLatitude(latitude);
         near.setLongitude(longitude);
-        near.setAccuracy(accuracy);
         int limit = optionsMap.getInt("limit");
 
         Radar.autocomplete(query, near, limit, new Radar.RadarGeocodeCallback() {
@@ -570,11 +562,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
         double latitude = locationMap.getDouble("latitude");
         double longitude = locationMap.getDouble("longitude");
-        float accuracy = (float)locationMap.getDouble("accuracy");
         Location location = new Location("RNRadarModule");
         location.setLatitude(latitude);
         location.setLongitude(longitude);
-        location.setAccuracy(accuracy);
 
         Radar.reverseGeocode(new Radar.RadarGeocodeCallback() {
             @Override
@@ -642,19 +632,15 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         if (originMap != null) {
             double latitude = originMap.getDouble("latitude");
             double longitude = originMap.getDouble("longitude");
-            float accuracy = (float)originMap.getDouble("accuracy");
             origin = new Location("RNRadarModule");
             origin.setLatitude(latitude);
             origin.setLongitude(longitude);
-            origin.setAccuracy(accuracy);
         }
         double latitude = destinationMap.getDouble("latitude");
         double longitude = destinationMap.getDouble("longitude");
-        float accuracy = (float)destinationMap.getDouble("accuracy");
         Location destination = new Location("RNRadarModule");
         destination.setLatitude(latitude);
         destination.setLongitude(longitude);
-        destination.setAccuracy(accuracy);
         String[] modesArr = RNRadarUtils.stringArrayForArray(optionsMap.getArray("modes"));
         EnumSet<Radar.RadarRouteMode> modes = EnumSet.noneOf(Radar.RadarRouteMode.class);
         for (String modeStr : modesArr) {
