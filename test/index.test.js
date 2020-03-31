@@ -96,7 +96,7 @@ describe('calls native implementation', () => {
     expect(mockModule.trackOnce).toHaveBeenCalledTimes(1);
   });
 
-  test('trackOnce(location)', () => {
+  test('updateLocation', () => {
     const location = {
       latitude: 40.783826,
       longitude: -73.975363,
@@ -174,12 +174,6 @@ describe('calls native implementation', () => {
   });
 
   test('getContext', () => {
-    Radar.getContext();
-
-    expect(mockModule.getContext).toHaveBeenCalledTimes(1);
-  });
-
-  test('getContext(location)', () => {
     const location = {
       latitude: 40.783826,
       longitude: -73.975363,
@@ -248,33 +242,29 @@ describe('calls native implementation', () => {
       },
       limit: 10,
     };
-    Radar.searchPoints(options);
+    Radar.autocomplete(options);
 
-    expect(mockModule.searchPoints).toHaveBeenCalledTimes(1);
-    expect(mockModule.searchPoints).toBeCalledWith(options);
+    expect(mockModule.autocomplete).toHaveBeenCalledTimes(1);
+    expect(mockModule.autocomplete).toBeCalledWith(options);
   });
 
   test('geocode', () => {
-    const options = {
-      query: '20 jay st brooklyn',
-    };
-    Radar.geocode(options);
+    const query = '20 jay st brooklyn';
+    Radar.geocode(query);
 
     expect(mockModule.geocode).toHaveBeenCalledTimes(1);
-    expect(mockModule.geocode).toBeCalledWith(options);
+    expect(mockModule.geocode).toBeCalledWith(query);
   });
 
   test('reverseGeocode', () => {
-    const options = {
-      location: {
-        latitude: 40.783826,
-        longitude: -73.975363,
-      },
+    const location = {
+      latitude: 40.783826,
+      longitude: -73.975363,
     };
-    Radar.reverseGeocode(options);
+    Radar.reverseGeocode(location);
 
     expect(mockModule.reverseGeocode).toHaveBeenCalledTimes(1);
-    expect(mockModule.reverseGeocode).toBeCalledWith(options);
+    expect(mockModule.reverseGeocode).toBeCalledWith(location);
   });
 
   test('ipGeocode', () => {

@@ -231,7 +231,7 @@ RCT_EXPORT_METHOD(getContext:(NSDictionary *)locationDict resolve:(RCTPromiseRes
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    __block RadarContextCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, RadarContext * _Nullable context) {
+    RadarContextCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, RadarContext * _Nullable context) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -259,7 +259,7 @@ RCT_EXPORT_METHOD(getContext:(NSDictionary *)locationDict resolve:(RCTPromiseRes
 RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
-            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+            reject([Radar stringForStatus:RadarStatusErrorUnknown], [Radar stringForStatus:RadarStatusErrorUnknown], nil);
         }
 
         return;
@@ -294,7 +294,7 @@ RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    __block RadarSearchPlacesCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarPlace *> * _Nullable places) {
+    RadarSearchPlacesCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarPlace *> * _Nullable places) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -322,7 +322,7 @@ RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
 RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
-            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+            reject([Radar stringForStatus:RadarStatusErrorUnknown], [Radar stringForStatus:RadarStatusErrorUnknown], nil);
         }
 
         return;
@@ -355,7 +355,7 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    __block RadarSearchGeofencesCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarGeofence *> * _Nullable geofences) {
+    RadarSearchGeofencesCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarGeofence *> * _Nullable geofences) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -383,7 +383,7 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
 RCT_EXPORT_METHOD(searchPoints:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
-            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+            reject([Radar stringForStatus:RadarStatusErrorUnknown], [Radar stringForStatus:RadarStatusErrorUnknown], nil);
         }
 
         return;
@@ -444,7 +444,7 @@ RCT_EXPORT_METHOD(searchPoints:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
 RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
-            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+            reject([Radar stringForStatus:RadarStatusErrorUnknown], [Radar stringForStatus:RadarStatusErrorUnknown], nil);
         }
 
         return;
@@ -523,7 +523,7 @@ RCT_EXPORT_METHOD(reverseGeocode:(NSDictionary *)locationDict resolve:(RCTPromis
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    __block RadarGeocodeCompletionHandler completionHandler = ^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
+    RadarGeocodeCompletionHandler completionHandler = ^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -568,7 +568,7 @@ RCT_EXPORT_METHOD(ipGeocode:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRe
 RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
-            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+            reject([Radar stringForStatus:RadarStatusErrorUnknown], [Radar stringForStatus:RadarStatusErrorUnknown], nil);
         }
 
         return;
@@ -624,7 +624,7 @@ RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseRes
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    __block RadarRouteCompletionHandler completionHandler = ^(RadarStatus status, RadarRoutes * _Nullable routes) {
+    RadarRouteCompletionHandler completionHandler = ^(RadarStatus status, RadarRoutes * _Nullable routes) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
