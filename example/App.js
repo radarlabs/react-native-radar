@@ -48,17 +48,7 @@ const App: () => React$Node = () => {
     console.log('trackOnce:', err);
   });
 
-  /*
-  Radar.trackOnce({
-    latitude: 40.783826,
-    longitude: -73.975363,
-    accuracy: 65,
-  }).then((result) => {
-    console.log('updateLocation:', JSON.stringify(result, null, 2));
-  }).catch((err) => {
-    console.log('updateLocation:', err);
-  });
-  */
+  Radar.startTrackingContinuous();
 
   Radar.searchPlaces({
     near: {
