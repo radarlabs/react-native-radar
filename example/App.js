@@ -29,8 +29,9 @@ import Radar from 'react-native-radar';
 const App: () => React$Node = () => {
   Radar.setUserId("foo");
   Radar.setMetadata({
-    bar: 'baz',
-    'qux': true
+    foo: 'bar',
+    baz: true,
+    qux: 1,
   });
 
   Radar.requestPermissions(true);
@@ -38,13 +39,13 @@ const App: () => React$Node = () => {
   Radar.getPermissionsStatus().then((result) => {
     console.log('getPermissionsStatus:', result);
   }).catch((err) => {
-    console.log(err);
+    console.log('getPermissionsStatus:', err);
   });
 
   Radar.trackOnce().then((result) => {
     console.log('trackOnce:', JSON.stringify(result, null, 2));
   }).catch((err) => {
-    console.log(err);
+    console.log('trackOnce:', err);
   });
 
   /*
@@ -55,7 +56,7 @@ const App: () => React$Node = () => {
   }).then((result) => {
     console.log('updateLocation:', JSON.stringify(result, null, 2));
   }).catch((err) => {
-    console.log(err);
+    console.log('updateLocation:', err);
   });
   */
 
@@ -70,7 +71,7 @@ const App: () => React$Node = () => {
   }).then((result) => {
     console.log('searchPlaces:', JSON.stringify(result, null, 2));
   }).catch((err) => {
-    console.log(err);
+    console.log('searchPlaces:', err);
   });
 
   Radar.searchGeofences({
@@ -79,8 +80,8 @@ const App: () => React$Node = () => {
     limit: 10,
   }).then((result) => {
     console.log('searchGeofences:', JSON.stringify(result, null, 2));
-  }.catch((err) => {
-    console.log(err);
+  }).catch((err) => {
+    console.log('searchGeofences:', err);
   });
 
   Radar.autocomplete({
@@ -93,13 +94,13 @@ const App: () => React$Node = () => {
   }).then((result) => {
     console.log('autocomplete:', JSON.stringify(result, null, 2));
   }).catch((err) => {
-    console.log(err);
+    console.log('autocomplete:', err);
   });
 
   Radar.geocode('20 jay st brooklyn').then((result) => {
     console.log('geocode:', JSON.stringify(result, null, 2));
   }).catch((err) => {
-    console.log(err);
+    console.log('geocode:', err);
   });
 
   Radar.reverseGeocode({
@@ -108,13 +109,13 @@ const App: () => React$Node = () => {
   }).then((result) => {
     console.log('reverseGeocode:', JSON.stringify(result, null, 2));
   }).catch((err) => {
-    console.log(err);
+    console.log('reverseGeocode:', err);
   });
 
   Radar.ipGeocode().then((result) => {
     console.log('ipGeocode:', JSON.stringify(result, null, 2));
   }).catch((err) => {
-    console.log(err);
+    console.log('ipGeocode:', err);
   });
 
   Radar.getDistance({
@@ -134,7 +135,7 @@ const App: () => React$Node = () => {
   }).then((result) => {
     console.log('getDistance:', JSON.stringify(result, null, 2));
   }).catch((err) => {
-    console.log(err);
+    console.log('getDistance:', err);
   });
 
   return (

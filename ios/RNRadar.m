@@ -265,7 +265,7 @@ RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         return;
     }
 
-    NSDictionary *nearDict = [optionsDict valueForKey:@"near"];
+    NSDictionary *nearDict = optionsDict[@"near"];
     CLLocation *near;
     if (nearDict != nil && [[nearDict class] isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:nearDict[@"latitude"]];
@@ -273,17 +273,17 @@ RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         NSDate *timestamp = [NSDate new];
         near = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
     }
-    NSNumber *radiusNumber = [optionsDict valueForKey:@"radius"];
+    NSNumber *radiusNumber = optionsDict[@"radius"];
     int radius;
     if (radiusNumber != nil && [[radiusNumber class] isKindOfClass:[NSNumber class]]) {
         radius = [radiusNumber intValue];
     } else {
         radius = 1000;
     }
-    NSArray *chains = [optionsDict valueForKey:@"chains"];
-    NSArray *categories = [optionsDict valueForKey:@"categories"];
-    NSArray *groups = [optionsDict valueForKey:@"groups"];
-    NSNumber *limitNumber = [optionsDict valueForKey:@"limit"];
+    NSArray *chains = optionsDict[@"chains"];
+    NSArray *categories = optionsDict[@"categories"];
+    NSArray *groups = optionsDict[@"groups"];
+    NSNumber *limitNumber = optionsDict[@"limit"];
     int limit;
     if (limitNumber != nil && [[limitNumber class] isKindOfClass:[NSNumber class]]) {
         limit = [limitNumber intValue];
@@ -328,7 +328,7 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
         return;
     }
 
-    NSDictionary *nearDict = [optionsDict valueForKey:@"near"];
+    NSDictionary *nearDict = optionsDict[@"near"];
     CLLocation *near;
     if (nearDict != nil && [[nearDict class] isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:nearDict[@"latitude"]];
@@ -336,15 +336,15 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
         NSDate *timestamp = [NSDate new];
         near = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
     }
-    NSNumber *radiusNumber = [optionsDict valueForKey:@"radius"];
+    NSNumber *radiusNumber = optionsDict[@"radius"];
     int radius;
     if (radiusNumber != nil && [[radiusNumber class] isKindOfClass:[NSNumber class]]) {
         radius = [radiusNumber intValue];
     } else {
         radius = 1000;
     }
-    NSArray *tags = [optionsDict valueForKey:@"tags"];
-    NSNumber *limitNumber = [optionsDict valueForKey:@"limit"];
+    NSArray *tags = optionsDict[@"tags"];
+    NSNumber *limitNumber = optionsDict[@"limit"];
     int limit;
     if (limitNumber != nil && [[limitNumber class] isKindOfClass:[NSNumber class]]) {
         limit = [limitNumber intValue];
@@ -389,7 +389,7 @@ RCT_EXPORT_METHOD(searchPoints:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         return;
     }
 
-    NSDictionary *nearDict = [optionsDict valueForKey:@"near"];
+    NSDictionary *nearDict = optionsDict[@"near"];
     CLLocation *near;
     if (nearDict != nil && [[nearDict class] isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:nearDict[@"latitude"]];
@@ -397,15 +397,15 @@ RCT_EXPORT_METHOD(searchPoints:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         NSDate *timestamp = [NSDate new];
         near = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
     }
-    NSNumber *radiusNumber = [optionsDict valueForKey:@"radius"];
+    NSNumber *radiusNumber = optionsDict[@"radius"];
     int radius;
     if (radiusNumber != nil && [[radiusNumber class] isKindOfClass:[NSNumber class]]) {
         radius = [radiusNumber intValue];
     } else {
         radius = 1000;
     }
-    NSArray *tags = [optionsDict valueForKey:@"tags"];
-    NSNumber *limitNumber = [optionsDict valueForKey:@"limit"];
+    NSArray *tags = optionsDict[@"tags"];
+    NSNumber *limitNumber = optionsDict[@"limit"];
     int limit;
     if (limitNumber != nil && [[limitNumber class] isKindOfClass:[NSNumber class]]) {
         limit = [limitNumber intValue];
@@ -450,7 +450,7 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         return;
     }
 
-    NSDictionary *nearDict = [optionsDict valueForKey:@"near"];
+    NSDictionary *nearDict = optionsDict[@"near"];
     if (nearDict == nil || ![[nearDict class] isKindOfClass:[NSDictionary class]]) {
         if (reject) {
             reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
@@ -459,12 +459,12 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         return;
     }
 
-    NSString *query = [optionsDict valueForKey:@"query"];
+    NSString *query = optionsDict[@"query"];
     double latitude = [RCTConvert double:nearDict[@"latitude"]];
     double longitude = [RCTConvert double:nearDict[@"longitude"]];
     NSDate *timestamp = [NSDate new];
     CLLocation *near = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
-    NSNumber *limitNumber = [optionsDict valueForKey:@"limit"];
+    NSNumber *limitNumber = optionsDict[@"limit"];
     int limit;
     if (limitNumber != nil && [[limitNumber class] isKindOfClass:[NSNumber class]]) {
         limit = [limitNumber intValue];
@@ -574,7 +574,7 @@ RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseRes
         return;
     }
 
-    NSDictionary *destinationDict = [optionsDict valueForKey:@"destination"];
+    NSDictionary *destinationDict = optionsDict[@"destination"];
     if (destinationDict == nil || ![[destinationDict class] isKindOfClass:[NSDictionary class]]) {
         if (reject) {
             reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
@@ -583,7 +583,7 @@ RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseRes
         return;
     }
 
-    NSDictionary *originDict = [optionsDict valueForKey:@"origin"];
+    NSDictionary *originDict = optionsDict[@"origin"];
     CLLocation *origin;
     if (originDict != nil && [[originDict class] isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:originDict[@"latitude"]];
@@ -595,7 +595,7 @@ RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseRes
     double longitude = [RCTConvert double:destinationDict[@"longitude"]];
     NSDate *timestamp = [NSDate new];
     CLLocation *destination = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
-    NSArray *modesArr = [optionsDict valueForKey:@"modes"];
+    NSArray *modesArr = optionsDict[@"modes"];
     RadarRouteMode modes = 0;
     if (modesArr != nil && [[modesArr class] isKindOfClass:[NSArray class]]) {
         if ([modesArr containsObject:@"FOOT"]) {
@@ -613,7 +613,7 @@ RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseRes
     } else {
         modes = RadarRouteModeCar;
     }
-    NSString *unitsStr = [optionsDict valueForKey:@"units"];
+    NSString *unitsStr = optionsDict[@"units"];
     RadarRouteUnits units;
     if (unitsStr != nil && [[unitsStr class] isKindOfClass:[NSString class]]) {
         units = [unitsStr isEqualToString:@"METRIC"] ? RadarRouteUnitsMetric : RadarRouteUnitsImperial;
