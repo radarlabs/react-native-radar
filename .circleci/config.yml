@@ -38,7 +38,8 @@ jobs:
       xcode: "11.2.1"
     working_directory: ~/react-native-radar/example
     steps:
-      - checkout
+      - checkout:
+          path: ~/react-native/radar
       - run: yarn install
       - run: sudo npm install -g react-native
       - run: cd ios && pod install
