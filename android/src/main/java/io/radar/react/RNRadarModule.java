@@ -253,7 +253,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                             map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
                         }
                         if (context != null) {
-                            map.putMap("user", RNRadarUtils.mapForJson(context.toJson()));
+                            map.putMap("context", RNRadarUtils.mapForJson(context.toJson()));
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
@@ -456,7 +456,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         if (promise == null) {
             return;
         }
-
 
         if (!optionsMap.hasKey("query") || !optionsMap.hasKey("near")) {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());

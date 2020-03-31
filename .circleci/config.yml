@@ -30,7 +30,7 @@ jobs:
       - checkout:
           path: ~/react-native-radar
       - run: yarn install
-      - run: sudo npm install -g react-native
+      - run: sudo yarn global add react-native
       - run: chown -R $USER:$USER android
       - run: cd android && ./gradlew assembleDebug
   ios:
@@ -41,7 +41,7 @@ jobs:
       - checkout:
           path: ~/react-native-radar
       - run: yarn install
-      - run: sudo npm install -g react-native
+      - run: sudo yarn global add react-native
       - run: cd ios && pod install
       - run: react-native run-ios
 workflows:

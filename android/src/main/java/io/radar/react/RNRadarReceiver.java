@@ -118,7 +118,14 @@ public class RNRadarReceiver extends RadarReceiver {
 
     @Override
     public void onLog(@NonNull Context context, @NonNull String message) {
+        try {
+            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            reactNativeHost = reactApplication.getReactNativeHost();
 
+            sendEvent("message", message);
+        } catch (Exception e) {
+
+        }
     }
 
 }

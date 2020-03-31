@@ -29,7 +29,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"events", @"location", @"clientLocation", @"error"];
+    return @[@"events", @"location", @"clientLocation", @"error", @"log"];
 }
 
 - (void)startObserving {
@@ -42,19 +42,30 @@ RCT_EXPORT_MODULE();
 
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser *)user {
     if (hasListeners) {
-        [self sendEventWithName:@"events" body:@{@"events": [RadarEvent arrayForEvents:events], @"user": [user dictionaryValue]}];
+        [self sendEventWithName:@"events" body:@{
+            @"events": [RadarEvent arrayForEvents:events],
+            @"user": [user dictionaryValue]
+
+        }];
     }
 }
 
 - (void)didUpdateLocation:(CLLocation *)location user:(RadarUser *)user {
     if (hasListeners) {
-        [self sendEventWithName:@"location" body:@{@"location": [Radar dictionaryForLocation:location], @"user": [user dictionaryValue]}];
+        [self sendEventWithName:@"location" body:@{
+            @"location": [Radar dictionaryForLocation:location],
+            @"user": [user dictionaryValue]
+        }];
     }
 }
 
 - (void)didUpdateClientLocation:(CLLocation *)location stopped:(BOOL)stopped source:(RadarLocationSource)source {
     if (hasListeners) {
-        [self sendEventWithName:@"clientLocation" body:@{@"location": [Radar dictionaryForLocation:location], @"stopped": @(stopped), @"source": [Radar stringForSource:source]}];
+        [self sendEventWithName:@"clientLocation" body:@{
+            @"location": [Radar dictionaryForLocation:location],
+            @"stopped": @(stopped),
+            @"source": [Radar stringForSource:source]
+        }];
     }
 }
 
@@ -65,7 +76,11 @@ RCT_EXPORT_MODULE();
 }
 
 - (void)didLogMessage:(NSString *)message {
-
+    if (hasListeners) {
+        [self sendEventWithName:@"log" body:@{
+            @"message": message
+        }];
+    }
 }
 
 RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {
