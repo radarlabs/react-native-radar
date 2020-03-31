@@ -31,7 +31,7 @@ jobs:
           path: ~/react-native-radar
       - run: sudo yarn install
       - run: sudo npm install -g react-native
-      - run: cd android && ./gradlew assembleDebug
+      - run: cd android && sudo ./gradlew assembleDebug
   ios:
     macos:
       xcode: "11.2.1"
