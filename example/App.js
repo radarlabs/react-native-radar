@@ -66,6 +66,12 @@ const App: () => React$Node = () => {
     console.log('getPermissionsStatus:', err);
   });
 
+  Radar.getLocation().then((result) => {
+    console.log('getLocation:', result);
+  }).catch((err) => {
+    console.log('getLocation:', err);
+  });
+
   Radar.trackOnce().then((result) => {
     console.log('trackOnce:', stringify(result));
   }).catch((err) => {
