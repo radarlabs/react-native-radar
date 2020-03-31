@@ -308,9 +308,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        ReadableMap nearMap = optionsMap.getMap("near");
         Location near = null;
-        if (nearMap != null) {
+        if (optionsMap.hasKey("near")) {
+            ReadableMap nearMap = optionsMap.getMap("near");
             double latitude = nearMap.getDouble("latitude");
             double longitude = nearMap.getDouble("longitude");
             near = new Location("RNRadarModule");
@@ -359,9 +359,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        ReadableMap nearMap = optionsMap.getMap("near");
         Location near = null;
-        if (nearMap != null) {
+        if (optionsMap.hasKey("near")) {
+            ReadableMap nearMap = optionsMap.getMap("near");
             double latitude = nearMap.getDouble("latitude");
             double longitude = nearMap.getDouble("longitude");
             near = new Location("RNRadarModule");
@@ -408,9 +408,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        ReadableMap nearMap = optionsMap.getMap("near");
         Location near = null;
-        if (nearMap != null) {
+        if (optionsMap.hasKey("near")) {
+            ReadableMap nearMap = optionsMap.getMap("near");
             double latitude = nearMap.getDouble("latitude");
             double longitude = nearMap.getDouble("longitude");
             near = new Location("RNRadarModule");
@@ -457,14 +457,15 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        String query = optionsMap.getString("query");
-        ReadableMap nearMap = optionsMap.getMap("near");
-        if (query == null || nearMap == null) {
+
+        if (!optionsMap.hasKey("query") || !optionsMap.hasKey("near")) {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
 
             return;
         }
 
+        String query = optionsMap.getString("query");
+        ReadableMap nearMap = optionsMap.getMap("near");
         double latitude = nearMap.getDouble("latitude");
         double longitude = nearMap.getDouble("longitude");
         Location near = new Location("RNRadarModule");
@@ -613,8 +614,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        ReadableMap destinationMap = optionsMap.getMap("near");
-        if (destinationMap == null) {
+        if (!optionsMap.hasKey("destination")) {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
 
             return;
@@ -629,6 +629,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             origin.setLatitude(latitude);
             origin.setLongitude(longitude);
         }
+        ReadableMap destinationMap = optionsMap.getMap("destination");
         double latitude = destinationMap.getDouble("latitude");
         double longitude = destinationMap.getDouble("longitude");
         Location destination = new Location("RNRadarModule");
