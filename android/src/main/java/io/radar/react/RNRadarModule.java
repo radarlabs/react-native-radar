@@ -470,11 +470,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        if (!nearMap.hasKey("latitude") || !nearMap.hasKey("longitude")) {
-            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
-
-            return;
-        }
         double latitude = nearMap.getDouble("latitude");
         double longitude = nearMap.getDouble("longitude");
         Location near = new Location("RNRadarModule");
@@ -563,11 +558,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        if (!locationMap.hasKey("latitude") || !locationMap.hasKey("longitude")) {
-            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
-
-            return;
-        }
         double latitude = locationMap.getDouble("latitude");
         double longitude = locationMap.getDouble("longitude");
         Location location = new Location("RNRadarModule");
@@ -637,25 +627,19 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
         ReadableMap originMap = optionsMap.getMap("origin");
         Location origin = null;
-        if (originMap != null && originMap.hasKey("latitude") && originMap.hasKey("longitude")) {
+        if (originMap != null) {
             double latitude = originMap.getDouble("latitude");
             double longitude = originMap.getDouble("longitude");
             origin = new Location("RNRadarModule");
             origin.setLatitude(latitude);
             origin.setLongitude(longitude);
         }
-
-        if (!destinationMap.hasKey("latitude") || !destinationMap.hasKey("longitude")) {
-            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
-
-            return;
-        }
         double latitude = destinationMap.getDouble("latitude");
         double longitude = destinationMap.getDouble("longitude");
         Location destination = new Location("RNRadarModule");
         destination.setLatitude(latitude);
         destination.setLongitude(longitude);
-        String[] modesArr = RNRadarUtils.stringArrayForArray(optionsMap.getArray("modes"));
+        String[] modesArr = optionsMap.hasKey("modes") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("modes")) : new String[]{};
         EnumSet<Radar.RadarRouteMode> modes = EnumSet.noneOf(Radar.RadarRouteMode.class);
         for (String modeStr : modesArr) {
             if (modeStr.equals("foot")) {
@@ -671,7 +655,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                 modes.add(Radar.RadarRouteMode.TRANSIT);
             }
         }
-        String unitsStr = optionsMap.getString("units");
+        String unitsStr = optionsMap.hasKey("units") ? optionsMap.getString("units") : null;
         Radar.RadarRouteUnits units = unitsStr != null && unitsStr.equals("metric") ? Radar.RadarRouteUnits.METRIC : Radar.RadarRouteUnits.IMPERIAL;
 
         Radar.RadarRouteCallback callback = new Radar.RadarRouteCallback() {
