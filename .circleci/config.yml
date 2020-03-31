@@ -48,7 +48,9 @@ jobs:
             cd example
             sudo yarn install
             sudo npm install -g react-native
+            cd ios
             pod install
+            cd ..
             react-native run-ios
 workflows:
   version: 2
