@@ -38,8 +38,6 @@ class RNRadarUtils {
                 writableMap.putDouble(key, (Double)value);
             } else if (value instanceof String)  {
                 writableMap.putString(key, (String)value);
-            } else {
-                writableMap.putString(key, value.toString());
             }
         }
         return writableMap;
@@ -65,8 +63,6 @@ class RNRadarUtils {
                 writableArr.pushDouble((Double)value);
             } else if (value instanceof String)  {
                 writableArr.pushString((String)value);
-            } else {
-                writableArr.pushString(value.toString());
             }
         }
         return writableArr;
