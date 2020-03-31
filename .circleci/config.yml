@@ -23,34 +23,28 @@ jobs:
       - store_artifacts:
           path: test-results
   android:
-    working_directory: ~/react-native-radar/example
+    working_directory: ~/react-native-radar
     docker:
       - image: circleci/android:api-28-node
     steps:
-      - checkout:
-          path: ~/react-native-radar
-      - restore_cache:
-          name: Restore node modules cache
-          key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-      - run: sudo yarn install
-      - run: sudo npm install -g react-native
-      - save_cache:
-          name: Save node modules cache
-          key: lock-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - node_modules
-      - run: cd android && ./gradlew assembleDebug
+      - checkout
+      - command: |
+          cd example/android/
+          yarn install
+          sudo npm install -g react-native
+          ./gradlew assembleDebug
   ios:
     macos:
       xcode: "11.2.1"
-    working_directory: ~/react-native-radar/example
+    working_directory: ~/react-native-radar
     steps:
-      - checkout:
-          path: ~/react-native-radar
-      - run: sudo yarn install
-      - run: sudo npm install -g react-native
-      - run: cd ios && pod install
-      - run: react-native run-ios
+      - checkout
+      - command: |
+          cd example/ios/
+          yarn install
+          npm install -g react-native
+          pod install
+          react-native run-ios
 workflows:
   version: 2
   node-android-ios:
