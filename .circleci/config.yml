@@ -28,7 +28,7 @@ jobs:
       - image: circleci/android:api-28-node
     steps:
       - checkout:
-          path: ~/react-native/radar
+          path: ~/react-native-radar
       - run: yarn install
       - run: sudo npm install -g react-native
       - run: chown -R $USER:$USER android
@@ -39,7 +39,7 @@ jobs:
     working_directory: ~/react-native-radar/example
     steps:
       - checkout:
-          path: ~/react-native/radar
+          path: ~/react-native-radar
       - run: yarn install
       - run: sudo npm install -g react-native
       - run: cd ios && pod install
