@@ -28,23 +28,27 @@ jobs:
       - image: circleci/android:api-28-node
     steps:
       - checkout
-      - command: |
-          cd example/android/
-          yarn install
-          sudo npm install -g react-native
-          ./gradlew assembleDebug
+      - run:
+          name: Build example
+          command: |
+            cd example/android/
+            yarn install
+            sudo npm install -g react-native
+            ./gradlew assembleDebug
   ios:
     macos:
       xcode: "11.2.1"
     working_directory: ~/react-native-radar
     steps:
       - checkout
-      - command: |
-          cd example/ios/
-          yarn install
-          npm install -g react-native
-          pod install
-          react-native run-ios
+      - run:
+          name: Build example
+          command: |
+            cd example/ios/
+            yarn install
+            npm install -g react-native
+            pod install
+            react-native run-ios
 workflows:
   version: 2
   node-android-ios:
