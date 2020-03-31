@@ -23,36 +23,25 @@ jobs:
       - store_artifacts:
           path: test-results
   android:
-    working_directory: ~/react-native-radar
+    working_directory: ~/react-native-radar/example
     docker:
       - image: circleci/android:api-28-node
     steps:
-      - checkout
-      - run:
-          name: Build example
-          command: |
-            cd example
-            sudo yarn install
-            sudo npm install -g react-native
-            cd android
-            sudo chmod +x ./gradlew
-            ./gradlew assembleDebug
+      - checkout:
+          path: ~/react-native/radar
+      - run: yarn install
+      - run: sudo npm install -g react-native
+      - run: cd android && ./gradlew assembleDebug
   ios:
     macos:
       xcode: "11.2.1"
-    working_directory: ~/react-native-radar
+    working_directory: ~/react-native-radar/example
     steps:
       - checkout
-      - run:
-          name: Build example
-          command: |
-            cd example
-            sudo yarn install
-            sudo npm install -g react-native
-            cd ios
-            pod install
-            cd ..
-            react-native run-ios
+      - run: yarn install
+      - run: sudo npm install -g react-native
+      - run: cd ios && pod install
+      - run: react-native run-ios
 workflows:
   version: 2
   node-android-ios:
