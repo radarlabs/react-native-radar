@@ -173,17 +173,19 @@ RCT_EXPORT_METHOD(trackOnce:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRe
     }];
 }
 
-RCT_EXPORT_METHOD(updateLocation:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    double latitude = [RCTConvert double:locationDict[@"latitude"]];
-    double longitude = [RCTConvert double:locationDict[@"longitude"]];
-    double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
-    NSDate *timestamp = [NSDate new];
-    CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
+RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    CLLocation *location;
+    if (locationDict != nil && [locationDict isKindOfClass:[NSDictionary class]]) {
+        double latitude = [RCTConvert double:locationDict[@"latitude"]];
+        double longitude = [RCTConvert double:locationDict[@"longitude"]];
+        NSDate *timestamp = [NSDate new];
+        location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
+    }
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar trackOnceWithLocation:location completionHandler:^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
+    RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -203,6 +205,12 @@ RCT_EXPORT_METHOD(updateLocation:(NSDictionary *)locationDict resolve:(RCTPromis
         resolver = nil;
         rejecter = nil;
     }];
+    
+    if (location) {
+        [Radar trackOnceWithLocation:location completionHandler:completionHandler];
+    } else {
+        [Radar trackOnce:completionHandler];
+    }
 }
 
 RCT_EXPORT_METHOD(startTrackingEfficient) {

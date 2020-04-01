@@ -31,7 +31,7 @@ const getLocation = () => (
 );
 
 const trackOnce = location => (
-  location ? NativeModules.RNRadar.updateLocation(location) : NativeModules.RNRadar.trackOnce()
+  NativeModules.RNRadar.trackOnce(location)
 );
 
 const startTrackingEfficient = () => (
