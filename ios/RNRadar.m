@@ -204,12 +204,12 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict resolve:(RCTPromiseReso
         }
         resolver = nil;
         rejecter = nil;
-    }];
-    
+    };
+
     if (location) {
         [Radar trackOnceWithLocation:location completionHandler:completionHandler];
     } else {
-        [Radar trackOnce:completionHandler];
+        [Radar trackOnceWithCompletionHandler:completionHandler];
     }
 }
 
