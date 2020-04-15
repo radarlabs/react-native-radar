@@ -2,7 +2,9 @@ package io.radar.react;
 
 import android.content.Context;
 import android.location.Location;
-import android.support.annotation.NonNull;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -23,6 +25,7 @@ public class RNRadarReceiver extends RadarReceiver {
     private ReactNativeHost reactNativeHost;
     private PendingResult result;
     private AtomicInteger pendingCount = new AtomicInteger(0);
+    private static final String TAG = "RNRadarReceiver";
 
     private void invokeSendEvent(ReactContext reactContext, String eventName, Object data) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
@@ -35,7 +38,6 @@ public class RNRadarReceiver extends RadarReceiver {
             if (result == null) {
                 result = goAsync();
             }
-            // Increment pending event count
             pendingCount.incrementAndGet();
             reactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
                 @Override
@@ -62,12 +64,12 @@ public class RNRadarReceiver extends RadarReceiver {
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
-            map.putArray("events", RNRadarUtils.arrayForEvents(events));
-            map.putMap("user", RNRadarUtils.mapForUser(user));
+            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
 
             sendEvent("events", map);
         } catch (Exception e) {
-
+            Log.e(TAG, "exception handling events:", e);
         }
     }
 
@@ -78,12 +80,29 @@ public class RNRadarReceiver extends RadarReceiver {
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
-            map.putMap("location", RNRadarUtils.mapForLocation(location));
-            map.putMap("user", RNRadarUtils.mapForUser(user));
+            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
 
             sendEvent("location", map);
         } catch (Exception e) {
+            Log.e(TAG, "exception handling location:", e);
+        }
+    }
 
+    @Override
+    public void onClientLocationUpdated(@NonNull Context context, @NonNull Location location, boolean stopped, @NonNull Radar.RadarLocationSource source) {
+        try {
+            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            reactNativeHost = reactApplication.getReactNativeHost();
+
+            WritableMap map = Arguments.createMap();
+            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+            map.putBoolean("stopped", stopped);
+            map.putString("source", source.toString());
+
+            sendEvent("clientLocation", map);
+        } catch (Exception e) {
+            Log.e(TAG, "exception handling clientLocation:", e);
         }
     }
 
@@ -93,9 +112,21 @@ public class RNRadarReceiver extends RadarReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("error", RNRadarUtils.stringForStatus(status));
+            sendEvent("error", status.toString());
         } catch (Exception e) {
+            Log.e(TAG, "exception handling error:", e);
+        }
+    }
 
+    @Override
+    public void onLog(@NonNull Context context, @NonNull String message) {
+        try {
+            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            reactNativeHost = reactApplication.getReactNativeHost();
+
+            sendEvent("message", message);
+        } catch (Exception e) {
+            Log.e(TAG, "exception handling log:", e);
         }
     }
 

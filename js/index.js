@@ -18,10 +18,6 @@ const setMetadata = (metadata) => {
   NativeModules.RNRadar.setMetadata(metadata);
 };
 
-const setPlacesProvider = (provider) => {
-  NativeModules.RNRadar.setPlacesProvider(provider);
-};
-
 const getPermissionsStatus = () => (
   NativeModules.RNRadar.getPermissionsStatus()
 );
@@ -30,29 +26,77 @@ const requestPermissions = (background) => {
   NativeModules.RNRadar.requestPermissions(background);
 };
 
-const startTracking = (options) => {
-  NativeModules.RNRadar.startTracking(options);
-};
-
-const stopTracking = () => {
-  NativeModules.RNRadar.stopTracking();
-};
-
-const trackOnce = () => (
-  NativeModules.RNRadar.trackOnce()
+const getLocation = () => (
+  NativeModules.RNRadar.getLocation()
 );
 
-const updateLocation = location => (
-  NativeModules.RNRadar.updateLocation(location)
+const trackOnce = location => (
+  NativeModules.RNRadar.trackOnce(location)
 );
 
-const acceptEvent = (eventId, verifiedPlaceId) => {
-  NativeModules.RNRadar.acceptEvent(eventId, verifiedPlaceId);
-};
+const startTrackingEfficient = () => (
+  NativeModules.RNRadar.startTrackingEfficient()
+);
 
-const rejectEvent = (eventId) => {
-  NativeModules.RNRadar.rejectEvent(eventId);
-};
+const startTrackingResponsive = () => (
+  NativeModules.RNRadar.startTrackingResponsive()
+);
+
+const startTrackingContinuous = () => (
+  NativeModules.RNRadar.startTrackingContinuous()
+);
+
+const startTrackingCustom = options => (
+  NativeModules.RNRadar.startTrackingCustom(options)
+);
+
+const stopTracking = () => (
+  NativeModules.RNRadar.stopTracking()
+);
+
+const acceptEvent = (eventId, verifiedPlaceId) => (
+  NativeModules.RNRadar.acceptEvent(eventId, verifiedPlaceId)
+);
+
+const rejectEvent = eventId => (
+  NativeModules.RNRadar.rejectEvent(eventId)
+);
+
+const getContext = location => (
+  NativeModules.RNRadar.getContext(location)
+);
+
+const searchPlaces = options => (
+  NativeModules.RNRadar.searchPlaces(options)
+);
+
+const searchGeofences = options => (
+  NativeModules.RNRadar.searchGeofences(options)
+);
+
+const searchPoints = options => (
+  NativeModules.RNRadar.searchPoints(options)
+);
+
+const autocomplete = options => (
+  NativeModules.RNRadar.autocomplete(options)
+);
+
+const geocode = address => (
+  NativeModules.RNRadar.geocode(address)
+);
+
+const reverseGeocode = location => (
+  NativeModules.RNRadar.reverseGeocode(location)
+);
+
+const ipGeocode = () => (
+  NativeModules.RNRadar.ipGeocode()
+);
+
+const getDistance = options => (
+  NativeModules.RNRadar.getDistance(options)
+);
 
 const on = (event, callback) => (
   eventEmitter.addListener(event, callback)
@@ -70,15 +114,26 @@ const Radar = {
   setUserId,
   setDescription,
   setMetadata,
-  setPlacesProvider,
   getPermissionsStatus,
   requestPermissions,
-  startTracking,
-  stopTracking,
+  getLocation,
   trackOnce,
-  updateLocation,
+  startTrackingEfficient,
+  startTrackingResponsive,
+  startTrackingContinuous,
+  startTrackingCustom,
+  stopTracking,
   acceptEvent,
   rejectEvent,
+  getContext,
+  searchPlaces,
+  searchGeofences,
+  searchPoints,
+  autocomplete,
+  geocode,
+  reverseGeocode,
+  ipGeocode,
+  getDistance,
   on,
   off,
 };

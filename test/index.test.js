@@ -1,4 +1,5 @@
 import { NativeEventEmitter, NativeModules } from 'react-native';
+
 import Radar from '../js/index';
 
 jest.mock('NativeEventEmitter', () => jest.fn(() => ({
@@ -6,151 +7,303 @@ jest.mock('NativeEventEmitter', () => jest.fn(() => ({
   removeListener: jest.fn(),
   removeAllListeners: jest.fn(),
 })));
-jest.mock('NativeModules', () => (
-  {
-    RNRadar: {
-      setUserId: jest.fn(),
-      setDescription: jest.fn(),
-      setMetadata: jest.fn(),
-      setPlacesProvider: jest.fn(),
-      getPermissionsStatus: jest.fn(),
-      requestPermissions: jest.fn(),
-      startTracking: jest.fn(),
-      stopTracking: jest.fn(),
-      trackOnce: jest.fn(),
-      updateLocation: jest.fn(),
-      acceptEvent: jest.fn(),
-      rejectEvent: jest.fn(),
-    },
-  }
-));
 
-const mockNative = NativeModules.RNRadar;
+jest.mock('NativeModules', () => ({
+  RNRadar: {
+    setUserId: jest.fn(),
+    setDescription: jest.fn(),
+    setMetadata: jest.fn(),
+    getPermissionsStatus: jest.fn(),
+    requestPermissions: jest.fn(),
+    getLocation: jest.fn(),
+    trackOnce: jest.fn(),
+    startTracking: jest.fn(),
+    startTrackingEfficient: jest.fn(),
+    startTrackingResponsive: jest.fn(),
+    startTrackingContinuous: jest.fn(),
+    startTrackingCustom: jest.fn(),
+    stopTracking: jest.fn(),
+    acceptEvent: jest.fn(),
+    rejectEvent: jest.fn(),
+    getContext: jest.fn(),
+    searchPlaces: jest.fn(),
+    searchGeofences: jest.fn(),
+    searchPoints: jest.fn(),
+    autocomplete: jest.fn(),
+    geocode: jest.fn(),
+    reverseGeocode: jest.fn(),
+    ipGeocode: jest.fn(),
+    getDistance: jest.fn(),
+  },
+}));
+
+const mockModule = NativeModules.RNRadar;
 const mockEmitter = NativeEventEmitter.mock.results[0].value;
 
-describe('Calls native implementation', () => {
+describe('calls native implementation', () => {
   test('setUserId', () => {
-    const userId = 'some-user-id123';
+    const userId = 'userId';
     Radar.setUserId(userId);
 
-    expect(mockNative.setUserId).toHaveBeenCalledTimes(1);
-    expect(mockNative.setUserId).toBeCalledWith(userId);
+    expect(mockModule.setUserId).toHaveBeenCalledTimes(1);
+    expect(mockModule.setUserId).toBeCalledWith(userId);
   });
 
   test('setDescription', () => {
     const description = 'some user description';
     Radar.setDescription(description);
 
-    expect(mockNative.setDescription).toHaveBeenCalledTimes(1);
-    expect(mockNative.setDescription).toBeCalledWith(description);
+    expect(mockModule.setDescription).toHaveBeenCalledTimes(1);
+    expect(mockModule.setDescription).toBeCalledWith(description);
   });
 
   test('setMetadata', () => {
     const metadata = {
-      'key': 'some string',
-      'bool': true,
-      'int': 123,
-      'double': 1.23
-    }
-    Radar.setMetadata(metadata)
+      foo: 'bar',
+      baz: true,
+      qux: 1,
+    };
+    Radar.setMetadata(metadata);
 
-    expect(mockNative.setMetadata).toHaveBeenCalledTimes(1)
-    expect(mockNative.setMetadata).toBeCalledWith(metadata)
-  })
-
-  test('setPlacesProvider', () => {
-    const provider = 'facebook';
-    Radar.setPlacesProvider(provider);
-
-    expect(mockNative.setPlacesProvider).toHaveBeenCalledTimes(1);
-    expect(mockNative.setPlacesProvider).toBeCalledWith(provider);
+    expect(mockModule.setMetadata).toHaveBeenCalledTimes(1);
+    expect(mockModule.setMetadata).toBeCalledWith(metadata);
   });
 
   test('getPermissionsStatus', () => {
     Radar.getPermissionsStatus();
 
-    expect(mockNative.getPermissionsStatus).toHaveBeenCalledTimes(1);
+    expect(mockModule.getPermissionsStatus).toHaveBeenCalledTimes(1);
   });
 
   test('requestPermissions', () => {
     const background = true;
     Radar.requestPermissions(background);
 
-    expect(mockNative.requestPermissions).toHaveBeenCalledTimes(1);
-    expect(mockNative.requestPermissions).toBeCalledWith(background);
+    expect(mockModule.requestPermissions).toHaveBeenCalledTimes(1);
+    expect(mockModule.requestPermissions).toBeCalledWith(background);
   });
 
-  test('startTracking', () => {
-    const options = {
-      sync: 'all',
-      offline: 'replayOff',
-      priority: 'efficiency',
-    };
-    Radar.startTracking(options);
+  test('getLocation', () => {
+    Radar.getLocation();
 
-    expect(mockNative.startTracking).toHaveBeenCalledTimes(1);
-    expect(mockNative.startTracking).toBeCalledWith(options);
+    expect(mockModule.getLocation).toHaveBeenCalledTimes(1);
+  });
+
+  test('trackOnce', () => {
+    Radar.trackOnce();
+
+    expect(mockModule.trackOnce).toHaveBeenCalledTimes(1);
+  });
+
+  test('updateLocation', () => {
+    const location = {
+      latitude: 40.783826,
+      longitude: -73.975363,
+      accuracy: 65,
+    };
+    Radar.trackOnce(location);
+
+    expect(mockModule.trackOnce).toHaveBeenCalledTimes(1);
+    expect(mockModule.trackOnce).toBeCalledWith(location);
+  });
+
+  test('startTrackingEfficient', () => {
+    Radar.startTrackingEfficient();
+
+    expect(mockModule.startTrackingEfficient).toHaveBeenCalledTimes(1);
+  });
+
+  test('startTrackingResponsive', () => {
+    Radar.startTrackingResponsive();
+
+    expect(mockModule.startTrackingResponsive).toHaveBeenCalledTimes(1);
+  });
+
+  test('startTrackingContinuous', () => {
+    Radar.startTrackingContinuous();
+
+    expect(mockModule.startTrackingContinuous).toHaveBeenCalledTimes(1);
+  });
+
+  test('startTrackingCustom', () => {
+    const options = {
+      desiredStoppedUpdateInterval: 0,
+      desiredMovingUpdateInterval: 150,
+      desiredSyncInterval: 140,
+      desiredAccuracy: 'medium',
+      stopDuration: 140,
+      stopDistance: 70,
+      sync: 'stopsAndExits',
+      replay: 'stops',
+      showBlueBar: false,
+      useStoppedGeofence: true,
+      stoppedGeofenceRadius: 200,
+      useMovingGeofence: false,
+      movingGeofenceRadius: 0,
+      useVisits: true,
+      useSignificantLocationChanges: true,
+    };
+    Radar.startTrackingCustom(options);
+
+    expect(mockModule.startTrackingCustom).toHaveBeenCalledTimes(1);
+    expect(mockModule.startTrackingCustom).toBeCalledWith(options);
   });
 
   test('stopTracking', () => {
     Radar.stopTracking();
 
-    expect(mockNative.stopTracking).toHaveBeenCalledTimes(1);
-  });
-
-  test('requestPetrackOncermissions', () => {
-    Radar.trackOnce();
-
-    expect(mockNative.trackOnce).toHaveBeenCalledTimes(1);
-  });
-
-  test('updateLocation', () => {
-    const location = {
-      latitude: 10.0,
-      longitude: 11.0,
-    };
-    Radar.updateLocation(location);
-
-    expect(mockNative.updateLocation).toHaveBeenCalledTimes(1);
-    expect(mockNative.updateLocation).toBeCalledWith(location);
+    expect(mockModule.stopTracking).toHaveBeenCalledTimes(1);
   });
 
   test('acceptEvent', () => {
-    const eventId = '123';
-    const verifiedPlaceId = 'placeId';
+    const eventId = 'eventId';
+    const verifiedPlaceId = 'verifiedPlaceId';
     Radar.acceptEvent(eventId, verifiedPlaceId);
 
-    expect(mockNative.acceptEvent).toHaveBeenCalledTimes(1);
-    expect(mockNative.acceptEvent).toBeCalledWith(eventId, verifiedPlaceId);
+    expect(mockModule.acceptEvent).toHaveBeenCalledTimes(1);
+    expect(mockModule.acceptEvent).toBeCalledWith(eventId, verifiedPlaceId);
   });
 
   test('rejectEvent', () => {
-    const eventId = '123';
+    const eventId = 'eventId';
     Radar.rejectEvent(eventId);
 
-    expect(mockNative.rejectEvent).toHaveBeenCalledTimes(1);
-    expect(mockNative.rejectEvent).toBeCalledWith(eventId);
+    expect(mockModule.rejectEvent).toHaveBeenCalledTimes(1);
+    expect(mockModule.rejectEvent).toBeCalledWith(eventId);
+  });
+
+  test('getContext', () => {
+    const location = {
+      latitude: 40.783826,
+      longitude: -73.975363,
+      accuracy: 65,
+    };
+    Radar.getContext(location);
+
+    expect(mockModule.getContext).toHaveBeenCalledTimes(1);
+    expect(mockModule.getContext).toBeCalledWith(location);
+  });
+
+  test('searchPlaces', () => {
+    const options = {
+      near: {
+        latitude: 40.783826,
+        longitude: -73.975363,
+      },
+      radius: 1000,
+      chains: ['mcdonalds'],
+      limit: 10,
+    };
+    Radar.searchPlaces(options);
+
+    expect(mockModule.searchPlaces).toHaveBeenCalledTimes(1);
+    expect(mockModule.searchPlaces).toBeCalledWith(options);
+  });
+
+  test('searchGeofences', () => {
+    const options = {
+      near: {
+        latitude: 40.783826,
+        longitude: -73.975363,
+      },
+      radius: 1000,
+      tags: ['store'],
+      limit: 10,
+    };
+    Radar.searchGeofences(options);
+
+    expect(mockModule.searchGeofences).toHaveBeenCalledTimes(1);
+    expect(mockModule.searchGeofences).toBeCalledWith(options);
+  });
+
+  test('searchPoints', () => {
+    const options = {
+      near: {
+        latitude: 40.783826,
+        longitude: -73.975363,
+      },
+      radius: 1000,
+      tags: ['article'],
+      limit: 10,
+    };
+    Radar.searchPoints(options);
+
+    expect(mockModule.searchPoints).toHaveBeenCalledTimes(1);
+    expect(mockModule.searchPoints).toBeCalledWith(options);
+  });
+
+  test('autocomplete', () => {
+    const options = {
+      query: 'brooklyn roasting',
+      near: {
+        latitude: 40.783826,
+        longitude: -73.975363,
+      },
+      limit: 10,
+    };
+    Radar.autocomplete(options);
+
+    expect(mockModule.autocomplete).toHaveBeenCalledTimes(1);
+    expect(mockModule.autocomplete).toBeCalledWith(options);
+  });
+
+  test('geocode', () => {
+    const query = '20 jay st brooklyn';
+    Radar.geocode(query);
+
+    expect(mockModule.geocode).toHaveBeenCalledTimes(1);
+    expect(mockModule.geocode).toBeCalledWith(query);
+  });
+
+  test('reverseGeocode', () => {
+    const location = {
+      latitude: 40.783826,
+      longitude: -73.975363,
+    };
+    Radar.reverseGeocode(location);
+
+    expect(mockModule.reverseGeocode).toHaveBeenCalledTimes(1);
+    expect(mockModule.reverseGeocode).toBeCalledWith(location);
+  });
+
+  test('ipGeocode', () => {
+    Radar.ipGeocode();
+
+    expect(mockModule.ipGeocode).toHaveBeenCalledTimes(1);
+  });
+
+  test('getDistance', () => {
+    const options = {
+      origin: {
+        latitude: 40.78382,
+        longitude: -73.97536,
+      },
+      destination: {
+        latitude: 40.70390,
+        longitude: -73.98670,
+      },
+      modes: [
+        'foot',
+        'car',
+      ],
+      units: 'imperial',
+    };
+    Radar.getDistance(options);
+
+    expect(mockModule.getDistance).toHaveBeenCalledTimes(1);
+    expect(mockModule.getDistance).toBeCalledWith(options);
   });
 
   test('on', () => {
     const event = 'events';
-    const cb = function () {};
-    Radar.on(event, cb);
+    const callback = () => {};
+    Radar.on(event, callback);
 
     expect(mockEmitter.addListener).toHaveBeenCalledTimes(1);
-    expect(mockEmitter.addListener).toHaveBeenCalledWith(event, cb);
+    expect(mockEmitter.addListener).toHaveBeenCalledWith(event, callback);
   });
 
-  test('off - with callback', () => {
-    const event = 'locations';
-    const cb = function () {};
-    Radar.off(event, cb);
-
-    expect(mockEmitter.removeListener).toHaveBeenCalledTimes(1);
-    expect(mockEmitter.removeListener).toHaveBeenCalledWith(event, cb);
-  });
-
-  test('off - without callback', () => {
+  test('off', () => {
     const event = 'locations';
     Radar.off(event);
 

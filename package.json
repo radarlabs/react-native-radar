@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, location data infrastructure",
   "homepage": "https://radar.io",
   "license": "Apache-2.0",
-  "version": "2.1.10",
+  "version": "3.0.0-alpha.1",
   "main": "js/index.js",
   "files": [
     "android",
@@ -13,10 +13,7 @@
     "react-native-radar.podspec"
   ],
   "scripts": {
-    "test-js": "jest ./test/*.test.js",
-    "test-android": "./android/gradlew test -p android",
-    "test-ios": "xcodebuild test -project ios/RNRadar.xcodeproj -scheme RNRadarTests -destination 'platform=iOS Simulator,name=iPhone 11'",
-    "test-all": "run-p test-js test-android test-ios"
+    "test": "jest ./test/*.test.js"
   },
   "jest": {
     "preset": "react-native",
@@ -28,8 +25,8 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "react": ">= 15.4.2",
-    "react-native": ">= 0.40.0"
+    "react": ">= 16.8.6",
+    "react-native": ">= 0.60.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -49,8 +46,8 @@
     "jest-junit": "^5.2.0",
     "metro-react-native-babel-preset": "^0.51.1",
     "npm-run-all": "^4.1.5",
-    "react": "16.6.3",
-    "react-native": "0.57.8"
+    "react": "16.8.6",
+    "react-native": "0.60.0"
   },
   "bugs": {
     "url": "https://github.com/radarlabs/react-native-radar/issues"
