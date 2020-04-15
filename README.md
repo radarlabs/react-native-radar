@@ -6,7 +6,9 @@
 
 ## Documentation
 
-See the Radar overview documentation [here](https://radar.io/documentation). See the Radar React Native module documentation [here](https://radar.io/documentation/sdk/react-native).
+See the Radar overview documentation [here](https://radar.io/documentation).
+
+Then, see the Radar React Native module documentation [here](https://radar.io/documentation/sdk/react-native).
 
 ## Examples
 
