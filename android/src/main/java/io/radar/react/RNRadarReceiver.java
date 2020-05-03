@@ -124,7 +124,7 @@ public class RNRadarReceiver extends RadarReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("message", message);
+            sendEvent("log", message);
         } catch (Exception e) {
             Log.e(TAG, "exception handling log:", e);
         }

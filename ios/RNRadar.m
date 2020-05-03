@@ -77,9 +77,7 @@ RCT_EXPORT_MODULE();
 
 - (void)didLogMessage:(NSString *)message {
     if (hasListeners) {
-        [self sendEventWithName:@"log" body:@{
-            @"message": message
-        }];
+        [self sendEventWithName:@"log" body:message];
     }
 }
 
