@@ -31,7 +31,7 @@ const getLocation = () => (
 );
 
 const trackOnce = location => (
-  NativeModules.RNRadar.trackOnce(location)
+  location ? NativeModules.RNRadar.trackOnce(location) : NativeModules.RNRadar.trackOnce()
 );
 
 const startTrackingEfficient = () => (
@@ -87,7 +87,7 @@ const geocode = address => (
 );
 
 const reverseGeocode = location => (
-  NativeModules.RNRadar.reverseGeocode(location)
+  location ? NativeModules.RNRadar.reverseGeocode(location) : NativeModules.RNRadar.reverseGeocode()
 );
 
 const ipGeocode = () => (

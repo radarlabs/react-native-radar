@@ -156,6 +156,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void trackOnce(ReadableMap locationMap, final Promise promise) {
+        if (locationMap == null) {
+            this.trackOnce(promise);
+
+            return;
+        }
+
         double latitude = locationMap.getDouble("latitude");
         double longitude = locationMap.getDouble("longitude");
         float accuracy = (float)locationMap.getDouble("accuracy");
@@ -550,6 +556,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void reverseGeocode(ReadableMap locationMap, final Promise promise) {
         if (promise == null) {
+            return;
+        }
+
+        if (locationMap == null) {
+            this.reverseGeocode(promise);
+
             return;
         }
 
