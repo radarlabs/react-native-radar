@@ -43,7 +43,7 @@ Radar.on('clientLocation', (result) => {
 });
 
 Radar.on('error', (err) => {
-  console.log('error:', stringify(result));
+  console.log('error:', stringify(err));
 });
 
 Radar.on('log', (result) => {
