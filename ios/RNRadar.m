@@ -619,13 +619,13 @@ RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseRes
     NSArray *modesArr = optionsDict[@"modes"];
     RadarRouteMode modes = 0;
     if (modesArr != nil && [modesArr isKindOfClass:[NSArray class]]) {
-        if ([modesArr containsObject:@"FOOT"]) {
+        if ([modesArr containsObject:@"FOOT"] || [modesArr containsObject:@"foot"]) {
             modes = modes | RadarRouteModeFoot;
         }
-        if ([modesArr containsObject:@"BIKE"]) {
+        if ([modesArr containsObject:@"BIKE"] || [modesArr containsObject:@"bike"]) {
             modes = modes | RadarRouteModeBike;
         }
-        if ([modesArr containsObject:@"CAR"]) {
+        if ([modesArr containsObject:@"CAR"] || [modesArr containsObject:@"car"]) {
             modes = modes | RadarRouteModeCar;
         }
     } else {
@@ -634,7 +634,7 @@ RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseRes
     NSString *unitsStr = optionsDict[@"units"];
     RadarRouteUnits units;
     if (unitsStr != nil && [unitsStr isKindOfClass:[NSString class]]) {
-        units = [unitsStr isEqualToString:@"METRIC"] ? RadarRouteUnitsMetric : RadarRouteUnitsImperial;
+        units = [unitsStr isEqualToString:@"METRIC"] || [unitsStr isEqualToString:@"metric"] ? RadarRouteUnitsMetric : RadarRouteUnitsImperial;
     } else {
         units = RadarRouteUnitsImperial;
     }
