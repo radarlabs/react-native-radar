@@ -628,9 +628,6 @@ RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseRes
         if ([modesArr containsObject:@"CAR"]) {
             modes = modes | RadarRouteModeCar;
         }
-        if ([modesArr containsObject:@"TRANSIT"]) {
-            modes = modes | RadarRouteModeTransit;
-        }
     } else {
         modes = RadarRouteModeCar;
     }
