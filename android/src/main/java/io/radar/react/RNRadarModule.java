@@ -654,18 +654,18 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         String[] modesArr = optionsMap.hasKey("modes") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("modes")) : new String[]{};
         EnumSet<Radar.RadarRouteMode> modes = EnumSet.noneOf(Radar.RadarRouteMode.class);
         for (String modeStr : modesArr) {
-            if (modeStr.equals("foot")) {
+            if (modeStr.equals("FOOT") || modeStr.equals("foot")) {
                 modes.add(Radar.RadarRouteMode.FOOT);
             }
-            if (modeStr.equals("bike")) {
+            if (modeStr.equals("BIKE") || modeStr.equals("bike")) {
                 modes.add(Radar.RadarRouteMode.BIKE);
             }
-            if (modeStr.equals("car")) {
+            if (modeStr.equals("CAR") || modeStr.equals("car")) {
                 modes.add(Radar.RadarRouteMode.CAR);
             }
         }
         String unitsStr = optionsMap.hasKey("units") ? optionsMap.getString("units") : null;
-        Radar.RadarRouteUnits units = unitsStr != null && unitsStr.equals("metric") ? Radar.RadarRouteUnits.METRIC : Radar.RadarRouteUnits.IMPERIAL;
+        Radar.RadarRouteUnits units = unitsStr != null && (unitsStr.equals("METRIC") || unitsStr.equals("metric")) ? Radar.RadarRouteUnits.METRIC : Radar.RadarRouteUnits.IMPERIAL;
 
         Radar.RadarRouteCallback callback = new Radar.RadarRouteCallback() {
             @Override
