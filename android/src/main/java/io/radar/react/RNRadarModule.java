@@ -376,6 +376,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         }
         int radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : 1000;
         String[] tags = optionsMap.hasKey("tags") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags")) : null;
+        JSONObject metadata = null;
+        if (optionsMap.hasKey("metadata")) {
+          metadata = RNRadarUtils.jsonForMap(optionsMap.getMap("metadata"));
+        }
+
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
         Radar.RadarSearchGeofencesCallback callback = new Radar.RadarSearchGeofencesCallback() {
@@ -402,9 +407,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         };
 
         if (near != null) {
-            Radar.searchGeofences(near, radius, tags, limit, callback);
+            Radar.searchGeofences(near, radius, tags, metadata, limit, callback);
         } else {
-            Radar.searchGeofences(radius, tags, limit, callback);
+            Radar.searchGeofences(radius, tags, metadata, limit, callback);
         }
     }
 
@@ -657,9 +662,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             }
             if (modeStr.equals("car")) {
                 modes.add(Radar.RadarRouteMode.CAR);
-            }
-            if (modeStr.equals("transit")) {
-                modes.add(Radar.RadarRouteMode.TRANSIT);
             }
         }
         String unitsStr = optionsMap.hasKey("units") ? optionsMap.getString("units") : null;
