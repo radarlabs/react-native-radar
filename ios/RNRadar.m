@@ -365,6 +365,7 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
         radius = 1000;
     }
     NSArray *tags = optionsDict[@"tags"];
+    NSDictionary *metadata = optionsDict[@"metadata"];
     NSNumber *limitNumber = optionsDict[@"limit"];
     int limit;
     if (limitNumber != nil && [limitNumber isKindOfClass:[NSNumber class]]) {
@@ -395,9 +396,9 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
     };
 
     if (near) {
-        [Radar searchGeofencesNear:near radius:radius tags:tags limit:limit completionHandler:completionHandler];
+        [Radar searchGeofencesNear:near radius:radius tags:tags metadata:metadata limit:limit completionHandler:completionHandler];
     } else {
-        [Radar searchGeofencesWithRadius:radius tags:tags limit:limit completionHandler:completionHandler];
+        [Radar searchGeofencesWithRadius:radius tags:tags metadata:metadata limit:limit completionHandler:completionHandler];
     }
 }
 
@@ -619,17 +620,14 @@ RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseRes
     NSArray *modesArr = optionsDict[@"modes"];
     RadarRouteMode modes = 0;
     if (modesArr != nil && [modesArr isKindOfClass:[NSArray class]]) {
-        if ([modesArr containsObject:@"FOOT"]) {
+        if ([modesArr containsObject:@"FOOT"] || [modesArr containsObject:@"foot"]) {
             modes = modes | RadarRouteModeFoot;
         }
-        if ([modesArr containsObject:@"BIKE"]) {
+        if ([modesArr containsObject:@"BIKE"] || [modesArr containsObject:@"bike"]) {
             modes = modes | RadarRouteModeBike;
         }
-        if ([modesArr containsObject:@"CAR"]) {
+        if ([modesArr containsObject:@"CAR"] || [modesArr containsObject:@"car"]) {
             modes = modes | RadarRouteModeCar;
-        }
-        if ([modesArr containsObject:@"TRANSIT"]) {
-            modes = modes | RadarRouteModeTransit;
         }
     } else {
         modes = RadarRouteModeCar;
@@ -637,7 +635,7 @@ RCT_EXPORT_METHOD(getDistance:(NSDictionary *)optionsDict resolve:(RCTPromiseRes
     NSString *unitsStr = optionsDict[@"units"];
     RadarRouteUnits units;
     if (unitsStr != nil && [unitsStr isKindOfClass:[NSString class]]) {
-        units = [unitsStr isEqualToString:@"METRIC"] ? RadarRouteUnitsMetric : RadarRouteUnitsImperial;
+        units = [unitsStr isEqualToString:@"METRIC"] || [unitsStr isEqualToString:@"metric"] ? RadarRouteUnitsMetric : RadarRouteUnitsImperial;
     } else {
         units = RadarRouteUnitsImperial;
     }
