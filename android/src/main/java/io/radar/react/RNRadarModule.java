@@ -378,7 +378,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         String[] tags = optionsMap.hasKey("tags") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags")) : null;
         JSONObject metadata = null;
         if (optionsMap.hasKey("metadata")) {
-          metadata = RNRadarUtils.jsonForMap(optionsMap.getMap("metadata"));
+            try {
+                metadata = RNRadarUtils.jsonForMap(optionsMap.getMap("metadata"));
+            } catch (JSONException e) {
+                promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+
+                return;
+            }
         }
 
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
