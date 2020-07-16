@@ -235,17 +235,17 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         }
 
         ReadableMap originMap = optionsMap.getMap("origin");
-        double latitude = originMap.getDouble("latitude");
-        double longitude = originMap.getDouble("longitude");
+        double originLatitude = originMap.getDouble("latitude");
+        double originLongitude = originMap.getDouble("longitude");
         Location origin = new Location("RNRadarModule");
-        origin.setLatitude(latitude);
-        origin.setLongitude(longitude);
+        origin.setLatitude(originLatitude);
+        origin.setLongitude(originLongitude);
         ReadableMap destinationMap = optionsMap.getMap("destination");
-        double latitude = destinationMap.getDouble("latitude");
-        double longitude = destinationMap.getDouble("longitude");
+        double destinationLatitude = destinationMap.getDouble("latitude");
+        double destinationLongitude = destinationMap.getDouble("longitude");
         Location destination = new Location("RNRadarModule");
-        destination.setLatitude(latitude);
-        destination.setLongitude(longitude);
+        destination.setLatitude(destinationLatitude);
+        destination.setLongitude(destinationLongitude);
         String modeStr = optionsMap.getString("mode");
         Radar.RadarRouteMode mode = Radar.RadarRouteMode.CAR;
         if (modeStr.equals("FOOT") || modeStr.equals("foot")) {
