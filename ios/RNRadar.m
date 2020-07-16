@@ -265,7 +265,7 @@ RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         mode = RadarRouteModeCar;
     }
     NSNumber *stepsNumber = optionsDict[@"steps"];
-    int steps;
+    __block int steps;
     if (stepsNumber != nil && [stepsNumber isKindOfClass:[NSNumber class]]) {
         steps = [stepsNumber intValue];
     } else {
@@ -302,7 +302,7 @@ RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
 
         i++;
 
-        if (i < steps.count - 1) {
+        if (i == steps.count - 1) {
             resolver = nil;
             rejecter = nil;
         }
@@ -323,7 +323,7 @@ RCT_EXPORT_METHOD(rejectEvent:(NSString *)eventId) {
 
 RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict) {
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict];
-    [Radar startTrackingWithOptions:options];
+    [Radar startTripWithOptions:options];
 }
 
 RCT_EXPORT_METHOD(stopTrip) {
