@@ -302,11 +302,11 @@ RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
 
         i++;
 
-        if (i < coordinates.count - 1) {
+        if (i < steps.count - 1) {
             resolver = nil;
             rejecter = nil;
         }
-    };
+    }];
 }
 
 RCT_EXPORT_METHOD(stopTracking) {
