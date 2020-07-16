@@ -238,15 +238,13 @@ RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     }
 
     NSDictionary *originDict = optionsDict[@"origin"];
-    double latitude = [RCTConvert double:originDict[@"latitude"]];
-    double longitude = [RCTConvert double:originDict[@"longitude"]];
-    NSDate *timestamp = [NSDate new];
-    CLLocation *origin = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
+    double originLatitude = [RCTConvert double:originDict[@"latitude"]];
+    double originLongitude = [RCTConvert double:originDict[@"longitude"]];
+    CLLocation *origin = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(originLatitude, originLongitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:[NSDate new]];
     NSDictionary *destinationDict = optionsDict[@"destination"];
-    double latitude = [RCTConvert double:destinationDict[@"latitude"]];
-    double longitude = [RCTConvert double:destinationDict[@"longitude"]];
-    NSDate *timestamp = [NSDate new];
-    CLLocation *destination = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
+    double destinationLatitude = [RCTConvert double:destinationDict[@"latitude"]];
+    double destinationLongitude = [RCTConvert double:destinationDict[@"longitude"]];
+    CLLocation *destination = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(destinationLatitude, destinationLongitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:[NSDate new]];
     NSString *modeStr = optionsDict[@"mode"];
     RadarRouteMode mode = RadarRouteModeCar;
     if ([modeStr isEqualToString:@"FOOT"] || [modeStr isEqualToString:@"foot"]) {
