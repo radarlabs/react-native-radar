@@ -165,6 +165,7 @@ const App: () => React$Node = () => {
     mode: 'car',
   });
 
+  const steps = 3;
   let i = 0;
   Radar.mockTracking({
     origin: {
@@ -176,7 +177,7 @@ const App: () => React$Node = () => {
       longitude: -73.98670,
     },
     mode: 'car',
-    steps: 3,
+    steps,
     interval: 3,
   }).then((result) => {
     console.log('mockTracking:', stringify(result));
