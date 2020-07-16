@@ -158,13 +158,12 @@ const App: () => React$Node = () => {
     console.log('getDistance:', err);
   });
 
-  const options = {
+  Radar.startTrip({
     externalId: '299',
     destinationGeofenceTag: 'store',
     destinationGeofenceExternalId: '123',
     mode: 'car',
-  };
-  Radar.startTrip(options);
+  });
 
   let i = 0;
   Radar.mockTracking({
