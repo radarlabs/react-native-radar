@@ -302,7 +302,7 @@ RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
 
         i++;
 
-        if (i == steps.count - 1) {
+        if (i == steps - 1) {
             resolver = nil;
             rejecter = nil;
         }
