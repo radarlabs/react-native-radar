@@ -235,32 +235,24 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         }
 
         ReadableMap originMap = optionsMap.getMap("origin");
-        Location origin = null;
-        if (originMap != null) {
-            double latitude = originMap.getDouble("latitude");
-            double longitude = originMap.getDouble("longitude");
-            origin = new Location("RNRadarModule");
-            origin.setLatitude(latitude);
-            origin.setLongitude(longitude);
-        }
+        double latitude = originMap.getDouble("latitude");
+        double longitude = originMap.getDouble("longitude");
+        Location origin = new Location("RNRadarModule");
+        origin.setLatitude(latitude);
+        origin.setLongitude(longitude);
         ReadableMap destinationMap = optionsMap.getMap("destination");
-        Location destination = null;
-        if (destinationMap != null) {
-            double latitude = destinationMap.getDouble("latitude");
-            double longitude = destinationMap.getDouble("longitude");
-            destination = new Location("RNRadarModule");
-            destination.setLatitude(latitude);
-            destination.setLongitude(longitude);
-        }
+        double latitude = destinationMap.getDouble("latitude");
+        double longitude = destinationMap.getDouble("longitude");
+        Location destination = new Location("RNRadarModule");
+        destination.setLatitude(latitude);
+        destination.setLongitude(longitude);
         String modeStr = optionsMap.getString("mode");
         Radar.RadarRouteMode mode = Radar.RadarRouteMode.CAR;
         if (modeStr.equals("FOOT") || modeStr.equals("foot")) {
             mode = Radar.RadarRouteMode.FOOT;
-        }
-        if (modeStr.equals("BIKE") || modeStr.equals("bike")) {
+        } else if (modeStr.equals("BIKE") || modeStr.equals("bike")) {
             mode = Radar.RadarRouteMode.BIKE;
-        }
-        if (modeStr.equals("CAR") || modeStr.equals("car")) {
+        } else if (modeStr.equals("CAR") || modeStr.equals("car")) {
             mode = Radar.RadarRouteMode.CAR;
         }
         int steps = optionsMap.hasKey("steps") ? optionsMap.getInt("steps") : 10;

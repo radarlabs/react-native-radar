@@ -238,30 +238,22 @@ RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     }
 
     NSDictionary *originDict = optionsDict[@"origin"];
-    CLLocation *origin;
-    if (originDict != nil && [originDict isKindOfClass:[NSDictionary class]]) {
-        double latitude = [RCTConvert double:originDict[@"latitude"]];
-        double longitude = [RCTConvert double:originDict[@"longitude"]];
-        NSDate *timestamp = [NSDate new];
-        origin = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
-    }
+    double latitude = [RCTConvert double:originDict[@"latitude"]];
+    double longitude = [RCTConvert double:originDict[@"longitude"]];
+    NSDate *timestamp = [NSDate new];
+    CLLocation *origin = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
     NSDictionary *destinationDict = optionsDict[@"destination"];
-    CLLocation *destination;
-    if (destinationDict != nil && [destinationDict isKindOfClass:[NSDictionary class]]) {
-        double latitude = [RCTConvert double:destinationDict[@"latitude"]];
-        double longitude = [RCTConvert double:destinationDict[@"longitude"]];
-        NSDate *timestamp = [NSDate new];
-        destination = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
-    }
+    double latitude = [RCTConvert double:destinationDict[@"latitude"]];
+    double longitude = [RCTConvert double:destinationDict[@"longitude"]];
+    NSDate *timestamp = [NSDate new];
+    CLLocation *destination = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
     NSString *modeStr = optionsDict[@"mode"];
     RadarRouteMode mode = RadarRouteModeCar;
     if ([modeStr isEqualToString:@"FOOT"] || [modeStr isEqualToString:@"foot"]) {
         mode = RadarRouteModeFoot;
-    }
-    if ([modeStr isEqualToString:@"BIKE"] || [modeStr isEqualToString:@"bike"]) {
+    } else if ([modeStr isEqualToString:@"BIKE"] || [modeStr isEqualToString:@"bike"]) {
         mode = RadarRouteModeBike;
-    }
-    if ([modeStr isEqualToString:@"CAR"] || [modeStr isEqualToString:@"car"]) {
+    } else if ([modeStr isEqualToString:@"CAR"] || [modeStr isEqualToString:@"car"]) {
         mode = RadarRouteModeCar;
     }
     NSNumber *stepsNumber = optionsDict[@"steps"];
