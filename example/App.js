@@ -182,6 +182,8 @@ const App: () => React$Node = () => {
   }).then((result) => {
     console.log('mockTracking:', stringify(result));
 
+    i++;
+
     if (i == steps - 1) {
       Radar.stopTrip();
     }
