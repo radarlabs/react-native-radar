@@ -228,6 +228,87 @@ RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
     [Radar startTrackingWithOptions:options];
 }
 
+RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (optionsDict == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
+    }
+
+    NSDictionary *originDict = optionsDict[@"origin"];
+    CLLocation *origin;
+    if (originDict != nil && [originDict isKindOfClass:[NSDictionary class]]) {
+        double latitude = [RCTConvert double:originDict[@"latitude"]];
+        double longitude = [RCTConvert double:originDict[@"longitude"]];
+        NSDate *timestamp = [NSDate new];
+        origin = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
+    }
+    NSDictionary *destinationDict = optionsDict[@"destination"];
+    CLLocation *destination;
+    if (destinationDict != nil && [destinationDict isKindOfClass:[NSDictionary class]]) {
+        double latitude = [RCTConvert double:destinationDict[@"latitude"]];
+        double longitude = [RCTConvert double:destinationDict[@"longitude"]];
+        NSDate *timestamp = [NSDate new];
+        destination = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
+    }
+    NSString *modeStr = optionsDict[@"mode"];
+    RadarRouteMode mode = RadarRouteModeCar;
+    if ([modeStr isEqualToString:@"FOOT"] || [modeStr isEqualToString:@"foot"]) {
+        mode = RadarRouteModeFoot;
+    }
+    if ([modeStr isEqualToString:@"BIKE"] || [modeStr isEqualToString:@"bike"]) {
+        mode = RadarRouteModeBike;
+    }
+    if ([modeStr isEqualToString:@"CAR"] || [modeStr isEqualToString:@"car"]) {
+        mode = RadarRouteModeCar;
+    }
+    NSNumber *stepsNumber = optionsDict[@"steps"];
+    int steps;
+    if (stepsNumber != nil && [stepsNumber isKindOfClass:[NSNumber class]]) {
+        steps = [stepsNumber intValue];
+    } else {
+        steps = 10;
+    }
+    NSNumber *intervalNumber = optionsDict[@"interval"];
+    double interval;
+    if (intervalNumber != nil && [intervalNumber isKindOfClass:[NSNumber class]]) {
+        interval = [intervalNumber doubleValue];
+    } else {
+        interval = 1;
+    }
+
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+    __block int i = 0;
+    [Radar mockTrackingWithOrigin:origin destination:destination mode:mode steps:steps interval:interval completionHandler:^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (location) {
+                [dict setObject:[Radar dictionaryForLocation:location] forKey:@"location"];
+            }
+            if (events) {
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
+            }
+            if (user) {
+                [dict setObject:[user dictionaryValue] forKey:@"user"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+
+        i++;
+
+        if (i < coordinates.count - 1) {
+            resolver = nil;
+            rejecter = nil;
+        }
+    };
+}
+
 RCT_EXPORT_METHOD(stopTracking) {
     [Radar stopTracking];
 }
@@ -238,6 +319,15 @@ RCT_EXPORT_METHOD(acceptEvent:(NSString *)eventId verifiedPlaceId:(NSString *)ve
 
 RCT_EXPORT_METHOD(rejectEvent:(NSString *)eventId) {
     [Radar rejectEventId:eventId];
+}
+
+RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict) {
+    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict];
+    [Radar startTrackingWithOptions:options];
+}
+
+RCT_EXPORT_METHOD(stopTrip) {
+    [Radar stopTrip];
 }
 
 RCT_EXPORT_METHOD(getContext:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {

@@ -228,6 +228,75 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void mockTracking(ReadableMap optionsMap, final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        ReadableMap originMap = optionsMap.getMap("origin");
+        Location origin = null;
+        if (originMap != null) {
+            double latitude = originMap.getDouble("latitude");
+            double longitude = originMap.getDouble("longitude");
+            origin = new Location("RNRadarModule");
+            origin.setLatitude(latitude);
+            origin.setLongitude(longitude);
+        }
+        ReadableMap destinationMap = optionsMap.getMap("destination");
+        Location destination = null;
+        if (destinationMap != null) {
+            double latitude = destinationMap.getDouble("latitude");
+            double longitude = destinationMap.getDouble("longitude");
+            destination = new Location("RNRadarModule");
+            destination.setLatitude(latitude);
+            destination.setLongitude(longitude);
+        }
+        String modeStr = optionsMap.getString("mode");
+        Radar.RadarRouteMode mode = Radar.RadarRouteMode.CAR;
+        if (modeStr.equals("FOOT") || modeStr.equals("foot")) {
+            mode = Radar.RadarRouteMode.FOOT;
+        }
+        if (modeStr.equals("BIKE") || modeStr.equals("bike")) {
+            mode = Radar.RadarRouteMode.BIKE;
+        }
+        if (modeStr.equals("CAR") || modeStr.equals("car")) {
+            mode = Radar.RadarRouteMode.CAR;
+        }
+        int steps = optionsMap.hasKey("steps") ? optionsMap.getInt("steps") : 10;
+        int interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : 1;
+
+        Radar.mockTracking(origin, destination, mode, steps, interval, new Radar.RadarTrackCallback() {
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+                if (promise == null) {
+                    return;
+                }
+
+                if (status == Radar.RadarStatus.SUCCESS) {
+                    try {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (location != null) {
+                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                        }
+                        if (events != null) {
+                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                        }
+                        if (user != null) {
+                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                        }
+                        promise.resolve(map);
+                    } catch (JSONException e) {
+                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                    }
+                } else {
+                    promise.reject(status.toString(), status.toString());
+                }
+            }
+        });
+    }
+
+    @ReactMethod
     public void stopTracking() {
         Radar.stopTracking();
     }
@@ -240,6 +309,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void rejectEvent(String eventId) {
         Radar.rejectEvent(eventId);
+    }
+
+    @ReactMethod
+    public void startTrip(ReadableMap optionsMap) {
+        try {
+            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            RadarTripOptions options = RadarTripOptions.fromJson(optionsObj);
+            Radar.startTrip(options);
+        } catch (JSONException e) {
+
+        }
+    }
+
+    @ReactMethod
+    public void stopTrip() {
+        Radar.stopTrip();
     }
 
     @ReactMethod

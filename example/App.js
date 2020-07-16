@@ -158,6 +158,37 @@ const App: () => React$Node = () => {
     console.log('getDistance:', err);
   });
 
+  const options = {
+    externalId: '299',
+    destinationGeofenceTag: 'store',
+    destinationGeofenceExternalId: '123',
+    mode: 'car',
+  };
+  Radar.startTrip(options);
+
+  let i = 0;
+  Radar.mockTracking({
+    origin: {
+      latitude: 40.78382,
+      longitude: -73.97536,
+    },
+    destination: {
+      latitude: 40.70390,
+      longitude: -73.98670,
+    },
+    mode: 'car',
+    steps: 3,
+    interval: 3,
+  }).then((result) => {
+    console.log('mockTracking:', stringify(result));
+
+    if (i == steps - 1) {
+      Radar.stopTrip();
+    }
+  }).catch((err) => {
+    console.log('mockTracking:', err);
+  });
+
   return (
     <>
       <StatusBar barStyle="dark-content" />

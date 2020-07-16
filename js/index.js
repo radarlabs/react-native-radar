@@ -50,9 +50,21 @@ const startTrackingCustom = options => (
   NativeModules.RNRadar.startTrackingCustom(options)
 );
 
+const mockTracking = options => (
+  NativeModules.RNRadar.mockTracking(options)
+);
+
 const stopTracking = () => (
   NativeModules.RNRadar.stopTracking()
 );
+
+const startTrip = options => (
+  NativeModules.RNRadar.startTrip(options)
+);
+
+const stopTrip = () => (
+  NativeModules.RNRadar.stopTrip()
+)
 
 const acceptEvent = (eventId, verifiedPlaceId) => (
   NativeModules.RNRadar.acceptEvent(eventId, verifiedPlaceId)
@@ -122,9 +134,12 @@ const Radar = {
   startTrackingResponsive,
   startTrackingContinuous,
   startTrackingCustom,
+  mockTracking,
   stopTracking,
   acceptEvent,
   rejectEvent,
+  startTrip,
+  stopTrip,
   getContext,
   searchPlaces,
   searchGeofences,
