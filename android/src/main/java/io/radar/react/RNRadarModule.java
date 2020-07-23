@@ -37,7 +37,7 @@ import java.util.EnumSet;
 
 public class RNRadarModule extends ReactContextBaseJavaModule {
 
-    private static final String TAG = "RNRadarReceiver";
+    private static final String TAG = "RNRadarModule";
 
     public RNRadarModule(ReactApplicationContext reactContext) {
         super(reactContext);
