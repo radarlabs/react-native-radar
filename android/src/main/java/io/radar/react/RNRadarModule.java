@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +36,8 @@ import org.json.JSONObject;
 import java.util.EnumSet;
 
 public class RNRadarModule extends ReactContextBaseJavaModule {
+
+    private static final String TAG = "RNRadarReceiver";
 
     public RNRadarModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -113,6 +116,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         map.putBoolean("stopped", stopped);
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -146,6 +150,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -196,6 +201,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         promise.reject(status.toString(), status.toString());
                     }
                 } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
                     promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             }
@@ -224,7 +230,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             RadarTrackingOptions options = RadarTrackingOptions.fromJson(optionsObj);
             Radar.startTracking(options);
         } catch (JSONException e) {
-
+            Log.e(TAG, "JSONException", e);
         }
     }
 
@@ -280,6 +286,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -311,7 +318,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             RadarTripOptions options = RadarTripOptions.fromJson(optionsObj);
             Radar.startTrip(options);
         } catch (JSONException e) {
-
+            Log.e(TAG, "JSONException", e);
         }
     }
 
@@ -341,6 +348,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -377,6 +385,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -422,6 +431,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -459,6 +469,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             try {
                 metadata = RNRadarUtils.jsonForMap(optionsMap.getMap("metadata"));
             } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
                 promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
 
                 return;
@@ -482,6 +493,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -531,6 +543,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -579,6 +592,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -606,6 +620,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -633,6 +648,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -672,6 +688,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -699,6 +716,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
@@ -763,6 +781,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
                         promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
                 } else {
