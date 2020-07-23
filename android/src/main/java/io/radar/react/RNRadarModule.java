@@ -706,7 +706,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
         Radar.ipGeocode(new Radar.RadarIpGeocodeCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address) {
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, boolean proxy) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
@@ -714,6 +714,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         if (address != null) {
                             map.putMap("address", RNRadarUtils.mapForJson(address.toJson()));
                         }
+                        map.putBoolean("proxy", proxy);
                         promise.resolve(map);
                     } catch (JSONException e) {
                         Log.e(TAG, "JSONException", e);
