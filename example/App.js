@@ -180,6 +180,8 @@ const App: () => React$Node = () => {
     interval: 3,
   });
 
+  Radar.stopTrip();
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
