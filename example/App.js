@@ -166,7 +166,6 @@ const App: () => React$Node = () => {
     mode: 'car',
   });
 
-  let i = 0;
   Radar.mockTracking({
     origin: {
       latitude: 40.78382,
@@ -179,16 +178,6 @@ const App: () => React$Node = () => {
     mode: 'car',
     steps: 3,
     interval: 3,
-  }).then((result) => {
-    console.log('mockTracking:', stringify(result));
-
-    if (i == 2) {
-      Radar.stopTrip();
-    }
-
-    i++;
-  }).catch((err) => {
-    console.log('mockTracking:', err);
   });
 
   return (
