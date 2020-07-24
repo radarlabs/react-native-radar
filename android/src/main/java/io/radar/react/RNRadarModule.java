@@ -713,8 +713,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         map.putString("status", status.toString());
                         if (address != null) {
                             map.putMap("address", RNRadarUtils.mapForJson(address.toJson()));
+                            map.putBoolean("proxy", proxy);
                         }
-                        map.putBoolean("proxy", proxy);
                         promise.resolve(map);
                     } catch (JSONException e) {
                         Log.e(TAG, "JSONException", e);

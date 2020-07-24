@@ -657,8 +657,8 @@ RCT_EXPORT_METHOD(ipGeocode:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRe
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
             if (address) {
                 [dict setObject:[address dictionaryValue] forKey:@"address"];
+                [dict setValue:@(proxy) forKey:@"proxy"];
             }
-            [dict setValue:@(proxy) forKey:@"proxy"];
             resolver(dict);
         } else if (rejecter) {
             rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
