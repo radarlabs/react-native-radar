@@ -264,7 +264,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         int steps = optionsMap.hasKey("steps") ? optionsMap.getInt("steps") : 10;
         int interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : 1;
 
-        Radar.mockTracking(origin, destination, mode, steps, interval, null);
+        Radar.mockTracking(origin, destination, mode, steps, interval, new Radar.RadarTrackCallback() {
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+
+            }
+        });
     }
 
     @ReactMethod
