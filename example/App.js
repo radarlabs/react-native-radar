@@ -52,6 +52,7 @@ Radar.on('log', (result) => {
 
 const App: () => React$Node = () => {
   Radar.setUserId("foo");
+
   Radar.setMetadata({
     foo: 'bar',
     baz: true,
