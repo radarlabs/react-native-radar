@@ -64,7 +64,7 @@ const startTrip = options => (
 
 const stopTrip = () => (
   NativeModules.RNRadar.stopTrip()
-)
+);
 
 const acceptEvent = (eventId, verifiedPlaceId) => (
   NativeModules.RNRadar.acceptEvent(eventId, verifiedPlaceId)
