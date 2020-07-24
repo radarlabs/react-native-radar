@@ -290,12 +290,12 @@ RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
             rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
         }
 
-        i++;
-
         if (i == steps - 1) {
             resolver = nil;
             rejecter = nil;
         }
+
+        i++
     }];
 }
 
