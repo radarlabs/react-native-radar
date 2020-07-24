@@ -69,7 +69,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
             sendEvent("events", map);
         } catch (Exception e) {
-            Log.e(TAG, "exception handling events:", e);
+            Log.e(TAG, "Exception", e);
         }
     }
 
@@ -85,7 +85,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
             sendEvent("location", map);
         } catch (Exception e) {
-            Log.e(TAG, "exception handling location:", e);
+            Log.e(TAG, "Exception", e);
         }
     }
 
@@ -102,7 +102,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
             sendEvent("clientLocation", map);
         } catch (Exception e) {
-            Log.e(TAG, "exception handling clientLocation:", e);
+            Log.e(TAG, "Exception", e);
         }
     }
 
@@ -114,7 +114,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
             sendEvent("error", status.toString());
         } catch (Exception e) {
-            Log.e(TAG, "exception handling error:", e);
+            Log.e(TAG, "Exception", e);
         }
     }
 
@@ -126,7 +126,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
             sendEvent("log", message);
         } catch (Exception e) {
-            Log.e(TAG, "exception handling log:", e);
+            Log.e(TAG, "Exception", e);
         }
     }
 

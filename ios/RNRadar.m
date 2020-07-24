@@ -228,6 +228,46 @@ RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
     [Radar startTrackingWithOptions:options];
 }
 
+RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict) {
+    if (optionsDict == nil) {
+        return;
+    }
+
+    NSDictionary *originDict = optionsDict[@"origin"];
+    double originLatitude = [RCTConvert double:originDict[@"latitude"]];
+    double originLongitude = [RCTConvert double:originDict[@"longitude"]];
+    CLLocation *origin = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(originLatitude, originLongitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:[NSDate new]];
+    NSDictionary *destinationDict = optionsDict[@"destination"];
+    double destinationLatitude = [RCTConvert double:destinationDict[@"latitude"]];
+    double destinationLongitude = [RCTConvert double:destinationDict[@"longitude"]];
+    CLLocation *destination = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(destinationLatitude, destinationLongitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:[NSDate new]];
+    NSString *modeStr = optionsDict[@"mode"];
+    RadarRouteMode mode = RadarRouteModeCar;
+    if ([modeStr isEqualToString:@"FOOT"] || [modeStr isEqualToString:@"foot"]) {
+        mode = RadarRouteModeFoot;
+    } else if ([modeStr isEqualToString:@"BIKE"] || [modeStr isEqualToString:@"bike"]) {
+        mode = RadarRouteModeBike;
+    } else if ([modeStr isEqualToString:@"CAR"] || [modeStr isEqualToString:@"car"]) {
+        mode = RadarRouteModeCar;
+    }
+    NSNumber *stepsNumber = optionsDict[@"steps"];
+    __block int steps;
+    if (stepsNumber != nil && [stepsNumber isKindOfClass:[NSNumber class]]) {
+        steps = [stepsNumber intValue];
+    } else {
+        steps = 10;
+    }
+    NSNumber *intervalNumber = optionsDict[@"interval"];
+    double interval;
+    if (intervalNumber != nil && [intervalNumber isKindOfClass:[NSNumber class]]) {
+        interval = [intervalNumber doubleValue];
+    } else {
+        interval = 1;
+    }
+
+    [Radar mockTrackingWithOrigin:origin destination:destination mode:mode steps:steps interval:interval completionHandler:nil];
+}
+
 RCT_EXPORT_METHOD(stopTracking) {
     [Radar stopTracking];
 }
@@ -238,6 +278,15 @@ RCT_EXPORT_METHOD(acceptEvent:(NSString *)eventId verifiedPlaceId:(NSString *)ve
 
 RCT_EXPORT_METHOD(rejectEvent:(NSString *)eventId) {
     [Radar rejectEventId:eventId];
+}
+
+RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict) {
+    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict];
+    [Radar startTripWithOptions:options];
+}
+
+RCT_EXPORT_METHOD(stopTrip) {
+    [Radar stopTrip];
 }
 
 RCT_EXPORT_METHOD(getContext:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
@@ -571,12 +620,13 @@ RCT_EXPORT_METHOD(ipGeocode:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRe
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar ipGeocodeWithCompletionHandler:^(RadarStatus status, RadarAddress * _Nullable address) {
+    [Radar ipGeocodeWithCompletionHandler:^(RadarStatus status, RadarAddress * _Nullable address, BOOL proxy) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
             if (address) {
                 [dict setObject:[address dictionaryValue] forKey:@"address"];
+                [dict setValue:@(proxy) forKey:@"proxy"];
             }
             resolver(dict);
         } else if (rejecter) {

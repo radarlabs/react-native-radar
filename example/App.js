@@ -52,6 +52,7 @@ Radar.on('log', (result) => {
 
 const App: () => React$Node = () => {
   Radar.setUserId("foo");
+
   Radar.setMetadata({
     foo: 'bar',
     baz: true,
@@ -157,6 +158,29 @@ const App: () => React$Node = () => {
   }).catch((err) => {
     console.log('getDistance:', err);
   });
+
+  Radar.startTrip({
+    externalId: '299',
+    destinationGeofenceTag: 'store',
+    destinationGeofenceExternalId: '123',
+    mode: 'car',
+  });
+
+  Radar.mockTracking({
+    origin: {
+      latitude: 40.78382,
+      longitude: -73.97536,
+    },
+    destination: {
+      latitude: 40.70390,
+      longitude: -73.98670,
+    },
+    mode: 'car',
+    steps: 3,
+    interval: 3,
+  });
+
+  Radar.stopTrip();
 
   return (
     <>

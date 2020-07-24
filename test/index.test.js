@@ -22,9 +22,12 @@ jest.mock('NativeModules', () => ({
     startTrackingResponsive: jest.fn(),
     startTrackingContinuous: jest.fn(),
     startTrackingCustom: jest.fn(),
+    mockTracking: jest.fn(),
     stopTracking: jest.fn(),
     acceptEvent: jest.fn(),
     rejectEvent: jest.fn(),
+    startTrip: jest.fn(),
+    stopTrip: jest.fn(),
     getContext: jest.fn(),
     searchPlaces: jest.fn(),
     searchGeofences: jest.fn(),
@@ -149,6 +152,26 @@ describe('calls native implementation', () => {
     expect(mockModule.startTrackingCustom).toBeCalledWith(options);
   });
 
+  test('mockTracking', () => {
+    const options = {
+      origin: {
+        latitude: 40.78382,
+        longitude: -73.97536,
+      },
+      destination: {
+        latitude: 40.70390,
+        longitude: -73.98670,
+      },
+      mode: 'car',
+      steps: 10,
+      interval: 1,
+    };
+    Radar.mockTracking(options);
+
+    expect(mockModule.mockTracking).toHaveBeenCalledTimes(1);
+    expect(mockModule.mockTracking).toBeCalledWith(options);
+  });
+
   test('stopTracking', () => {
     Radar.stopTracking();
 
@@ -170,6 +193,25 @@ describe('calls native implementation', () => {
 
     expect(mockModule.rejectEvent).toHaveBeenCalledTimes(1);
     expect(mockModule.rejectEvent).toBeCalledWith(eventId);
+  });
+
+  test('startTrip', () => {
+    const options = {
+      externalId: '299',
+      destinationGeofenceTag: 'store',
+      destinationGeofenceExternalId: '123',
+      mode: 'car',
+    };
+    Radar.startTrip(options);
+
+    expect(mockModule.startTrip).toHaveBeenCalledTimes(1);
+    expect(mockModule.startTrip).toBeCalledWith(options);
+  });
+
+  test('stopTrip', () => {
+    Radar.stopTrip();
+
+    expect(mockModule.stopTrip).toHaveBeenCalledTimes(1);
   });
 
   test('getContext', () => {
