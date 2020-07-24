@@ -295,7 +295,7 @@ RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
             rejecter = nil;
         }
 
-        i++
+        i++;
     }];
 }
 
