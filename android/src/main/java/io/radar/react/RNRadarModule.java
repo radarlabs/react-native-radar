@@ -236,10 +236,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void mockTracking(ReadableMap optionsMap) {
-        if (promise == null) {
-            return;
-        }
-
         ReadableMap originMap = optionsMap.getMap("origin");
         double originLatitude = originMap.getDouble("latitude");
         double originLongitude = originMap.getDouble("longitude");
