@@ -228,12 +228,8 @@ RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
     [Radar startTrackingWithOptions:options];
 }
 
-RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict) {
     if (optionsDict == nil) {
-        if (reject) {
-            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
-        }
-
         return;
     }
 
@@ -269,34 +265,7 @@ RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         interval = 1;
     }
 
-    __block RCTPromiseResolveBlock resolver = resolve;
-    __block RCTPromiseRejectBlock rejecter = reject;
-    __block int i = 0;
-    [Radar mockTrackingWithOrigin:origin destination:destination mode:mode steps:steps interval:interval completionHandler:^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
-        if (status == RadarStatusSuccess && resolver) {
-            NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
-            if (location) {
-                [dict setObject:[Radar dictionaryForLocation:location] forKey:@"location"];
-            }
-            if (events) {
-                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
-            }
-            if (user) {
-                [dict setObject:[user dictionaryValue] forKey:@"user"];
-            }
-            resolver(dict);
-        } else if (rejecter) {
-            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
-        }
-
-        if (i == steps - 1) {
-            resolver = nil;
-            rejecter = nil;
-        }
-
-        i++;
-    }];
+    [Radar mockTrackingWithOrigin:origin destination:destination mode:mode steps:steps interval:interval completionHandler:nil];
 }
 
 RCT_EXPORT_METHOD(stopTracking) {

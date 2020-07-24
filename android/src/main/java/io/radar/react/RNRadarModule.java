@@ -235,7 +235,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void mockTracking(ReadableMap optionsMap, final Promise promise) {
+    public void mockTracking(ReadableMap optionsMap) {
         if (promise == null) {
             return;
         }
@@ -264,36 +264,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         int steps = optionsMap.hasKey("steps") ? optionsMap.getInt("steps") : 10;
         int interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : 1;
 
-        Radar.mockTracking(origin, destination, mode, steps, interval, new Radar.RadarTrackCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
-                if (promise == null) {
-                    return;
-                }
-
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                        }
-                        if (user != null) {
-                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-                    }
-                } else {
-                    promise.reject(status.toString(), status.toString());
-                }
-            }
-        });
+        Radar.mockTracking(origin, destination, mode, steps, interval, null);
     }
 
     @ReactMethod
