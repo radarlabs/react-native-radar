@@ -234,7 +234,7 @@ PODS:
     - React-cxxreact (= 0.62.0)
     - React-jsi (= 0.62.0)
   - React-jsinspector (0.62.0)
-  - react-native-radar (3.0.5):
+  - react-native-radar (3.0.6):
     - RadarSDK (= 3.0.4)
     - React
   - React-RCTActionSheet (0.62.0):
