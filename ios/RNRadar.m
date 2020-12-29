@@ -40,6 +40,23 @@ RCT_EXPORT_MODULE();
     hasListeners = NO;
 }
 
+- (void)stateUpdated {
+    if (hasListeners) {
+      [Radar getState:^(CLLocation *_Nullable lastMovedLocation, NSDate *_Nullable lastMovedAt, BOOL stopped, NSDate *_Nullable lastSentAt, BOOL canExit, CLLocation *_Nullable lastFailedStoppedLocation, NSArray<RadarGeofence *> *_Nullable lastGeofences, CLRegion *_Nullable lastBubble) {
+        [self sendEventWithName:@"state" body:@{
+          @"lastMovedLocation": [Radar dictionaryForLocation:lastMovedLocation],
+          @"lastMovedAt": lastMovedAt,
+          @"stopped": @(stopped),
+          @"lastSentAt": lastSentAt,
+          @"canExit": @(canExit),
+          @"lastFailedStoppedLocation": [Radar dictionaryForLocation:lastFailedStoppedLocation],
+          @"lastGeofences": [RadarGeofence arrayForGeofences:lastGeofences],
+          @"lastBubble": lastBubble
+        }];
+      }];
+    }
+}
+
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser *)user {
     if (hasListeners) {
         [self sendEventWithName:@"events" body:@{
@@ -47,6 +64,7 @@ RCT_EXPORT_MODULE();
             @"user": [user dictionaryValue]
 
         }];
+        [self stateUpdated];
     }
 }
 
@@ -56,6 +74,7 @@ RCT_EXPORT_MODULE();
             @"location": [Radar dictionaryForLocation:location],
             @"user": [user dictionaryValue]
         }];
+        [self stateUpdated];
     }
 }
 
@@ -66,18 +85,21 @@ RCT_EXPORT_MODULE();
             @"stopped": @(stopped),
             @"source": [Radar stringForSource:source]
         }];
+        [self stateUpdated];
     }
 }
 
 - (void)didFailWithStatus:(RadarStatus)status {
     if (hasListeners) {
         [self sendEventWithName:@"error" body:[Radar stringForStatus:status]];
+        [self stateUpdated];
     }
 }
 
 - (void)didLogMessage:(NSString *)message {
     if (hasListeners) {
         [self sendEventWithName:@"log" body:message];
+        [self stateUpdated];
     }
 }
 
