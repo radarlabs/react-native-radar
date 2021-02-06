@@ -81,7 +81,7 @@ RCT_EXPORT_MODULE();
     }
 }
 
-- (void)setLogLevel:(NSInteger *)level {
+RCT_EXPORT_METHOD(setLogLevel:(NSInteger *)level) {
     [Radar setLogLevel:level];
 }
 
