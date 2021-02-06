@@ -110,6 +110,10 @@ const getDistance = options => (
   NativeModules.RNRadar.getDistance(options)
 );
 
+const setLogLevel = level => (
+  NativeModules.RNRadar.setLogLevel(level)
+);
+
 const on = (event, callback) => (
   eventEmitter.addListener(event, callback)
 );
@@ -151,6 +155,7 @@ const Radar = {
   getDistance,
   on,
   off,
+  setLogLevel,
 };
 
 export default Radar;

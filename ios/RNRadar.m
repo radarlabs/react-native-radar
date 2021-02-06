@@ -81,6 +81,10 @@ RCT_EXPORT_MODULE();
     }
 }
 
+- (void)setLogLevel:(NSInteger *)level {
+    [Radar setLogLevel:level];
+}
+
 RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {
     [Radar setUserId:userId];
 }
