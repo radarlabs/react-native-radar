@@ -65,7 +65,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setLogLevel(int level) {
-      Radar.setLogLevel(level);
+      Radar.setLogLevel(Radar.RadarLogLevel.fromInt(level));
     }
 
     @ReactMethod
