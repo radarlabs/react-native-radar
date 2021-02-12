@@ -64,6 +64,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setLogLevel(int level) {
+      Radar.setLogLevel(level);
+    }
+
+    @ReactMethod
     public void getPermissionsStatus(Promise promise) {
         if (promise == null) {
             return;
