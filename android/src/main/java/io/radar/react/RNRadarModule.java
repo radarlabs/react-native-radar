@@ -19,6 +19,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import io.radar.sdk.Radar;
+import io.radar.sdk.Radar.RadarLogLevel
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.RadarTripOptions;
 import io.radar.sdk.model.RadarAddress;
