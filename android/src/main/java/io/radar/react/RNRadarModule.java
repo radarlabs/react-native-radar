@@ -778,7 +778,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
-                        if (routes != null) {
+                        if (matrix != null) {
                             map.putMap("matrix", RNRadarUtils.arrayForJson(matrix.toJson()));
                         }
                         promise.resolve(map);
