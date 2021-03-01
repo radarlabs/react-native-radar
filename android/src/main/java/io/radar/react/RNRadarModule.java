@@ -16,6 +16,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import io.radar.sdk.Radar;
@@ -746,8 +747,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         Location[] destinations = new Location[destinationsArr.size()];
         for (int i = 0; i < destinationsArr.size(); i++) {
             ReadableMap destinationMap = destinationsArr.getMap(i);
-            double latitude = originMap.getDouble("latitude");
-            double longitude = originMap.getDouble("longitude");
+            double latitude = destinationMap.getDouble("latitude");
+            double longitude = destinationMap.getDouble("longitude");
             Location destination = new Location("RNRadarModule");
             destination.setLatitude(latitude);
             destination.setLongitude(longitude);
@@ -779,7 +780,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (matrix != null) {
-                            map.putMap("matrix", RNRadarUtils.arrayForJson(matrix.toJson()));
+                            map.putArray("matrix", RNRadarUtils.arrayForJson(matrix.toJson()));
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
