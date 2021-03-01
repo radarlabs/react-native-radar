@@ -27,7 +27,8 @@ jest.mock('NativeModules', () => ({
     acceptEvent: jest.fn(),
     rejectEvent: jest.fn(),
     startTrip: jest.fn(),
-    stopTrip: jest.fn(),
+    completeTrip: jest.fn(),
+    cancelTrip: jest.fn(),
     getContext: jest.fn(),
     searchPlaces: jest.fn(),
     searchGeofences: jest.fn(),
@@ -208,10 +209,16 @@ describe('calls native implementation', () => {
     expect(mockModule.startTrip).toBeCalledWith(options);
   });
 
-  test('stopTrip', () => {
-    Radar.stopTrip();
+  test('completeTrip', () => {
+    Radar.completeTrip();
 
-    expect(mockModule.stopTrip).toHaveBeenCalledTimes(1);
+    expect(mockModule.completeTrip).toHaveBeenCalledTimes(1);
+  });
+
+  test('cancelTrip', () => {
+    Radar.cancelTrip();
+
+    expect(mockModule.cancelTrip).toHaveBeenCalledTimes(1);
   });
 
   test('getContext', () => {
