@@ -2,7 +2,9 @@
 
 [![npm](https://img.shields.io/npm/v/react-native-radar.svg)](https://www.npmjs.com/package/react-native-radar)
 
-[Radar](https://radar.io) is location data infrastructure. You can use Radar SDKs and APIs to add location context to your apps with just a few lines of code.
+[Radar](https://radar.io) is the leading geofencing and location tracking platform.
+
+The Radar SDK abstracts away cross-platform differences between location services, allowing you to add geofencing, location tracking, trip tracking, geocoding, and search to your apps with just a few lines of code.
 
 ## Documentation
 

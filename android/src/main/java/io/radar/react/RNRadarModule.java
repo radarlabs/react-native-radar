@@ -295,8 +295,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void stopTrip() {
-        Radar.stopTrip();
+    public void completeTrip() {
+        Radar.completeTrip();
+    }
+
+    @ReactMethod
+    public void cancelTrip() {
+        Radar.cancelTrip();
     }
 
     @ReactMethod
@@ -478,56 +483,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
             Radar.searchGeofences(near, radius, tags, metadata, limit, callback);
         } else {
             Radar.searchGeofences(radius, tags, metadata, limit, callback);
-        }
-    }
-
-    @ReactMethod
-    public void searchPoints(ReadableMap optionsMap, final Promise promise) {
-        if (promise == null) {
-            return;
-        }
-
-        Location near = null;
-        if (optionsMap.hasKey("near")) {
-            ReadableMap nearMap = optionsMap.getMap("near");
-            double latitude = nearMap.getDouble("latitude");
-            double longitude = nearMap.getDouble("longitude");
-            near = new Location("RNRadarModule");
-            near.setLatitude(latitude);
-            near.setLongitude(longitude);
-        }
-        int radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : 1000;
-        String[] tags = optionsMap.hasKey("tags") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags")) : null;
-        int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
-
-        Radar.RadarSearchPointsCallback callback = new Radar.RadarSearchPointsCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarPoint[] points) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (points != null) {
-                            map.putArray("points", RNRadarUtils.arrayForJson(RadarPoint.toJson(points)));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-                    }
-                } else {
-                    promise.reject(status.toString(), status.toString());
-                }
-            }
-        };
-
-        if (near != null) {
-            Radar.searchPoints(near, radius, tags, limit, callback);
-        } else {
-            Radar.searchPoints(radius, tags, limit, callback);
         }
     }
 
@@ -768,6 +723,74 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         } else {
             Radar.getDistance(destination, modes, units, callback);
         }
+    }
+
+    @ReactMethod
+    public void getMatrix(ReadableMap optionsMap, final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        ReadableArray originsArr = optionsMap.getArray("origins");
+        Location[] origins = new Location[originsArr.size()];
+        for (int i = 0; i < originsArr.size(); i++) {
+            ReadableMap originMap = originsArr.getMap(i);
+            double latitude = originMap.getDouble("latitude");
+            double longitude = originMap.getDouble("longitude");
+            Location origin = new Location("RNRadarModule");
+            origin.setLatitude(latitude);
+            origin.setLongitude(longitude);
+            origins[i] = origin;
+        }
+        ReadableArray destinationsArr = optionsMap.getArray("destinations");
+        Location[] destinations = new Location[destinationsArr.size()];
+        for (int i = 0; i < destinationsArr.size(); i++) {
+            ReadableMap destinationMap = destinationsArr.getMap(i);
+            double latitude = originMap.getDouble("latitude");
+            double longitude = originMap.getDouble("longitude");
+            Location destination = new Location("RNRadarModule");
+            destination.setLatitude(latitude);
+            destination.setLongitude(longitude);
+            destinations[i] = destination;
+        }
+        String modeStr = optionsMap.getString("mode");
+        Radar.RadarRouteMode mode = Radar.RadarRouteMode.CAR;
+        if (modeStr != null) {
+            if (modeStr.equals("FOOT") || modeStr.equals("foot")) {
+                mode = Radar.RadarRouteMode.FOOT;
+            } else if (modeStr.equals("BIKE") || modeStr.equals("bike")) {
+                mode = Radar.RadarRouteMode.BIKE;
+            } else if (modeStr.equals("CAR") || modeStr.equals("car")) {
+                mode = Radar.RadarRouteMode.CAR;
+            } else if (modeStr.equals("TRUCK") || modeStr.equals("truck")) {
+                mode = Radar.RadarRouteMode.TRUCK;
+            } else if (modeStr.equals("MOTORBIKE") || modeStr.equals("motorbike")) {
+                mode = Radar.RadarRouteMode.MOTORBIKE;
+            }
+        }
+        String unitsStr = optionsMap.hasKey("units") ? optionsMap.getString("units") : null;
+        Radar.RadarRouteUnits units = unitsStr != null && (unitsStr.equals("METRIC") || unitsStr.equals("metric")) ? Radar.RadarRouteUnits.METRIC : Radar.RadarRouteUnits.IMPERIAL;
+
+        Radar.getMatrix(origins, destinations, mode, units, new Radar.RadarMatrixCallback() {
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarRouteMatrix matrix) {
+                if (status == Radar.RadarStatus.SUCCESS) {
+                    try {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (routes != null) {
+                            map.putMap("matrix", RNRadarUtils.arrayForJson(matrix.toJson()));
+                        }
+                        promise.resolve(map);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
+                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                    }
+                } else {
+                    promise.reject(status.toString(), status.toString());
+                }
+            }
+        });
     }
 
 }

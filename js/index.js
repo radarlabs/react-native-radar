@@ -62,8 +62,12 @@ const startTrip = options => (
   NativeModules.RNRadar.startTrip(options)
 );
 
-const stopTrip = () => (
-  NativeModules.RNRadar.stopTrip()
+const completeTrip = () => (
+  NativeModules.RNRadar.completeTrip()
+);
+
+const cancelTrip = () => (
+  NativeModules.RNRadar.cancelTrip()
 );
 
 const acceptEvent = (eventId, verifiedPlaceId) => (
@@ -86,10 +90,6 @@ const searchGeofences = options => (
   NativeModules.RNRadar.searchGeofences(options)
 );
 
-const searchPoints = options => (
-  NativeModules.RNRadar.searchPoints(options)
-);
-
 const autocomplete = options => (
   NativeModules.RNRadar.autocomplete(options)
 );
@@ -108,6 +108,10 @@ const ipGeocode = () => (
 
 const getDistance = options => (
   NativeModules.RNRadar.getDistance(options)
+);
+
+const getMatrix = options => (
+  NativeModules.RNRadar.getMatrix(options)
 );
 
 const on = (event, callback) => (
@@ -139,16 +143,17 @@ const Radar = {
   acceptEvent,
   rejectEvent,
   startTrip,
-  stopTrip,
+  completeTrip,
+  cancelTrip,
   getContext,
   searchPlaces,
   searchGeofences,
-  searchPoints,
   autocomplete,
   geocode,
   reverseGeocode,
   ipGeocode,
   getDistance,
+  getMatrix,
   on,
   off,
 };
