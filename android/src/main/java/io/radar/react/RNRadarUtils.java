@@ -37,7 +37,9 @@ class RNRadarUtils {
             } else if (value instanceof Double) {
                 writableMap.putDouble(key, (Double)value);
             } else if (value instanceof Float) {
-                writableMap.putDouble(key, new Double(value.toString()));
+                String valueStr = value.toString();
+                Double valueDouble = Double.valueOf(valueStr);
+                writableMap.putDouble(key, valueStr);
             } else if (value instanceof String)  {
                 writableMap.putString(key, (String)value);
             }
