@@ -685,7 +685,7 @@ RCT_EXPORT_METHOD(getMatrix:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
         CLLocation *destination = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
         [destinations addObject:destination];
     }
-    NSArray *modeStr = optionsDict[@"mode"];
+    NSString *modeStr = optionsDict[@"mode"];
     RadarRouteMode mode = RadarRouteModeCar;
     if ([modeStr isEqualToString:@"FOOT"] || [modeStr isEqualToString:@"foot"]) {
         mode = RadarRouteModeFoot;
