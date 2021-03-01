@@ -70,7 +70,7 @@ PODS:
   - OpenSSL-Universal (1.0.2.19):
     - OpenSSL-Universal/Static (= 1.0.2.19)
   - OpenSSL-Universal/Static (1.0.2.19)
-  - RadarSDK (3.0.4)
+  - RadarSDK (3.1.1)
   - RCTRequired (0.62.0)
   - RCTTypeSafety (0.62.0):
     - FBLazyVector (= 0.62.0)
@@ -234,7 +234,7 @@ PODS:
     - React-cxxreact (= 0.62.0)
     - React-jsi (= 0.62.0)
   - React-jsinspector (0.62.0)
-  - react-native-radar (3.0.6):
+  - react-native-radar (3.0.5):
     - RadarSDK (= 3.0.4)
     - React
   - React-RCTActionSheet (0.62.0):
@@ -322,7 +322,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-radar (from `../..`)
+  - react-native-radar (from `../node_modules/react-native-radar`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
@@ -382,7 +382,7 @@ EXTERNAL SOURCES:
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-radar:
-    :path: "../.."
+    :path: "../node_modules/react-native-radar"
   React-RCTActionSheet:
     :path: "../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -449,4 +449,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: dbba463ba98f9486072eed435acb2ff318da5a53
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.1
