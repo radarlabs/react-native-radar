@@ -51,6 +51,7 @@ Radar.on('log', (result) => {
 });
 
 const App: () => React$Node = () => {
+  /*
   Radar.setUserId("foo");
 
   Radar.setMetadata({
@@ -158,7 +159,38 @@ const App: () => React$Node = () => {
   }).catch((err) => {
     console.log('getDistance:', err);
   });
+  */
 
+  Radar.getMatrix({
+    origins: [
+      {
+        latitude: 40.78382,
+        longitude: -73.97536,
+      },
+      {
+        latitude: 40.70390,
+        longitude: -73.98670,
+      },
+    ],
+    destinations: [
+      {
+        latitude: 40.64189,
+        longitude: -73.78779,
+      },
+      {
+        latitude: 35.99801,
+        longitude: -78.94294,
+      },
+    ],
+    mode: 'car',
+    units: 'imperial',
+  }).then((result) => {
+    console.log('getMatrix:', stringify(result));
+  }).catch((err) => {
+    console.log('getMatrix:', err);
+  });
+
+  /*
   Radar.startTrip({
     externalId: '299',
     destinationGeofenceTag: 'store',
@@ -181,6 +213,7 @@ const App: () => React$Node = () => {
   });
 
   Radar.stopTrip();
+  */
 
   return (
     <>
