@@ -27,16 +27,17 @@ jest.mock('NativeModules', () => ({
     acceptEvent: jest.fn(),
     rejectEvent: jest.fn(),
     startTrip: jest.fn(),
-    stopTrip: jest.fn(),
+    completeTrip: jest.fn(),
+    cancelTrip: jest.fn(),
     getContext: jest.fn(),
     searchPlaces: jest.fn(),
     searchGeofences: jest.fn(),
-    searchPoints: jest.fn(),
     autocomplete: jest.fn(),
     geocode: jest.fn(),
     reverseGeocode: jest.fn(),
     ipGeocode: jest.fn(),
     getDistance: jest.fn(),
+    getMatrix: jest.fn(),
   },
 }));
 
@@ -208,10 +209,16 @@ describe('calls native implementation', () => {
     expect(mockModule.startTrip).toBeCalledWith(options);
   });
 
-  test('stopTrip', () => {
-    Radar.stopTrip();
+  test('completeTrip', () => {
+    Radar.completeTrip();
 
-    expect(mockModule.stopTrip).toHaveBeenCalledTimes(1);
+    expect(mockModule.completeTrip).toHaveBeenCalledTimes(1);
+  });
+
+  test('cancelTrip', () => {
+    Radar.cancelTrip();
+
+    expect(mockModule.cancelTrip).toHaveBeenCalledTimes(1);
   });
 
   test('getContext', () => {
@@ -256,22 +263,6 @@ describe('calls native implementation', () => {
 
     expect(mockModule.searchGeofences).toHaveBeenCalledTimes(1);
     expect(mockModule.searchGeofences).toBeCalledWith(options);
-  });
-
-  test('searchPoints', () => {
-    const options = {
-      near: {
-        latitude: 40.783826,
-        longitude: -73.975363,
-      },
-      radius: 1000,
-      tags: ['article'],
-      limit: 10,
-    };
-    Radar.searchPoints(options);
-
-    expect(mockModule.searchPoints).toHaveBeenCalledTimes(1);
-    expect(mockModule.searchPoints).toBeCalledWith(options);
   });
 
   test('autocomplete', () => {
@@ -334,6 +325,37 @@ describe('calls native implementation', () => {
 
     expect(mockModule.getDistance).toHaveBeenCalledTimes(1);
     expect(mockModule.getDistance).toBeCalledWith(options);
+  });
+
+  test('getMatrix', () => {
+    const options = {
+      origins: [
+        {
+          latitude: 40.78382,
+          longitude: -73.97536,
+        },
+        {
+          latitude: 40.70390,
+          longitude: -73.98670,
+        },
+      ],
+      destinations: [
+        {
+          latitude: 40.64189,
+          longitude: -73.78779,
+        },
+        {
+          latitude: 35.99801,
+          longitude: -78.94294,
+        },
+      ],
+      mode: 'car',
+      units: 'imperial',
+    };
+    Radar.getMatrix(options);
+
+    expect(mockModule.getMatrix).toHaveBeenCalledTimes(1);
+    expect(mockModule.getMatrix).toBeCalledWith(options);
   });
 
   test('on', () => {
