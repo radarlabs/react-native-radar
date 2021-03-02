@@ -28,7 +28,6 @@ Radar.on('log', (result) => {
 });
 
 export default function App() {
-  /*
   Radar.setUserId("foo");
 
   Radar.setMetadata({
@@ -136,7 +135,6 @@ export default function App() {
   }).catch((err) => {
     console.log('getDistance:', err);
   });
-  */
 
   Radar.getMatrix({
     origins: [
@@ -167,7 +165,6 @@ export default function App() {
     console.log('getMatrix:', err);
   });
 
-  /*
   Radar.startTrip({
     externalId: '299',
     destinationGeofenceTag: 'store',
@@ -189,8 +186,7 @@ export default function App() {
     interval: 3,
   });
 
-  Radar.stopTrip();
-  */
+  Radar.completeTrip();
 
   return (
     <View style={styles.container}>
