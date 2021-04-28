@@ -27,6 +27,7 @@ jest.mock('NativeModules', () => ({
     acceptEvent: jest.fn(),
     rejectEvent: jest.fn(),
     startTrip: jest.fn(),
+    updateTrip: jest.fn(),
     completeTrip: jest.fn(),
     cancelTrip: jest.fn(),
     getContext: jest.fn(),
@@ -207,6 +208,22 @@ describe('calls native implementation', () => {
 
     expect(mockModule.startTrip).toHaveBeenCalledTimes(1);
     expect(mockModule.startTrip).toBeCalledWith(options);
+  });
+
+  test('updateTrip', () => {
+    const options = {
+      options: {
+        externalId: '299',
+        destinationGeofenceTag: 'store',
+        destinationGeofenceExternalId: '123',
+        mode: 'car',
+      },
+      status: 'arrived',
+    };
+    Radar.updateTrip(options);
+
+    expect(mockModule.updateTrip).toHaveBeenCalledTimes(1);
+    expect(mockModule.updateTrip).toBeCalledWith(options);
   });
 
   test('completeTrip', () => {

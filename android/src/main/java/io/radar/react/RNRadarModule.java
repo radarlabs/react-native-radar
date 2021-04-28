@@ -296,6 +296,35 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void updateTrip(ReadableMap optionsMap) {
+        try {
+            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            JSONObject tripOptionsObj = optionsObj.getJSONObject("options");
+            String statusStr = optionsObj.getString("status");
+            RadarTripOptions options = RadarTripOptions.fromJson(tripOptionsObj);
+            RadarTrip.RadarTripStatus status = RadarTrip.RadarTripStatus.UNKNOWN;
+            if (status != null) {
+                if (statusStr.equals("started")) {
+                    status = RadarTrip.RadarTripStatus.UNKNOWN;
+                } else if (statusStr.equals("started")) {
+                    status = RadarTrip.RadarTripStatus.STARTED;
+                } else if (statusStr.equals("approaching")) {
+                    status = RadarTrip.RadarTripStatus.APPROACHING;
+                } else if (statusStr.equals("arrived")) {
+                    status = RadarTrip.RadarTripStatus.ARRIVED;
+                } else if (statusStr.equals("completed")) {
+                    status = RadarTrip.RadarTripStatus.COMPLETED;
+                } else if (statusStr.equals("canceled")) {
+                    status = RadarTrip.RadarTripStatus.CANCELED;
+                }
+            }
+            Radar.updateTrip(options, status);
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
+        }
+    }
+
+    @ReactMethod
     public void completeTrip() {
         Radar.completeTrip();
     }
