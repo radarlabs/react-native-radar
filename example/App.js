@@ -28,7 +28,9 @@ Radar.on('log', (result) => {
 });
 
 export default function App() {
-  Radar.setUserId("foo");
+  Radar.setLogLevel('info');
+
+  Radar.setUserId('foo');
 
   Radar.setMetadata({
     foo: 'bar',
