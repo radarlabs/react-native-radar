@@ -306,7 +306,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
             RadarTripOptions options = RadarTripOptions.fromJson(optionsObj);
-            Radar.startTrip(options, new Radar.RadarTrackCallback() {
+            Radar.startTrip(options, new Radar.RadarTripCallback() {
                 @Override
                 public void onComplete(@NonNull Radar.RadarStatus status) {
 
@@ -319,7 +319,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void completeTrip() {
-        Radar.completeTrip(new Radar.RadarTrackCallback() {
+        Radar.completeTrip(new Radar.RadarTripCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status) {
 
@@ -329,7 +329,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void cancelTrip() {
-        Radar.cancelTrip(new Radar.RadarTrackCallback() {
+        Radar.cancelTrip(new Radar.RadarTripCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status) {
 
