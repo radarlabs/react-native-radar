@@ -6,6 +6,10 @@ if (!NativeModules.RNRadar) {
 
 const eventEmitter = new NativeEventEmitter(NativeModules.RNRadar);
 
+const setLogLevel = (level) => {
+  NativeModules.RNRadar.setLogLevel(level);
+};
+
 const setUserId = (userId) => {
   NativeModules.RNRadar.setUserId(userId);
 };
@@ -127,6 +131,7 @@ const off = (event, callback) => {
 };
 
 const Radar = {
+  setLogLevel,
   setUserId,
   setDescription,
   setMetadata,

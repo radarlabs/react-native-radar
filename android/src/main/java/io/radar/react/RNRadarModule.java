@@ -50,6 +50,23 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setLogLevel(String level) {
+        Radar.RadarLogLevel logLevel = Radar.RadarLogLevel.NONE;
+        if (level != null) {
+            if (level.equals("error") || level.equals("ERROR")) {
+                logLevel = Radar.RadarLogLevel.ERROR;
+            } else if (level.equals("warning") || level.equals("WARNING")) {
+                logLevel = Radar.RadarLogLevel.WARNING;
+            } else if (level.equals("info") || level.equals("INFO")) {
+                logLevel = Radar.RadarLogLevel.INFO;
+            } else if (level.equals("debug") || level.equals("DEBUG")) {
+                logLevel = Radar.RadarLogLevel.DEBUG;
+            }
+        }
+        Radar.setLogLevel(logLevel);
+    }
+
+    @ReactMethod
     public void setUserId(String userId) {
         Radar.setUserId(userId);
     }
@@ -289,7 +306,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
             RadarTripOptions options = RadarTripOptions.fromJson(optionsObj);
-            Radar.startTrip(options);
+            Radar.startTrip(options, new Radar.RadarTripCallback() {
+                @Override
+                public void onComplete(@NonNull Radar.RadarStatus status) {
+
+                }
+            });
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
         }
@@ -297,12 +319,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void completeTrip() {
-        Radar.completeTrip();
+        Radar.completeTrip(new Radar.RadarTripCallback() {
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status) {
+
+            }
+        });
     }
 
     @ReactMethod
     public void cancelTrip() {
-        Radar.cancelTrip();
+        Radar.cancelTrip(new Radar.RadarTripCallback() {
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status) {
+
+            }
+        });
     }
 
     @ReactMethod

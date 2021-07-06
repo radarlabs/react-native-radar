@@ -81,6 +81,22 @@ RCT_EXPORT_MODULE();
     }
 }
 
+RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {
+    RadarLogLevel logLevel = RadarLogLevelNone;
+    if (level) {
+        if ([level isEqualToString:@"error"] || [level isEqualToString:@"ERROR"]) {
+            logLevel = RadarLogLevelError;
+        } else if ([level isEqualToString:@"warning"] || [level isEqualToString:@"WARNING"]) {
+            logLevel = RadarLogLevelWarning;
+        } else if ([level isEqualToString:@"info"] || [level isEqualToString:@"INFO"]) {
+            logLevel = RadarLogLevelInfo;
+        } else if ([level isEqualToString:@"debug"] || [level isEqualToString:@"DEBUG"]) {
+            logLevel = RadarLogLevelDebug;
+        }
+    }
+    [Radar setLogLevel:logLevel];
+}
+
 RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {
     [Radar setUserId:userId];
 }
