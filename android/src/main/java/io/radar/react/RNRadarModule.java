@@ -306,7 +306,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
             RadarTripOptions options = RadarTripOptions.fromJson(optionsObj);
-            Radar.startTrip(options, null);
+            Radar.startTrip(options, new Radar.RadarTrackCallback() {
+                @Override
+                public void onComplete(@NonNull Radar.RadarStatus status) {
+
+                }
+            });
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
         }
@@ -314,12 +319,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void completeTrip() {
-        Radar.completeTrip(null);
+        Radar.completeTrip(new Radar.RadarTrackCallback() {
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status) {
+
+            }
+        });
     }
 
     @ReactMethod
     public void cancelTrip() {
-        Radar.cancelTrip(null);
+        Radar.cancelTrip(new Radar.RadarTrackCallback() {
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status) {
+
+            }
+        });
     }
 
     @ReactMethod
