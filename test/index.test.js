@@ -10,6 +10,7 @@ jest.mock('NativeEventEmitter', () => jest.fn(() => ({
 
 jest.mock('NativeModules', () => ({
   RNRadar: {
+    setLogLevel: jest.fn(),
     setUserId: jest.fn(),
     setDescription: jest.fn(),
     setMetadata: jest.fn(),
@@ -45,6 +46,14 @@ const mockModule = NativeModules.RNRadar;
 const mockEmitter = NativeEventEmitter.mock.results[0].value;
 
 describe('calls native implementation', () => {
+  test('setLogLevel', () => {
+    const level = 'debug';
+    Radar.setLogLevel(level);
+
+    expect(mockModule.setLogLevel).toHaveBeenCalledTimes(1);
+    expect(mockModule.setLogLevel).toBeCalledWith(level);
+  });
+
   test('setUserId', () => {
     const userId = 'userId';
     Radar.setUserId(userId);

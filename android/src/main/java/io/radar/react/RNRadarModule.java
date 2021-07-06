@@ -50,6 +50,23 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setLogLevel(String level) {
+        Radar.RadarLogLevel logLevel = Radar.RadarLogLevel.NONE;
+        if (level != null) {
+            if (level.equals("error") || level.equals("ERROR")) {
+                logLevel = Radar.RadarLogLevel.ERROR;
+            } else if (level.equals("warning") || level.equals("WARNING")) {
+                logLevel = Radar.RadarLogLevel.WARNING;
+            } else if (level.equals("info") || level.equals("INFO")) {
+                logLevel = Radar.RadarLogLevel.INFO;
+            } else if (level.equals("debug") || level.equals("DEBUG")) {
+                logLevel = Radar.RadarLogLevel.DEBUG;
+            }
+        }
+        Radar.setLogLevel(logLevel);
+    }
+
+    @ReactMethod
     public void setUserId(String userId) {
         Radar.setUserId(userId);
     }
