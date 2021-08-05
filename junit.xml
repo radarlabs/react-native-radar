@@ -1,2 +1,68 @@
-<testsuites name="jest tests" tests="0" failures="0" time="4.293">
+<testsuites name="jest tests" tests="32" failures="0" time="3.03">
+  <testsuite name="calls native implementation" errors="0" failures="0" skipped="0" timestamp="2021-08-05T15:40:57" time="0.947" tests="32">
+    <testcase classname="calls native implementation setLogLevel" name="calls native implementation setLogLevel" time="0.003">
+    </testcase>
+    <testcase classname="calls native implementation setUserId" name="calls native implementation setUserId" time="0">
+    </testcase>
+    <testcase classname="calls native implementation setDescription" name="calls native implementation setDescription" time="0">
+    </testcase>
+    <testcase classname="calls native implementation setMetadata" name="calls native implementation setMetadata" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation getPermissionsStatus" name="calls native implementation getPermissionsStatus" time="0">
+    </testcase>
+    <testcase classname="calls native implementation requestPermissions" name="calls native implementation requestPermissions" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation getLocation" name="calls native implementation getLocation" time="0">
+    </testcase>
+    <testcase classname="calls native implementation trackOnce" name="calls native implementation trackOnce" time="0">
+    </testcase>
+    <testcase classname="calls native implementation updateLocation" name="calls native implementation updateLocation" time="0">
+    </testcase>
+    <testcase classname="calls native implementation startTrackingEfficient" name="calls native implementation startTrackingEfficient" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation startTrackingResponsive" name="calls native implementation startTrackingResponsive" time="0">
+    </testcase>
+    <testcase classname="calls native implementation startTrackingContinuous" name="calls native implementation startTrackingContinuous" time="0">
+    </testcase>
+    <testcase classname="calls native implementation startTrackingCustom" name="calls native implementation startTrackingCustom" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation mockTracking" name="calls native implementation mockTracking" time="0">
+    </testcase>
+    <testcase classname="calls native implementation stopTracking" name="calls native implementation stopTracking" time="0">
+    </testcase>
+    <testcase classname="calls native implementation acceptEvent" name="calls native implementation acceptEvent" time="0">
+    </testcase>
+    <testcase classname="calls native implementation rejectEvent" name="calls native implementation rejectEvent" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation startTrip" name="calls native implementation startTrip" time="0">
+    </testcase>
+    <testcase classname="calls native implementation completeTrip" name="calls native implementation completeTrip" time="0">
+    </testcase>
+    <testcase classname="calls native implementation cancelTrip" name="calls native implementation cancelTrip" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation getContext" name="calls native implementation getContext" time="0">
+    </testcase>
+    <testcase classname="calls native implementation searchPlaces" name="calls native implementation searchPlaces" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation searchGeofences" name="calls native implementation searchGeofences" time="0">
+    </testcase>
+    <testcase classname="calls native implementation autocomplete old" name="calls native implementation autocomplete old" time="0">
+    </testcase>
+    <testcase classname="calls native implementation autocomplete new" name="calls native implementation autocomplete new" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation geocode" name="calls native implementation geocode" time="0">
+    </testcase>
+    <testcase classname="calls native implementation reverseGeocode" name="calls native implementation reverseGeocode" time="0">
+    </testcase>
+    <testcase classname="calls native implementation ipGeocode" name="calls native implementation ipGeocode" time="0">
+    </testcase>
+    <testcase classname="calls native implementation getDistance" name="calls native implementation getDistance" time="0.001">
+    </testcase>
+    <testcase classname="calls native implementation getMatrix" name="calls native implementation getMatrix" time="0">
+    </testcase>
+    <testcase classname="calls native implementation on" name="calls native implementation on" time="0">
+    </testcase>
+    <testcase classname="calls native implementation off" name="calls native implementation off" time="0.001">
+    </testcase>
+  </testsuite>
 </testsuites>

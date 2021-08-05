@@ -274,7 +274,7 @@ describe('calls native implementation', () => {
     expect(mockModule.searchGeofences).toBeCalledWith(options);
   });
 
-  test('autocomplete', () => {
+  test('autocomplete old', () => {
     const options = {
       query: 'brooklyn roasting',
       near: {
@@ -282,6 +282,23 @@ describe('calls native implementation', () => {
         longitude: -73.975363,
       },
       limit: 10,
+    };
+    Radar.autocomplete(options);
+
+    expect(mockModule.autocomplete).toHaveBeenCalledTimes(1);
+    expect(mockModule.autocomplete).toBeCalledWith(options);
+  });
+
+  test('autocomplete new', () => {
+    const options = {
+      query: 'brooklyn roasting',
+      layers: ['place'],
+      near: {
+        latitude: 40.783826,
+        longitude: -73.975363,
+      },
+      limit: 10,
+      country: 'US'
     };
     Radar.autocomplete(options);
 

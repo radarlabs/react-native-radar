@@ -540,26 +540,54 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         near.setLongitude(longitude);
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
-        Radar.autocomplete(query, near, limit, new Radar.RadarGeocodeCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (addresses != null) {
-                            map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
+        // for handling new sdk version with layers and country but not breaking old version
+        if(optionsMap.hasKey("layers") || optionsMap.hasKey("country")) {
+            String[] layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
+            String country = optionsMap.hasKey("country") ? optionsMap.getString("country") : null;
+
+            Radar.autocomplete(query, near, layers, limit, country, new Radar.RadarGeocodeCallback() {
+                @Override
+                public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        try {
+                            WritableMap map = Arguments.createMap();
+                            map.putString("status", status.toString());
+                            if (addresses != null) {
+                                map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
+                            }
+                            promise.resolve(map);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "JSONException", e);
+                            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                         }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                    } else {
+                        promise.reject(status.toString(), status.toString());
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
                 }
-            }
-        });
+            });
+        }
+        else {
+            Radar.autocomplete(query, near, limit, new Radar.RadarGeocodeCallback() {
+                @Override
+                public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        try {
+                            WritableMap map = Arguments.createMap();
+                            map.putString("status", status.toString());
+                            if (addresses != null) {
+                                map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
+                            }
+                            promise.resolve(map);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "JSONException", e);
+                            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                        }
+                    } else {
+                        promise.reject(status.toString(), status.toString());
+                    }
+                }
+            });
+        }
     }
 
     @ReactMethod

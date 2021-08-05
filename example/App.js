@@ -97,6 +97,21 @@ export default function App() {
     console.log('autocomplete:', err);
   });
 
+  Radar.autocomplete({
+    query: 'brooklyn roasting',
+    near: {
+      latitude: 40.783826,
+      longitude: -73.975363,
+    },
+    layers: ['place'],
+    limit: 10,
+    country: 'US'
+  }).then((result) => {
+    console.log('autocomplete:', stringify(result));
+  }).catch((err) => {
+    console.log('autocomplete:', err);
+  });
+
   Radar.geocode('20 jay st brooklyn').then((result) => {
     console.log('geocode:', stringify(result));
   }).catch((err) => {
