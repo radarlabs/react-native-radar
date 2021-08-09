@@ -88,18 +88,23 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         }
 
         Activity activity = getCurrentActivity();
-        boolean foreground = ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+        boolean foreground = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean background = true;
+        boolean denied = ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION);
+        
         if (Build.VERSION.SDK_INT >= 29) {
-            if (foreground) {
-                boolean background = ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
-                promise.resolve(background ? "GRANTED_BACKGROUND" : "GRANTED_FOREGROUND");
-            } else if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                promise.resolve("NOT_DETERMINED");
-            } else {
-                promise.resolve("DENIED");
-            }
+            background = ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+
+        if (background) {
+            promise.resolve("GRANTED_BACKGROUND");
+        } else if (foreground) {
+            promise.resolve("GRANTED_FOREGROUND");
+        } else if (denied) {
+            promise.resolve("DENIED");
         } else {
-            promise.resolve(foreground ? "GRANTED_BACKGROUND" : "DENIED");
+            promise.resolve("NOT_DETERMINED");
         }
     }
 
