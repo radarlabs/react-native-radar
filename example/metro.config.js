@@ -1,5 +1,19 @@
+// https://github.com/facebook/react-native/issues/24065#issuecomment-537489786
+
+const blacklist = require('metro-config/src/defaults/blacklist');
+
 module.exports = {
+  resolver: {
+    blacklistRE: blacklist([
+      /node_modules\/.*\/node_modules\/react-native\/.*/,
+    ])
+  },
   transformer: {
-    assetPlugins: ['expo-asset/tools/hashAssetFiles'],
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: false,
+      },
+    }),
   },
 };
