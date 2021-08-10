@@ -89,6 +89,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
 
         Activity activity = getCurrentActivity();
 
+        if (activity == null) {
+            promise.resolve("UNKNOWN");
+
+            return;
+        }
+
         boolean foreground = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean background = true;
         boolean denied = ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION);
