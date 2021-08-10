@@ -125,6 +125,9 @@ RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTProm
         case kCLAuthorizationStatusAuthorizedWhenInUse:
             statusStr = @"GRANTED_FOREGROUND";
             break;
+        case kCLAuthorizationStatusNotDetermined:
+            statusStr = @"NOT_DETERMINED";
+            break;
         default:
             statusStr = @"DENIED";
             break;

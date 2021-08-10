@@ -42,7 +42,7 @@ jobs:
           path: ~/react-native-radar
       - run: yarn install
       - run: sudo yarn global add react-native
-      - run: cd ios && pod install --repo-update && pod update RadarSDK
+      - run: cd ios && pod update RadarSDK && pod install
       - run: react-native run-ios
 workflows:
   version: 2
