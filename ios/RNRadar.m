@@ -23,9 +23,9 @@ RCT_EXPORT_MODULE();
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    if (self.permissionsRequestResolver) {
-        [self getPermissionsStatusWithResolver:self.permissionsRequestResolver rejecter:nil];
-        self.permissionsRequestResolver = nil;
+    if (permissionsRequestResolver) {
+        [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+        permissionsRequestResolver = nil;
     }
 }
 
@@ -145,15 +145,15 @@ RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTProm
 }
 
 RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    self.permissionsRequestResolver = resolve;
+    permissionsRequestResolver = resolve;
 
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        [self.locationManager requestAlwaysAuthorization];
+        [locationManager requestAlwaysAuthorization];
     } else if (status == kCLAuthorizationStatusNotDetermined) {
-        [self.locationManager requestWhenInUseAuthorization];
+        [locationManager requestWhenInUseAuthorization];
     } else {
-        [self getPermissionsStatus:resolve];
+        [self getPermissionsStatusWithResolver:resolve rejecter:reject];
     }
 }
 

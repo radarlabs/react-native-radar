@@ -121,7 +121,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @Override
     public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_CODE && mPermissionsRequestPromise != null) {
-            getPermissionStatus(mPermissionsRequestPromise);
+            getPermissionsStatus(mPermissionsRequestPromise);
             mPermissionsRequestPromise = null;
         }
         return true;
