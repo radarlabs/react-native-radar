@@ -7,6 +7,7 @@
 @implementation RNRadar {
     BOOL hasListeners;
     CLLocationManager *locationManager;
+    RCTPromiseResolveBlock permissionsRequestResolver;
 }
 
 RCT_EXPORT_MODULE();
@@ -16,8 +17,16 @@ RCT_EXPORT_MODULE();
     if (self) {
         [Radar setDelegate:self];
         locationManager = [CLLocationManager new];
+        locationManager.delegate = self;
     }
     return self;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    if (self.permissionsRequestResolver) {
+        [self getPermissionsStatusWithResolver:self.permissionsRequestResolver rejecter:nil];
+        self.permissionsRequestResolver = nil;
+    }
 }
 
 + (BOOL)requiresMainQueueSetup {
@@ -135,11 +144,16 @@ RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTProm
     resolve(statusStr);
 }
 
-RCT_EXPORT_METHOD(requestPermissions:(BOOL)background) {
-    if (background) {
-        [locationManager requestAlwaysAuthorization];
+RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    self.permissionsRequestResolver = resolve;
+
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [self.locationManager requestAlwaysAuthorization];
+    } else if (status == kCLAuthorizationStatusNotDetermined) {
+        [self.locationManager requestWhenInUseAuthorization];
     } else {
-        [locationManager requestWhenInUseAuthorization];
+        [self getPermissionsStatus:resolve];
     }
 }
 

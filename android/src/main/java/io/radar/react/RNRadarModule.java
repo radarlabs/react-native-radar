@@ -19,6 +19,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.PermissionAwareActivity;
 import io.radar.sdk.Radar;
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.RadarTripOptions;
@@ -36,9 +37,11 @@ import org.json.JSONObject;
 
 import java.util.EnumSet;
 
-public class RNRadarModule extends ReactContextBaseJavaModule {
+public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener {
 
     private static final String TAG = "RNRadarModule";
+    private static final int PERMISSIONS_REQUEST_CODE = 20160525;
+    private Promise mPermissionsRequestPromise;
 
     public RNRadarModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -82,7 +85,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getPermissionsStatus(Promise promise) {
+    public void getPermissionsStatus(final Promise promise) {
         if (promise == null) {
             return;
         }
@@ -114,16 +117,25 @@ public class RNRadarModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @Override
+    public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_CODE && mPermissionsRequestPromise != null) {
+            getPermissionStatus(mPermissionsRequestPromise);
+            mPermissionsRequestPromise = null;
+        }
+        return true;
+    }
+
     @ReactMethod
-    public void requestPermissions(boolean background) {
-        Activity activity = getCurrentActivity();
+    public void requestPermissions(boolean background, final Promise promise) {
+        PermissionAwareActivity activity = (PermissionAwareActivity)getCurrentActivity();
+        mPermissionsRequestPromise = promise;
         if (activity != null) {
             if (Build.VERSION.SDK_INT >= 23) {
-                int requestCode = 0;
                 if (background && Build.VERSION.SDK_INT >= 29) {
-                    ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION }, requestCode);
+                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
                 } else {
-                    ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, requestCode);
+                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
                 }
             }
         }
