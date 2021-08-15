@@ -26,9 +26,9 @@ const getPermissionsStatus = () => (
   NativeModules.RNRadar.getPermissionsStatus()
 );
 
-const requestPermissions = (background) => {
-  NativeModules.RNRadar.requestPermissions(background);
-};
+const requestPermissions = background => (
+  NativeModules.RNRadar.requestPermissions(background)
+);
 
 const getLocation = () => (
   NativeModules.RNRadar.getLocation()

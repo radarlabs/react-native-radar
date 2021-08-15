@@ -28,6 +28,7 @@ Radar.on('log', (result) => {
 });
 
 export default function App() {
+  /*
   Radar.setLogLevel('info');
 
   Radar.setUserId('foo');
@@ -37,8 +38,17 @@ export default function App() {
     baz: true,
     qux: 1,
   });
+  */
 
-  Radar.requestPermissions(true);
+  console.log(Radar.requestPermissions.toString());
+
+  /*
+  Radar.requestPermissions(true).then((result) => {
+    console.log('requestPermissions:', result);
+  }).catch((err) => {
+    console.log('requestPermissionsrr:', err);
+  });
+  */
 
   Radar.getPermissionsStatus().then((result) => {
     console.log('getPermissionsStatus:', result);
@@ -46,6 +56,7 @@ export default function App() {
     console.log('getPermissionsStatus:', err);
   });
 
+  /*
   Radar.getLocation().then((result) => {
     console.log('getLocation:', stringify(result));
   }).catch((err) => {
@@ -189,6 +200,7 @@ export default function App() {
   });
 
   Radar.completeTrip();
+  */
 
   return (
     <View style={styles.container}>
