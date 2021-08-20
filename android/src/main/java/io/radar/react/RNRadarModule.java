@@ -41,7 +41,7 @@ import java.util.EnumSet;
 public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener {
 
     private static final String TAG = "RNRadarModule";
-    private static final int PERMISSIONS_REQUEST_CODE = 20160525;
+    private static final int PERMISSIONS_REQUEST_CODE = 20160525; // random request code (Radar's birthday!)
     private Promise mPermissionsRequestPromise;
 
     public RNRadarModule(ReactApplicationContext reactContext) {
