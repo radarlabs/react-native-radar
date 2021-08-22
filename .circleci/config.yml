@@ -3,7 +3,7 @@ jobs:
   node:
     working_directory: ~/react-native-radar
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:10.13.0
     steps:
       - checkout
       - run: npm install
