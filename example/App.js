@@ -38,7 +38,11 @@ export default function App() {
     qux: 1,
   });
 
-  Radar.requestPermissions(true);
+  Radar.requestPermissions(false).then((result) => {
+    console.log('requestPermissions:', result);
+  }).catch((err) => {
+    console.log('requestPermissions:', err);
+  });
 
   Radar.getPermissionsStatus().then((result) => {
     console.log('getPermissionsStatus:', result);
