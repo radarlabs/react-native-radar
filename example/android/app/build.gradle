@@ -78,7 +78,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    enableHermes: false
+        enableHermes: false
 ]
 
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
@@ -172,11 +172,10 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // https://developer.android.com/studio/build/configure-apk-splits.html
-            def versionCodes = ['armeabi-v7a': 1, 'x86': 2, 'arm64-v8a': 3, 'x86_64': 4]
+            Map<String, Integer> versionCodes = ['armeabi-v7a': 1, 'x86': 2, 'arm64-v8a': 3, 'x86_64': 4]
             def abi = output.getFilter(OutputFile.ABI)
-            if (abi != null) {  // null for the universal-debug, universal-release variants
-                output.versionCodeOverride =
-                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+            if (abi) {  // null for the universal-debug, universal-release variants
+                output.versionCodeOverride = versionCodes[abi] * 1048576 + defaultConfig.versionCode
             }
 
         }
@@ -189,14 +188,14 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'  // From node_modules
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     debugImplementation("com.facebook.flipper:flipper:$FLIPPER_VERSION") {
-      exclude group:'com.facebook.fbjni'
+        exclude group: 'com.facebook.fbjni'
     }
     debugImplementation("com.facebook.flipper:flipper-network-plugin:$FLIPPER_VERSION") {
-        exclude group:'com.facebook.flipper'
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
+        exclude group: 'com.facebook.flipper'
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:$FLIPPER_VERSION") {
-        exclude group:'com.facebook.flipper'
+        exclude group: 'com.facebook.flipper'
     }
     addUnimodulesDependencies()
 

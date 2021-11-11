@@ -1,10 +1,13 @@
 package io.radar.react;
 
+import static androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -57,6 +60,15 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     public RNRadarModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        String publishableKey = reactContext.getString(R.string.radar_publishableKey);
+        if (publishableKey == null || TextUtils.isEmpty(publishableKey)) {
+            boolean ignoreWarning = reactContext.getResources().getBoolean(R.bool.ignore_radar_initialize_warning);
+            if (!ignoreWarning) {
+                Log.w(TAG, "Radar could not initialize. Did you set string 'radar_publishableKey' in strings.xml?");
+            }
+        } else {
+            Radar.initialize(getReactApplicationContext(), publishableKey, new RNRadarReceiver());
+        }
     }
 
     @NonNull
@@ -123,15 +135,24 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             return;
         }
 
-        boolean foreground = ActivityCompat.checkSelfPermission(activity,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        boolean background = foreground;
-        boolean denied = ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                Manifest.permission.ACCESS_FINE_LOCATION);
+        int gpsLocation = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
+        int wifiLocation = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            background = ActivityCompat.checkSelfPermission(activity,
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean foreground = gpsLocation == PackageManager.PERMISSION_GRANTED
+                || wifiLocation == PackageManager.PERMISSION_GRANTED;
+        boolean background = foreground;
+        boolean denied = false;
+        if (gpsLocation == PackageManager.PERMISSION_DENIED) {
+            denied = shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (wifiLocation == PackageManager.PERMISSION_DENIED) {
+            denied = shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+                && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            background = true;
         }
 
         if (background) {

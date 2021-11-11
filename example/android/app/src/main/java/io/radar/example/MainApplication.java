@@ -18,9 +18,6 @@ import javax.annotation.Nullable;
 
 import expo.modules.updates.UpdatesController;
 import io.radar.example.generated.BasePackageList;
-import io.radar.react.RNRadar;
-import io.radar.react.RNRadarReceiver;
-import io.radar.sdk.Radar;
 
 /**
  * Main entrance point for starting the Android application.
@@ -84,8 +81,6 @@ public class MainApplication extends Application implements ReactApplication {
         if (!BuildConfig.DEBUG) {
             UpdatesController.initialize(this);
         }
-
-        RNRadar.initialize(this, "prj_test_pk_0000000000000000000000000000000000000000");
 
         //Loads Flipper in React Native templates. Call this in the onCreate method.
         ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
