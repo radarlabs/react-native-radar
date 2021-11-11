@@ -1,8 +1,8 @@
-/**
+/*
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * <p>This source code is licensed under the MIT license found in the LICENSE file in the root
- * directory of this source tree.
+ * directory of the flipper project: https://github.com/facebook/flipper.
  */
 package com.example;
 
@@ -22,7 +22,6 @@ import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPl
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.network.NetworkingModule;
-import okhttp3.OkHttpClient;
 
 public class ReactNativeFlipper {
   public static void initializeFlipper(Context context, ReactInstanceManager reactInstanceManager) {
@@ -34,13 +33,9 @@ public class ReactNativeFlipper {
       client.addPlugin(new SharedPreferencesFlipperPlugin(context));
       client.addPlugin(CrashReporterPlugin.getInstance());
       NetworkFlipperPlugin networkFlipperPlugin = new NetworkFlipperPlugin();
-      NetworkingModule.setCustomClientBuilder(
-          new NetworkingModule.CustomClientBuilder() {
-            @Override
-            public void apply(OkHttpClient.Builder builder) {
-              builder.addNetworkInterceptor(new FlipperOkhttpInterceptor(networkFlipperPlugin));
-            }
-          });
+      NetworkingModule.setCustomClientBuilder(builder ->
+              builder.addNetworkInterceptor(new FlipperOkhttpInterceptor(networkFlipperPlugin))
+      );
       client.addPlugin(networkFlipperPlugin);
       client.start();
       // Fresco Plugin needs to ensure that ImagePipelineFactory is initialized
@@ -52,13 +47,7 @@ public class ReactNativeFlipper {
               @Override
               public void onReactContextInitialized(ReactContext reactContext) {
                 reactInstanceManager.removeReactInstanceEventListener(this);
-                reactContext.runOnNativeModulesQueueThread(
-                    new Runnable() {
-                      @Override
-                      public void run() {
-                        client.addPlugin(new FrescoFlipperPlugin());
-                      }
-                    });
+                reactContext.runOnNativeModulesQueueThread(() -> client.addPlugin(new FrescoFlipperPlugin()));
               }
             });
       } else {

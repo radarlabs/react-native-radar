@@ -1,9 +1,14 @@
 package io.radar.react;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
+
 import java.util.Iterator;
 
+import org.jetbrains.annotations.Contract;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,9 +19,20 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 
+/**
+ * Contains utilities for converting between native and react data structures
+ */
 class RNRadarUtils {
 
-    static WritableMap mapForJson(JSONObject obj) throws JSONException {
+    /**
+     * Converts the given {@link JSONObject} into a {@link WritableMap}
+     *
+     * @param obj the {@code JSONObject} to convert
+     * @return a {@code WriteableMap} containing the key-value pairs from {@code obj}
+     * @throws JSONException if an error occurs while parsing the given {@code JSONObject}
+     */
+    @Nullable
+    static WritableMap mapForJson(@Nullable JSONObject obj) throws JSONException {
         if (obj == null) {
             return null;
         }
@@ -27,27 +43,35 @@ class RNRadarUtils {
             String key = iterator.next();
             Object value = obj.get(key);
             if (value instanceof JSONObject) {
-                writableMap.putMap(key, mapForJson((JSONObject)value));
+                writableMap.putMap(key, mapForJson((JSONObject) value));
             } else if (value instanceof JSONArray) {
-                writableMap.putArray(key, arrayForJson((JSONArray)value));
-            } else if (value instanceof  Boolean) {
-                writableMap.putBoolean(key, (Boolean)value);
+                writableMap.putArray(key, arrayForJson((JSONArray) value));
+            } else if (value instanceof Boolean) {
+                writableMap.putBoolean(key, (Boolean) value);
             } else if (value instanceof Integer) {
-                writableMap.putInt(key, (Integer)value);
+                writableMap.putInt(key, (Integer) value);
             } else if (value instanceof Double) {
-                writableMap.putDouble(key, (Double)value);
+                writableMap.putDouble(key, (Double) value);
             } else if (value instanceof Float) {
                 String valueStr = value.toString();
-                Double valueDouble = Double.valueOf(valueStr);
+                double valueDouble = Double.parseDouble(valueStr);
                 writableMap.putDouble(key, valueDouble);
-            } else if (value instanceof String)  {
-                writableMap.putString(key, (String)value);
+            } else if (value instanceof String) {
+                writableMap.putString(key, (String) value);
             }
         }
         return writableMap;
     }
 
-    static WritableArray arrayForJson(JSONArray arr) throws JSONException {
+    /**
+     * Converts the given {@link JSONArray} into a {@link WritableArray}
+     *
+     * @param arr the {@code JSONArray} to convert
+     * @return a {@code WritableArray} containing the values from {@code arr}
+     * @throws JSONException if an error occurs while parsing the given {@code JSONArray}
+     */
+    @Nullable
+    static WritableArray arrayForJson(@Nullable JSONArray arr) throws JSONException {
         if (arr == null) {
             return null;
         }
@@ -56,23 +80,33 @@ class RNRadarUtils {
         for (int i = 0; i < arr.length(); i++) {
             Object value = arr.get(i);
             if (value instanceof JSONObject) {
-                writableArr.pushMap(mapForJson((JSONObject)value));
+                writableArr.pushMap(mapForJson((JSONObject) value));
             } else if (value instanceof JSONArray) {
-                writableArr.pushArray(arrayForJson((JSONArray)value));
+                writableArr.pushArray(arrayForJson((JSONArray) value));
             } else if (value instanceof Boolean) {
-                writableArr.pushBoolean((Boolean)value);
+                writableArr.pushBoolean((Boolean) value);
             } else if (value instanceof Integer) {
-                writableArr.pushInt((Integer)value);
+                writableArr.pushInt((Integer) value);
             } else if (value instanceof Double) {
-                writableArr.pushDouble((Double)value);
-            } else if (value instanceof String)  {
-                writableArr.pushString((String)value);
+                writableArr.pushDouble((Double) value);
+            } else if (value instanceof String) {
+                writableArr.pushString((String) value);
             }
         }
         return writableArr;
     }
 
-    static JSONObject jsonForMap(ReadableMap readableMap) throws JSONException {
+    /**
+     * Converts the given {@link ReadableMap} into a {@link JSONObject}
+     *
+     * @param readableMap the {@code ReadableMap} to convert
+     * @return a {@code JSONObject} containing the key-value pairs from {@code readableMap}
+     * @throws JSONException if an error occurs while creating the {@code JSONObject}
+     */
+    @Nullable
+    @Contract("null -> null; !null -> !null")
+    @SuppressWarnings("checkstyle:MissingSwitchDefault")
+    static JSONObject jsonForMap(@Nullable ReadableMap readableMap) throws JSONException {
         if (readableMap == null) {
             return null;
         }
@@ -105,7 +139,16 @@ class RNRadarUtils {
         return obj;
     }
 
-    static JSONArray jsonForArray(ReadableArray readableArr) throws JSONException {
+    /**
+     * Converts the given {@link ReadableArray} into a {@link JSONArray}
+     *
+     * @param readableArr the {@code ReadableArray} to convert
+     * @return a {@code JSONArray} containing the values from {@code readableArr}
+     * @throws JSONException if an error occurs while creating the {@code JSONArray}
+     */
+    @Nullable
+    @SuppressWarnings("checkstyle:MissingSwitchDefault")
+    static JSONArray jsonForArray(@Nullable ReadableArray readableArr) throws JSONException {
         if (readableArr == null) {
             return null;
         }
@@ -135,16 +178,21 @@ class RNRadarUtils {
         return arr;
     }
 
-    static String[] stringArrayForArray(ReadableArray readableArr) {
-        String[] arr;
-        if (readableArr != null) {
-            int size = readableArr.size();
-            arr = new String[size];
-            for (int i = 0; i < size; i++) {
-                arr[i] = readableArr.getString(i);
-            }
-        } else {
-            arr = new String[0];
+    /**
+     * Converts the given {@link ReadableArray} into a String Array
+     *
+     * @param readableArr the {@code ReadableArray} to convert
+     * @return a String[] containing the values of the given parameter
+     */
+    @NonNull
+    static String[] stringArrayForArray(@Nullable ReadableArray readableArr) {
+        if (readableArr == null) {
+            return new String[0];
+        }
+        int size = readableArr.size();
+        String[] arr = new String[size];
+        for (int i = 0; i < size; i++) {
+            arr[i] = readableArr.getString(i);
         }
         return arr;
     }

@@ -1,29 +1,28 @@
 buildscript {
     repositories {
-        maven {
-            url 'https://maven.google.com'
-        }
-        jcenter()
+        google()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.android.tools.build:gradle:7.0.3'
     }
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'checkstyle'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 29
-        versionCode 1
-        versionName '3.1.7'
+        targetSdkVersion 31
+        versionCode 2
+        versionName '3.2.2'
     }
     lintOptions {
-        abortOnError false
+        abortOnError true
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -32,10 +31,7 @@ android {
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://maven.google.com'
-    }
-    jcenter()
+    google()
     maven {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
         url "$rootDir/../node_modules/react-native/android"
@@ -43,6 +39,23 @@ repositories {
 }
 
 dependencies {
+    //noinspection GradleDynamicVersion
     api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.1.15'
+    api 'io.radar:sdk:3.2.2'
+}
+
+checkstyle {
+    toolVersion = '9.1'
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+}
+
+task checkstyle(type: Checkstyle) {
+    dependsOn 'compileReleaseJavaWithJavac'
+    source project.fileTree("$projectDir/src/main/java")
+    classpath = project.files("$project.buildDir/intermediates/javac/release/classes")
+    exclude '**/gen/**', '**/R.java', '**/BuildConfig.java'
+}
+
+check {
+    dependsOn tasks.checkstyle
 }
