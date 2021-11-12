@@ -282,7 +282,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Radar.trackOnce(location, new Radar.RadarTrackCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status,
-                                   @Nullable Location location1,
+                                   @Nullable Location location,
                                    @Nullable RadarEvent[] events,
                                    @Nullable RadarUser user) {
                 if (promise == null) {
@@ -293,8 +293,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     if (status == Radar.RadarStatus.SUCCESS) {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
-                        if (location1 != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location1)));
+                        if (location != null) {
+                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
                         }
                         if (events != null) {
                             map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
@@ -501,14 +501,14 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Radar.getContext(location, new Radar.RadarContextCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status,
-                                   @Nullable Location location1,
+                                   @Nullable Location location,
                                    @Nullable RadarContext context) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
-                        if (location1 != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location1)));
+                        if (location != null) {
+                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
                         }
                         if (context != null) {
                             map.putMap("context", RNRadarUtils.mapForJson(context.toJson()));
