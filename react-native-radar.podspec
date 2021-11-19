@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
   s.platform = :ios, "10.0"
 
   s.dependency "React"
-  s.dependency "RadarSDK", "3.1.10"
+  s.dependency "RadarSDK", "3.2.0"
 end
