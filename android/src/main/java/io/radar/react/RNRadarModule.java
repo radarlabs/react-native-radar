@@ -135,17 +135,17 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             return;
         }
 
-        int gpsLocation = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
-        int wifiLocation = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
+        int fineLocation = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
+        int coarseLocation = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        boolean foreground = gpsLocation == PackageManager.PERMISSION_GRANTED
-                || wifiLocation == PackageManager.PERMISSION_GRANTED;
+        boolean foreground = fineLocation == PackageManager.PERMISSION_GRANTED
+                || coarseLocation == PackageManager.PERMISSION_GRANTED;
         boolean background = foreground;
         boolean denied = false;
-        if (gpsLocation == PackageManager.PERMISSION_DENIED) {
+        if (fineLocation == PackageManager.PERMISSION_DENIED) {
             denied = shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION);
         }
-        if (wifiLocation == PackageManager.PERMISSION_DENIED) {
+        if (coarseLocation == PackageManager.PERMISSION_DENIED) {
             denied = shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
         }
 
@@ -184,11 +184,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                 if (background && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     activity.requestPermissions(new String[]{
                             Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
                             Manifest.permission.ACCESS_BACKGROUND_LOCATION
                     }, PERMISSIONS_REQUEST_CODE, this);
                 } else {
                     activity.requestPermissions(new String[]{
-                            Manifest.permission.ACCESS_FINE_LOCATION
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
                     }, PERMISSIONS_REQUEST_CODE, this);
                 }
             }
