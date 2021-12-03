@@ -14,13 +14,13 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
-        versionName '3.1.7'
+        versionName '3.2.0'
     }
     lintOptions {
         abortOnError false
@@ -45,4 +45,10 @@ repositories {
 dependencies {
     api 'com.facebook.react:react-native:+'
     api 'io.radar:sdk:3.2.3-beta.2'
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'androidx.core:core-ktx:1.6.0'
+    }
 }
