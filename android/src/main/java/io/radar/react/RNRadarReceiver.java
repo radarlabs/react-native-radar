@@ -18,7 +18,6 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import io.radar.sdk.Radar;
 import io.radar.sdk.RadarReceiver;
 import io.radar.sdk.model.RadarEvent;
-import io.radar.sdk.model.RadarTrip;
 import io.radar.sdk.model.RadarUser;
 import java.util.concurrent.atomic.AtomicInteger;
 

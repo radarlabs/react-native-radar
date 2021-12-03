@@ -31,6 +31,7 @@ import io.radar.sdk.model.RadarGeofence;
 import io.radar.sdk.model.RadarPlace;
 import io.radar.sdk.model.RadarRouteMatrix;
 import io.radar.sdk.model.RadarRoutes;
+import io.radar.sdk.model.RadarTrip;
 import io.radar.sdk.model.RadarUser;
 
 import org.json.JSONException;
