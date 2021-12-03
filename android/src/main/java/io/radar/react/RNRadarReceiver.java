@@ -17,43 +17,20 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import io.radar.sdk.Radar;
 import io.radar.sdk.RadarReceiver;
 import io.radar.sdk.model.RadarEvent;
+import io.radar.sdk.model.RadarTrip;
 import io.radar.sdk.model.RadarUser;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RNRadarReceiver extends RadarReceiver {
 
     private ReactNativeHost reactNativeHost;
-    private PendingResult result;
-    private AtomicInteger pendingCount = new AtomicInteger(0);
     private static final String TAG = "RNRadarReceiver";
-
-    private void invokeSendEvent(ReactContext reactContext, String eventName, Object data) {
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
-    }
 
     private void sendEvent(final String eventName, final Object data) {
         final ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
         ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
-        if (reactContext == null) {
-            if (result == null) {
-                result = goAsync();
-            }
-            pendingCount.incrementAndGet();
-            reactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
-                @Override
-                public void onReactContextInitialized(ReactContext reactContext) {
-                    invokeSendEvent(reactContext, eventName, data);
-                    reactInstanceManager.removeReactInstanceEventListener(this);
-                    if (pendingCount.decrementAndGet() == 0) {
-                        result.finish();
-                    }
-                }
-            });
-            if (!reactInstanceManager.hasStartedCreatingInitialContext()) {
-                reactInstanceManager.createReactContextInBackground();
-            }
-        } else {
-            invokeSendEvent(reactContext, eventName, data);
+        if (reactContext != null) {
+            reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
         }
     }
 
