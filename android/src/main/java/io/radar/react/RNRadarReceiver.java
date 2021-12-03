@@ -5,6 +5,7 @@ import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -23,49 +24,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class RNRadarReceiver extends RadarReceiver {
 
     private ReactNativeHost reactNativeHost;
-    private PendingResult result;
-    private AtomicInteger pendingCount = new AtomicInteger(0);
     private static final String TAG = "RNRadarReceiver";
-
-    private void invokeSendEvent(ReactContext reactContext, String eventName, Object data) {
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
-    }
 
     private void sendEvent(final String eventName, final Object data) {
         final ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
         ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
-        if (reactContext == null) {
-            if (result == null) {
-                result = goAsync();
-            }
-            pendingCount.incrementAndGet();
-            reactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
-                @Override
-                public void onReactContextInitialized(ReactContext reactContext) {
-                    invokeSendEvent(reactContext, eventName, data);
-                    reactInstanceManager.removeReactInstanceEventListener(this);
-                    if (pendingCount.decrementAndGet() == 0) {
-                        result.finish();
-                    }
-                }
-            });
-            if (!reactInstanceManager.hasStartedCreatingInitialContext()) {
-                reactInstanceManager.createReactContextInBackground();
-            }
-        } else {
-            invokeSendEvent(reactContext, eventName, data);
+        if (reactContext != null) {
+            reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
         }
     }
 
     @Override
-    public void onEventsReceived(@NonNull Context context, @NonNull RadarEvent[] events, @NonNull RadarUser user) {
+    public void onEventsReceived(@NonNull Context context, @NonNull RadarEvent[] events, @Nullable RadarUser user) {
         try {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
             map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+            if (user != null) {
+                map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+            }
 
             sendEvent("events", map);
         } catch (Exception e) {
