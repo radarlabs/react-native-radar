@@ -49,13 +49,14 @@ RCT_EXPORT_MODULE();
     hasListeners = NO;
 }
 
-- (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser *)user {
+- (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser * _Nullable )user {
     if (hasListeners) {
-        [self sendEventWithName:@"events" body:@{
-            @"events": [RadarEvent arrayForEvents:events],
-            @"user": [user dictionaryValue]
-
-        }];
+        NSMutableDictionary *body = [NSMutableDictionary new];
+        [body setValue:[RadarEvent arrayForEvents:events] forKey:@"events"];
+        if (user) {
+            [body setValue:[user dictionaryValue] forKey:@"user"];
+        }
+        [self sendEventWithName:@"events" body:body];
     }
 }
 
@@ -73,7 +74,7 @@ RCT_EXPORT_MODULE();
         [self sendEventWithName:@"clientLocation" body:@{
             @"location": [Radar dictionaryForLocation:location],
             @"stopped": @(stopped),
-            @"source": [Radar stringForSource:source]
+            @"source": [Radar stringForLocationSource:source]
         }];
     }
 }
@@ -245,15 +246,15 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict resolve:(RCTPromiseReso
 }
 
 RCT_EXPORT_METHOD(startTrackingEfficient) {
-    [Radar startTrackingWithOptions:RadarTrackingOptions.efficient];
+    [Radar startTrackingWithOptions:RadarTrackingOptions.presetEfficient];
 }
 
 RCT_EXPORT_METHOD(startTrackingResponsive) {
-    [Radar startTrackingWithOptions:RadarTrackingOptions.responsive];
+    [Radar startTrackingWithOptions:RadarTrackingOptions.presetResponsive];
 }
 
 RCT_EXPORT_METHOD(startTrackingContinuous) {
-    [Radar startTrackingWithOptions:RadarTrackingOptions.continuous];
+    [Radar startTrackingWithOptions:RadarTrackingOptions.presetContinuous];
 }
 
 RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
