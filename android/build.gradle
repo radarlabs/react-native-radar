@@ -14,11 +14,11 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 1
         versionName '3.2.0'
     }
@@ -50,5 +50,5 @@ repositories {
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.2.3-beta.2'
+    api 'io.radar:sdk:3.2.3'
 }
