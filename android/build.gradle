@@ -28,6 +28,12 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core:1.6.0'
+            force 'androidx.core:core-ktx:1.6.0'
+        }
+    }
 }
 
 repositories {
@@ -45,11 +51,4 @@ repositories {
 dependencies {
     api 'com.facebook.react:react-native:+'
     api 'io.radar:sdk:3.2.3-beta.2'
-}
-
-configurations.all {
-    resolutionStrategy {
-        force 'androidx.core:core:1.6.0'
-        force 'androidx.core:core-ktx:1.6.0'
-    }
 }
