@@ -51,11 +51,12 @@ RCT_EXPORT_MODULE();
 
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser * _Nullable )user {
     if (hasListeners) {
-        [self sendEventWithName:@"events" body:@{
-            @"events": [RadarEvent arrayForEvents:events],
-            @"user": [user dictionaryValue]
-
-        }];
+        NSMutableDictionary *body = [NSMutableDictionary new];
+        [body setValue:[RadarEvent arrayForEvents:events] forKey:@"events"];
+        if (user) {
+            [body setValue:[user dictionaryValue] forKey:@"user"];
+        }
+        [self sendEventWithName:@"events" body:body];
     }
 }
 
