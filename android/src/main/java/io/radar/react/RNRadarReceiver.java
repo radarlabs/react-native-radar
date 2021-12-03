@@ -5,6 +5,7 @@ import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
