@@ -14,7 +14,7 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 16
@@ -45,10 +45,4 @@ repositories {
 dependencies {
     api 'com.facebook.react:react-native:+'
     api 'io.radar:sdk:3.2.3-beta.2'
-}
-
-configurations.all {
-    resolutionStrategy {
-        force 'androidx.core:core-ktx:1.6.0'
-    }
 }
