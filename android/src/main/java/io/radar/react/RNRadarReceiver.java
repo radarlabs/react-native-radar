@@ -58,14 +58,16 @@ public class RNRadarReceiver extends RadarReceiver {
     }
 
     @Override
-    public void onEventsReceived(@NonNull Context context, @NonNull RadarEvent[] events, @NonNull RadarUser user) {
+    public void onEventsReceived(@NonNull Context context, @NonNull RadarEvent[] events, @Nullable RadarUser user) {
         try {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
             map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+            if (user != null) {
+                map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+            }
 
             sendEvent("events", map);
         } catch (Exception e) {

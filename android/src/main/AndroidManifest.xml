@@ -1,15 +1,4 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.radar.react">
 
-    <application>
-        <receiver
-            android:name="io.radar.react.RNRadarReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="io.radar.sdk.RECEIVED" />
-            </intent-filter>
-        </receiver>
-    </application>
-
 </manifest>

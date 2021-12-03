@@ -46,6 +46,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     public RNRadarModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        Radar.setReceiver(new RNRadarReceiver());
     }
 
     @Override
@@ -335,7 +336,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             RadarTripOptions options = RadarTripOptions.fromJson(optionsObj);
             Radar.startTrip(options, new Radar.RadarTripCallback() {
                 @Override
-                public void onComplete(@NonNull Radar.RadarStatus status) {
+                public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
 
                 }
             });
@@ -348,7 +349,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     public void completeTrip() {
         Radar.completeTrip(new Radar.RadarTripCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status) {
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
 
             }
         });
@@ -358,7 +359,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     public void cancelTrip() {
         Radar.cancelTrip(new Radar.RadarTripCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status) {
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
 
             }
         });
