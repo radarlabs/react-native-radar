@@ -433,7 +433,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
             RadarTripOptions options = RadarTripOptions.fromJson(optionsObj.getJSONObject("options"));
-            RadarTrip.RadarTripStatus status = new Radar.RadarTripStatus();
+            RadarTrip.RadarTripStatus status = RadarTrip.RadarTripStatus.UNKNOWN;
 
             if (optionsObj.has("status")) {
                 String statusStr = optionsObj.getString("status");
@@ -451,11 +451,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     } else if (statusStr.equalsIgnoreCase("unknown")) {
                         status = RadarTrip.RadarTripStatus.UNKNOWN;
                     } else {
-                        promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString()));
+                        promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
                     }
                 }
             } else {
-                promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString()));
+                promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
             }
 
             Radar.updateTrip(options, status, new Radar.RadarTripCallback() {
