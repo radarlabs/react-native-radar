@@ -388,6 +388,14 @@ RCT_EXPORT_METHOD(cancelTrip:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseR
 }
 
 RCT_EXPORT_METHOD(updateTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (optionsDict == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
+    }
+
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict[@"options"]];
     NSString *statusStr = optionsDict[@"status"];
 
@@ -403,7 +411,21 @@ RCT_EXPORT_METHOD(updateTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseReso
             status = RadarTripStatusCompleted;
         } else if ([statusStr isEqualToString:@"canceled"]) {
             status = RadarTripStatusCanceled;
+        } else if ([statusStr isEqualToString:@"unknown"]) {
+            status = RadarTripStatusUnknown;
+        } else {
+            if (reject) {
+                reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+            }
+
+            return;
         }
+    } else {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
     }
 
     __block RCTPromiseResolveBlock resolver = resolve;

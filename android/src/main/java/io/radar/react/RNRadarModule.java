@@ -363,7 +363,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             });
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
-            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
         }
     }
 
@@ -429,10 +429,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void updateTrip(ReadableMap optionsMap, final Promise promise) {
+
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
             RadarTripOptions options = RadarTripOptions.fromJson(optionsObj.getJSONObject("options"));
-            RadarTrip.RadarTripStatus status = RadarTrip.RadarTripStatus.UNKNOWN;
+            RadarTrip.RadarTripStatus status = new Radar.RadarTripStatus();
 
             if (optionsObj.has("status")) {
                 String statusStr = optionsObj.getString("status");
@@ -447,8 +448,14 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                         status = RadarTrip.RadarTripStatus.COMPLETED;
                     } else if (statusStr.equalsIgnoreCase("canceled")) {
                         status = RadarTrip.RadarTripStatus.CANCELED;
+                    } else if (statusStr.equalsIgnoreCase("unknown")) {
+                        status = RadarTrip.RadarTripStatus.UNKNOWN;
+                    } else {
+                        promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString()));
                     }
                 }
+            } else {
+                promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString()));
             }
 
             Radar.updateTrip(options, status, new Radar.RadarTripCallback() {
@@ -479,7 +486,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             });
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
-            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
         }
     }
 
