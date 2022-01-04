@@ -1,7 +1,7 @@
 <!--
 Please only open issues here for bugs or feature requests.
 
-If you have questions about your Radar integration, please email us at support@radar.io instead.
+If you have questions about your Radar integration, please email us at support@radar.com instead.
 -->
 
 ## Summary
