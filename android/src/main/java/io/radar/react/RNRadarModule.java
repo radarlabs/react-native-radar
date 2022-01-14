@@ -56,7 +56,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     private static final String TAG = "RNRadarModule";
     // random request code (Radar's birthday!)
     private static final int PERMISSIONS_REQUEST_CODE = 20160525;
+    private static final int BACKGROUND_PERMISSION_REQUEST_CODE = 20160526;
     private Promise mPermissionsRequestPromise;
+    private boolean mBackgroundPermissionRequested;
 
     public RNRadarModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -169,8 +171,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @Override
     public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_CODE && mPermissionsRequestPromise != null) {
+            if (mBackgroundPermissionRequested && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                PermissionAwareActivity activity = (PermissionAwareActivity) getCurrentActivity();
+                if (activity != null) {
+                    activity.requestPermissions(new String[]{
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    }, BACKGROUND_PERMISSION_REQUEST_CODE, this);
+                }
+            } else {
+                getPermissionsStatus(mPermissionsRequestPromise);
+                mPermissionsRequestPromise = null;
+                mBackgroundPermissionRequested = false;
+            }
+        } else if (requestCode == BACKGROUND_PERMISSION_REQUEST_CODE && mPermissionsRequestPromise != null) {
             getPermissionsStatus(mPermissionsRequestPromise);
             mPermissionsRequestPromise = null;
+            mBackgroundPermissionRequested = false;
         }
         return true;
     }
@@ -179,6 +195,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     public void requestPermissions(boolean background, final Promise promise) {
         PermissionAwareActivity activity = (PermissionAwareActivity) getCurrentActivity();
         mPermissionsRequestPromise = promise;
+        mBackgroundPermissionRequested = background;
         if (activity != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (background && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
