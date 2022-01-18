@@ -28,32 +28,13 @@ public class RNRadarReceiver extends RadarReceiver {
 
     private static final String TAG = "RNRadarReceiver";
 
-    private void invokeSendEvent(ReactContext reactContext, String eventName, Object data) {
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, data);
-    }
-
     private void sendEvent(ReactNativeHost reactNativeHost,
                            final String eventName,
                            final Object data) {
         final ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
         ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
-        if (reactContext == null) {
-            reactInstanceManager.addReactInstanceEventListener(
-                    new ReactInstanceManager.ReactInstanceEventListener() {
-
-                @Override
-                public void onReactContextInitialized(ReactContext reactContext) {
-                    invokeSendEvent(reactContext, eventName, data);
-                    reactInstanceManager.removeReactInstanceEventListener(this);
-                }
-
-            });
-            if (!reactInstanceManager.hasStartedCreatingInitialContext()) {
-                reactInstanceManager.createReactContextInBackground();
-            }
-        } else {
-            invokeSendEvent(reactContext, eventName, data);
+        if (reactContext != null) {
+            reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
         }
     }
 

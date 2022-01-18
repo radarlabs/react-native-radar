@@ -74,6 +74,10 @@ const cancelTrip = () => (
   NativeModules.RNRadar.cancelTrip()
 );
 
+const updateTrip = options => (
+  NativeModules.RNRadar.updateTrip(options)
+);
+
 const acceptEvent = (eventId, verifiedPlaceId) => (
   NativeModules.RNRadar.acceptEvent(eventId, verifiedPlaceId)
 );
@@ -148,6 +152,7 @@ const Radar = {
   acceptEvent,
   rejectEvent,
   startTrip,
+  updateTrip,
   completeTrip,
   cancelTrip,
   getContext,

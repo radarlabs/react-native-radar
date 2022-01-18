@@ -31,7 +31,6 @@ allprojects {
         google()
         mavenCentral()
         jcenter()//needed for Flipper
-        maven { url 'https://www.jitpack.io' }
     }
 
     tasks.whenTaskAdded { Task task ->
