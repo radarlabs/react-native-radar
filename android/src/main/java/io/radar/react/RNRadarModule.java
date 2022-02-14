@@ -54,7 +54,7 @@ import io.radar.sdk.model.RadarUser;
 public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener {
 
     private static final String TAG = "RNRadarModule";
-    // random request code (Radar's birthday!)
+    // Random request code (Radar's birthday!)
     private static final int PERMISSIONS_REQUEST_CODE = 20160525;
     private static final int BACKGROUND_PERMISSION_REQUEST_CODE = 20160526;
     private Promise mPermissionsRequestPromise;

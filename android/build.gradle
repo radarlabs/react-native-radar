@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-    //noinspection GradleDynamicVersion
+    // noinspection GradleDynamicVersion
     api 'com.facebook.react:react-native:+'
     api 'io.radar:sdk:3.2.4'
 }

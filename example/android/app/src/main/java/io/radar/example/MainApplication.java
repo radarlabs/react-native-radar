@@ -82,7 +82,7 @@ public class MainApplication extends Application implements ReactApplication {
             UpdatesController.initialize(this);
         }
 
-        //Loads Flipper in React Native templates. Call this in the onCreate method.
+        // Loads Flipper in React Native templates. Call this in the onCreate method.
         ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     }
 }

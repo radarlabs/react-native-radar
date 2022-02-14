@@ -30,7 +30,8 @@ allprojects {
 
         google()
         mavenCentral()
-        jcenter()//needed for Flipper
+        // jcenter is needed for Flipper
+        jcenter()
     }
 
     tasks.whenTaskAdded { Task task ->
