@@ -174,56 +174,41 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void trackOnce(final Promise promise) {
-        Radar.trackOnce(new Radar.RadarTrackCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
-                if (promise == null) {
-                    return;
-                }
+    public void trackOnce(ReadableMap optionsMap, final Promise promise) {
+        
+        Location location = null;
+        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+        boolean beaconsTrackingOption = false;
 
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                        }
-                        if (user != null) {
-                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-                    }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+        if (optionsMap != null) {
+            if (optionsMap.hasKey("location")) {
+                ReadableMap locationMap = optionsMap.getMap("location");
+                location = new Location("RNRadarModule");
+                double latitude = locationMap.getDouble("latitude");
+                double longitude = locationMap.getDouble("longitude");
+                float accuracy = (float)locationMap.getDouble("accuracy");
+                location.setLatitude(latitude);
+                location.setLongitude(longitude);
+                location.setAccuracy(accuracy);
+            }
+            if (optionsMap.hasKey("accuracy")) {
+                String accuracy = optionsMap.getString("accuracy");
+                if (accuracy.equals("none") || accuracy.equals("NONE")) {
+                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.NONE;
+                } else if (accuracy.equals("low") || accuracy.equals("LOW")) {
+                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
+                } else if (accuracy.equals("medium") || accuracy.equals("MEDIUM")) {
+                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+                } else if (accuracy.equals("high") || accuracy.equals("HIGH")) {
+                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
                 }
             }
-        });
-    }
-
-    @ReactMethod
-    public void trackOnce(ReadableMap locationMap, final Promise promise) {
-        if (locationMap == null) {
-            this.trackOnce(promise);
-
-            return;
+            if (optionsMap.hasKey("beacons")) {
+                beaconsTrackingOption = optionsMap.getBoolean("beacons");
+            }
         }
 
-        double latitude = locationMap.getDouble("latitude");
-        double longitude = locationMap.getDouble("longitude");
-        float accuracy = (float)locationMap.getDouble("accuracy");
-        Location location = new Location("RNRadarModule");
-        location.setLatitude(latitude);
-        location.setLongitude(longitude);
-        location.setAccuracy(accuracy);
-
-        Radar.trackOnce(location, new Radar.RadarTrackCallback() {
+        Radar.RadarTrackCallback trackCallback = new Radar.RadarTrackCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
                 if (promise == null) {
@@ -252,7 +237,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             }
-        });
+        };
+
+        if (location != null) {
+            Radar.trackOnce(location, trackCallback);
+        } else {
+            Radar.trackOnce(accuracyLevel, beaconsTrackingOption, trackCallback);
+        }
     }
 
     @ReactMethod

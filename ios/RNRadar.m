@@ -179,46 +179,23 @@ RCT_EXPORT_METHOD(getLocation:(RCTPromiseResolveBlock)resolve reject:(RCTPromise
     }];
 }
 
-RCT_EXPORT_METHOD(trackOnce:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    RadarTrackingOptionsDesiredAccuracy desiredAccuracy;
+    BOOL beaconsTrackingOption = NO;
+    desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar trackOnceWithCompletionHandler:^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
-        if (status == RadarStatusSuccess && resolver) {
-            NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
-            if (location) {
-                [dict setObject:[Radar dictionaryForLocation:location] forKey:@"location"];
-            }
-            if (events) {
-                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
-            }
-            if (user) {
-                [dict setObject:[user dictionaryValue] forKey:@"user"];
-            }
-            resolver(dict);
-        } else if (rejecter) {
-            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
-        }
-        resolver = nil;
-        rejecter = nil;
-    }];
-}
+    NSDictionary *locationDict = optionsDict[@"location"];
 
-RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict accuracy:(NSString *) beacons:(BOOL *) resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLLocation *location;
-    RadarTrackingOptionsDesiredAccuracy desiredAccuracy;  
-    beaconsTrackingOption BOOL;
-    beaconsTrackingOption = false;
     if (locationDict != nil && [locationDict isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:locationDict[@"latitude"]];
         double longitude = [RCTConvert double:locationDict[@"longitude"]];
         NSDate *timestamp = [NSDate new];
         location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
     }
-
-    __block RCTPromiseResolveBlock resolver = resolve;
-    __block RCTPromiseRejectBlock rejecter = reject;
 
     RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
         if (status == RadarStatusSuccess && resolver) {
@@ -241,36 +218,31 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict accuracy:(NSString *) b
         rejecter = nil;
     };
 
-    if (accuracy != nil && [accuracy isKindOfClass:[NSString class]) {
-        switch (accuracy) {
-            case @"high":
-                desiredAccuracy = RadarTrackingOptionsDesiredAccuracyHigh;
-                break;
-            case "medium":
-                desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
-                break;
-            case "low":
-                desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
-                break;
-            default:
-                desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
-                break;
+    NSString *accuracy = optionsDict[@"accuracy"];
+
+    if (accuracy != nil && [accuracy isKindOfClass:[NSString class]]) {
+        if ([accuracy isEqualToString:@"high"] || [accuracy isEqualToString:@"HIGH"]) {
+            desiredAccuracy = RadarTrackingOptionsDesiredAccuracyHigh;
+        } else if ([accuracy isEqualToString:@"medium"] || [accuracy isEqualToString:@"MEDIUM"]) {
+            desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+        } else if ([accuracy isEqualToString:@"low"] || [accuracy isEqualToString:@"LOW"]) {
+            desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
         }
     }
 
-    if (beacons != nil && [beacons isKindOfClass:[BOOL class]) {
-        beaconsTrackingOption = beacons
+    BOOL beacons = optionsDict[@"beacons"];
+
+    if (beacons) {
+        beaconsTrackingOption = beacons;
     }
 
     if (location) {
         [Radar trackOnceWithLocation:location completionHandler:completionHandler];
-    else if (desiredAccuracy) {
-        [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons: completionHandler:completionHandler];
-    }
     } else {
-        [Radar trackOnceWithCompletionHandler:completionHandler];
+        [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons:beaconsTrackingOption completionHandler:completionHandler];
     }
 }
+
 
 RCT_EXPORT_METHOD(startTrackingEfficient) {
     [Radar startTrackingWithOptions:RadarTrackingOptions.presetEfficient];
