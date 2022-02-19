@@ -1971,6 +1971,11 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-community/netinfo@^7.1.3":
+  version "7.1.12"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-7.1.12.tgz#3f314e1184cbc40054621a7c51ed84095b8aa245"
+  integrity sha512-fkCRkOgzfdD0sr8JTasDgm716l8bJPkCNjXIyllG8K+UyixVa68lroQmgW9pewE5G5p43I9MWPtGZR/kVowBzg==
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.2.tgz#858f5c4b48d80778fde4b9d541f27edc0d56488b"
@@ -6729,7 +6734,9 @@ react-native-gesture-handler@~1.8.0:
     prop-types "^15.7.2"
 
 react-native-radar@../:
-  version "3.1.0"
+  version "3.2.3"
+  dependencies:
+    "@react-native-community/netinfo" "^7.1.3"
 
 react-native-reanimated@~1.13.0:
   version "1.13.2"
@@ -8032,9 +8039,9 @@ urix@^0.1.0:
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
 
 url-parse@^1.4.4:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.1.tgz#d5fa9890af8a5e1f274a2c98376510f6425f6e3b"
-  integrity sha512-HOfCOUJt7iSYzEx/UqgtwKRMC6EU91NFhsCHMv9oM03VJcVo2Qrp8T8kI9D7amFf1cu+/3CEhgb3rF9zL7k85Q==
+  version "1.5.7"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.7.tgz#00780f60dbdae90181f51ed85fb24109422c932a"
+  integrity sha512-HxWkieX+STA38EDk7CE9MEryFeHCKzgagxlGvsdS7WBImq9Mk+PGwiT56w82WI3aicwJA8REp42Cxo98c8FZMA==
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
