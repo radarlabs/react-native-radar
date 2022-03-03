@@ -132,7 +132,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Activity activity = getCurrentActivity();
 
         if (activity == null) {
-            promise.resolve("UNKNOWN");
+            promise.resolve("NOT_DETERMINED");
 
             return;
         }
@@ -198,18 +198,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         mBackgroundPermissionRequested = background;
         if (activity != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (background && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    activity.requestPermissions(new String[]{
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                    }, PERMISSIONS_REQUEST_CODE, this);
-                } else {
-                    activity.requestPermissions(new String[]{
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                    }, PERMISSIONS_REQUEST_CODE, this);
-                }
+                activity.requestPermissions(new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                }, PERMISSIONS_REQUEST_CODE, this);
             }
         }
     }
