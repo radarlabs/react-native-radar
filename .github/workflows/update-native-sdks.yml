@@ -3,11 +3,11 @@
 name: Bump Native SDKs
 on:
   repository_dispatch:
-    types: [ios-sdk-release, android-sdk-release]
+    types: ['ios-sdk-release', 'android-sdk-release']
 jobs:
   update_android_sdk_version:
     runs-on: ubuntu-latest
-    if: github.event.event_type == android-sdk-release
+    if: github.event.event-type == 'android-sdk-release'
     steps:
       - name: Event Information
         run: echo ${{ github.event.client_payload.release }}
@@ -38,7 +38,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
   update_ios_sdk_version:
     runs-on: ubuntu-latest
-    if: github.event.event_type == ios-sdk-release
+    if: github.event.event-type == 'ios-sdk-release'
     steps:
       - name: Event Information
         run: echo ${{ github.event.client_payload.release }}
