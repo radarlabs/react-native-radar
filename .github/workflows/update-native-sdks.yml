@@ -42,7 +42,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
   update_ios_sdk_version:
     runs-on: ubuntu-latest
-    if: github.event.client_payload.platform == 'iOS'
+    if: github.event.client_payload.platform == 'ios'
     steps:
       - name: Event Information
         run: echo ${{ github.event.client_payload.release }}
