@@ -1,4 +1,6 @@
-name: Publish Package to npmjs
+# Bump Native SDK version numbers whenever a repository dispatch of a release
+# is received
+name: Bump Native SDKs
 on:
   repository_dispatch:
     types: [ios-sdk-release, android-sdk-release]
