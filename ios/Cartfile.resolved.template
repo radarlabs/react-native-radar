@@ -1,0 +1,1 @@
+github "radarlabs/radar-sdk-ios" "{{ version }}"
