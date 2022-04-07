@@ -8,20 +8,22 @@
   },
   "dependencies": {
     "expo": "~44.0.0",
+    "expo-splash-screen": "~0.14.2",
     "expo-status-bar": "~1.2.0",
+    "expo-updates": "~0.11.6",
+    "metro-config": "^0.64.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "~0.64.3",
-    "react-native-radar": "../",
-    "react-native-web": "~0.17.7",
-    "expo-splash-screen": "~0.14.2",
-    "expo-updates": "~0.11.6",
     "react-native-gesture-handler": "~2.1.0",
+    "react-native-radar": "../",
     "react-native-reanimated": "~2.3.1",
-    "react-native-screens": "~3.10.1"
+    "react-native-screens": "~3.10.1",
+    "react-native-web": "~0.17.7"
   },
   "devDependencies": {
-    "@babel/core": "~7.17.9"
+    "@babel/core": "~7.17.9",
+    "@types/metro-config": "^0.66.0"
   },
   "private": true,
   "name": "example",
