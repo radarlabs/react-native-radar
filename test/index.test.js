@@ -2,14 +2,18 @@ import { NativeEventEmitter, NativeModules } from 'react-native';
 
 import Radar from '../js/index';
 
-jest.mock('NativeEventEmitter', () => jest.fn(() => ({
-  addListener: jest.fn(),
-  removeListener: jest.fn(),
-  removeAllListeners: jest.fn(),
-})));
+jest.mock('react-native', () => {
+  const RN = jest.requireActual('react-native'); // use original implementation, which comes with mocks out of the box
 
-jest.mock('NativeModules', () => ({
-  RNRadar: {
+  RN.NativeEventEmitter = {
+    ...RN.NativeEventEmitter,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    removeAllListeners: jest.fn(),
+  };
+
+  // mock modules/components created by assigning to NativeModules
+  RN.NativeModules.RNRadar = {
     setLogLevel: jest.fn(),
     setUserId: jest.fn(),
     setDescription: jest.fn(),
@@ -39,11 +43,15 @@ jest.mock('NativeModules', () => ({
     ipGeocode: jest.fn(),
     getDistance: jest.fn(),
     getMatrix: jest.fn(),
-  },
-}));
+  };
+
+  return RN;
+});
+
+console.log(NativeEventEmitter);
 
 const mockModule = NativeModules.RNRadar;
-const mockEmitter = NativeEventEmitter.mock.results[0].value;
+const mockEmitter = NativeEventEmitter.mock?.results[0].value;
 
 describe('calls native implementation', () => {
   test('setLogLevel', () => {
