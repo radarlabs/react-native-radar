@@ -7,7 +7,7 @@ on:
 jobs:
   update_android_sdk_version:
     runs-on: ubuntu-latest
-    if: github.event.client_payload.platform == "android"
+    if: github.event.client_payload.platform == 'android'
     steps:
       - name: Event Information
         run: echo ${{ github.event.client_payload.release }}
@@ -19,15 +19,15 @@ jobs:
       - name: Copy android/build.gradle template file
         uses: canastro/copy-action@master
         with:
-          source: "android/build.gradle.template"
-          target: "android/build.gradle"
+          source: 'android/build.gradle.template'
+          target: 'android/build.gradle'
 
       # render the template using the input sdk version
       - name: Render radar-sdk-android release version onto build.gradle
         uses: jayamanikharyono/jinja-action@v0.1
         with:
           data: version=${{ github.event.client_payload.release }}
-          path: "android/build.gradle"
+          path: 'android/build.gradle'
 
       # Update package.json to latest version
       - name: Update package.json to latest
@@ -54,29 +54,29 @@ jobs:
       - name: Copy the podspec template
         uses: canastro/copy-action@master
         with:
-          source: "react-native-radar.podspec.template"
-          target: "react-native-radar.podspec"
+          source: 'react-native-radar.podspec.template'
+          target: 'react-native-radar.podspec'
 
       # render the podspec template with the sdk version
       - name: Render radar-sdk-ios release version onto podspec template
         uses: jayamanikharyono/jinja-action@v0.1
         with:
           data: version=${{ github.event.client_payload.release }}
-          path: "react-native-radar.podspec"
+          path: 'react-native-radar.podspec'
 
       # copy the Cartfile template to its final destination
       - name: Copy ios/Cartfile.resolved template
         uses: canastro/copy-action@master
         with:
-          source: "ios/Cartfile.resolved.template"
-          target: "ios/Cartfile.resolved"
+          source: 'ios/Cartfile.resolved.template'
+          target: 'ios/Cartfile.resolved'
 
       # render the Cartfile template with the sdk version
       - name: Render radar-sdk-ios release version onto Cartfile template
         uses: jayamanikharyono/jinja-action@v0.1
         with:
           data: version=${{ github.event.client_payload.release }}
-          path: "ios/Cartfile.resolved"
+          path: 'ios/Cartfile.resolved'
 
       # Update package.json to latest version
       - name: Update package.json to latest
