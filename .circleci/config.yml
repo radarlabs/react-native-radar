@@ -3,7 +3,7 @@ jobs:
   node:
     working_directory: ~/react-native-radar
     docker:
-      - image: circleci/node:8
+      - image: cimg/node:18.0
     steps:
       - checkout
       - run: npm install
@@ -25,7 +25,7 @@ jobs:
   android:
     working_directory: ~/react-native-radar/example
     docker:
-      - image: circleci/android:api-28-node
+      - image: cimg/android:2022.04.1-node
     steps:
       - checkout:
           path: ~/react-native-radar
