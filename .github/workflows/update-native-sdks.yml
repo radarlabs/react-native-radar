@@ -15,10 +15,6 @@ jobs:
       # checkout the repo
       - uses: actions/checkout@v2
 
-      # Update package.json to latest version
-      - name: Update package.json to latest
-        run: npm version ${{ github.event.client_payload.release }}
-
       # copy the template file to its final destination
       - name: Copy android/build.gradle template file
         uses: canastro/copy-action@master
@@ -32,6 +28,10 @@ jobs:
         with:
           data: version=${{ github.event.client_payload.release }}
           path: 'android/build.gradle'
+
+      # Update package.json to latest version
+      - name: Update package.json to latest
+        run: npm version ${{ github.event.client_payload.release }} --commit-hooks false --git-tag-version false
 
       # open a pull request with the new sdk version
       - name: Create Pull Request
@@ -49,10 +49,6 @@ jobs:
 
       # checkout the repo
       - uses: actions/checkout@v2
-
-      # Update package.json to latest version
-      - name: Update package.json to latest
-        run: npm version ${{ github.event.client_payload.release }}
 
       # copy the podspec template to its final destination
       - name: Copy the podspec template
@@ -81,6 +77,10 @@ jobs:
         with:
           data: version=${{ github.event.client_payload.release }}
           path: 'ios/Cartfile.resolved'
+
+      # Update package.json to latest version
+      - name: Update package.json to latest
+        run: npm version ${{ github.event.client_payload.release }} --commit-hooks false --git-tag-version false
 
       # open a pull request with the new sdk version
       - name: Create Pull Request
