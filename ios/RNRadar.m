@@ -321,7 +321,6 @@ RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     __block RCTPromiseRejectBlock rejecter = reject;
 
     [Radar startTripWithOptions:options completionHandler:^(RadarStatus status, RadarTrip * _Nullable trip, NSArray<RadarEvent *> * _Nullable events) {
-
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
