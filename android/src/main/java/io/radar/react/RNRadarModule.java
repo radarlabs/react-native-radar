@@ -23,6 +23,7 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import io.radar.sdk.Radar;
 import io.radar.sdk.RadarTrackingOptions;
+import io.radar.sdk.RadarTrackingOptions.RadarTrackingOptionsForegroundService;
 import io.radar.sdk.RadarTripOptions;
 import io.radar.sdk.model.RadarAddress;
 import io.radar.sdk.model.RadarContext;
@@ -318,6 +319,17 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void stopTracking() {
         Radar.stopTracking();
+    }
+
+    @ReactMethod
+    public void setForegroundServiceOptions(ReadableMap optionsMap) {
+        try {
+            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            RadarTrackingOptionsForegroundService options = RadarTrackingOptionsForegroundService.fromJson(optionsObj);
+            Radar.setForegroundServiceOptions(options);
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
+        }
     }
 
     @ReactMethod
