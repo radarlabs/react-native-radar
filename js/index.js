@@ -62,6 +62,10 @@ const stopTracking = () => (
   NativeModules.RNRadar.stopTracking()
 );
 
+const setForegroundServiceOptions = options => (
+  NativeModules.RNRadar.setForegroundServiceOptions(options)
+);
+
 const startTrip = options => (
   NativeModules.RNRadar.startTrip(options)
 );
@@ -149,6 +153,7 @@ const Radar = {
   startTrackingCustom,
   mockTracking,
   stopTracking,
+  setForegroundServiceOptions,
   acceptEvent,
   rejectEvent,
   startTrip,

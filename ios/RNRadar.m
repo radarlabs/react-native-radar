@@ -306,6 +306,10 @@ RCT_EXPORT_METHOD(stopTracking) {
     [Radar stopTracking];
 }
 
+RCT_EXPORT_METHOD(setForegroundServiceOptions) {
+    // not implemented
+}
+
 RCT_EXPORT_METHOD(acceptEvent:(NSString *)eventId verifiedPlaceId:(NSString *)verifiedPlaceId) {
     [Radar acceptEventId:eventId verifiedPlaceId:verifiedPlaceId];
 }
