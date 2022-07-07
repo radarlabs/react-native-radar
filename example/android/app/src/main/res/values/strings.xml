@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <resources>
   <string name="app_name">example</string>
+  <string name="radar_publishableKey">prj_test_pk_0000000000000000000000000000000000000000</string>
 </resources>

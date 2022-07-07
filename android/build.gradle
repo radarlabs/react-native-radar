@@ -10,6 +10,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'checkstyle'
 
 android {
     compileSdkVersion 31
@@ -21,7 +22,7 @@ android {
         versionName '3.2.3'
     }
     lintOptions {
-        abortOnError false
+        abortOnError true
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -44,6 +45,23 @@ repositories {
 }
 
 dependencies {
+    // noinspection GradleDynamicVersion
     api 'com.facebook.react:react-native:+'
     api 'io.radar:sdk:3.4.5'
+}
+
+checkstyle {
+    toolVersion = '9.1'
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+}
+
+task checkstyle(type: Checkstyle) {
+    dependsOn 'compileReleaseJavaWithJavac'
+    source project.fileTree("$projectDir/src/main/java")
+    classpath = project.files("$project.buildDir/intermediates/javac/release/classes")
+    exclude '**/gen/**', '**/R.java', '**/BuildConfig.java'
+}
+
+check {
+    dependsOn tasks.checkstyle
 }
