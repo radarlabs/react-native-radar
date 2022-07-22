@@ -31,7 +31,7 @@ jobs:
 
       # Update package.json to latest version
       - name: Update package.json to latest
-        run: npm version ${{ github.event.client_payload.release }}
+        run: npm version ${{ github.event.client_payload.release }} --commit-hooks false --git-tag-version false
 
       # open a pull request with the new sdk version
       - name: Create Pull Request
@@ -80,7 +80,7 @@ jobs:
 
       # Update package.json to latest version
       - name: Update package.json to latest
-        run: npm version ${{ github.event.client_payload.release }}
+        run: npm version ${{ github.event.client_payload.release }} --commit-hooks false --git-tag-version false
 
       # open a pull request with the new sdk version
       - name: Create Pull Request

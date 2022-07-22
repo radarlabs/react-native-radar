@@ -306,6 +306,10 @@ RCT_EXPORT_METHOD(stopTracking) {
     [Radar stopTracking];
 }
 
+RCT_EXPORT_METHOD(setForegroundServiceOptions) {
+    // not implemented
+}
+
 RCT_EXPORT_METHOD(acceptEvent:(NSString *)eventId verifiedPlaceId:(NSString *)verifiedPlaceId) {
     [Radar acceptEventId:eventId verifiedPlaceId:verifiedPlaceId];
 }
@@ -321,7 +325,6 @@ RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     __block RCTPromiseRejectBlock rejecter = reject;
 
     [Radar startTripWithOptions:options completionHandler:^(RadarStatus status, RadarTrip * _Nullable trip, NSArray<RadarEvent *> * _Nullable events) {
-
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
