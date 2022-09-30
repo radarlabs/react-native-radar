@@ -1,0 +1,91 @@
+# Bump Native SDK version numbers whenever a repository dispatch of a release
+# is received
+name: Bump Native SDKs
+on:
+  repository_dispatch:
+    types: ['ios-sdk-release', 'android-sdk-release']
+jobs:
+  update_android_sdk_version:
+    runs-on: ubuntu-latest
+    if: github.event.client_payload.platform == 'android'
+    steps:
+      - name: Event Information
+        run: echo ${{ github.event.client_payload.release }}
+
+      # checkout the repo
+      - uses: actions/checkout@v2
+
+      # copy the template file to its final destination
+      - name: Copy android/build.gradle template file
+        uses: canastro/copy-action@master
+        with:
+          source: 'android/build.gradle.template'
+          target: 'android/build.gradle'
+
+      # render the template using the input sdk version
+      - name: Render radar-sdk-android release version onto build.gradle
+        uses: jayamanikharyono/jinja-action@v0.1
+        with:
+          data: version=${{ github.event.client_payload.release }}
+          path: 'android/build.gradle'
+
+      # Update package.json to latest version
+      - name: Update package.json to latest
+        run: npm version ${{ github.event.client_payload.release }} --commit-hooks false --git-tag-version false
+
+      # open a pull request with the new sdk version
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: Automated radar-sdk-android version bump to ${{ github.event.client_payload.release }}
+          reviewers: radarlabs/eng
+          token: ${{ secrets.GITHUB_TOKEN }}
+  update_ios_sdk_version:
+    runs-on: ubuntu-latest
+    if: github.event.client_payload.platform == 'ios'
+    steps:
+      - name: Event Information
+        run: echo ${{ github.event.client_payload.release }}
+
+      # checkout the repo
+      - uses: actions/checkout@v2
+
+      # copy the podspec template to its final destination
+      - name: Copy the podspec template
+        uses: canastro/copy-action@master
+        with:
+          source: 'react-native-radar.podspec.template'
+          target: 'react-native-radar.podspec'
+
+      # render the podspec template with the sdk version
+      - name: Render radar-sdk-ios release version onto podspec template
+        uses: jayamanikharyono/jinja-action@v0.1
+        with:
+          data: version=${{ github.event.client_payload.release }}
+          path: 'react-native-radar.podspec'
+
+      # copy the Cartfile template to its final destination
+      - name: Copy ios/Cartfile.resolved template
+        uses: canastro/copy-action@master
+        with:
+          source: 'ios/Cartfile.resolved.template'
+          target: 'ios/Cartfile.resolved'
+
+      # render the Cartfile template with the sdk version
+      - name: Render radar-sdk-ios release version onto Cartfile template
+        uses: jayamanikharyono/jinja-action@v0.1
+        with:
+          data: version=${{ github.event.client_payload.release }}
+          path: 'ios/Cartfile.resolved'
+
+      # Update package.json to latest version
+      - name: Update package.json to latest
+        run: npm version ${{ github.event.client_payload.release }} --commit-hooks false --git-tag-version false
+
+      # open a pull request with the new sdk version
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: Automated radar-sdk-ios version bump to ${{ github.event.client_payload.release }}
+          reviewers: radarlabs/eng
+          token: ${{ secrets.GITHUB_TOKEN }}

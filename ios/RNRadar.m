@@ -306,6 +306,10 @@ RCT_EXPORT_METHOD(stopTracking) {
     [Radar stopTracking];
 }
 
+RCT_EXPORT_METHOD(setForegroundServiceOptions) {
+    // not implemented
+}
+
 RCT_EXPORT_METHOD(acceptEvent:(NSString *)eventId verifiedPlaceId:(NSString *)verifiedPlaceId) {
     [Radar acceptEventId:eventId verifiedPlaceId:verifiedPlaceId];
 }
@@ -314,17 +318,139 @@ RCT_EXPORT_METHOD(rejectEvent:(NSString *)eventId) {
     [Radar rejectEventId:eventId];
 }
 
-RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict) {
+RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict];
-    [Radar startTripWithOptions:options];
+
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    [Radar startTripWithOptions:options completionHandler:^(RadarStatus status, RadarTrip * _Nullable trip, NSArray<RadarEvent *> * _Nullable events) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (trip) {
+                [dict setObject:[trip dictionaryValue] forKey:@"trip"];
+            }
+            if (events) {
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    }];
 }
 
-RCT_EXPORT_METHOD(completeTrip) {
-    [Radar completeTrip];
+RCT_EXPORT_METHOD(completeTrip:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    [Radar completeTripWithCompletionHandler:^(RadarStatus status, RadarTrip * _Nullable trip, NSArray<RadarEvent *> * _Nullable events) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (trip) {
+                [dict setObject:[trip dictionaryValue] forKey:@"trip"];
+            }
+            if (events) {
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    }];
 }
 
-RCT_EXPORT_METHOD(cancelTrip) {
-    [Radar cancelTrip];
+RCT_EXPORT_METHOD(cancelTrip:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    [Radar cancelTripWithCompletionHandler:^(RadarStatus status, RadarTrip * _Nullable trip, NSArray<RadarEvent *> * _Nullable events) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (trip) {
+                [dict setObject:[trip dictionaryValue] forKey:@"trip"];
+            }
+            if (events) {
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    }];
+}
+
+RCT_EXPORT_METHOD(updateTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (optionsDict == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
+    }
+
+    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict[@"options"]];
+    NSString *statusStr = optionsDict[@"status"];
+
+    RadarTripStatus status = RadarTripStatusUnknown;
+    if (statusStr) {
+        if ([statusStr isEqualToString:@"started"]) {
+            status = RadarTripStatusStarted;
+        } else if ([statusStr isEqualToString:@"approaching"]) {
+            status = RadarTripStatusApproaching;
+        } else if ([statusStr isEqualToString:@"arrived"]) {
+            status = RadarTripStatusArrived;
+        } else if ([statusStr isEqualToString:@"completed"]) {
+            status = RadarTripStatusCompleted;
+        } else if ([statusStr isEqualToString:@"canceled"]) {
+            status = RadarTripStatusCanceled;
+        } else if ([statusStr isEqualToString:@"unknown"]) {
+            status = RadarTripStatusUnknown;
+        } else {
+            if (reject) {
+                reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+            }
+
+            return;
+        }
+    } else {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
+    }
+
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    [Radar updateTripWithOptions:options status:status completionHandler:^(RadarStatus status, RadarTrip * _Nullable trip, NSArray<RadarEvent *> * _Nullable events) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (trip) {
+                [dict setObject:[trip dictionaryValue] forKey:@"trip"];
+            }
+            if (events) {
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    }];
 }
 
 RCT_EXPORT_METHOD(getContext:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {

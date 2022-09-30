@@ -23,6 +23,7 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import io.radar.sdk.Radar;
 import io.radar.sdk.RadarTrackingOptions;
+import io.radar.sdk.RadarTrackingOptions.RadarTrackingOptionsForegroundService;
 import io.radar.sdk.RadarTripOptions;
 import io.radar.sdk.model.RadarAddress;
 import io.radar.sdk.model.RadarContext;
@@ -312,6 +313,17 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void setForegroundServiceOptions(ReadableMap optionsMap) {
+        try {
+            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            RadarTrackingOptionsForegroundService options = RadarTrackingOptionsForegroundService.fromJson(optionsObj);
+            Radar.setForegroundServiceOptions(options);
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
+        }
+    }
+
+    @ReactMethod
     public void acceptEvent(String eventId, String verifiedPlaceId) {
         Radar.acceptEvent(eventId, verifiedPlaceId);
     }
@@ -322,39 +334,163 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void startTrip(ReadableMap optionsMap) {
+    public void startTrip(ReadableMap optionsMap, final Promise promise) {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
             RadarTripOptions options = RadarTripOptions.fromJson(optionsObj);
             Radar.startTrip(options, new Radar.RadarTripCallback() {
                 @Override
                 public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
-
+                    if (promise == null) {
+                        return;
+                    }
+                    try {
+                        if (status == Radar.RadarStatus.SUCCESS) {
+                            WritableMap map = Arguments.createMap();
+                            map.putString("status", status.toString());
+                            if (trip != null) {
+                                map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
+                            }
+                            if (events != null) {
+                                map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                            }
+                            promise.resolve(map);
+                        } else {
+                            promise.reject(status.toString(), status.toString());
+                        }
+                    } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
+                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                    }
                 }
             });
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
         }
     }
 
     @ReactMethod
-    public void completeTrip() {
+    public void completeTrip(final Promise promise) {
         Radar.completeTrip(new Radar.RadarTripCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
-
+                if (promise == null) {
+                    return;
+                }
+                try {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (trip != null) {
+                            map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
+                        }
+                        if (events != null) {
+                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                        }
+                        promise.resolve(map);
+                    } else {
+                        promise.reject(status.toString(), status.toString());
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                }
             }
         });
     }
 
     @ReactMethod
-    public void cancelTrip() {
+    public void cancelTrip(final Promise promise) {
         Radar.cancelTrip(new Radar.RadarTripCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
-
+                if (promise == null) {
+                    return;
+                }
+                try {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (trip != null) {
+                            map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
+                        }
+                        if (events != null) {
+                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                        }
+                        promise.resolve(map);
+                    } else {
+                        promise.reject(status.toString(), status.toString());
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                }
             }
         });
+    }
+
+    @ReactMethod
+    public void updateTrip(ReadableMap optionsMap, final Promise promise) {
+
+        try {
+            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            RadarTripOptions options = RadarTripOptions.fromJson(optionsObj.getJSONObject("options"));
+            RadarTrip.RadarTripStatus status = RadarTrip.RadarTripStatus.UNKNOWN;
+
+            if (optionsObj.has("status")) {
+                String statusStr = optionsObj.getString("status");
+                if (statusStr != null) {
+                    if (statusStr.equalsIgnoreCase("started")) {
+                        status = RadarTrip.RadarTripStatus.STARTED;
+                    } else if (statusStr.equalsIgnoreCase("approaching")) {
+                        status = RadarTrip.RadarTripStatus.APPROACHING;
+                    } else if (statusStr.equalsIgnoreCase("arrived")) {
+                        status = RadarTrip.RadarTripStatus.ARRIVED;
+                    } else if (statusStr.equalsIgnoreCase("completed")) {
+                        status = RadarTrip.RadarTripStatus.COMPLETED;
+                    } else if (statusStr.equalsIgnoreCase("canceled")) {
+                        status = RadarTrip.RadarTripStatus.CANCELED;
+                    } else if (statusStr.equalsIgnoreCase("unknown")) {
+                        status = RadarTrip.RadarTripStatus.UNKNOWN;
+                    } else {
+                        promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+                    }
+                }
+            } else {
+                promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+            }
+
+            Radar.updateTrip(options, status, new Radar.RadarTripCallback() {
+                @Override
+                public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
+                    if (promise == null) {
+                        return;
+                    }
+                    try {
+                        if (status == Radar.RadarStatus.SUCCESS) {
+                            WritableMap map = Arguments.createMap();
+                            map.putString("status", status.toString());
+                            if (trip != null) {
+                                map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
+                            }
+                            if (events != null) {
+                                map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                            }
+                            promise.resolve(map);
+                        } else {
+                            promise.reject(status.toString(), status.toString());
+                        }
+                    } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
+                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+        }
     }
 
     @ReactMethod

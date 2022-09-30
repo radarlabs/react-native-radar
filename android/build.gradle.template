@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.3'
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 31
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 31
+        versionCode 1
+        versionName '{{ version }}'
+    }
+    lintOptions {
+        abortOnError false
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core:1.6.0'
+            force 'androidx.core:core-ktx:1.6.0'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    google()
+    maven {
+        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        url "$rootDir/../node_modules/react-native/android"
+    }
+}
+
+dependencies {
+    api 'com.facebook.react:react-native:+'
+    api 'io.radar:sdk:{{ version }}'
+}
