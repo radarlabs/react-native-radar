@@ -193,8 +193,9 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     if (locationDict != nil && [locationDict isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:locationDict[@"latitude"]];
         double longitude = [RCTConvert double:locationDict[@"longitude"]];
+        double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
         NSDate *timestamp = [NSDate new];
-        location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
+        location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
     }
 
     RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
