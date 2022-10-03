@@ -34,9 +34,17 @@ const getLocation = () => (
   NativeModules.RNRadar.getLocation()
 );
 
-const trackOnce = options => (
-  NativeModules.RNRadar.trackOnce(options)
-);
+const trackOnce = options => {
+  let backCompatibleOptions = options;
+  if (options && options.latitude) {
+    backCompatibleOptions = {
+      location: {
+        ...options
+      }
+    }
+  }
+  return NativeModules.RNRadar.trackOnce(backCompatibleOptions)
+};
 
 const startTrackingEfficient = () => (
   NativeModules.RNRadar.startTrackingEfficient()
