@@ -110,14 +110,35 @@ describe('calls native implementation', () => {
 
   test('updateLocation', () => {
     const location = {
-      latitude: 40.783826,
-      longitude: -73.975363,
-      accuracy: 65,
+      location: {
+        latitude: 40.783826,
+        longitude: -73.975363,
+        accuracy: 65,
+      }
     };
     Radar.trackOnce(location);
 
     expect(mockModule.trackOnce).toHaveBeenCalledTimes(1);
     expect(mockModule.trackOnce).toBeCalledWith(location);
+  });
+
+  test('updateLocation with old format parameters', () => {
+    const location = {
+      latitude: 40.783826,
+      longitude: -73.975363,
+      accuracy: 65,
+    };
+    const expectedLocation = {
+      location: {
+        latitude: 40.783826,
+        longitude: -73.975363,
+        accuracy: 65,
+      }
+    }
+    Radar.trackOnce(location);
+
+    expect(mockModule.trackOnce).toHaveBeenCalledTimes(1);
+    expect(mockModule.trackOnce).toBeCalledWith(expectedLocation);
   });
 
   test('startTrackingEfficient', () => {
