@@ -58,7 +58,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - RadarSDK (3.1.7)
+  - RadarSDK (3.5.4)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
@@ -225,8 +225,8 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
-  - react-native-radar (3.1.4):
-    - RadarSDK (= 3.1.7)
+  - react-native-radar (3.5.4):
+    - RadarSDK (~> 3.5.4)
     - React
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
@@ -516,7 +516,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  RadarSDK: d7712e11d15854a0e86c18c6b6f85ef3399071c4
+  RadarSDK: e14feb10c2ea56a2150c73d528dfbd6f227535cf
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -527,7 +527,7 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-radar: b580b55214d2d483fbeaf01260093756c0893bf5
+  react-native-radar: ce15c2c1c9fe5cd35f53f18f4af54fe7e0bed70c
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
@@ -558,4 +558,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 9c6fe327f9e3ddb239ca4081c5f7a49acc5b821b
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.3

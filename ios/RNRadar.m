@@ -179,43 +179,24 @@ RCT_EXPORT_METHOD(getLocation:(RCTPromiseResolveBlock)resolve reject:(RCTPromise
     }];
 }
 
-RCT_EXPORT_METHOD(trackOnce:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    RadarTrackingOptionsDesiredAccuracy desiredAccuracy;
+    BOOL beaconsTrackingOption = NO;
+    desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar trackOnceWithCompletionHandler:^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
-        if (status == RadarStatusSuccess && resolver) {
-            NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
-            if (location) {
-                [dict setObject:[Radar dictionaryForLocation:location] forKey:@"location"];
-            }
-            if (events) {
-                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
-            }
-            if (user) {
-                [dict setObject:[user dictionaryValue] forKey:@"user"];
-            }
-            resolver(dict);
-        } else if (rejecter) {
-            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
-        }
-        resolver = nil;
-        rejecter = nil;
-    }];
-}
+    NSDictionary *locationDict = optionsDict[@"location"];
 
-RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLLocation *location;
     if (locationDict != nil && [locationDict isKindOfClass:[NSDictionary class]]) {
         double latitude = [RCTConvert double:locationDict[@"latitude"]];
         double longitude = [RCTConvert double:locationDict[@"longitude"]];
+        double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
         NSDate *timestamp = [NSDate new];
-        location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
+        location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
     }
-
-    __block RCTPromiseResolveBlock resolver = resolve;
-    __block RCTPromiseRejectBlock rejecter = reject;
 
     RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
         if (status == RadarStatusSuccess && resolver) {
@@ -238,12 +219,32 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)locationDict resolve:(RCTPromiseReso
         rejecter = nil;
     };
 
+    NSString *accuracy = optionsDict[@"accuracy"];
+
+    if (accuracy != nil && [accuracy isKindOfClass:[NSString class]]) {
+        NSString *lowerAccuracy = [accuracy lowercaseString];
+        if ([lowerAccuracy isEqualToString:@"high"]) {
+            desiredAccuracy = RadarTrackingOptionsDesiredAccuracyHigh;
+        } else if ([lowerAccuracy isEqualToString:@"medium"]) {
+            desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+        } else if ([lowerAccuracy isEqualToString:@"low"]) {
+            desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
+        }
+    }
+
     if (location) {
         [Radar trackOnceWithLocation:location completionHandler:completionHandler];
     } else {
-        [Radar trackOnceWithCompletionHandler:completionHandler];
+        BOOL beacons = optionsDict[@"beacons"];
+
+        if (beacons) {
+            beaconsTrackingOption = beacons;
+        }
+        
+        [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons:beaconsTrackingOption completionHandler:completionHandler];
     }
 }
+
 
 RCT_EXPORT_METHOD(startTrackingEfficient) {
     [Radar startTrackingWithOptions:RadarTrackingOptions.presetEfficient];

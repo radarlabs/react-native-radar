@@ -62,6 +62,37 @@ export default function App() {
     console.log('trackOnce:', err);
   });
 
+  Radar.trackOnce({
+    location: {
+      latitude: 39.2904,
+      longitude: -76.6122,
+      accuracy: 60
+    }
+  }).then((result) => {
+    console.log('trackOnce manual with location accuracy:', stringify(result));
+  }).catch((err) => {
+    console.log('trackOnce manual with location  accuracy:', err);
+  });
+
+  Radar.trackOnce({
+    accuracy: "medium",
+    beacons: true
+  }).then((result) => {
+    console.log('trackOnce manual with beacons:', stringify(result));
+  }).catch((err) => {
+    console.log('trackOnce manual with beacons:', err);
+  });
+
+  Radar.trackOnce({
+    latitude: 39.2904,
+    longitude: -76.6122,
+    accuracy: 65
+  }).then((result) => {
+    console.log('trackOnce for back compatible', stringify(result));
+  }).catch((err) => {
+    console.log('trackOnce for back compatible:', err);
+  });
+
   Radar.startTrackingContinuous();
 
   Radar.searchPlaces({
