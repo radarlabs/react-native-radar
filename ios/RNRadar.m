@@ -222,24 +222,25 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     NSString *accuracy = optionsDict[@"accuracy"];
 
     if (accuracy != nil && [accuracy isKindOfClass:[NSString class]]) {
-        if ([accuracy isEqualToString:@"high"] || [accuracy isEqualToString:@"HIGH"]) {
+        NSString *lowerAccuracy = [accuracy lowercaseString];
+        if ([lowerAccuracy isEqualToString:@"high"]) {
             desiredAccuracy = RadarTrackingOptionsDesiredAccuracyHigh;
-        } else if ([accuracy isEqualToString:@"medium"] || [accuracy isEqualToString:@"MEDIUM"]) {
+        } else if ([lowerAccuracy isEqualToString:@"medium"]) {
             desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
-        } else if ([accuracy isEqualToString:@"low"] || [accuracy isEqualToString:@"LOW"]) {
+        } else if ([lowerAccuracy isEqualToString:@"low"]) {
             desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
         }
-    }
-
-    BOOL beacons = optionsDict[@"beacons"];
-
-    if (beacons) {
-        beaconsTrackingOption = beacons;
     }
 
     if (location) {
         [Radar trackOnceWithLocation:location completionHandler:completionHandler];
     } else {
+        BOOL beacons = optionsDict[@"beacons"];
+
+        if (beacons) {
+            beaconsTrackingOption = beacons;
+        }
+        
         [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons:beaconsTrackingOption completionHandler:completionHandler];
     }
 }
