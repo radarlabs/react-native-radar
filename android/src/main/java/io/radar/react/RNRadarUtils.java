@@ -3,6 +3,8 @@ package io.radar.react;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -147,6 +149,19 @@ class RNRadarUtils {
             arr = new String[0];
         }
         return arr;
+    }
+    static Map<String, String> stringStringMap(ReadableMap readableMap) {
+        if (readableMap == null) {
+            return null;
+        }
+
+        Map<String, String> stringMap = new HashMap<String, String>();
+        ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
+        while (iterator.hasNextKey()) {
+            String key = iterator.nextKey();
+            stringMap.put(key, readableMap.getString(key));
+        }
+        return stringMap;
     }
 
 }

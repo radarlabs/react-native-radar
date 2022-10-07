@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.EnumSet;
+import java.util.Map;
 
 public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener {
 
@@ -578,6 +579,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
         int radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : 1000;
         String[] chains = optionsMap.hasKey("chains") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("chains")) : null;
+        Map<String, String> chainMetadata = optionsMap.hasKey("chainMetadata") ? RNRadarUtils.stringStringMap(optionsMap.getMap("chainMetadata")) : null;
         String[] categories = optionsMap.hasKey("categories") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("categories")) : null;
         String[] groups = optionsMap.hasKey("groups") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("groups")) : null;
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
@@ -607,9 +609,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         };
 
         if (near != null) {
-            Radar.searchPlaces(near, radius, chains, categories, groups, limit, callback);
+            Radar.searchPlaces(near, radius, chains, chainMetadata, categories, groups, limit, callback);
         } else {
-            Radar.searchPlaces(radius, chains, categories, groups, limit, callback);
+            Radar.searchPlaces(radius, chains, chainMetadata, categories, groups, limit, callback);
         }
     }
 
