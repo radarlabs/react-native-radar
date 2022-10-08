@@ -516,6 +516,7 @@ RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         radius = 1000;
     }
     NSArray *chains = optionsDict[@"chains"];
+    NSDictionary *chainMetadata = optionsDict[@"chainMetadata"];
     NSArray *categories = optionsDict[@"categories"];
     NSArray *groups = optionsDict[@"groups"];
     NSNumber *limitNumber = optionsDict[@"limit"];
@@ -548,9 +549,9 @@ RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     };
 
     if (near) {
-        [Radar searchPlacesNear:near radius:radius chains:chains categories:categories groups:groups limit:limit completionHandler:completionHandler];
+        [Radar searchPlacesNear:near radius:radius chains:chains chainMetadata:chainMetadata categories:categories groups:groups limit:limit completionHandler:completionHandler];
     } else {
-        [Radar searchPlacesWithRadius:radius chains:chains categories:categories groups:groups limit:limit completionHandler:completionHandler];
+        [Radar searchPlacesWithRadius:radius chains:chains chainMetadata:chainMetadata categories:categories groups:groups limit:limit completionHandler:completionHandler];
     }
 }
 
