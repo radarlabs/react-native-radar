@@ -210,6 +210,7 @@ export default function App() {
     destinationGeofenceTag: 'store',
     destinationGeofenceExternalId: '123',
     mode: 'car',
+    scheduledArrivalAt: new Date('2022-10-10T12:20:30Z').getTime()
   });
 
   Radar.mockTracking({
