@@ -102,6 +102,9 @@ export default function App() {
     },
     radius: 1000,
     chains: ["starbucks"],
+    chainMetadata: {
+      "customFlag": "true"
+    },
     limit: 10,
   }).then((result) => {
     console.log('searchPlaces:', stringify(result));
