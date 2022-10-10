@@ -321,6 +321,9 @@ RCT_EXPORT_METHOD(rejectEvent:(NSString *)eventId) {
 
 RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict];
+    if (options.scheduledArrivalAt) {
+        options.scheduledArrivalAt = [RCTConvert NSDate:options.scheduledArrivalAt];
+    }
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
