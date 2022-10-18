@@ -228,6 +228,15 @@ export default function App() {
   });
 
   Radar.completeTrip();
+  
+  Radar.sendEvent(
+    "in_app_purchase",
+    {"price": "$150"}
+  ).then((result) => {
+    console.log("sendEvent:", stringify(result));
+  }).catch((err) => {
+    console.log("sendEvent:", err);
+  });
 
   return (
     <View style={styles.container}>
