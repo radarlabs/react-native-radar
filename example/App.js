@@ -75,7 +75,7 @@ export default function App() {
   });
 
   Radar.trackOnce({
-    accuracy: "medium",
+    desiredAccuracy: "medium",
     beacons: true
   }).then((result) => {
     console.log('trackOnce manual with beacons:', stringify(result));
