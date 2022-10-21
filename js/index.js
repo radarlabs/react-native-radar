@@ -14,13 +14,25 @@ const setUserId = (userId) => {
   NativeModules.RNRadar.setUserId(userId);
 };
 
+const getUserId = () => (
+  NativeModules.RNRadar.getUserId()
+);
+
 const setDescription = (description) => {
   NativeModules.RNRadar.setDescription(description);
 };
 
+const getDescription = () => (
+  NativeModules.RNRadar.getDescription()
+);
+
 const setMetadata = (metadata) => {
   NativeModules.RNRadar.setMetadata(metadata);
 };
+
+const getMetadata = () => (
+  NativeModules.RNRadar.getMetadata()
+)
 
 const getPermissionsStatus = () => (
   NativeModules.RNRadar.getPermissionsStatus()
@@ -153,8 +165,11 @@ const off = (event, callback) => {
 const Radar = {
   setLogLevel,
   setUserId,
+  getUserId,
   setDescription,
+  getDescription,
   setMetadata,
+  getMetadata,
   getPermissionsStatus,
   requestPermissions,
   getLocation,

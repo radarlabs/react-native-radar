@@ -32,10 +32,30 @@ export default function App() {
 
   Radar.setUserId('foo');
 
+  Radar.setDescription("description");
+
   Radar.setMetadata({
     foo: 'bar',
     baz: true,
     qux: 1,
+  });
+
+  Radar.getUserId().then(result => {
+    console.log('getUserId:', result);
+  }).catch((err) => {
+    console.log('getUserId:', err);
+  });
+
+  Radar.getDescription().then(result => {
+    console.log('getDescription:', result);
+  }).catch((err) => {
+    console.log('getDescription:', err);
+  });
+
+  Radar.getMetadata().then(result => {
+    console.log('getDescription:', result);
+  }).catch((err) => {
+    console.log('getDescription:', err);
   });
 
   Radar.requestPermissions(false).then((result) => {

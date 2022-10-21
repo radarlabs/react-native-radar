@@ -80,13 +80,41 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void getUserId(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(Radar.getUserId());
+    }
+
+    @ReactMethod
     public void setDescription(String description) {
         Radar.setDescription(description);
     }
 
     @ReactMethod
+    public void getDescription(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(Radar.getDescription());
+    }
+
+    @ReactMethod
     public void setMetadata(ReadableMap metadataMap) throws JSONException {
         Radar.setMetadata(RNRadarUtils.jsonForMap(metadataMap));
+    }
+
+    @ReactMethod
+    public void getMetadata(final Promise promise) throws JSONException {        
+        if (promise == null) {
+            return;
+        }
+
+        JSONObject metaJson =  Radar.getMetadata();        
+        promise.resolve(RNRadarUtils.mapForJson(metaJson));
     }
 
     @ReactMethod

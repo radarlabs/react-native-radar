@@ -111,12 +111,24 @@ RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {
     [Radar setUserId:userId];
 }
 
+RCT_EXPORT_METHOD(getUserId:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getUserId]);
+}
+
 RCT_EXPORT_METHOD(setDescription:(NSString *)description) {
     [Radar setDescription:description];
 }
 
+RCT_EXPORT_METHOD(getDescription:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getDescription]);
+}
+
 RCT_EXPORT_METHOD(setMetadata:(NSDictionary *)metadataDict) {
     [Radar setMetadata:metadataDict];
+}
+
+RCT_EXPORT_METHOD(getMetadata:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getMetadata]);
 }
 
 RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
