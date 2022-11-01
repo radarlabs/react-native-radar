@@ -1971,6 +1971,11 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-community/netinfo@^7.1.3":
+  version "7.1.12"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-7.1.12.tgz#3f314e1184cbc40054621a7c51ed84095b8aa245"
+  integrity sha512-fkCRkOgzfdD0sr8JTasDgm716l8bJPkCNjXIyllG8K+UyixVa68lroQmgW9pewE5G5p43I9MWPtGZR/kVowBzg==
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.2.tgz#858f5c4b48d80778fde4b9d541f27edc0d56488b"
@@ -2217,9 +2222,9 @@ ansi-red@^0.1.1:
     ansi-wrap "0.1.0"
 
 ansi-regex@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-3.0.0.tgz#ed0317c322064f79466c02966bddb605ab37d998"
-  integrity sha1-7QMXwyIGT3lGbAKWa922Bas32Zg=
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-3.0.1.tgz#123d6479e92ad45ad897d4054e3c7ca7db4944e1"
+  integrity sha512-+O9Jct8wf++lXxxFc4hc8LsjaSq0HFzzL7cVsw8pRDIPdjKD2mT4ytDZlLuSBZ4cLKZFXIrMGO7DbQCtMJJMKw==
 
 ansi-regex@^4.0.0, ansi-regex@^4.1.0:
   version "4.1.0"
@@ -6685,6 +6690,11 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
+radar-sdk-js@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/radar-sdk-js/-/radar-sdk-js-3.3.0.tgz#8f3a0009b8aa4d6ca2fb0df682c24d35bc2cbb8e"
+  integrity sha512-20b4vriERR1eVBQaA6jPOaAYZAHfgRGZBeHZLxoYMYeHIvn+YCDWPmUgw3haVdp7Fe5rRQCmWqdQeMY6iBYi3g==
+
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
@@ -6729,7 +6739,9 @@ react-native-gesture-handler@~1.8.0:
     prop-types "^15.7.2"
 
 react-native-radar@../:
-  version "3.1.0"
+  version "3.5.6"
+  dependencies:
+    "@react-native-community/netinfo" "^7.1.3"
 
 react-native-reanimated@~1.13.0:
   version "1.13.2"
