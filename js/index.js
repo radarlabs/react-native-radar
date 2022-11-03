@@ -34,6 +34,14 @@ const getMetadata = () => (
   NativeModules.RNRadar.getMetadata()
 )
 
+const setAnonymousTrackingEnabled = (enabled) => (
+  NativeModules.RNRadar.setAnonymousTrackingEnabled(enabled)
+)
+
+const setAdIdEnabled = (enabled) => (
+  NativeModules.RNRadar.setAdIdEnabled(enabled)
+)
+
 const getPermissionsStatus = () => (
   NativeModules.RNRadar.getPermissionsStatus()
 );
@@ -42,8 +50,8 @@ const requestPermissions = background => (
   NativeModules.RNRadar.requestPermissions(background)
 );
 
-const getLocation = () => (
-  NativeModules.RNRadar.getLocation()
+const getLocation = desiredAccuracy => (
+  NativeModules.RNRadar.getLocation(desiredAccuracy)
 );
 
 const trackOnce = options => {
@@ -170,6 +178,8 @@ const Radar = {
   getDescription,
   setMetadata,
   getMetadata,
+  setAnonymousTrackingEnabled,
+  setAdIdEnabled,
   getPermissionsStatus,
   requestPermissions,
   getLocation,

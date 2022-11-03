@@ -118,6 +118,16 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void setAnonymousTrackingEnabled(boolean enabled) {
+        Radar.setAnonymousTrackingEnabled(enabled);
+    }
+
+    @ReactMethod
+    public void setAdIdEnabled(boolean enabled) {
+        Radar.setAdIdEnabled(enabled);
+    }
+
+    @ReactMethod
     public void getPermissionsStatus(final Promise promise) {
         if (promise == null) {
             return;
@@ -175,8 +185,20 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void getLocation(final Promise promise) {
-        Radar.getLocation(new Radar.RadarLocationCallback() {
+    public void getLocation(String desiredAccuracy, final Promise promise) {
+        
+        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;        
+        String accuracy = desiredAccuracy != null ? desiredAccuracy.toLowerCase()  : "medium";
+        
+        if (accuracy.equals("low")) {
+            accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
+        } else if (accuracy.equals("medium")) {
+            accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+        } else if (accuracy.equals("high")) {
+            accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
+        }
+
+        Radar.getLocation(accuracyLevel, new Radar.RadarLocationCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, boolean stopped) {
                 if (promise == null) {

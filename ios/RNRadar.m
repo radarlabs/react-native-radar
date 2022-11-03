@@ -131,6 +131,14 @@ RCT_EXPORT_METHOD(getMetadata:(RCTPromiseResolveBlock)resolve reject:(RCTPromise
     resolve([Radar getMetadata]);
 }
 
+RCT_EXPORT_METHOD(setAnonymousTrackingEnabled:(BOOL)enabled) {
+    [Radar setAnonymousTrackingEnabled:enabled]
+}
+
+RCT_EXPORT_METHOD(setAdIdEnabled:(BOOL)enabled) {
+    [Radar setAdIdEnabled:enabled]
+}
+
 RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     NSString *statusStr;
@@ -170,11 +178,23 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
     }
 }
 
-RCT_EXPORT_METHOD(getLocation:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getLocation:(String)desiredAccuracy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
+    RadarTrackingOptionsDesiredAccuracy accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+    
+    if (desiredAccuracy) {
+        NSString *lowerAccuracy = [desiredAccuracy lowercaseString];
+        if ([lowerAccuracy isEqualToString:@"high"]) {
+            accuracy = RadarTrackingOptionsDesiredAccuracyHigh;
+        } else if ([lowerAccuracy isEqualToString:@"medium"]) {
+            accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+        } else if ([lowerAccuracy isEqualToString:@"low"]) {
+            accuracy = RadarTrackingOptionsDesiredAccuracyLow;
+        }
+    }
 
-    [Radar getLocationWithCompletionHandler:^(RadarStatus status, CLLocation * _Nullable location, BOOL stopped) {
+    [Radar getLocationWithDesiredAccuracy:accuracy, completionHandler:^(RadarStatus status, CLLocation * _Nullable location, BOOL stopped) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
