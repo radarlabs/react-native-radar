@@ -339,6 +339,11 @@ RCT_EXPORT_METHOD(stopTracking) {
     [Radar stopTracking];
 }
 
+RCT_EXPORT_METHOD(isTracking:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    BOOL res = [Radar isTracking];
+    resolve(@(res));
+}
+
 RCT_EXPORT_METHOD(setForegroundServiceOptions) {
     // not implemented
 }

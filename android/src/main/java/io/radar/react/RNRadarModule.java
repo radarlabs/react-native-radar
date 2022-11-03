@@ -364,6 +364,15 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void isTracking(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(Radar.isTracking());
+    }
+
+    @ReactMethod
     public void setForegroundServiceOptions(ReadableMap optionsMap) {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
