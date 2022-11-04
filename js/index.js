@@ -90,6 +90,10 @@ const stopTracking = () => (
   NativeModules.RNRadar.stopTracking()
 );
 
+const getTrackingOptions = () => (
+  NativeModules.RNRadar.getTrackingOptions()
+)
+
 const isTracking = () => (
   NativeModules.RNRadar.isTracking()
 )
@@ -195,6 +199,7 @@ const Radar = {
   mockTracking,
   stopTracking,
   isTracking,
+  getTrackingOptions,
   setForegroundServiceOptions,
   acceptEvent,
   rejectEvent,

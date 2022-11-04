@@ -344,6 +344,15 @@ RCT_EXPORT_METHOD(isTracking:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseR
     resolve(@(res));
 }
 
+RCT_EXPORT_METHOD(getTrackingOptions:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (resolve == nil) {
+        return;
+    }
+    
+    RadarTrackingOptions* options = [Radar getTrackingOptions];
+    resolve([options dictionaryValue]);
+}
+
 RCT_EXPORT_METHOD(setForegroundServiceOptions) {
     // not implemented
 }
