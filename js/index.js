@@ -102,6 +102,10 @@ const setForegroundServiceOptions = options => (
   NativeModules.RNRadar.setForegroundServiceOptions(options)
 );
 
+const getTripOptions = () => (
+  NativeModules.RNRadar.getTripOptions()
+)
+
 const startTrip = options => (
   NativeModules.RNRadar.startTrip(options)
 );
@@ -203,6 +207,7 @@ const Radar = {
   setForegroundServiceOptions,
   acceptEvent,
   rejectEvent,
+  getTripOptions,
   startTrip,
   updateTrip,
   completeTrip,

@@ -408,6 +408,20 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void getTripOptions(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+        try {
+            RadarTripOptions options = Radar.getTripOptions();
+            promise.resolve(options != null ? RNRadarUtils.mapForJson(options.toJson()) : null);
+        } catch(JSONException e) {
+            Log.e(TAG, "JSONException", e);
+            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        }
+    }
+
+    @ReactMethod
     public void startTrip(ReadableMap optionsMap, final Promise promise) {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);

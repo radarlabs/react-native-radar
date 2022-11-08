@@ -365,6 +365,15 @@ RCT_EXPORT_METHOD(rejectEvent:(NSString *)eventId) {
     [Radar rejectEventId:eventId];
 }
 
+RCT_EXPORT_METHOD(getTripOptions:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (resolve == nil) {
+        return;
+    }
+    
+    RadarTripOptions* options = [Radar getTripOptions];
+    resolve([options dictionaryValue]);
+}
+
 RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict];
     if (options.scheduledArrivalAt) {
