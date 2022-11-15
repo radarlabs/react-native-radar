@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the leading geofencing and location tracking platform",
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
-  "version": "3.5.5",
+  "version": "3.5.6",
   "main": "js/index.js",
   "files": [
     "android",
@@ -48,7 +48,8 @@
     "metro-react-native-babel-preset": "^0.51.1",
     "npm-run-all": "^4.1.5",
     "react": "16.8.6",
-    "react-native": "0.60.0"
+    "react-native": "0.60.0",
+    "radar-sdk-js": "^3.3.0"
   },
   "bugs": {
     "url": "https://github.com/radarlabs/react-native-radar/issues"
