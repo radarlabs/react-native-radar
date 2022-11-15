@@ -196,6 +196,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
         } else if (accuracy.equals("high")) {
             accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
+        } else {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
         }
 
         Radar.getLocation(accuracyLevel, new Radar.RadarLocationCallback() {

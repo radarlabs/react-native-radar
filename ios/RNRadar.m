@@ -191,6 +191,12 @@ RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseRes
             accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
         } else if ([lowerAccuracy isEqualToString:@"low"]) {
             accuracy = RadarTrackingOptionsDesiredAccuracyLow;
+        } else {
+            if (reject) {
+                reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+            }
+            
+            return;
         }
     }
 
