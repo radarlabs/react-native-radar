@@ -1,6 +1,6 @@
 // https://github.com/facebook/react-native/issues/24065#issuecomment-537489786
 
-const blacklist = require('metro-config/src/defaults/blacklist');
+const blacklist = require('metro-config/src/defaults/exclusionList');
 
 module.exports = {
   resolver: {
