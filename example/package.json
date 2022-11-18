@@ -27,7 +27,7 @@
     "babel-jest": "~25.2.6",
     "jest": "~25.2.6",
     "radar-sdk-js": "^3.3.0",
-    "react-test-renderer": "~16.13.1",
+    "react-test-renderer": "17.0.1",
     "jest-expo": "~43.0.1"
   },
   "private": true,
