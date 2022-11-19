@@ -14,13 +14,33 @@ const setUserId = (userId) => {
   NativeModules.RNRadar.setUserId(userId);
 };
 
+const getUserId = () => (
+  NativeModules.RNRadar.getUserId()
+);
+
 const setDescription = (description) => {
   NativeModules.RNRadar.setDescription(description);
 };
 
+const getDescription = () => (
+  NativeModules.RNRadar.getDescription()
+);
+
 const setMetadata = (metadata) => {
   NativeModules.RNRadar.setMetadata(metadata);
 };
+
+const getMetadata = () => (
+  NativeModules.RNRadar.getMetadata()
+)
+
+const setAnonymousTrackingEnabled = (enabled) => (
+  NativeModules.RNRadar.setAnonymousTrackingEnabled(enabled)
+)
+
+const setAdIdEnabled = (enabled) => (
+  NativeModules.RNRadar.setAdIdEnabled(enabled)
+)
 
 const getPermissionsStatus = () => (
   NativeModules.RNRadar.getPermissionsStatus()
@@ -30,8 +50,8 @@ const requestPermissions = background => (
   NativeModules.RNRadar.requestPermissions(background)
 );
 
-const getLocation = () => (
-  NativeModules.RNRadar.getLocation()
+const getLocation = desiredAccuracy => (
+  NativeModules.RNRadar.getLocation(desiredAccuracy)
 );
 
 const trackOnce = options => {
@@ -70,9 +90,21 @@ const stopTracking = () => (
   NativeModules.RNRadar.stopTracking()
 );
 
+const getTrackingOptions = () => (
+  NativeModules.RNRadar.getTrackingOptions()
+)
+
+const isTracking = () => (
+  NativeModules.RNRadar.isTracking()
+)
+
 const setForegroundServiceOptions = options => (
   NativeModules.RNRadar.setForegroundServiceOptions(options)
 );
+
+const getTripOptions = () => (
+  NativeModules.RNRadar.getTripOptions()
+)
 
 const startTrip = options => (
   NativeModules.RNRadar.startTrip(options)
@@ -134,6 +166,10 @@ const getMatrix = options => (
   NativeModules.RNRadar.getMatrix(options)
 );
 
+const sendEvent = (customType, metadata) => (
+  NativeModules.RNRadar.sendEvent(customType, metadata)
+)
+
 const on = (event, callback) => (
   eventEmitter.addListener(event, callback)
 );
@@ -149,8 +185,13 @@ const off = (event, callback) => {
 const Radar = {
   setLogLevel,
   setUserId,
+  getUserId,
   setDescription,
+  getDescription,
   setMetadata,
+  getMetadata,
+  setAnonymousTrackingEnabled,
+  setAdIdEnabled,
   getPermissionsStatus,
   requestPermissions,
   getLocation,
@@ -161,9 +202,12 @@ const Radar = {
   startTrackingCustom,
   mockTracking,
   stopTracking,
+  isTracking,
+  getTrackingOptions,
   setForegroundServiceOptions,
   acceptEvent,
   rejectEvent,
+  getTripOptions,
   startTrip,
   updateTrip,
   completeTrip,
@@ -177,6 +221,7 @@ const Radar = {
   ipGeocode,
   getDistance,
   getMatrix,
+  sendEvent,
   on,
   off,
 };

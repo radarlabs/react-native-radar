@@ -111,12 +111,32 @@ RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {
     [Radar setUserId:userId];
 }
 
+RCT_EXPORT_METHOD(getUserId:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getUserId]);
+}
+
 RCT_EXPORT_METHOD(setDescription:(NSString *)description) {
     [Radar setDescription:description];
 }
 
+RCT_EXPORT_METHOD(getDescription:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getDescription]);
+}
+
 RCT_EXPORT_METHOD(setMetadata:(NSDictionary *)metadataDict) {
     [Radar setMetadata:metadataDict];
+}
+
+RCT_EXPORT_METHOD(getMetadata:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getMetadata]);
+}
+
+RCT_EXPORT_METHOD(setAnonymousTrackingEnabled:(BOOL)enabled) {
+    [Radar setAnonymousTrackingEnabled:enabled];
+}
+
+RCT_EXPORT_METHOD(setAdIdEnabled:(BOOL)enabled) {
+    [Radar setAdIdEnabled:enabled];
 }
 
 RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
@@ -158,11 +178,29 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
     }
 }
 
-RCT_EXPORT_METHOD(getLocation:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
+    RadarTrackingOptionsDesiredAccuracy accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+    
+    if (desiredAccuracy) {
+        NSString *lowerAccuracy = [desiredAccuracy lowercaseString];
+        if ([lowerAccuracy isEqualToString:@"high"]) {
+            accuracy = RadarTrackingOptionsDesiredAccuracyHigh;
+        } else if ([lowerAccuracy isEqualToString:@"medium"]) {
+            accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+        } else if ([lowerAccuracy isEqualToString:@"low"]) {
+            accuracy = RadarTrackingOptionsDesiredAccuracyLow;
+        } else {
+            if (reject) {
+                reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+            }
+            
+            return;
+        }
+    }
 
-    [Radar getLocationWithCompletionHandler:^(RadarStatus status, CLLocation * _Nullable location, BOOL stopped) {
+    [Radar getLocationWithDesiredAccuracy:accuracy completionHandler:^(RadarStatus status, CLLocation * _Nullable location, BOOL stopped) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -307,6 +345,20 @@ RCT_EXPORT_METHOD(stopTracking) {
     [Radar stopTracking];
 }
 
+RCT_EXPORT_METHOD(isTracking:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    BOOL res = [Radar isTracking];
+    resolve(@(res));
+}
+
+RCT_EXPORT_METHOD(getTrackingOptions:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (resolve == nil) {
+        return;
+    }
+    
+    RadarTrackingOptions* options = [Radar getTrackingOptions];
+    resolve([options dictionaryValue]);
+}
+
 RCT_EXPORT_METHOD(setForegroundServiceOptions) {
     // not implemented
 }
@@ -319,8 +371,20 @@ RCT_EXPORT_METHOD(rejectEvent:(NSString *)eventId) {
     [Radar rejectEventId:eventId];
 }
 
+RCT_EXPORT_METHOD(getTripOptions:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (resolve == nil) {
+        return;
+    }
+    
+    RadarTripOptions* options = [Radar getTripOptions];
+    resolve([options dictionaryValue]);
+}
+
 RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict];
+    if (options.scheduledArrivalAt) {
+        options.scheduledArrivalAt = [RCTConvert NSDate:options.scheduledArrivalAt];
+    }
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
@@ -516,6 +580,7 @@ RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         radius = 1000;
     }
     NSArray *chains = optionsDict[@"chains"];
+    NSDictionary *chainMetadata = optionsDict[@"chainMetadata"];
     NSArray *categories = optionsDict[@"categories"];
     NSArray *groups = optionsDict[@"groups"];
     NSNumber *limitNumber = optionsDict[@"limit"];
@@ -548,9 +613,9 @@ RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     };
 
     if (near) {
-        [Radar searchPlacesNear:near radius:radius chains:chains categories:categories groups:groups limit:limit completionHandler:completionHandler];
+        [Radar searchPlacesNear:near radius:radius chains:chains chainMetadata:chainMetadata categories:categories groups:groups limit:limit completionHandler:completionHandler];
     } else {
-        [Radar searchPlacesWithRadius:radius chains:chains categories:categories groups:groups limit:limit completionHandler:completionHandler];
+        [Radar searchPlacesWithRadius:radius chains:chains chainMetadata:chainMetadata categories:categories groups:groups limit:limit completionHandler:completionHandler];
     }
 }
 
@@ -889,4 +954,29 @@ RCT_EXPORT_METHOD(getMatrix:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     }];
 }
 
+RCT_EXPORT_METHOD(sendEvent:(NSString*) customType metadata:(NSDictionary *)metadata resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+    
+    [Radar sendEvent:customType withMetadata:metadata completionHandler:^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (location) {
+                [dict setObject:[Radar dictionaryForLocation:location] forKey:@"location"];
+            }
+            if (events) {
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
+            }
+            if (user) {
+                [dict setObject:[user dictionaryValue] forKey:@"user"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    }];
+}
 @end

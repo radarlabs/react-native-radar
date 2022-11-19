@@ -32,10 +32,30 @@ export default function App() {
 
   Radar.setUserId('foo');
 
+  Radar.setDescription("description");
+
   Radar.setMetadata({
     foo: 'bar',
     baz: true,
     qux: 1,
+  });
+
+  Radar.getUserId().then(result => {
+    console.log('getUserId:', result);
+  }).catch((err) => {
+    console.log('getUserId:', err);
+  });
+
+  Radar.getDescription().then(result => {
+    console.log('getDescription:', result);
+  }).catch((err) => {
+    console.log('getDescription:', err);
+  });
+
+  Radar.getMetadata().then(result => {
+    console.log('getDescription:', result);
+  }).catch((err) => {
+    console.log('getDescription:', err);
   });
 
   Radar.requestPermissions(false).then((result) => {
@@ -102,6 +122,9 @@ export default function App() {
     },
     radius: 1000,
     chains: ["starbucks"],
+    chainMetadata: {
+      "customFlag": "true"
+    },
     limit: 10,
   }).then((result) => {
     console.log('searchPlaces:', stringify(result));
@@ -207,6 +230,7 @@ export default function App() {
     destinationGeofenceTag: 'store',
     destinationGeofenceExternalId: '123',
     mode: 'car',
+    scheduledArrivalAt: new Date('2022-10-10T12:20:30Z').getTime()
   });
 
   Radar.mockTracking({
@@ -224,6 +248,15 @@ export default function App() {
   });
 
   Radar.completeTrip();
+  
+  Radar.sendEvent(
+    "in_app_purchase",
+    {"price": "$150"}
+  ).then((result) => {
+    console.log("sendEvent:", stringify(result));
+  }).catch((err) => {
+    console.log("sendEvent:", err);
+  });
 
   return (
     <View style={styles.container}>

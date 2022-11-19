@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.EnumSet;
+import java.util.Map;
 
 public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener {
 
@@ -79,13 +80,51 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void getUserId(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(Radar.getUserId());
+    }
+
+    @ReactMethod
     public void setDescription(String description) {
         Radar.setDescription(description);
     }
 
     @ReactMethod
+    public void getDescription(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(Radar.getDescription());
+    }
+
+    @ReactMethod
     public void setMetadata(ReadableMap metadataMap) throws JSONException {
         Radar.setMetadata(RNRadarUtils.jsonForMap(metadataMap));
+    }
+
+    @ReactMethod
+    public void getMetadata(final Promise promise) throws JSONException {        
+        if (promise == null) {
+            return;
+        }
+
+        JSONObject metaJson =  Radar.getMetadata();        
+        promise.resolve(RNRadarUtils.mapForJson(metaJson));
+    }
+
+    @ReactMethod
+    public void setAnonymousTrackingEnabled(boolean enabled) {
+        Radar.setAnonymousTrackingEnabled(enabled);
+    }
+
+    @ReactMethod
+    public void setAdIdEnabled(boolean enabled) {
+        Radar.setAdIdEnabled(enabled);
     }
 
     @ReactMethod
@@ -146,8 +185,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void getLocation(final Promise promise) {
-        Radar.getLocation(new Radar.RadarLocationCallback() {
+    public void getLocation(String desiredAccuracy, final Promise promise) {
+        
+        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;        
+        String accuracy = desiredAccuracy != null ? desiredAccuracy.toLowerCase()  : "medium";
+        
+        if (accuracy.equals("low")) {
+            accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
+        } else if (accuracy.equals("medium")) {
+            accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+        } else if (accuracy.equals("high")) {
+            accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
+        } else {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+        }
+
+        Radar.getLocation(accuracyLevel, new Radar.RadarLocationCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, boolean stopped) {
                 if (promise == null) {
@@ -313,6 +366,29 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void isTracking(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(Radar.isTracking());
+    }
+
+    @ReactMethod
+    public void getTrackingOptions(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+        try {
+            RadarTrackingOptions options = Radar.getTrackingOptions();
+            promise.resolve(RNRadarUtils.mapForJson(options.toJson()));
+        } catch(JSONException e) {
+            Log.e(TAG, "JSONException", e);
+            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        }
+    }
+
+    @ReactMethod
     public void setForegroundServiceOptions(ReadableMap optionsMap) {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
@@ -331,6 +407,20 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void rejectEvent(String eventId) {
         Radar.rejectEvent(eventId);
+    }
+
+    @ReactMethod
+    public void getTripOptions(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+        try {
+            RadarTripOptions options = Radar.getTripOptions();
+            promise.resolve(options != null ? RNRadarUtils.mapForJson(options.toJson()) : null);
+        } catch(JSONException e) {
+            Log.e(TAG, "JSONException", e);
+            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        }
     }
 
     @ReactMethod
@@ -578,6 +668,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
         int radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : 1000;
         String[] chains = optionsMap.hasKey("chains") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("chains")) : null;
+        Map<String, String> chainMetadata = RNRadarUtils.stringStringMap(optionsMap.getMap("chainMetadata"));
         String[] categories = optionsMap.hasKey("categories") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("categories")) : null;
         String[] groups = optionsMap.hasKey("groups") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("groups")) : null;
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
@@ -607,9 +698,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         };
 
         if (near != null) {
-            Radar.searchPlaces(near, radius, chains, categories, groups, limit, callback);
+            Radar.searchPlaces(near, radius, chains, chainMetadata, categories, groups, limit, callback);
         } else {
-            Radar.searchPlaces(radius, chains, categories, groups, limit, callback);
+            Radar.searchPlaces(radius, chains, chainMetadata, categories, groups, limit, callback);
         }
     }
 
@@ -979,6 +1070,41 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     }
                 } else {
                     promise.reject(status.toString(), status.toString());
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void sendEvent(String customType, ReadableMap metadata, final Promise promise) throws JSONException  {
+        if (promise == null) {
+            return;
+        }
+        
+        JSONObject metadataObj = RNRadarUtils.jsonForMap(metadata);
+        Radar.sendEvent(customType, metadataObj, new Radar.RadarSendEventCallback() {
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+                try {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (location != null) {
+                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                        }
+                        if (events != null) {
+                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                        }
+                        if (user != null) {
+                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                        }
+                        promise.resolve(map);
+                    } else {
+                        promise.reject(status.toString(), status.toString());
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             }
         });

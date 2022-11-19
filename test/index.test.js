@@ -39,6 +39,15 @@ jest.mock('NativeModules', () => ({
     ipGeocode: jest.fn(),
     getDistance: jest.fn(),
     getMatrix: jest.fn(),
+    sendEvent: jest.fn(),
+    getUserId: jest.fn(),
+    getDescription: jest.fn(),
+    getMetadata: jest.fn(),
+    setAnonymousTrackingEnabled: jest.fn(),
+    setAdIdEnabled: jest.fn(),
+    isTracking: jest.fn(),
+    getTrackingOptions: jest.fn(),
+    getTripOptions: jest.fn()
   },
 }));
 
@@ -97,9 +106,11 @@ describe('calls native implementation', () => {
   });
 
   test('getLocation', () => {
-    Radar.getLocation();
+    const desiredAccuracy = 'medium';
+    Radar.getLocation(desiredAccuracy);
 
     expect(mockModule.getLocation).toHaveBeenCalledTimes(1);
+    expect(mockModule.getLocation).toBeCalledWith(desiredAccuracy);
   });
 
   test('trackOnce', () => {
@@ -232,6 +243,7 @@ describe('calls native implementation', () => {
       destinationGeofenceTag: 'store',
       destinationGeofenceExternalId: '123',
       mode: 'car',
+      scheduledArrivalAt: new Date('2022-10-10T12:20:30Z').getTime()
     };
     Radar.startTrip(options);
 
@@ -271,6 +283,9 @@ describe('calls native implementation', () => {
       },
       radius: 1000,
       chains: ['mcdonalds'],
+      chainMetadata: {
+        "customFlag": "true"
+      },
       limit: 10,
     };
     Radar.searchPlaces(options);
@@ -403,5 +418,66 @@ describe('calls native implementation', () => {
 
     expect(mockEmitter.removeAllListeners).toHaveBeenCalledTimes(1);
     expect(mockEmitter.removeAllListeners).toHaveBeenCalledWith(event);
+  });
+
+  test('sendEvent', () => {
+    const eventId = 'in_app_purchase';
+    const metadata = {"price": "$150"};
+    Radar.sendEvent(eventId, metadata);
+
+    expect(mockModule.sendEvent).toHaveBeenCalledTimes(1);
+    expect(mockModule.sendEvent).toBeCalledWith(eventId, metadata);
+  });
+
+  test('getUserId', () => {
+    Radar.getUserId();
+
+    expect(mockModule.getUserId).toHaveBeenCalledTimes(1);
+  });
+
+  test('getDescription', () => {
+    Radar.getDescription();
+
+    expect(mockModule.getDescription).toHaveBeenCalledTimes(1);
+  });
+
+  test('getMetadata', () => {
+    Radar.getMetadata();
+
+    expect(mockModule.getMetadata).toHaveBeenCalledTimes(1);
+  });
+
+  test('setAnonymousTrackingEnabled', () => {
+    const enabled = true;
+    Radar.setAnonymousTrackingEnabled(enabled);
+
+    expect(mockModule.setAnonymousTrackingEnabled).toHaveBeenCalledTimes(1);
+    expect(mockModule.setAnonymousTrackingEnabled).toBeCalledWith(enabled);
+  });
+
+  test('setAdIdEnabled', () => {
+    const enabled = true;
+    Radar.setAdIdEnabled(enabled);
+
+    expect(mockModule.setAdIdEnabled).toHaveBeenCalledTimes(1);
+    expect(mockModule.setAdIdEnabled).toBeCalledWith(enabled);
+  });
+
+  test('isTracking', () => {
+    Radar.isTracking();
+
+    expect(mockModule.isTracking).toHaveBeenCalledTimes(1);
+  });
+
+  test('getTrackingOptions', () => {
+    Radar.getTrackingOptions();
+
+    expect(mockModule.getTrackingOptions).toHaveBeenCalledTimes(1);
+  });
+
+  test('getTripOptions', () => {
+    Radar.getTripOptions();
+
+    expect(mockModule.getTripOptions).toHaveBeenCalledTimes(1);
   });
 });
