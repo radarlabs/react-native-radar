@@ -58,6 +58,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void initialize(String publishableKey) {
+        Radar.initialize(getReactApplicationContext(), publishableKey);
+    }
+
+    @ReactMethod
     public void setLogLevel(String level) {
         Radar.RadarLogLevel logLevel = Radar.RadarLogLevel.NONE;
         if (level != null) {

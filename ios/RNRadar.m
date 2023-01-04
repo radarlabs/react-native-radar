@@ -91,6 +91,10 @@ RCT_EXPORT_MODULE();
     }
 }
 
+RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey) {
+    [Radar initializeWithPublishableKey:publishableKey];
+}
+
 RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {
     RadarLogLevel logLevel = RadarLogLevelNone;
     if (level) {

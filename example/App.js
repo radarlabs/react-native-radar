@@ -28,6 +28,8 @@ Radar.on('log', (result) => {
 });
 
 export default function App() {
+  Radar.initialize('prj_test_pk_0000000000000000000000000000000000000000');
+
   Radar.setLogLevel('info');
 
   Radar.setUserId('foo');
