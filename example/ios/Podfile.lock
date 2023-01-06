@@ -41,7 +41,7 @@ PODS:
     - React-jsi (= 0.64.3)
     - ReactCommon/turbomodule/core (= 0.64.3)
   - glog (0.3.5)
-  - RadarSDK (3.5.4)
+  - RadarSDK (3.5.9)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -235,8 +235,8 @@ PODS:
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
   - React-jsinspector (0.64.3)
-  - react-native-radar (3.5.6):
-    - RadarSDK (~> 3.5.4)
+  - react-native-radar (3.5.8):
+    - RadarSDK (~> 3.5.9)
     - React
   - react-native-safe-area-context (3.3.2):
     - React-Core
@@ -375,7 +375,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-radar (from `../node_modules/react-native-radar`)
+  - react-native-radar (from `../..`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -461,7 +461,7 @@ EXTERNAL SOURCES:
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-radar:
-    :path: "../node_modules/react-native-radar"
+    :path: "../.."
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-perflogger:
@@ -519,9 +519,9 @@ SPEC CHECKSUMS:
   EXUpdates: 061b67c33f0e7f8fd335bbb48697c4a4fc8a5157
   EXUpdatesInterface: e1c01b4f5ec76bd1d6cc714938f9edf5ef6379b9
   FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
-  FBReactNativeSpec: b28076c21feefcf3abc844a9d436ab2a5b0bfcd0
+  FBReactNativeSpec: 49e3b1196c098eae8fa4c35c55441b8906659966
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
-  RadarSDK: e14feb10c2ea56a2150c73d528dfbd6f227535cf
+  RadarSDK: 9c3b51e9aafcd35d7d80fd4d0d81d9feca36490e
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: d34bf57e17cb6e3b2681f4809b13843c021feb6c
   RCTTypeSafety: 8dab4933124ed39bb0c1d88d74d61b1eb950f28f
@@ -533,7 +533,7 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-radar: b3a5d0834a58c2423d6d5398bc904ef2b31b7088
+  react-native-radar: 46e9349505e71d8fb28ca0d43929c05e22303ed9
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   React-perflogger: cc76a4254d19640f1d8ad1c66fdee800414b805c
   React-RCTActionSheet: 7448f049318d8d7e8a9a1ebb742ada721757eea8
