@@ -52,9 +52,6 @@ static void InitializeFlipper(UIApplication *application) {
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
 
-  
-  [Radar initializeWithPublishableKey:@"prj_test_pk_0000000000000000000000000000000000000000"];
-
   return YES;
  }
 
