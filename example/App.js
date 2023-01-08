@@ -227,12 +227,61 @@ export default function App() {
     console.log('getMatrix:', err);
   });
 
-  Radar.startTrip({
+  /*Radar.startTrip({
     externalId: '299',
     destinationGeofenceTag: 'store',
     destinationGeofenceExternalId: '123',
     mode: 'car',
-    scheduledArrivalAt: new Date('2022-10-10T12:20:30Z').getTime()
+    scheduledArrivalAt: new Date('2023-10-10T12:20:30Z').getTime()
+  });*/
+
+  /*Radar.startTrip({
+    tripOptions: {
+      externalId: '300',
+      destinationGeofenceTag: 'store',
+      destinationGeofenceExternalId: '123',
+      mode: 'car',
+      scheduledArrivalAt: new Date('2023-10-10T12:20:30Z').getTime()
+    }
+  }).then((result) => {
+    console.log('startTrip:', stringify(result));
+  }).catch((err) => {
+    console.log(err.stack);
+  });*/
+
+  Radar.startTrip({
+    tripOptions: {
+      externalId: '302',
+      destinationGeofenceTag: 'store',
+      destinationGeofenceExternalId: '123',
+      mode: 'car',
+      scheduledArrivalAt: new Date('2023-10-10T12:20:30Z').getTime()
+    },
+    trackingOptions: {
+      desiredStoppedUpdateInterval: 30,
+      fastestStoppedUpdateInterval: 30,
+      desiredMovingUpdateInterval: 30,
+      fastestMovingUpdateInterval: 30,
+      desiredSyncInterval: 20,
+      desiredAccuracy: "high",
+      stopDuration: 0,
+      stopDistance: 0,
+      replay: "none",
+      sync: "all",
+      showBlueBar: true,
+      useStoppedGeofence: false,
+      stoppedGeofenceRadius: 0,
+      useMovingGeofence: false,
+      movingGeofenceRadius: 0,
+      syncGeofences: false,
+      syncGeofencesLimit: 0,
+      beacons: false,
+      foregroundServiceEnabled: false
+    }
+  }).then((result) => {
+    console.log('startTrip:', stringify(result));
+  }).catch((err) => {
+    console.log('startTrip:', err);
   });
 
   Radar.mockTracking({

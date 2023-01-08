@@ -385,15 +385,26 @@ RCT_EXPORT_METHOD(getTripOptions:(RCTPromiseResolveBlock)resolve reject:(RCTProm
 }
 
 RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict];
+    // { tripOptions, trackingOptions } is the new req format.
+    // fallback to reading trip options from the top level options.
+    NSDictionary *tripOptionsDict = optionsDict[@"tripOptions"];
+    if (tripOptionsDict == nil) {
+        tripOptionsDict = optionsDict;
+    }
+    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:tripOptionsDict];
     if (options.scheduledArrivalAt) {
         options.scheduledArrivalAt = [RCTConvert NSDate:options.scheduledArrivalAt];
+    }
+    RadarTrackingOptions *trackingOptions;
+    NSDictionary *trackingOptionsDict = optionsDict[@"trackingOptions"];
+    if (trackingOptionsDict != nil) {
+      trackingOptions = [RadarTrackingOptions trackingOptionsFromDictionary:trackingOptionsDict];
     }
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar startTripWithOptions:options completionHandler:^(RadarStatus status, RadarTrip * _Nullable trip, NSArray<RadarEvent *> * _Nullable events) {
+    [Radar startTripWithOptions:options trackingOptions:trackingOptions completionHandler:^(RadarStatus status, RadarTrip * _Nullable trip, NSArray<RadarEvent *> * _Nullable events) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];

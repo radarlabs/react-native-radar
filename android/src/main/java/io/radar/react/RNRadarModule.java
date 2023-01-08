@@ -431,9 +431,21 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void startTrip(ReadableMap optionsMap, final Promise promise) {
         try {
-            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
-            RadarTripOptions options = RadarTripOptions.fromJson(optionsObj);
-            Radar.startTrip(options, new Radar.RadarTripCallback() {
+            JSONObject optionsJson = RNRadarUtils.jsonForMap(optionsMap);
+            // new format is { tripOptions, trackingOptions }
+            JSONObject tripOptionsJson = optionsJson.optJSONObject("tripOptions");
+            if (tripOptionsJson == null) {
+              // legacy format
+              tripOptionsJson = optionsJson;
+            }
+            RadarTripOptions options = RadarTripOptions.fromJson(tripOptionsJson);
+
+            RadarTrackingOptions trackingOptions = null;
+            JSONObject trackingOptionsJson = optionsJson.optJSONObject("trackingOptions");
+            if (trackingOptionsJson != null) {
+                trackingOptions = RadarTrackingOptions.fromJson(trackingOptionsJson);
+            }
+            Radar.startTrip(options, trackingOptions, new Radar.RadarTripCallback() {
                 @Override
                 public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
                     if (promise == null) {
