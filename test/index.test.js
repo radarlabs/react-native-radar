@@ -237,13 +237,66 @@ describe('calls native implementation', () => {
     expect(mockModule.rejectEvent).toBeCalledWith(eventId);
   });
 
-  test('startTrip', () => {
+  test('startTrip legacy', () => {
     const options = {
       externalId: '299',
       destinationGeofenceTag: 'store',
       destinationGeofenceExternalId: '123',
       mode: 'car',
       scheduledArrivalAt: new Date('2022-10-10T12:20:30Z').getTime()
+    };
+    Radar.startTrip(options);
+
+    expect(mockModule.startTrip).toHaveBeenCalledTimes(1);
+    expect(mockModule.startTrip).toBeCalledWith(options);
+  });
+
+  test('startTrip with tripOptions', () => {
+    const options = {
+      tripOptions: {
+        externalId: '299',
+        destinationGeofenceTag: 'store',
+        destinationGeofenceExternalId: '123',
+        mode: 'car',
+        scheduledArrivalAt: new Date('2022-10-10T12:20:30Z').getTime()
+      }
+    };
+    Radar.startTrip(options);
+
+    expect(mockModule.startTrip).toHaveBeenCalledTimes(1);
+    expect(mockModule.startTrip).toBeCalledWith(options);
+  });
+
+  test('startTrip with trackingOptions', () => {
+    const options = {
+      tripOptions: {
+        externalId: '299',
+        destinationGeofenceTag: 'store',
+        destinationGeofenceExternalId: '123',
+        mode: 'car',
+        scheduledArrivalAt: new Date('2022-10-10T12:20:30Z').getTime()
+      },
+      trackingOptions: {
+        desiredStoppedUpdateInterval: 30,
+        fastestStoppedUpdateInterval: 30,
+        desiredMovingUpdateInterval: 30,
+        fastestMovingUpdateInterval: 30,
+        desiredSyncInterval: 20,
+        desiredAccuracy: "high",
+        stopDuration: 0,
+        stopDistance: 0,
+        replay: "none",
+        sync: "all",
+        showBlueBar: true,
+        useStoppedGeofence: false,
+        stoppedGeofenceRadius: 0,
+        useMovingGeofence: false,
+        movingGeofenceRadius: 0,
+        syncGeofences: false,
+        syncGeofencesLimit: 0,
+        beacons: false,
+        foregroundServiceEnabled: false
+      }
     };
     Radar.startTrip(options);
 

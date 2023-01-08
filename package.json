@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the leading geofencing and location tracking platform",
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
-  "version": "3.5.7",
+  "version": "3.5.8",
   "main": "js/index.js",
   "files": [
     "android",
@@ -58,7 +58,7 @@
     "url": "https://github.com/radarlabs/react-native-radar.git"
   },
   "dependencies": {
-    "radar-sdk-js": "^3.3.0",
+    "radar-sdk-js": "^3.5.0",
     "@react-native-community/netinfo": "^7.1.3"
   }
 }
