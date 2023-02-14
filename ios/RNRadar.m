@@ -38,7 +38,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"events", @"location", @"clientLocation", @"error", @"log"];
+    return @[@"events", @"location", @"clientLocation", @"error", @"nearbyGeofences", @"log"];
 }
 
 - (void)startObserving {
@@ -75,6 +75,15 @@ RCT_EXPORT_MODULE();
             @"location": [Radar dictionaryForLocation:location],
             @"stopped": @(stopped),
             @"source": [Radar stringForLocationSource:source]
+        }];
+    }
+}
+
+- (void)didUpdateNearbyGeofences:(NSArray<RadarGeofence *> *)geofences user:(RadarUser *)user {
+    if (hasListeners) {
+        [self sendEventWithName:@"nearbyGeofences" body:@{
+            @"geofences": [RadarGeofence arrayForGeofences:geofences],
+            @"user": [user dictionaryValue]
         }];
     }
 }
