@@ -1,3 +1,5 @@
+// https://github.com/callstack/react-native-builder-bob
+
 const exclusionList = require('metro-config/src/defaults/exclusionList');
 
 const path = require('path');
