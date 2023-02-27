@@ -58,7 +58,8 @@
     "url": "https://github.com/radarlabs/react-native-radar.git"
   },
   "dependencies": {
-    "radar-sdk-js": "^3.5.0",
-    "@react-native-community/netinfo": "^7.1.3"
+    "@babel/runtime": "^7.21.0",
+    "@react-native-community/netinfo": "^7.1.3",
+    "radar-sdk-js": "^3.5.0"
   }
 }
