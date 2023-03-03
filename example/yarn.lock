@@ -1544,6 +1544,13 @@
   dependencies:
     regenerator-runtime "^0.13.10"
 
+"@babel/runtime@^7.21.0":
+  version "7.21.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.21.0.tgz#5b55c9d394e5fcf304909a8b00c07dc217b56673"
+  integrity sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw==
+  dependencies:
+    regenerator-runtime "^0.13.11"
+
 "@babel/runtime@^7.8.4":
   version "7.13.8"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.13.8.tgz"
@@ -7741,6 +7748,11 @@ radar-sdk-js@^3.5.0:
   resolved "https://registry.npmjs.org/radar-sdk-js/-/radar-sdk-js-3.5.0.tgz"
   integrity sha512-KIRGSN4EU45lzjcvoiAYyclONoHRgpHyJhBaNXVHOFZWY/SuwMqHtiUOSI4sKPtD/TfeMht8PIN9FYxAmzttQQ==
 
+radar-sdk-js@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/radar-sdk-js/-/radar-sdk-js-3.6.0.tgz#fbdd1ff761ec87517174732fdf0965e99ff7c0af"
+  integrity sha512-E1reSbZyBdv+XZm+QLYSTZX41dDSf8x9JSg5SaNmbopUWHLODdYrPuhynZ5KIGTeOcS1M+A14F8RR6hwg78z3w==
+
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/range-parser/-/range-parser-1.2.1.tgz"
@@ -7804,10 +7816,11 @@ react-native-gesture-handler@~1.10.2:
     prop-types "^15.7.2"
 
 react-native-radar@../:
-  version "3.5.8"
+  version "3.5.11"
   dependencies:
+    "@babel/runtime" "^7.21.0"
     "@react-native-community/netinfo" "^7.1.3"
-    radar-sdk-js "^3.5.0"
+    radar-sdk-js "^3.6.0"
 
 react-native-reanimated@~2.2.0:
   version "2.2.4"
@@ -8015,6 +8028,11 @@ regenerator-runtime@^0.13.10:
   version "0.13.10"
   resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.10.tgz"
   integrity sha512-KepLsg4dU12hryUO7bp/axHAKvwGOCV0sGloQtpagJ12ai+ojVDqkeGSiRX1zlq+kjIMZ1t7gpze+26QqtdGqw==
+
+regenerator-runtime@^0.13.11:
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
+  integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
 regenerator-runtime@^0.13.2, regenerator-runtime@^0.13.4:
   version "0.13.7"
@@ -9044,15 +9062,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-ua-parser-js@^0.7.18:
-  version "0.7.24"
-  resolved "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.24.tgz"
-  integrity sha512-yo+miGzQx5gakzVK3QFfN0/L9uVhosXBBO7qmnk7c2iw1IhL212wfA3zbnI54B0obGwC/5NWub/iT9sReMx+Fw==
-
-ua-parser-js@^0.7.30:
-  version "0.7.32"
-  resolved "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.32.tgz"
-  integrity sha512-f9BESNVhzlhEFf2CHMSj40NWOjYPl1YKYbrvIr/hFTDEmLq7SRbWvm7FcdcpCYT95zrOhC7gZSxjdnnTpBcwVw==
+ua-parser-js@^0.7.18, ua-parser-js@^0.7.30:
+  version "0.7.33"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.33.tgz#1d04acb4ccef9293df6f70f2c3d22f3030d8b532"
+  integrity sha512-s8ax/CeZdK9R/56Sui0WM6y9OFREJarMRHqLB2EwkovemBxNQ+Bqu8GAsUnVcXKgphb++ghr/B2BZx4mahujPw==
 
 uglify-es@^3.1.9:
   version "3.3.9"
