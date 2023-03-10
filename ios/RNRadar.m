@@ -969,7 +969,7 @@ RCT_EXPORT_METHOD(getMatrix:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     }];
 }
 
-RCT_EXPORT_METHOD(logConversionWithName:(NSString*)name metadata:(NSDictionary *)metadata resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(logConversion:(NSString*)name metadata:(NSDictionary *)metadata resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
     
