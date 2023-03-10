@@ -773,14 +773,14 @@ RCT_EXPORT_METHOD(validateAddress:(NSDictionary *)addressDict resolve:(RCTPromis
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar validateAddress:query completionHandler:^(RadarStatus status, RadarAddress * _Nullable address, RadarAddressVerificationStatus verificationStatus) {
+    [Radar validateAddress:address completionHandler:^(RadarStatus status, RadarAddress * _Nullable address, RadarVerificationStatus verificationStatus) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
             if (address) {
-                [dict setObject:[RadarAddress dictionaryForAddress:address] forKey:@"address"];
+                [dict setObject:[RadarAddress dictionaryValue:address] forKey:@"address"];
             }
-            [dict setObject:[Radar stringForAddressVerificationStatus:verificationStatus] forKey:@"verificationStatus"];
+            [dict setObject:[Radar stringForVerificationStatus:verificationStatus] forKey:@"verificationStatus"];
             resolver(dict);
         } else if (rejecter) {
             rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
