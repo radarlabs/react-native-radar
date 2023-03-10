@@ -226,7 +226,7 @@ const Radar = {
   ipGeocode,
   getDistance,
   getMatrix,
-  logConversion,
+  // logConversion,
   on,
   off,
 };
