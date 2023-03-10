@@ -170,8 +170,8 @@ const getMatrix = options => (
   NativeModules.RNRadar.getMatrix(options)
 );
 
-const logConversion = (name, metadata) => (
-  NativeModules.RNRadar.logConversion(name, metadata)
+const logConversion = (name, revenue, metadata) => (
+  NativeModules.RNRadar.logConversion(name, revenue, metadata)
 );
 
 const on = (event, callback) => (
