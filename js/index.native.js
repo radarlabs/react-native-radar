@@ -150,6 +150,10 @@ const autocomplete = options => (
   NativeModules.RNRadar.autocomplete(options)
 );
 
+const validateAddress = address => (
+  NativeModules.RNRadar.validateAddress(address)
+);
+
 const geocode = address => (
   NativeModules.RNRadar.geocode(address)
 );
@@ -221,6 +225,7 @@ const Radar = {
   searchPlaces,
   searchGeofences,
   autocomplete,
+  validateAddress,
   geocode,
   reverseGeocode,
   ipGeocode,
