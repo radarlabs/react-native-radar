@@ -174,6 +174,10 @@ const logConversion = (name, metadata) => (
   NativeModules.RNRadar.logConversion(name, metadata)
 )
 
+const sendEvent = (name, metadata) => (
+  NativeModules.RNRadar.sendEvent(name, metadata)
+)
+
 const on = (event, callback) => (
   eventEmitter.addListener(event, callback)
 );
@@ -227,6 +231,7 @@ const Radar = {
   getDistance,
   getMatrix,
   logConversion,
+  sendEvent,
   on,
   off,
 };
