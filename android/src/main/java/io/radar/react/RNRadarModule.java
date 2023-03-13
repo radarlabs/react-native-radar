@@ -1107,7 +1107,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (event != null) {
-                            map.putArray("event", RNRadarUtils.mapForJson(event.toJson()));
+                            map.putMap("event", RNRadarUtils.mapForJson(event.toJson()));
                         }
                         promise.resolve(map);
                     } else {
