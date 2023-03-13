@@ -738,7 +738,7 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
 
     NSArray *layers = optionsDict[@"layers"];
     NSString *countryCode = optionsDict[@"countryCode"];
-    if (!countryCode) {
+    if (countryCode == nil) {
         countryCode = optionsDict[@"country"];
     }
     BOOL expandUnits = [optionsDict[@"expandUnits"] boolValue];
