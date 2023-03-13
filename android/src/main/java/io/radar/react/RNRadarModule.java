@@ -1099,7 +1099,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
         
         JSONObject metadataObj = RNRadarUtils.jsonForMap(metadata);
-        Radar.logConversionWithName(name, metadataObj, new Radar.RadarConversionCallback() {
+        Radar.logConversionWithName(name, metadataObj, new Radar.RadarLogConversionCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarEvent event) {
                 try {
