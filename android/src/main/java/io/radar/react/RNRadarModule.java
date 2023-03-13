@@ -1093,27 +1093,21 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void sendEvent(String customType, ReadableMap metadata, final Promise promise) throws JSONException  {
+    public void logConversion(String name, ReadableMap metadata, final Promise promise) throws JSONException  {
         if (promise == null) {
             return;
         }
         
         JSONObject metadataObj = RNRadarUtils.jsonForMap(metadata);
-        Radar.sendEvent(customType, metadataObj, new Radar.RadarSendEventCallback() {
+        Radar.logConversionWithName(name, metadataObj, new Radar.RadarLogConversionCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarEvent event) {
                 try {
                     if (status == Radar.RadarStatus.SUCCESS) {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                        }
-                        if (user != null) {
-                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                        if (event != null) {
+                            map.putArray("event", RNRadarUtils.mapForJson(event.toJson()));
                         }
                         promise.resolve(map);
                     } else {
