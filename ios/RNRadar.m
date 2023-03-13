@@ -737,13 +737,16 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     }
 
     NSArray *layers = optionsDict[@"layers"];
-    NSString *country = optionsDict[@"country"];
+    NSString *countryCode = optionsDict[@"countryCode"];
+    if (!countryCode) {
+        countryCode = optionsDict[@"country"];
+    }
     BOOL expandUnits = [optionsDict[@"expandUnits"] boolValue];
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar autocompleteQuery:query near:near layers:layers limit:limit country:country expandUnits:expandUnits completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
+    [Radar autocompleteQuery:query near:near layers:layers limit:limit country:countryCode expandUnits:expandUnits completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
