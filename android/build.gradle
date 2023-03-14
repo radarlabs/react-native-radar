@@ -39,11 +39,13 @@ repositories {
     google()
     maven {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        // install the radar-sdk-android from local filesystem
+
         url "$rootDir/../node_modules/react-native/android"
     }
 }
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.6.0'
+    api 'io.radar:sdk:3.6.1-beta.4'
 }
