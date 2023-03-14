@@ -128,11 +128,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void setAdIdEnabled(boolean enabled) {
-        Radar.setAdIdEnabled(enabled);
-    }
-
-    @ReactMethod
     public void getPermissionsStatus(final Promise promise) {
         if (promise == null) {
             return;

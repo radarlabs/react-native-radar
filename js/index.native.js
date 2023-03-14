@@ -42,10 +42,6 @@ const setAnonymousTrackingEnabled = (enabled) => (
   NativeModules.RNRadar.setAnonymousTrackingEnabled(enabled)
 )
 
-const setAdIdEnabled = (enabled) => (
-  NativeModules.RNRadar.setAdIdEnabled(enabled)
-)
-
 const getPermissionsStatus = () => (
   NativeModules.RNRadar.getPermissionsStatus()
 );
@@ -200,7 +196,6 @@ const Radar = {
   setMetadata,
   getMetadata,
   setAnonymousTrackingEnabled,
-  setAdIdEnabled,
   getPermissionsStatus,
   requestPermissions,
   getLocation,
