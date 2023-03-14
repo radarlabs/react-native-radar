@@ -969,31 +969,30 @@ RCT_EXPORT_METHOD(getMatrix:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     }];
 }
 
-RCT_EXPORT_METHOD(logConversion:(NSString*) name metadata:(NSDictionary *)metadata resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    __block RCTPromiseResolveBlock resolver = resolve;
-    __block RCTPromiseRejectBlock rejecter = reject;
-    
-    [Radar logConversionWithName:name metadata:metadata completionHandler:^(RadarStatus status, RadarEvent * _Nullable event) {
-        if (status == RadarStatusSuccess && resolver) {
-            NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
-            if (event) {
-                [dict setObject:[event dictionaryValue] forKey:@"event"];
-            }
-            resolver(dict);
-        } else if (rejecter) {
-            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (optionsDict == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
         }
-        resolver = nil;
-        rejecter = nil;
-    }];
-}
 
-RCT_EXPORT_METHOD(logConversion:(NSString*) name revenue:(NSNumber*)revenue metadata:(NSDictionary *)metadata resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+        return;
+    }
+
+    NSString *name = optionsDict[@"name"];
+    NSNumber *revenue = optionsDict[@"revenue"];
+    NSDictionary *metadata = optionsDict[@"metadata"];
+    if (name == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
+    }
+    
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
-    
-    [Radar logConversionWithName:name revenue:revenue metadata:metadata completionHandler:^(RadarStatus status, RadarEvent * _Nullable event) {
+
+    RadarLogConversionCompletionHandler completionHandler = ^(RadarStatus status, RadarEvent * _Nullable event) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -1006,6 +1005,12 @@ RCT_EXPORT_METHOD(logConversion:(NSString*) name revenue:(NSNumber*)revenue meta
         }
         resolver = nil;
         rejecter = nil;
-    }];
+    };
+    
+    if (revenue) {
+        [Radar logConversionWithName:name metadata:metadata completionHandler:completionHandler];
+    } else {
+        [Radar logConversionWithName:name revenue:revenue metadata:metadata completionHandler:completionHandler];
+    }
 }
 @end
