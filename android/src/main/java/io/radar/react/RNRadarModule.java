@@ -1093,13 +1093,23 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void logConversion(String name, ReadableMap metadata, final Promise promise) throws JSONException  {
+    public void logConversion(ReadableMap optionsMap, final Promise promise) throws JSONException  {
         if (promise == null) {
             return;
         }
+
+        if (!optionsMap.hasKey("name")) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+
+            return;
+        }
+
+        String name = optionsMap.getString("name");
+        Double revenue = optionsMap.hasKey("revenue") ? new Double(optionsMap.getDouble("revenue")) : null;
+        ReadableMap metadata = optionsMap.hasKey("metadata") ? optionsMap.getMap("metadata") : null;
         
         JSONObject metadataObj = RNRadarUtils.jsonForMap(metadata);
-        Radar.logConversion(name, metadataObj, new Radar.RadarLogConversionCallback() {
+        Radar.RadarLogConversionCallback callback = new Radar.RadarLogConversionCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarEvent event) {
                 try {
@@ -1118,7 +1128,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             }
-        });
+        };
+
+        if (revenue != null) {
+            Radar.logConversion(name, revenue, metadataObj, callback);
+        } else {
+            Radar.logConversion(name, metadataObj, callback);
+        }
     }
 
 }
