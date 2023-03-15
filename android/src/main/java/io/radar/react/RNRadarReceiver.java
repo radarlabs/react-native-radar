@@ -12,6 +12,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -26,11 +27,31 @@ public class RNRadarReceiver extends RadarReceiver {
     private ReactNativeHost reactNativeHost;
     private static final String TAG = "RNRadarReceiver";
 
+    private int listenerCount = 0;
+    boolean hasListeners = false;
+
     private void sendEvent(final String eventName, final Object data) {
         final ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
         ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
-        if (reactContext != null) {
+        if (reactContext != null && hasListeners) {
             reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
+        }
+    }
+
+    @ReactMethod
+    public void addListener(String eventName) {
+        if (listenerCount == 0) {
+            hasListeners = true;
+        }
+
+        listenerCount += 1;
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+    listenerCount -= count;
+        if (listenerCount == 0) {
+            hasListeners = false;
         }
     }
 
