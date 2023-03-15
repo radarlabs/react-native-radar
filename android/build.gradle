@@ -1,4 +1,10 @@
+// import io.radar.Util
+
 buildscript {
+    ext {
+        radar_sdk_version = '3.7.1-beta.2'
+    }
+
     repositories {
         google()
         mavenCentral()
@@ -18,7 +24,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 31
         versionCode 1
-        versionName '3.6.0'
+        versionName '3.5.11'
     }
     lintOptions {
         abortOnError false
@@ -34,19 +40,33 @@ android {
     }
 }
 
+def sdkDependency(Project project) {
+    //Check if this project contains the desired sdk in the ../../../android/libs/ directory
+    File libs = project.file('../../../android/libs')
+    String sdkVersion = "$project.ext.radar_sdk_version"
+    String aarFile = "sdk-$sdkVersion"
+    boolean useLocalAar = libs.listFiles().find { it.name == "${aarFile}.aar".toString() }
+
+    if (useLocalAar) {
+        project.fileTree(dir: libs, include: ["${aarFile}.aar"])
+    } else {
+        "io.radar:sdk:$sdkVersion"
+    }
+}
+
 repositories {
-    mavenLocal()
     mavenCentral()
     google()
     maven {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        // install the radar-sdk-android from local filesystem
-
         url "$rootDir/../node_modules/react-native/android"
+    }
+    flatDir {
+        dirs '../../../android/libs'
     }
 }
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.6.1-beta.4'
+    api sdkDependency(project)
 }
