@@ -1,8 +1,6 @@
-// import io.radar.Util
-
 buildscript {
     ext {
-        radar_sdk_version = '3.6.1-beta.15'
+        radar_sdk_version = '3.6.1-beta.1'
     }
 
     repositories {
@@ -40,9 +38,9 @@ android {
     }
 }
 
-def sdkDependency(Project project) {
-    //Check if this project contains the desired sdk in the ../../../android/libs/ directory
-    File libs = project.file('../../../android/libs')
+def getSdkDependency(Project project) {
+    //Check if this project contains the desired sdk in the libs directory
+    File libs = project.file('libs')
     String sdkVersion = "$project.ext.radar_sdk_version"
     String aarFile = "sdk-$sdkVersion"
     boolean useLocalAar = libs.listFiles().find { it.name == "${aarFile}.aar".toString() }
@@ -62,11 +60,11 @@ repositories {
         url "$rootDir/../node_modules/react-native/android"
     }
     flatDir {
-        dirs '../../../android/libs'
+        dirs 'libs'
     }
 }
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api sdkDependency(project)
+    api getSdkDependency(project)
 }
