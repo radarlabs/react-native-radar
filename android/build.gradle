@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        radar_sdk_version = '3.6.1-beta.1'
+        radar_sdk_version = '3.7.0'
     }
 
     repositories {
