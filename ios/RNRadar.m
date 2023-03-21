@@ -171,8 +171,10 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         [locationManager requestAlwaysAuthorization];
+        [self getPermissionsStatusWithResolver:resolve rejecter:reject];
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         [locationManager requestWhenInUseAuthorization];
+        [self getPermissionsStatusWithResolver:resolve rejecter:reject];
     } else {
         [self getPermissionsStatusWithResolver:resolve rejecter:reject];
     }
