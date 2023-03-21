@@ -15,6 +15,7 @@ RCT_EXPORT_MODULE();
 - (instancetype)init {
     self = [super init];
     if (self) {
+        _didRequestPermissions = NO;
         [Radar setDelegate:self];
         locationManager = [CLLocationManager new];
         locationManager.delegate = self;
@@ -27,7 +28,7 @@ RCT_EXPORT_MODULE();
     if (@available(iOS 14, *)) {
         // Do nothing if iOS 14 and higher, as locationManagerDidChangeAuthorization will handle the case.
     } else {
-        if (permissionsRequestResolver) {
+        if (_didRequestPermissions && permissionsRequestResolver) {
             [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
             permissionsRequestResolver = nil;
         }
@@ -181,6 +182,8 @@ RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTProm
 
 RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     permissionsRequestResolver = resolve;
+    _didRequestPermissions = YES;
+
 
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
