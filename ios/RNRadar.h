@@ -4,6 +4,6 @@
 
 @interface RNRadar : RCTEventEmitter <RadarDelegate, RCTBridgeModule, CLLocationManagerDelegate>
 
-@property (nonatomic) didRequestPermissions;
+@property (nonatomic) BOOL didRequestPermissions;
 
 @end
