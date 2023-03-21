@@ -22,14 +22,20 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
+// For iOS 13 and earlier
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    if (permissionsRequestResolver) {
-        [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
-        permissionsRequestResolver = nil;
+    if (@available(iOS 14, *)) {
+        // Do nothing if iOS 14 and higher, as locationManagerDidChangeAuthorization will handle the case.
+    } else {
+        if (permissionsRequestResolver) {
+            [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+            permissionsRequestResolver = nil;
+        }
     }
 }
 
-- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager {
+// For iOS 14 and later
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager API_AVAILABLE(ios(14)) {
     CLAuthorizationStatus status = manager.authorizationStatus;
     if (permissionsRequestResolver) {
         [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
