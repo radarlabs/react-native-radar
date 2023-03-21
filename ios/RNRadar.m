@@ -29,6 +29,14 @@ RCT_EXPORT_MODULE();
     }
 }
 
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager {
+    CLAuthorizationStatus status = manager.authorizationStatus;
+    if (permissionsRequestResolver) {
+        [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+        permissionsRequestResolver = nil;
+    }
+}
+
 + (BOOL)requiresMainQueueSetup {
     return YES;
 }
