@@ -190,11 +190,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         PermissionAwareActivity activity = (PermissionAwareActivity)getCurrentActivity();
         mPermissionsRequestPromise = promise;
         if (activity != null) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (background && Build.VERSION.SDK_INT >= 29) {
-                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
-                } else {
-                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (background && Build.VERSION.SDK_INT >= 29) {
+                        activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE, this);
+                    } else {
+                        activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
+                    }
                 }
             }
         }
@@ -442,21 +444,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void startTrip(ReadableMap optionsMap, final Promise promise) {
         try {
-            JSONObject optionsJson = RNRadarUtils.jsonForMap(optionsMap);
-            // new format is { tripOptions, trackingOptions }
-            JSONObject tripOptionsJson = optionsJson.optJSONObject("tripOptions");
-            if (tripOptionsJson == null) {
-              // legacy format
-              tripOptionsJson = optionsJson;
-            }
-            RadarTripOptions options = RadarTripOptions.fromJson(tripOptionsJson);
-
-            RadarTrackingOptions trackingOptions = null;
-            JSONObject trackingOptionsJson = optionsJson.optJSONObject("trackingOptions");
-            if (trackingOptionsJson != null) {
-                trackingOptions = RadarTrackingOptions.fromJson(trackingOptionsJson);
-            }
-            Radar.startTrip(options, trackingOptions, new Radar.RadarTripCallback() {
+            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            RadarTripOptions options = RadarTripOptions.fromJson(optionsObj);
+            Radar.startTrip(options, new Radar.RadarTripCallback() {
                 @Override
                 public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
                     if (promise == null) {
