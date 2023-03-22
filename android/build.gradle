@@ -66,5 +66,5 @@ repositories {
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api getSdkDependency(project)sdk-add-conversion-event
+    api getSdkDependency(project)
 }
