@@ -35,14 +35,14 @@ RCT_EXPORT_MODULE();
     }
 }
 
-// For iOS 14 and later
-- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager API_AVAILABLE(ios(14)) {
-    CLAuthorizationStatus status = manager.authorizationStatus;
-    if (permissionsRequestResolver) {
-        [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
-        permissionsRequestResolver = nil;
-    }
-}
+// // For iOS 14 and later
+// - (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager API_AVAILABLE(ios(14)) {
+//     CLAuthorizationStatus status = manager.authorizationStatus;
+//     if (permissionsRequestResolver) {
+//         [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+//         permissionsRequestResolver = nil;
+//     }
+// }
 
 + (BOOL)requiresMainQueueSetup {
     return YES;
@@ -187,10 +187,10 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         [locationManager requestAlwaysAuthorization];
-        // [self getPermissionsStatusWithResolver:resolve rejecter:reject];
+        [self getPermissionsStatusWithResolver:resolve rejecter:reject];
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         [locationManager requestWhenInUseAuthorization];
-        // [self getPermissionsStatusWithResolver:resolve rejecter:reject];
+        [self getPermissionsStatusWithResolver:resolve rejecter:reject];
     } else {
         [self getPermissionsStatusWithResolver:resolve rejecter:reject];
     }
