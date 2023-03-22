@@ -46,10 +46,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     private static final String TAG = "RNRadarModule";
     private static final int PERMISSIONS_REQUEST_CODE = 20160525; // random request code (Radar's birthday!)
     private Promise mPermissionsRequestPromise;
+    
+    private RNRadarReceiver receiver;
 
     public RNRadarModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        Radar.setReceiver(new RNRadarReceiver());
+        receiver = new RNRadarReceiver();
+        Radar.setReceiver(receiver);
     }
 
     @Override
@@ -60,6 +63,19 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void initialize(String publishableKey) {
         Radar.initialize(getReactApplicationContext(), publishableKey);
+    }
+
+    private int listenerCount = 0;
+
+    @ReactMethod
+    public void addListener(String eventName) {
+        receiver.addListener(eventName);
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+    listenerCount -= count;
+        receiver.removeListeners(count);
     }
 
     @ReactMethod

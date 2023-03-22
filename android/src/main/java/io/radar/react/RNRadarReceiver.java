@@ -38,8 +38,7 @@ public class RNRadarReceiver extends RadarReceiver {
         }
     }
 
-    @ReactMethod
-    public void addListener(String eventName) {
+    void addListener(String eventName) {
         if (listenerCount == 0) {
             hasListeners = true;
         }
@@ -47,8 +46,7 @@ public class RNRadarReceiver extends RadarReceiver {
         listenerCount += 1;
     }
 
-    @ReactMethod
-    public void removeListeners(Integer count) {
+    void removeListeners(Integer count) {
     listenerCount -= count;
         if (listenerCount == 0) {
             hasListeners = false;
