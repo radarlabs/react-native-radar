@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        radar_sdk_version = '3.7.1-beta.8'
+        radar_sdk_version = '3.7.1-beta.9'
     }
 
     repositories {
@@ -66,5 +66,5 @@ repositories {
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api getSdkDependency(project)
+    api getSdkDependency(project)sdk-add-conversion-event
 }
