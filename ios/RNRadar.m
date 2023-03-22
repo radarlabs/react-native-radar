@@ -24,16 +24,16 @@ RCT_EXPORT_MODULE();
 }
 
 // For iOS 13 and earlier
-// - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-//     if (@available(iOS 14, *)) {
-//         // Do nothing if iOS 14 and higher, as locationManagerDidChangeAuthorization will handle the case.
-//     } else {
-//         if (_didRequestPermissions && permissionsRequestResolver) {
-//             [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
-//             permissionsRequestResolver = nil;
-//         }
-//     }
-// }
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    if (@available(iOS 14, *)) {
+        // Do nothing if iOS 14 and higher, as locationManagerDidChangeAuthorization will handle the case.
+    } else {
+        if (_didRequestPermissions && permissionsRequestResolver) {
+            [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+            permissionsRequestResolver = nil;
+        }
+    }
+}
 
 // For iOS 14 and later
 - (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager API_AVAILABLE(ios(14)) {
@@ -184,14 +184,13 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
     permissionsRequestResolver = resolve;
     _didRequestPermissions = YES;
 
-
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         [locationManager requestAlwaysAuthorization];
-        [self getPermissionsStatusWithResolver:resolve rejecter:reject];
+        // [self getPermissionsStatusWithResolver:resolve rejecter:reject];
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         [locationManager requestWhenInUseAuthorization];
-        [self getPermissionsStatusWithResolver:resolve rejecter:reject];
+        // [self getPermissionsStatusWithResolver:resolve rejecter:reject];
     } else {
         [self getPermissionsStatusWithResolver:resolve rejecter:reject];
     }
