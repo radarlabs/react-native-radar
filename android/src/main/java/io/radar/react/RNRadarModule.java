@@ -188,9 +188,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void requestPermissions(boolean background, final Promise promise) {
         PermissionAwareActivity activity = (PermissionAwareActivity)getCurrentActivity();
+        Activity currentActivity = getCurrentActivity();
         mPermissionsRequestPromise = promise;
-        if (activity != null) {
-            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (activity != null && currentActivity != null) {
+            if (ActivityCompat.checkSelfPermission(currentActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (background && Build.VERSION.SDK_INT >= 29) {
                         activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE, this);
