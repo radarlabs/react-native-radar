@@ -44,7 +44,6 @@ jest.mock('NativeModules', () => ({
     getDescription: jest.fn(),
     getMetadata: jest.fn(),
     setAnonymousTrackingEnabled: jest.fn(),
-    setAdIdEnabled: jest.fn(),
     isTracking: jest.fn(),
     getTrackingOptions: jest.fn(),
     getTripOptions: jest.fn()
@@ -506,14 +505,6 @@ describe('calls native implementation', () => {
 
     expect(mockModule.setAnonymousTrackingEnabled).toHaveBeenCalledTimes(1);
     expect(mockModule.setAnonymousTrackingEnabled).toBeCalledWith(enabled);
-  });
-
-  test('setAdIdEnabled', () => {
-    const enabled = true;
-    Radar.setAdIdEnabled(enabled);
-
-    expect(mockModule.setAdIdEnabled).toHaveBeenCalledTimes(1);
-    expect(mockModule.setAdIdEnabled).toBeCalledWith(enabled);
   });
 
   test('isTracking', () => {
