@@ -965,22 +965,35 @@ RCT_EXPORT_METHOD(getMatrix:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     }];
 }
 
-RCT_EXPORT_METHOD(sendEvent:(NSString*) customType metadata:(NSDictionary *)metadata resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (optionsDict == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
+    }
+
+    NSString *name = optionsDict[@"name"];
+    NSNumber *revenue = optionsDict[@"revenue"];
+    NSDictionary *metadata = optionsDict[@"metadata"];
+    if (name == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
+    }
+    
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
-    
-    [Radar sendEvent:customType withMetadata:metadata completionHandler:^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
+
+    RadarLogConversionCompletionHandler completionHandler = ^(RadarStatus status, RadarEvent * _Nullable event) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
-            if (location) {
-                [dict setObject:[Radar dictionaryForLocation:location] forKey:@"location"];
-            }
-            if (events) {
-                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
-            }
-            if (user) {
-                [dict setObject:[user dictionaryValue] forKey:@"user"];
+            if (event) {
+                [dict setObject:[event dictionaryValue] forKey:@"event"];
             }
             resolver(dict);
         } else if (rejecter) {
@@ -988,6 +1001,12 @@ RCT_EXPORT_METHOD(sendEvent:(NSString*) customType metadata:(NSDictionary *)meta
         }
         resolver = nil;
         rejecter = nil;
-    }];
+    };
+    
+    if (revenue) {
+        [Radar logConversionWithName:name metadata:metadata completionHandler:completionHandler];
+    } else {
+        [Radar logConversionWithName:name revenue:revenue metadata:metadata completionHandler:completionHandler];
+    }
 }
 @end

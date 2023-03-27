@@ -166,8 +166,12 @@ const getMatrix = options => (
   NativeModules.RNRadar.getMatrix(options)
 );
 
-const sendEvent = (customType, metadata) => (
-  NativeModules.RNRadar.sendEvent(customType, metadata)
+const logConversion = options => (
+  NativeModules.RNRadar.logConversion(options)
+)
+
+const sendEvent = (name, metadata) => (
+  NativeModules.RNRadar.sendEvent(name, metadata)
 )
 
 const on = (event, callback) => (
@@ -221,6 +225,7 @@ const Radar = {
   ipGeocode,
   getDistance,
   getMatrix,
+  logConversion,
   sendEvent,
   on,
   off,

@@ -46,7 +46,8 @@ jest.mock('NativeModules', () => ({
     setAnonymousTrackingEnabled: jest.fn(),
     isTracking: jest.fn(),
     getTrackingOptions: jest.fn(),
-    getTripOptions: jest.fn()
+    getTripOptions: jest.fn(),
+    logConversion: jest.fn(),
   },
 }));
 
@@ -523,5 +524,12 @@ describe('calls native implementation', () => {
     Radar.getTripOptions();
 
     expect(mockModule.getTripOptions).toHaveBeenCalledTimes(1);
+  });
+
+  test('logConversions', () => {
+    const options = { name: 'name' };
+    Radar.logConversion(options);
+
+    expect(mockModule.logConversion).toHaveBeenCalledTimes(1);
   });
 });
