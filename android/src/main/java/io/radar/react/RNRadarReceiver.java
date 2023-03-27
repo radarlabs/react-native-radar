@@ -49,7 +49,7 @@ public class RNRadarReceiver extends RadarReceiver {
 
     @ReactMethod
     public void removeListeners(Integer count) {
-    listenerCount -= count;
+        listenerCount -= count;
         if (listenerCount == 0) {
             hasListeners = false;
         }
