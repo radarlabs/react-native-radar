@@ -322,6 +322,40 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void trackVerified(final Promise promise) {
+        Radar.trackVerified(new Radar.RadarTrackCallback() {
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+                if (promise == null) {
+                    return;
+                }
+
+                try {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (location != null) {
+                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                        }
+                        if (events != null) {
+                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                        }
+                        if (user != null) {
+                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                        }
+                        promise.resolve(map);
+                    } else {
+                        promise.reject(status.toString(), status.toString());
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                }
+            }
+        });
+    }
+
+    @ReactMethod
     public void startTrackingEfficient() {
         Radar.startTracking(RadarTrackingOptions.EFFICIENT);
     }

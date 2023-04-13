@@ -66,6 +66,10 @@ const trackOnce = options => {
   return NativeModules.RNRadar.trackOnce(backCompatibleOptions)
 };
 
+const trackVerified = () => (
+  NativeModules.RNRadar.trackVerified()
+);
+
 const startTrackingEfficient = () => (
   NativeModules.RNRadar.startTrackingEfficient()
 );
@@ -200,6 +204,7 @@ const Radar = {
   requestPermissions,
   getLocation,
   trackOnce,
+  trackVerified,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,
