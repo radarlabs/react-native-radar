@@ -329,8 +329,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                 if (promise == null) {
                     return;
                 }
-                Log.e("trackVerified", "trackVerified");
-                Log.e(TAG, "trackVerified: " + status.toString() + ", " + location + ", " + events + ", " + user);
 
                 try {
                     if (status == Radar.RadarStatus.SUCCESS) {
