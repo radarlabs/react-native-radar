@@ -87,6 +87,10 @@ const trackOnce = options => {
   });
 };
 
+const trackVerified = () => {
+  // not implemented
+};
+
 const startTrackingEfficient = () => {  
   // not implemented
 };
@@ -371,6 +375,7 @@ const Radar = {
   requestPermissions,
   getLocation,
   trackOnce,
+  trackVerified,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,
