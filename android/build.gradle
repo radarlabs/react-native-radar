@@ -39,11 +39,11 @@ repositories {
     google()
     maven {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        url "$rootDir/../node_modules/react-native/android"
+        url "$rootDir/../node_modules/react-native/android" 
     }
 }
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.8.4-beta.2'
+    api 'io.radar:sdk:3.8.4-beta.3'
 }
