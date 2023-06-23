@@ -411,14 +411,17 @@ RCT_EXPORT_METHOD(getTripOptions:(RCTPromiseResolveBlock)resolve reject:(RCTProm
 RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     // { tripOptions, trackingOptions } is the new req format.
     // fallback to reading trip options from the top level options.
-    NSDictionary *tripOptionsDict = optionsDict[@"tripOptions"];
+    NSMutableDictionary *tripOptionsDict = optionsDict[@"tripOptions"];
     if (tripOptionsDict == nil) {
         tripOptionsDict = optionsDict;
     }
-    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:tripOptionsDict];
-    if (options.scheduledArrivalAt) {
-        options.scheduledArrivalAt = [RCTConvert NSDate:options.scheduledArrivalAt];
+    NSObject *scheduledArrivalAtObj = tripOptionsDict[@"scheduledArrivalAt"];
+    if (scheduledArrivalAtObj && [scheduledArrivalAtObj isKindOfClass:[NSNumber class]]) {
+        [tripOptionsDict setObject:[RCTConvert NSDate:scheduledArrivalAtObj] forKey:@"scheduledArrivalAt"];
     }
+
+    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:tripOptionsDict];
+    
     RadarTrackingOptions *trackingOptions;
     NSDictionary *trackingOptionsDict = optionsDict[@"trackingOptions"];
     if (trackingOptionsDict != nil) {
@@ -503,7 +506,14 @@ RCT_EXPORT_METHOD(updateTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseReso
         return;
     }
 
-    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict[@"options"]];
+    NSMutableDictionary *tripOptionsDict = optionsDict[@"options"];
+
+    NSObject *scheduledArrivalAtObj = tripOptionsDict[@"scheduledArrivalAt"];
+    if (scheduledArrivalAtObj && [scheduledArrivalAtObj isKindOfClass:[NSNumber class]]) {
+        [tripOptionsDict setObject:[RCTConvert NSDate:scheduledArrivalAtObj] forKey:@"scheduledArrivalAt"];
+    }
+
+    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:tripOptionsDict];
     NSString *statusStr = optionsDict[@"status"];
 
     RadarTripStatus status = RadarTripStatusUnknown;
