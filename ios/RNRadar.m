@@ -729,19 +729,16 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     }
 
     NSDictionary *nearDict = optionsDict[@"near"];
-    if (nearDict == nil || ![nearDict isKindOfClass:[NSDictionary class]]) {
-        if (reject) {
-            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
-        }
-
-        return;
+    CLLocation *near = nil;
+    if (nearDict && [nearDict isKindOfClass:[NSDictionary class]]) {
+        double latitude = [RCTConvert double:nearDict[@"latitude"]];
+        double longitude = [RCTConvert double:nearDict[@"longitude"]];
+        NSDate *timestamp = [NSDate new];
+        near = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
     }
 
+
     NSString *query = optionsDict[@"query"];
-    double latitude = [RCTConvert double:nearDict[@"latitude"]];
-    double longitude = [RCTConvert double:nearDict[@"longitude"]];
-    NSDate *timestamp = [NSDate new];
-    CLLocation *near = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
     NSNumber *limitNumber = optionsDict[@"limit"];
     int limit;
     if (limitNumber != nil && [limitNumber isKindOfClass:[NSNumber class]]) {
