@@ -25,7 +25,7 @@ jobs:
   android:
     working_directory: ~/react-native-radar/example
     docker:
-      - image: cimg/android:2023.06-node
+      - image: cimg/android:2023.02.1-browsers
     steps:
       - checkout:
           path: ~/react-native-radar
