@@ -11,8 +11,6 @@ import {
 } from 'react-native';
 import Radar from '../index.native';
 
-// import Logger from '../logger'; // Your logger module
-
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -44,9 +42,9 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   logo: {
-    width: 60, // set the width of your logo
-    height: 18, // set the height of your logo
-    resizeMode: 'contain', // ensure the logo scales well
+    width: 60,
+    height: 18,
+    resizeMode: 'contain',
   },
 });
 
