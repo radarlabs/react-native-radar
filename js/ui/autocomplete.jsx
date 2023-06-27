@@ -31,6 +31,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
+  selectButton: {
+    backgroundColor: '#000275',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  selectButtonText: {
+    color: '#fff',
+  },
+  addressText: {
+    fontSize: 14,
+    color: '#000',
+  },
   footerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -54,9 +67,11 @@ const defaultAutocompleteOptions = {
   limit: 8, // Maximum number of autocomplete results
   placeholder: 'Search address', // Placeholder text for the input field
   disabled: false,
+  showSelectButton: false,
+  buttonText: 'Select',
 };
 
-const autocompleteUI = ({ options = {} }) => {
+const autocompleteUI = ({ options = {}, onSelect, location }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -68,13 +83,17 @@ const autocompleteUI = ({ options = {} }) => {
       limit: config.limit,
     };
 
+    if (location && location.latitude && location.longitude) {
+      params.near = location;
+    }
+
     Radar.autocomplete(params).then((result: any) => {
       setResults(result.addresses);
       setIsOpen(true);
     }).catch((error) => {
-      console.log('error', error);
-      // Logger.warn(`Autocomplete ui error: ${error.message}`);
-      // Handle error, e.g. call config.onError(error) if onError is provided in options
+      if (config.onError && typeof config.onError === 'function') {
+        config.onError(error);
+      }
     });
   }, [config]);
 
@@ -96,9 +115,9 @@ const autocompleteUI = ({ options = {} }) => {
   const handleSelect = (item) => {
     setQuery(item.formattedAddress);
     setIsOpen(false);
-    
-    if (config.onSelect && typeof config.onSelect === 'function') {
-      config.onSelect(item);
+
+    if (onSelect && typeof onSelect === 'function') {
+      onSelect(item);
     }
   };
 
@@ -116,6 +135,40 @@ const autocompleteUI = ({ options = {} }) => {
     );
   };
 
+  const renderItem = ({ item }) => {
+    const addressElement =
+      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+        <Text numberOfLines={1} style={{ ...styles.addressText, fontWeight: '800' }}>
+          {item.addressLabel || item?.placeLabel}
+        </Text>
+        <Text numberOfLines={1} style={styles.addressText}>
+          {item.city}, {item.stateCode}
+        </Text>
+      </View>;
+
+    if (config.showSelectButton) {
+      return (
+        <View style={{ ...styles.resultItem, flexDirection: 'row' }}>
+          {addressElement}
+          <TouchableOpacity
+            style={styles.selectButton}
+            onPress={() => handleSelect(item)}
+          >
+            <Text style={styles.selectButtonText}>{config.buttonText}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    return (
+      <TouchableOpacity
+        style={styles.resultItem}
+        onPress={() => handleSelect(item)}
+      >
+        {addressElement}
+      </TouchableOpacity>
+    );
+
+  };
 
   return (
     <View style={styles.container}>
@@ -130,14 +183,7 @@ const autocompleteUI = ({ options = {} }) => {
         <FlatList
           style={styles.resultList}
           data={results}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.resultItem}
-              onPress={() => handleSelect(item)}
-            >
-              <Text>{item.formattedAddress}</Text>
-            </TouchableOpacity>
-          )}
+          renderItem={renderItem}
           keyExtractor={item => item.formattedAddress + item.postalCode}
           ListFooterComponent={renderFooter}
         />
