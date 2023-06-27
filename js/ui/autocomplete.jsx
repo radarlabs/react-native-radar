@@ -56,7 +56,7 @@ const defaultAutocompleteOptions = {
   disabled: false,
 };
 
-const autocompleteUI = ({ options = {}}) => {
+const autocompleteUI = ({ options = {} }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -96,7 +96,10 @@ const autocompleteUI = ({ options = {}}) => {
   const handleSelect = (item) => {
     setQuery(item.formattedAddress);
     setIsOpen(false);
-    // Optionally handle selection, e.g. call config.onSelect(item) if onSelect is provided in options
+    
+    if (config.onSelect && typeof config.onSelect === 'function') {
+      config.onSelect(item);
+    }
   };
 
   const renderFooter = () => {
