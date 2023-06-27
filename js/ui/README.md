@@ -17,7 +17,6 @@ We've taken care of linking the map tile server to the map, so all you need to d
 import {StyleSheet, View} from 'react-native';
 import Radar, { Map } from 'react-native-radar';
 
-
 export default function App() {
     Radar.initialize('prj_place_your_own_token_here');
     
@@ -38,11 +37,12 @@ TODO: fill in details on customization, including using MapLibre elements
 
 Adding an address search autocomplete is similarly easy. Our `<Autocomplete>` element is comprised of a TextInput and Flatlist with the results.
 
+The example below provides optional `location` and `onSelect` props to the component. Providing a location will improve autocomplete result quality. Without it, the API utilizes the IP address location to rank results.
+
 ```
 import Radar, { Map } from 'react-native-radar';
 
 export default function App() {
-
     const [location, setLocation] = useState(null);
 
     Radar.trackOnce().then((result) => {
@@ -54,7 +54,6 @@ export default function App() {
 
     const onSelect (selectedAddress) => {
         // Do something with the selected address
-        console.log(selectedAddress)
     }
 
     return (
