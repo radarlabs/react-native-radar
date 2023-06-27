@@ -9,3 +9,4 @@ if (Platform.OS === 'web') {
 export default module;
 
 export { default as Autocomplete } from './ui/autocomplete';
+export { default as Map } from './ui/map';

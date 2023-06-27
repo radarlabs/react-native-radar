@@ -139,6 +139,14 @@ RCT_EXPORT_METHOD(setAnonymousTrackingEnabled:(BOOL)enabled) {
     [Radar setAnonymousTrackingEnabled:enabled];
 }
 
+RCT_EXPORT_METHOD(host:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([RadarSettings host]);
+}
+
+RCT_EXPORT_METHOD(publishableKey:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([RadarSettings publishableKey]);
+}
+
 RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     NSString *statusStr;
