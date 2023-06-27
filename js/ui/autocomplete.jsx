@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 10,
+    borderColor: '#ccc',
   },
   resultList: {
     width: '90%',
@@ -32,13 +34,16 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   selectButton: {
-    backgroundColor: '#000275',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    borderColor: '#000275',
+    borderWidth: 1,
+    paddingHorizontal: 14,
+    paddingVertical: 7,
     borderRadius: 10,
+    justifyContent: 'center',
   },
   selectButtonText: {
-    color: '#fff',
+    color: '#000275',
+    fontSize: 12,
   },
   addressText: {
     fontSize: 14,
@@ -142,7 +147,7 @@ const autocompleteUI = ({ options = {}, onSelect, location }) => {
           {item.addressLabel || item?.placeLabel}
         </Text>
         <Text numberOfLines={1} style={styles.addressText}>
-          {item.city}, {item.stateCode}
+          {item.city}{ item.city ? ', ' : '' }{item.stateCode || item.countryCode}
         </Text>
       </View>;
 
