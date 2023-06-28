@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Radar from '../index.native';
 
-const styles = StyleSheet.create({
+const defaultStyles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
@@ -76,11 +76,20 @@ const defaultAutocompleteOptions = {
   buttonText: 'Select',
 };
 
-const autocompleteUI = ({ options = {}, onSelect, location }) => {
+const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const config = { ...defaultAutocompleteOptions, ...options };
+
+  const styles = {
+    container: StyleSheet.compose(defaultStyles.container, style.container),
+    input: StyleSheet.compose(defaultStyles.input, style.input),
+    resultList: StyleSheet.compose(defaultStyles.resultList, style.resultList),
+    resultItem: StyleSheet.compose(defaultStyles.resultItem, style.resultItem),
+    footerContainer: StyleSheet.compose(defaultStyles.footerContainer, style.footerContainer),
+    footerText: StyleSheet.compose(defaultStyles.footerText, style.footerText),
+  };
 
   const fetchResults = useCallback(async (searchQuery) => {
     const params = {
@@ -147,7 +156,7 @@ const autocompleteUI = ({ options = {}, onSelect, location }) => {
           {item.addressLabel || item?.placeLabel}
         </Text>
         <Text numberOfLines={1} style={styles.addressText}>
-          {item.city}{ item.city ? ', ' : '' }{item.stateCode || item.countryCode}
+          {item?.formattedAddress?.replace(`${item?.addressLabel || item?.placeLabel}, `, '')}
         </Text>
       </View>;
 
