@@ -415,10 +415,9 @@ RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     if (tripOptionsDict == nil) {
         tripOptionsDict = optionsDict;
     }
+
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:tripOptionsDict];
-    if (options.scheduledArrivalAt) {
-        options.scheduledArrivalAt = [RCTConvert NSDate:options.scheduledArrivalAt];
-    }
+    
     RadarTrackingOptions *trackingOptions;
     NSDictionary *trackingOptionsDict = optionsDict[@"trackingOptions"];
     if (trackingOptionsDict != nil) {
