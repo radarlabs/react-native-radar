@@ -411,7 +411,7 @@ RCT_EXPORT_METHOD(getTripOptions:(RCTPromiseResolveBlock)resolve reject:(RCTProm
 RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     // { tripOptions, trackingOptions } is the new req format.
     // fallback to reading trip options from the top level options.
-    NSMutableDictionary *tripOptionsDict = optionsDict[@"tripOptions"];
+    NSDictionary *tripOptionsDict = optionsDict[@"tripOptions"];
     if (tripOptionsDict == nil) {
         tripOptionsDict = optionsDict;
     }
@@ -502,9 +502,7 @@ RCT_EXPORT_METHOD(updateTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseReso
         return;
     }
 
-    NSMutableDictionary *tripOptionsDict = optionsDict[@"options"];
-
-    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:tripOptionsDict];
+    RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:optionsDict[@"options"]];
     NSString *statusStr = optionsDict[@"status"];
 
     RadarTripStatus status = RadarTripStatusUnknown;
