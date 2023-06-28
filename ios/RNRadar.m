@@ -415,10 +415,6 @@ RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     if (tripOptionsDict == nil) {
         tripOptionsDict = optionsDict;
     }
-    NSObject *scheduledArrivalAtObj = tripOptionsDict[@"scheduledArrivalAt"];
-    if (scheduledArrivalAtObj && [scheduledArrivalAtObj isKindOfClass:[NSNumber class]]) {
-        [tripOptionsDict setObject:[RCTConvert NSDate:scheduledArrivalAtObj] forKey:@"scheduledArrivalAt"];
-    }
 
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:tripOptionsDict];
     
@@ -507,11 +503,6 @@ RCT_EXPORT_METHOD(updateTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseReso
     }
 
     NSMutableDictionary *tripOptionsDict = optionsDict[@"options"];
-
-    NSObject *scheduledArrivalAtObj = tripOptionsDict[@"scheduledArrivalAt"];
-    if (scheduledArrivalAtObj && [scheduledArrivalAtObj isKindOfClass:[NSNumber class]]) {
-        [tripOptionsDict setObject:[RCTConvert NSDate:scheduledArrivalAtObj] forKey:@"scheduledArrivalAt"];
-    }
 
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:tripOptionsDict];
     NSString *statusStr = optionsDict[@"status"];
