@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import { getHost, getPublishableKey } from '../helpers';
@@ -30,9 +30,12 @@ const createStyleURL = async (style = DEFAULT_STYLE) => {
 
 const RadarMap = ({ mapOptions, children }) => {
   const [styleURL, setStyleURL] = useState(null);
-  createStyleURL(mapOptions?.mapStyle || DEFAULT_STYLE).then((result) => {
-    setStyleURL(result);
-  });
+
+  useEffect(() => {
+    createStyleURL(mapOptions?.mapStyle || DEFAULT_STYLE).then((result) => {
+      setStyleURL(result);
+    });
+  }, [mapOptions]);
 
   if (!styleURL) {
     return null;
