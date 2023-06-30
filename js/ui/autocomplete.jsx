@@ -18,13 +18,12 @@ const defaultStyles = StyleSheet.create({
     justifyContent: 'center',
     padding: 8,
   },
-  input: {
-    backgroundColor: 'white',
-    height: 40,
-    fontSize: 14,
-    padding: 10,
-    borderRadius: 5,
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '95%',
+    backgroundColor: 'white',
+    borderRadius: 5,
     shadowColor: "#061A2B",
     shadowOffset: {
       width: 0,
@@ -33,6 +32,23 @@ const defaultStyles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 12,
     elevation: 5,
+  },
+  inputIcon: {
+    marginLeft: 10,
+    height: 18,
+    width: 18,
+    backgroundColor: 'white',
+    color: 'white',
+  },
+  input: {
+    flex: 1,
+    backgroundColor: 'white',
+    height: 40,
+    fontSize: 14,
+    paddingTop: 2,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+    shadowOpacity: 0,
   },
   inputFocused: {
     shadowColor: "#81BEFF",
@@ -44,15 +60,14 @@ const defaultStyles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
-  resultList: {
+  resultListWrapper: {
     width: '95%',
-    marginBottom: 8,
-    borderRadius: 5,
     marginTop: 8,
-    marginLeft: 4,
-    marginRight: 4,
-    shadowColor: "#061A2B",
     backgroundColor: 'white',
+    borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    shadowColor: "#061A2B",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -60,12 +75,31 @@ const defaultStyles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 12,
     elevation: 5,
-    overflow: 'visible',
+  },
+  resultList: {
+    width: '100%',
   },
   resultItem: {
-    paddingHorizontal: 16,
+    paddingRight: 16,
     paddingVertical: 8,
+    height: 56,
     fontSize: 12,
+  },
+  addressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pinIconContainer: {
+    width: 28,
+  },
+  pinIcon: {
+    height: 20,
+    width: 20,
+    marginRight: 8,
+    marginBottom: 14,
+  },
+  addressTextContainer: {
+    flex: 1,
   },
   addressText: {
     fontSize: 14,
@@ -100,8 +134,7 @@ const defaultAutocompleteOptions = {
   threshold: 3,
   limit: 8,
   placeholder: 'Search address',
-  showSelectButton: false,
-  buttonText: 'Select',
+  showPin: true,
 };
 
 const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
@@ -162,12 +195,21 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.resultItem} onPress={() => handleSelect(item)}>
-      <Text numberOfLines={1} style={styles.addressText}>
-        {item.addressLabel || item?.placeLabel}
-      </Text>
-      <Text numberOfLines={1} style={styles.addressSubtext}>
-        {item?.formattedAddress?.replace(`${item?.addressLabel || item?.placeLabel}, `, '')}
-      </Text>
+      <View style={styles.addressContainer}>
+        <View style={styles.pinIconContainer}>
+          {config.showPin ? (
+            <Image source={require('./marker.png')} style={styles.pinIcon} />
+          ) : null}
+        </View>
+        <View style={styles.addressTextContainer}>
+          <Text numberOfLines={1} style={styles.addressText}>
+            {item.addressLabel || item?.placeLabel}
+          </Text>
+          <Text numberOfLines={1} style={styles.addressSubtext}>
+            {item?.formattedAddress?.replace(`${item?.addressLabel || item?.placeLabel}, `, '')}
+          </Text>
+        </View>
+      </View>
     </TouchableOpacity>
   );
 
@@ -177,6 +219,10 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     input: StyleSheet.compose(defaultStyles.input, style.input),
     resultList: StyleSheet.compose(defaultStyles.resultList, style.resultList),
     resultItem: StyleSheet.compose(defaultStyles.resultItem, style.resultItem),
+    addressContainer: StyleSheet.compose(defaultStyles.addressContainer, style.addressContainer),
+    pinIconContainer: StyleSheet.compose(defaultStyles.pinIconContainer, style.pinIconContainer),
+    pinIcon: StyleSheet.compose(defaultStyles.pinIcon, style.pinIcon),
+    addressTextContainer: StyleSheet.compose(defaultStyles.addressTextContainer, style.addressTextContainer),
     addressText: StyleSheet.compose(defaultStyles.addressText, style.addressText),
     addressSubtext: StyleSheet.compose(defaultStyles.addressSubtext, style.addressSubtext),
     footerContainer: StyleSheet.compose(defaultStyles.footerContainer, style.footerContainer),
@@ -184,27 +230,32 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
   };
 
   const inputStyle = isInputFocused
-    ? StyleSheet.compose(styles.input, defaultStyles.inputFocused)
-    : styles.input;
+    ? StyleSheet.compose(styles.inputContainer, defaultStyles.inputFocused)
+    : styles.inputContainer;
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={inputStyle}
-        onChangeText={handleInput}
-        onFocus={() => setInputFocused(true)}
-        onBlur={() => setInputFocused(false)}
-        value={query}
-        placeholder={config.placeholder}
-      />
-      {isOpen && (
-        <FlatList
-          style={styles.resultList}
-          data={results}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.formattedAddress + item.postalCode}
-          ListFooterComponent={renderFooter}
+      <View style={inputStyle}>
+        <Image source={require('./search.png')} style={styles.inputIcon} />
+        <TextInput
+          style={styles.input}
+          onChangeText={handleInput}
+          onFocus={() => setInputFocused(true)}
+          onBlur={() => setInputFocused(false)}
+          value={query}
+          placeholder={config.placeholder}
         />
+      </View>
+      {isOpen && (
+        <View style={defaultStyles.resultListWrapper}>
+          <FlatList
+            style={styles.resultList}
+            data={results}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.formattedAddress + item.postalCode}
+            ListFooterComponent={renderFooter}
+          />
+        </View>
       )}
     </View>
   );
