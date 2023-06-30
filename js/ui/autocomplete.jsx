@@ -1,5 +1,5 @@
 // Autocomplete.js
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {
   View,
   TextInput,
@@ -142,6 +142,7 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isInputFocused, setInputFocused] = useState(false);
+  const timerRef = useRef(null);
 
   const config = { ...defaultAutocompleteOptions, ...options };
 
@@ -165,11 +166,26 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     }
   }, [config]);
 
-  const handleInput = (text) => {
-    setQuery(text);
-    clearTimeout(window.timer);
-    window.timer = setTimeout(() => fetchResults(text), config.debounceMS);
-  };
+  const handleInput = useCallback(
+    (text) => {
+      setQuery(text);
+
+      // Clear the existing timer
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+
+      if (text.length < config.threshold) {
+        return;
+      }
+
+      // Set the new timer
+      timerRef.current = setTimeout(() => {
+        fetchResults(text);
+      }, config.debounceMS);
+    },
+    [config, fetchResults],
+  );
 
   const handleSelect = (item) => {
     setQuery(item.formattedAddress);
