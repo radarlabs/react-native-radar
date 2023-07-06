@@ -1,5 +1,5 @@
 // Autocomplete.js
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -8,21 +8,27 @@ import {
   Text,
   StyleSheet,
   Image,
-} from 'react-native';
-import Radar from '../index.native';
+  Modal,
+  KeyboardAvoidingView,
+  Animated,
+  Dimensions,
+  Easing,
+  SafeAreaView,
+} from "react-native";
+import Radar from "../index.native";
 
 const defaultStyles = StyleSheet.create({
   container: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 8,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '95%',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    backgroundColor: "white",
     borderRadius: 5,
     shadowColor: "#061A2B",
     shadowOffset: {
@@ -37,12 +43,12 @@ const defaultStyles = StyleSheet.create({
     marginLeft: 10,
     height: 18,
     width: 18,
-    backgroundColor: 'white',
-    color: 'white',
+    backgroundColor: "white",
+    color: "white",
   },
   input: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     height: 40,
     fontSize: 14,
     paddingTop: 2,
@@ -59,11 +65,12 @@ const defaultStyles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 4,
     elevation: 4,
+    marginBottom: 8,
   },
   resultListWrapper: {
-    width: '95%',
-    marginTop: 8,
-    backgroundColor: 'white',
+    width: "95%",
+    marginBottom: 30,
+    backgroundColor: "white",
     borderRadius: 5,
     paddingVertical: 8,
     paddingHorizontal: 8,
@@ -77,7 +84,7 @@ const defaultStyles = StyleSheet.create({
     elevation: 5,
   },
   resultList: {
-    width: '100%',
+    width: "100%",
   },
   resultItem: {
     paddingRight: 16,
@@ -86,8 +93,8 @@ const defaultStyles = StyleSheet.create({
     fontSize: 12,
   },
   addressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   pinIconContainer: {
     width: 28,
@@ -103,29 +110,29 @@ const defaultStyles = StyleSheet.create({
   },
   addressText: {
     fontSize: 14,
-    color: '#000',
-    fontWeight: '600',
+    color: "#000",
+    fontWeight: "600",
   },
   addressSubtext: {
     fontSize: 12,
-    color: '#5A6872',
+    color: "#5A6872",
   },
   footerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 10,
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
   },
   footerText: {
     marginTop: 2,
     marginRight: 4,
     fontSize: 10,
-    color: '#5A6872',
+    color: "#5A6872",
   },
   logo: {
     width: 50,
     height: 15,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
 });
 
@@ -133,41 +140,49 @@ const defaultAutocompleteOptions = {
   debounceMS: 200,
   threshold: 3,
   limit: 8,
-  placeholder: 'Search address',
+  placeholder: "Search address",
   showPin: true,
 };
 
 const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isInputFocused, setInputFocused] = useState(false);
+  const animationValue = useRef(new Animated.Value(0)).current; // animation value
   const timerRef = useRef(null);
+  const textInputRef = useRef(null);
+
 
   const config = { ...defaultAutocompleteOptions, ...options };
 
-  const fetchResults = useCallback(async (searchQuery) => {
-    if (searchQuery.length < config.threshold) return;
+  const fetchResults = useCallback(
+    async (searchQuery) => {
+      console.log("fetching results for query", searchQuery);
+      if (searchQuery.length < config.threshold) return;
 
-    const params = { query: searchQuery, limit: config.limit };
+      const params = { query: searchQuery, limit: config.limit };
 
-    if (location && location.latitude && location.longitude) {
-      params.near = location;
-    }
-
-    try {
-      const result = await Radar.autocomplete(params);
-      setResults(result.addresses);
-      setIsOpen(true);
-    } catch (error) {
-      if (config.onError && typeof config.onError === 'function') {
-        config.onError(error);
+      if (location && location.latitude && location.longitude) {
+        params.near = location;
       }
-    }
-  }, [config]);
+
+      try {
+        const result = await Radar.autocomplete(params);
+        setResults(result.addresses);
+        setIsOpen(true);
+      } catch (error) {
+        if (config.onError && typeof config.onError === "function") {
+          config.onError(error);
+        }
+      }
+    },
+    [config]
+  );
 
   const handleInput = useCallback(
     (text) => {
+      console.log("handling input");
       setQuery(text);
 
       // Clear the existing timer
@@ -184,14 +199,15 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
         fetchResults(text);
       }, config.debounceMS);
     },
-    [config, fetchResults],
+    [config, fetchResults]
   );
 
   const handleSelect = (item) => {
     setQuery(item.formattedAddress);
     setIsOpen(false);
+    setInputFocused(false);
 
-    if (typeof onSelect === 'function') {
+    if (typeof onSelect === "function") {
       onSelect(item);
     }
   };
@@ -201,20 +217,27 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
 
     return (
       <View style={styles.footerContainer}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={styles.footerText}>Powered by</Text>
-          <Image source={require('./radar-logo.png')} resizeMode="contain" style={defaultStyles.logo} />
+          <Image
+            source={require("./radar-logo.png")}
+            resizeMode="contain"
+            style={defaultStyles.logo}
+          />
         </View>
       </View>
     );
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.resultItem} onPress={() => handleSelect(item)}>
+    <TouchableOpacity
+      style={styles.resultItem}
+      onPress={() => handleSelect(item)}
+    >
       <View style={styles.addressContainer}>
         <View style={styles.pinIconContainer}>
           {config.showPin ? (
-            <Image source={require('./marker.png')} style={styles.pinIcon} />
+            <Image source={require("./marker.png")} style={styles.pinIcon} />
           ) : null}
         </View>
         <View style={styles.addressTextContainer}>
@@ -222,7 +245,10 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
             {item.addressLabel || item?.placeLabel}
           </Text>
           <Text numberOfLines={1} style={styles.addressSubtext}>
-            {item?.formattedAddress?.replace(`${item?.addressLabel || item?.placeLabel}, `, '')}
+            {item?.formattedAddress?.replace(
+              `${item?.addressLabel || item?.placeLabel}, `,
+              ""
+            )}
           </Text>
         </View>
       </View>
@@ -233,15 +259,37 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     ...defaultStyles,
     container: StyleSheet.compose(defaultStyles.container, style.container),
     input: StyleSheet.compose(defaultStyles.input, style.input),
+    inputContainer: StyleSheet.compose(
+      defaultStyles.inputContainer,
+      style.inputContainer
+    ),
     resultList: StyleSheet.compose(defaultStyles.resultList, style.resultList),
     resultItem: StyleSheet.compose(defaultStyles.resultItem, style.resultItem),
-    addressContainer: StyleSheet.compose(defaultStyles.addressContainer, style.addressContainer),
-    pinIconContainer: StyleSheet.compose(defaultStyles.pinIconContainer, style.pinIconContainer),
+    addressContainer: StyleSheet.compose(
+      defaultStyles.addressContainer,
+      style.addressContainer
+    ),
+    pinIconContainer: StyleSheet.compose(
+      defaultStyles.pinIconContainer,
+      style.pinIconContainer
+    ),
     pinIcon: StyleSheet.compose(defaultStyles.pinIcon, style.pinIcon),
-    addressTextContainer: StyleSheet.compose(defaultStyles.addressTextContainer, style.addressTextContainer),
-    addressText: StyleSheet.compose(defaultStyles.addressText, style.addressText),
-    addressSubtext: StyleSheet.compose(defaultStyles.addressSubtext, style.addressSubtext),
-    footerContainer: StyleSheet.compose(defaultStyles.footerContainer, style.footerContainer),
+    addressTextContainer: StyleSheet.compose(
+      defaultStyles.addressTextContainer,
+      style.addressTextContainer
+    ),
+    addressText: StyleSheet.compose(
+      defaultStyles.addressText,
+      style.addressText
+    ),
+    addressSubtext: StyleSheet.compose(
+      defaultStyles.addressSubtext,
+      style.addressSubtext
+    ),
+    footerContainer: StyleSheet.compose(
+      defaultStyles.footerContainer,
+      style.footerContainer
+    ),
     footerText: StyleSheet.compose(defaultStyles.footerText, style.footerText),
   };
 
@@ -249,30 +297,119 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     ? StyleSheet.compose(styles.inputContainer, defaultStyles.inputFocused)
     : styles.inputContainer;
 
+  // When TextInput is focused, set fullscreen mode
+  useEffect(() => {
+    if (isInputFocused) {
+      setIsOpen(true);
+    }
+  }, [isInputFocused]);
+
+  useEffect(() => {
+    Animated.timing(animationValue, {
+      toValue: isOpen ? 1 : 0,
+      duration: 300,
+      easing: Easing.inOut(Easing.ease),
+      useNativeDriver: false,
+    }).start();
+  }, [isOpen]);
+
+  const screenHeight = Dimensions.get("window").height;
+
+  const inputHeight = animationValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [40, screenHeight],
+  });
+
+  const modalOpacity = animationValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0, 0, 1],
+  });
+
   return (
     <View style={styles.container}>
-      <View style={inputStyle}>
-        <Image source={require('./search.png')} style={styles.inputIcon} />
-        <TextInput
-          style={styles.input}
-          onChangeText={handleInput}
-          onFocus={() => setInputFocused(true)}
-          onBlur={() => setInputFocused(false)}
-          value={query}
-          placeholder={config.placeholder}
-        />
-      </View>
-      {isOpen && (
-        <View style={defaultStyles.resultListWrapper}>
-          <FlatList
-            style={styles.resultList}
-            data={results}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.formattedAddress + item.postalCode}
-            ListFooterComponent={renderFooter}
+      <Animated.View style={{ height: inputHeight }}>
+        <TouchableOpacity style={styles.inputContainer} onPress={() => { 
+          setIsOpen(true);
+          setInputFocused(true);
+          setTimeout(() => {
+            textInputRef.current.focus();
+          }, 100);
+        }}>
+          <Image source={require("./search.png")} style={styles.inputIcon} />
+          <TextInput
+            style={styles.input}
+            onFocus={() => {
+              setIsOpen(true);
+              setInputFocused(true);
+              // set the focus on the other textinput
+              // delay for 100ms
+              setTimeout(() => {
+                textInputRef.current.focus();
+              }, 100);
+            }}
+            value={query}
+            placeholder={config.placeholder}
           />
-        </View>
-      )}
+        </TouchableOpacity>
+      </Animated.View>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={isOpen}
+        onRequestClose={() => setIsOpen(false)}
+      >
+        <Animated.View style={{ flex: 1, opacity: modalOpacity }}>
+          <SafeAreaView>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              keyboardVerticalOffset={50}
+              style={{ width: "100%", height: "100%", marginTop: 30 }}
+            >
+              <View style={{ ...styles.container }}>
+                <TouchableOpacity
+                  style={inputStyle}
+                  onPress={() => setIsOpen(true)}
+                >
+                  <Image
+                    source={require("./search.png")}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    ref={textInputRef}
+                    style={styles.input}
+                    onChangeText={handleInput}
+                    onFocus={() => {
+                      //  textInputRef.current.focus(); // This will open the keyboard
+                       setInputFocused(true)
+                    }}
+                    onBlur={() => setInputFocused(false)}
+                    value={query}
+                    placeholder={config.placeholder}
+                    
+                    onEndEditing={() => {
+                      setInputFocused(false);
+                      setIsOpen(false);
+                    }}
+                  />
+                </TouchableOpacity>
+                {( results.length > 0 && (
+                <View style={styles.resultListWrapper}>
+                  <FlatList
+                    style={styles.resultList}
+                    data={results}
+                    renderItem={renderItem}
+                    keyExtractor={(item) =>
+                      item.formattedAddress + item.postalCode
+                    }
+                  />
+                  {renderFooter()}
+                </View>
+                ))}
+              </View>
+            </KeyboardAvoidingView>
+          </SafeAreaView>
+        </Animated.View>
+      </Modal>
     </View>
   );
 };
