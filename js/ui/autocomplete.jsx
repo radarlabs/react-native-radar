@@ -348,6 +348,7 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
               }, 100);
             }}
             value={query}
+            returnKeyType="done"
             placeholder={config.placeholder}
           />
         </TouchableOpacity>
@@ -366,14 +367,20 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
               style={{ width: "100%", height: "100%", marginTop: 30 }}
             >
               <View style={{ ...styles.container }}>
-                <TouchableOpacity
+                <View
                   style={inputStyle}
-                  onPress={() => setIsOpen(true)}
+                >
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsOpen(false);
+                    setInputFocused(false);
+                  }}
                 >
                   <Image
-                    source={require("./search.png")}
+                    source={require("./back.png")}
                     style={styles.inputIcon}
                   />
+                  </TouchableOpacity>
                   <TextInput
                     ref={textInputRef}
                     style={styles.input}
@@ -385,13 +392,14 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
                     onBlur={() => setInputFocused(false)}
                     value={query}
                     placeholder={config.placeholder}
+                    returnKeyType="done"
                     
                     onEndEditing={() => {
                       setInputFocused(false);
                       setIsOpen(false);
                     }}
                   />
-                </TouchableOpacity>
+                </View>
                 {( results.length > 0 && (
                 <View style={styles.resultListWrapper}>
                   <FlatList
