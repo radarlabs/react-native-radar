@@ -20,8 +20,8 @@ import Radar from "../index.native";
 const defaultStyles = StyleSheet.create({
   container: {
     width: "100%",
+    height: "100%",
     alignItems: "center",
-    justifyContent: "center",
     padding: 8,
   },
   inputContainer: {
@@ -30,14 +30,9 @@ const defaultStyles = StyleSheet.create({
     width: "95%",
     backgroundColor: "white",
     borderRadius: 5,
-    shadowColor: "#061A2B",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 5,
+    borderColor: "#DBE5EB",
+    borderWidth: 1,
+    marginBottom: 8,
   },
   inputIcon: {
     marginLeft: 10,
@@ -51,21 +46,8 @@ const defaultStyles = StyleSheet.create({
     backgroundColor: "white",
     height: 40,
     fontSize: 14,
-    paddingTop: 2,
     paddingHorizontal: 8,
     borderRadius: 5,
-    shadowOpacity: 0,
-  },
-  inputFocused: {
-    shadowColor: "#81BEFF",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    elevation: 4,
-    marginBottom: 8,
   },
   resultListWrapper: {
     width: "95%",
@@ -74,14 +56,6 @@ const defaultStyles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 8,
     paddingHorizontal: 8,
-    shadowColor: "#061A2B",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 5,
   },
   resultList: {
     width: "100%",
@@ -148,7 +122,6 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [isInputFocused, setInputFocused] = useState(false);
   const animationValue = useRef(new Animated.Value(0)).current; // animation value
   const timerRef = useRef(null);
   const textInputRef = useRef(null);
@@ -205,7 +178,6 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
   const handleSelect = (item) => {
     setQuery(item.formattedAddress);
     setIsOpen(false);
-    setInputFocused(false);
 
     if (typeof onSelect === "function") {
       onSelect(item);
@@ -293,17 +265,6 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     footerText: StyleSheet.compose(defaultStyles.footerText, style.footerText),
   };
 
-  const inputStyle = isInputFocused
-    ? StyleSheet.compose(styles.inputContainer, defaultStyles.inputFocused)
-    : styles.inputContainer;
-
-  // When TextInput is focused, set fullscreen mode
-  useEffect(() => {
-    if (isInputFocused) {
-      setIsOpen(true);
-    }
-  }, [isInputFocused]);
-
   useEffect(() => {
     Animated.timing(animationValue, {
       toValue: isOpen ? 1 : 0,
@@ -330,7 +291,7 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
       <Animated.View style={{ height: inputHeight }}>
         <TouchableOpacity style={styles.inputContainer} onPress={() => { 
           setIsOpen(true);
-          setInputFocused(true);
+          // Set the focus on the other textinput after it opens
           setTimeout(() => {
             textInputRef.current.focus();
           }, 100);
@@ -340,9 +301,6 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
             style={styles.input}
             onFocus={() => {
               setIsOpen(true);
-              setInputFocused(true);
-              // set the focus on the other textinput
-              // delay for 100ms
               setTimeout(() => {
                 textInputRef.current.focus();
               }, 100);
@@ -363,17 +321,15 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
           <SafeAreaView>
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
-              keyboardVerticalOffset={50}
-              style={{ width: "100%", height: "100%", marginTop: 30 }}
+              keyboardVerticalOffset={45}
+              style={styles.container }
             >
-              <View style={{ ...styles.container }}>
                 <View
-                  style={inputStyle}
+                  style={styles.inputContainer}
                 >
                 <TouchableOpacity
                   onPress={() => {
                     setIsOpen(false);
-                    setInputFocused(false);
                   }}
                 >
                   <Image
@@ -385,17 +341,10 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
                     ref={textInputRef}
                     style={styles.input}
                     onChangeText={handleInput}
-                    onFocus={() => {
-                      //  textInputRef.current.focus(); // This will open the keyboard
-                       setInputFocused(true)
-                    }}
-                    onBlur={() => setInputFocused(false)}
                     value={query}
                     placeholder={config.placeholder}
                     returnKeyType="done"
-                    
                     onEndEditing={() => {
-                      setInputFocused(false);
                       setIsOpen(false);
                     }}
                   />
@@ -413,7 +362,6 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
                   {renderFooter()}
                 </View>
                 ))}
-              </View>
             </KeyboardAvoidingView>
           </SafeAreaView>
         </Animated.View>
