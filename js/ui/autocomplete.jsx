@@ -40,7 +40,6 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
 
   const fetchResults = useCallback(
     async (searchQuery) => {
-      console.log("fetching results for query", searchQuery);
       if (searchQuery.length < config.threshold) return;
 
       const params = { query: searchQuery, limit: config.limit };
@@ -64,7 +63,6 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
 
   const handleInput = useCallback(
     (text) => {
-      console.log("handling input");
       setQuery(text);
 
       // Clear the existing timer
@@ -230,7 +228,7 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
           <SafeAreaView>
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
-              keyboardVerticalOffset={40}
+              keyboardVerticalOffset={50}
               style={styles.container }
             >
                 <View
@@ -263,6 +261,7 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
                   <FlatList
                     style={styles.resultList}
                     data={results}
+                    keyboardShouldPersistTaps='handled'
                     renderItem={renderItem}
                     keyExtractor={(item) =>
                       item.formattedAddress + item.postalCode
