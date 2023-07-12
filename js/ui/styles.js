@@ -5,20 +5,26 @@ export default StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    padding: 8,
+    paddingTop: 8
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '95%',
+    marginHorizontal: 16,
     backgroundColor: 'white',
     borderRadius: 5,
     borderColor: '#DBE5EB',
     borderWidth: 1,
-    marginBottom: 8,
   },
   inputIcon: {
     marginLeft: 10,
+    height: 18,
+    width: 18,
+    backgroundColor: 'white',
+    color: 'white',
+  },
+  closeIcon: {
+    marginRight: 10,
     height: 18,
     width: 18,
     backgroundColor: 'white',
@@ -38,7 +44,6 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 5,
     paddingVertical: 8,
-    paddingHorizontal: 16,
   },
   resultList: {
     width: '100%',
@@ -46,7 +51,8 @@ export default StyleSheet.create({
   resultItem: {
     paddingRight: 16,
     paddingVertical: 8,
-    height: 56,
+    paddingLeft: 8,
+    paddingRight: 16,
     fontSize: 12,
   },
   addressContainer: {
@@ -55,29 +61,30 @@ export default StyleSheet.create({
   },
   pinIconContainer: {
     width: 28,
+    marginRight: 8,
   },
   pinIcon: {
-    height: 20,
-    width: 20,
-    marginRight: 8,
-    marginBottom: 14,
+    height: 26,
+    width: 26,
   },
   addressTextContainer: {
     flex: 1,
   },
   addressText: {
     fontSize: 14,
+    lineHeight: 24,
     color: '#000',
     fontWeight: '600',
   },
   addressSubtext: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#5A6872',
   },
   footerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
+    marginRight: 16,
     alignSelf: 'flex-end',
   },
   footerText: {
