@@ -13,12 +13,19 @@ import {
   Animated,
   Dimensions,
   Easing,
+  Keyboard,
   SafeAreaView,
   Pressable,
 } from "react-native";
 import Radar from "../index.native";
-import { BACK_ICON, SEARCH_ICON, RADAR_LOGO, MARKER_ICON, CLOSE_ICON } from './images';
-import { default as defaultStyles } from './styles';
+import {
+  BACK_ICON,
+  SEARCH_ICON,
+  RADAR_LOGO,
+  MARKER_ICON,
+  CLOSE_ICON,
+} from "./images";
+import { default as defaultStyles } from "./styles";
 
 const defaultAutocompleteOptions = {
   debounceMS: 200,
@@ -35,7 +42,6 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
   const animationValue = useRef(new Animated.Value(0)).current; // animation value
   const timerRef = useRef(null);
   const textInputRef = useRef(null);
-
 
   const config = { ...defaultAutocompleteOptions, ...options };
 
@@ -109,15 +115,15 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     );
   };
 
-  // pressable with different style for being pressed down
   const renderItem = ({ item }) => (
     <Pressable
       style={({ pressed }) => [
         {
-          backgroundColor: pressed ? "#F6FAFC" : "white",
           ...styles.resultItem,
+          backgroundColor: pressed
+            ? styles.resultItem.pressedBackgroundColor
+            : styles.resultItem.backgroundColor,
         },
-        styles.resultItem,
       ]}
       onPress={() => handleSelect(item)}
     >
@@ -131,13 +137,14 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
           <Text numberOfLines={1} style={styles.addressText}>
             {item.addressLabel || item?.placeLabel}
           </Text>
-          { item?.formattedAddress.length > 0 && (
-          <Text numberOfLines={1} style={styles.addressSubtext}>
-            {item?.formattedAddress?.replace(
-              `${item?.addressLabel || item?.placeLabel}, `,
-              ""
-            )}
-          </Text>)}
+          {item?.formattedAddress.length > 0 && (
+            <Text numberOfLines={1} style={styles.addressSubtext}>
+              {item?.formattedAddress?.replace(
+                `${item?.addressLabel || item?.placeLabel}, `,
+                ""
+              )}
+            </Text>
+          )}
         </View>
       </View>
     </Pressable>
@@ -150,6 +157,10 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     inputContainer: StyleSheet.compose(
       defaultStyles.inputContainer,
       style.inputContainer
+    ),
+    modalInputContainer: StyleSheet.compose(
+      defaultStyles.modalInputContainer,
+      style.modalInputContainer
     ),
     resultList: StyleSheet.compose(defaultStyles.resultList, style.resultList),
     resultItem: StyleSheet.compose(defaultStyles.resultItem, style.resultItem),
@@ -205,13 +216,16 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
   return (
     <View style={styles.container}>
       <Animated.View style={{ height: inputHeight }}>
-        <TouchableOpacity style={{...styles.inputContainer, minWidth: '95%'}} onPress={() => { 
-          setIsOpen(true);
-          // Set the focus on the other textinput after it opens
-          setTimeout(() => {
-            textInputRef.current.focus();
-          }, 100);
-        }}>
+        <TouchableOpacity
+          style={styles.inputContainer}
+          onPress={() => {
+            setIsOpen(true);
+            // Set the focus on the other textinput after it opens
+            setTimeout(() => {
+              textInputRef.current.focus();
+            }, 100);
+          }}
+        >
           <Image source={SEARCH_ICON} style={styles.inputIcon} />
           <TextInput
             style={styles.input}
@@ -239,44 +253,46 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
               keyboardVerticalOffset={50}
-              style={styles.container }
+              style={styles.container}
             >
-                <View
-                  style={styles.inputContainer}
-                >
+              <View style={styles.modalInputContainer}>
                 <TouchableOpacity
                   onPress={() => {
                     setIsOpen(false);
                   }}
                 >
-                  <Image
-                    source={BACK_ICON}
-                    style={styles.inputIcon}
-                  />
-                  </TouchableOpacity>
-                  <TextInput
-                    ref={textInputRef}
-                    style={styles.input}
-                    onChangeText={handleInput}
-                    value={query}
-                    placeholder={config.placeholder}
-                    returnKeyType="done"
-                    onEndEditing={() => {
-                      setIsOpen(false);
-                    }}
-                    placeholderTextColor="#acbdc8"
-                  />
-                  <Image
-                    source={CLOSE_ICON}
-                    style={styles.closeIcon}
-                  />
-                </View>
-                {( results.length > 0 && (
+                  <Image source={BACK_ICON} style={styles.inputIcon} />
+                </TouchableOpacity>
+                <TextInput
+                  ref={textInputRef}
+                  style={styles.input}
+                  onChangeText={handleInput}
+                  value={query}
+                  placeholder={config.placeholder}
+                  returnKeyType="done"
+                  onSubmitEditing={() => {
+                    setIsOpen(false);
+                  }}
+                  placeholderTextColor="#acbdc8"
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setQuery("");
+                  }}
+                >
+                  <Image source={CLOSE_ICON} style={styles.closeIcon} />
+                </TouchableOpacity>
+              </View>
+              {results.length > 0 && (
                 <View style={styles.resultListWrapper}>
                   <FlatList
                     style={styles.resultList}
                     data={results}
-                    keyboardShouldPersistTaps='handled'
+                    onScroll={() => {
+                      textInputRef.current.blur();
+                      Keyboard.dismiss();
+                    }}
+                    keyboardShouldPersistTaps="handled"
                     renderItem={renderItem}
                     keyExtractor={(item) =>
                       item.formattedAddress + item.postalCode
@@ -284,7 +300,7 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
                   />
                   {renderFooter()}
                 </View>
-                ))}
+              )}
             </KeyboardAvoidingView>
           </SafeAreaView>
         </Animated.View>
