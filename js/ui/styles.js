@@ -15,6 +15,16 @@ export default StyleSheet.create({
     borderRadius: 5,
     borderColor: '#DBE5EB',
     borderWidth: 1,
+    width: '95%', // only difference between this and the modalInputContainer
+  },
+  modalInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    borderColor: '#DBE5EB',
+    borderWidth: 1,
   },
   inputIcon: {
     marginLeft: 10,
@@ -51,9 +61,10 @@ export default StyleSheet.create({
   resultItem: {
     paddingRight: 16,
     paddingVertical: 8,
-    paddingLeft: 8,
-    paddingRight: 16,
+    paddingHorizontal: 16,
     fontSize: 12,
+    backgroundColor: 'white',
+    pressedBackgroundColor: '#F6FAFC',
   },
   addressContainer: {
     flexDirection: 'row',
