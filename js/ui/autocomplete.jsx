@@ -14,9 +14,10 @@ import {
   Dimensions,
   Easing,
   SafeAreaView,
+  Pressable,
 } from "react-native";
 import Radar from "../index.native";
-import { BACK_ICON, SEARCH_ICON, RADAR_LOGO, MARKER_ICON } from './images';
+import { BACK_ICON, SEARCH_ICON, RADAR_LOGO, MARKER_ICON, CLOSE_ICON } from './images';
 import { default as defaultStyles } from './styles';
 
 const defaultAutocompleteOptions = {
@@ -108,9 +109,16 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     );
   };
 
+  // pressable with different style for being pressed down
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.resultItem}
+    <Pressable
+      style={({ pressed }) => [
+        {
+          backgroundColor: pressed ? "#F6FAFC" : "white",
+          ...styles.resultItem,
+        },
+        styles.resultItem,
+      ]}
       onPress={() => handleSelect(item)}
     >
       <View style={styles.addressContainer}>
@@ -123,15 +131,16 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
           <Text numberOfLines={1} style={styles.addressText}>
             {item.addressLabel || item?.placeLabel}
           </Text>
+          { item?.formattedAddress.length > 0 && (
           <Text numberOfLines={1} style={styles.addressSubtext}>
             {item?.formattedAddress?.replace(
               `${item?.addressLabel || item?.placeLabel}, `,
               ""
             )}
-          </Text>
+          </Text>)}
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 
   const styles = {
@@ -196,7 +205,7 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
   return (
     <View style={styles.container}>
       <Animated.View style={{ height: inputHeight }}>
-        <TouchableOpacity style={styles.inputContainer} onPress={() => { 
+        <TouchableOpacity style={{...styles.inputContainer, minWidth: '95%'}} onPress={() => { 
           setIsOpen(true);
           // Set the focus on the other textinput after it opens
           setTimeout(() => {
@@ -215,6 +224,7 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
             value={query}
             returnKeyType="done"
             placeholder={config.placeholder}
+            placeholderTextColor="#acbdc8"
           />
         </TouchableOpacity>
       </Animated.View>
@@ -254,6 +264,11 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
                     onEndEditing={() => {
                       setIsOpen(false);
                     }}
+                    placeholderTextColor="#acbdc8"
+                  />
+                  <Image
+                    source={CLOSE_ICON}
+                    style={styles.closeIcon}
                   />
                 </View>
                 {( results.length > 0 && (
