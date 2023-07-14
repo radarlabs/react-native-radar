@@ -5,10 +5,10 @@ import { getHost, getPublishableKey } from '../helpers';
 let MapLibreGL;
 try {
   MapLibreGL = require('@maplibre/maplibre-react-native');
+  MapLibreGL.setAccessToken(null);
 } catch (e) {
   MapLibreGL = null;
 }
-
 
 const DEFAULT_STYLE = 'radar-default-v1';
 
@@ -49,7 +49,6 @@ const RadarMap = ({ mapOptions, children }) => {
   }
 
   if (!MapLibreGL) {
-    console.warn('MapLibre not installed. Unable to render map.')
     return null;
   }
 
