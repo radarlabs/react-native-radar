@@ -31,14 +31,12 @@ export default StyleSheet.create({
     height: 18,
     width: 18,
     backgroundColor: 'white',
-    color: 'white',
   },
   closeIcon: {
     marginRight: 10,
     height: 18,
     width: 18,
     backgroundColor: 'white',
-    color: 'white',
   },
   input: {
     flex: 1,
