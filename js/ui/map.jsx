@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import MapLibreGL from '@maplibre/maplibre-react-native';
 import { getHost, getPublishableKey } from '../helpers';
+
+let MapLibreGL;
+try {
+  MapLibreGL = require('@maplibre/maplibre-react-native');
+} catch (e) {
+  MapLibreGL = null;
+}
+
 
 const DEFAULT_STYLE = 'radar-default-v1';
 
@@ -38,6 +45,11 @@ const RadarMap = ({ mapOptions, children }) => {
   }, [mapOptions]);
 
   if (!styleURL) {
+    return null;
+  }
+
+  if (!MapLibreGL) {
+    console.warn('MapLibre not installed. Unable to render map.')
     return null;
   }
 
