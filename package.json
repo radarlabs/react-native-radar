@@ -28,6 +28,11 @@
     "react-native": ">= 0.60.0",
     "@maplibre/maplibre-react-native": "^9.0.1"
   },
+  "peerDependenciesMeta": {
+    "@maplibre/maplibre-react-native": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
