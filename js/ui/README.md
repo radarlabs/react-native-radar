@@ -40,10 +40,15 @@ Adding an address search autocomplete is similarly easy. Our `<Autocomplete>` el
 The example below provides optional `location` and `onSelect` props to the component. Providing a location will improve autocomplete result quality. Without it, the API utilizes the IP address location to rank results.
 
 ```
-import Radar, { Map } from 'react-native-radar';
+import { View } from 'react-native';
+import { useState, useEffect } from 'react';
+import Radar, { Autocomplete } from 'react-native-radar';
 
 export default function App() {
-    const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    Radar.initialize('YOUR_PUBLISHABLE_KEY_HERE');
 
     Radar.trackOnce().then((result) => {
         setLocation({
@@ -51,17 +56,19 @@ export default function App() {
           longitude: result.location.longitude,
         });
       });
+  }, []);
 
-    const onSelect (selectedAddress) => {
-        // Do something with the selected address
-    }
+  const onSelect = (selectedAddress) => {
+      // Do something with the selected address
+  }
 
-    return (
-        <View style={style.page}>
-            <Autocomplete location={location} onSelect={onSelect} />
-        </View>
-    );
+  return (
+      <View style={{ marginTop: 50}}>>
+          <Autocomplete location={location} onSelect={onSelect} />
+      </View>
+  );
 }
+
 ```
 
 TODO: fill in details of customization
