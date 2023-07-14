@@ -5,7 +5,7 @@ export default StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    paddingTop: 8
+    paddingTop: 8,
   },
   inputContainer: {
     flexDirection: 'row',
