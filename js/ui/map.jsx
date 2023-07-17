@@ -5,7 +5,6 @@ import { getHost, getPublishableKey } from '../helpers';
 let MapLibreGL;
 try {
   MapLibreGL = require('@maplibre/maplibre-react-native');
-  MapLibreGL.setAccessToken(null);
 } catch (e) {
   MapLibreGL = null;
 }
@@ -60,7 +59,7 @@ const RadarMap = ({ mapOptions, children }) => {
         compassEnabled={false}
         logoEnabled={false}
         attributionEnabled
-        onRegionDidChange={mapOptions.onRegionDidChange ? mapOptions.onRegionDidChange : null}
+        onRegionDidChange={mapOptions?.onRegionDidChange ? mapOptions.onRegionDidChange : null}
         styleURL={styleURL}
       >
         <MapLibreGL.UserLocation />
