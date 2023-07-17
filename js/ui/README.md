@@ -74,3 +74,84 @@ export default function App() {
     );
 }
 ```
+
+And here's how you might add a custom pin to the map and control the camera:
+```
+  // ... rest of your file
+
+  const [cameraConfig, setCameraConfig] = useState({
+    triggerKey: Date.now(),
+    centerCoordinate: [-73.9911, 40.7342],
+    animationMode: 'flyTo',
+    animationDuration: 600,
+    zoomLevel: 12,
+  });
+
+  const onRegionDidChange = (event) => {
+    // handle region change
+  }
+
+  const mapOptions = {
+    onRegionDidChange: onRegionDidChange,
+  }
+
+  const onSelect = (selectedAddress) => {
+      // Do something with the selected address
+  }
+
+  const pointsCollection = {
+    type: "FeatureCollection",
+    features: [{
+      type: "Feature",
+      properties: {
+        _id: '123',
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [-73.9911, 40.7342]
+      }
+    }]
+  }; 
+  
+  const onPressIcon = (event) => {
+    // do something with the symbol, such as scrolling to the geofence
+    // associated with the icon in the list
+  }
+    
+  return (
+      <View style={{ width: '100%', marginTop: '10%', height: '90%'}}>
+        <Map mapOptions={mapOptions}>
+          <MapLibreGL.Camera
+          {...cameraConfig}
+          />
+          <MapLibreGL.Images
+            images={{
+              icon: require('./assets/marker.png'),
+            }}
+          />
+          <MapLibreGL.ShapeSource
+            id="points"
+            shape={pointsCollection}
+            onPress={onPressIcon}
+          >
+
+           <MapLibreGL.SymbolLayer
+              id="symbol"
+              style={{
+                iconImage: 'icon',
+                iconSize: [
+                  'interpolate',
+                  ['linear'],
+                  ['zoom'],
+                  0, 0.2, // Adjust the icon size for zoom level 0
+                  12, 0.4, // Adjust the icon size for zoom level 12
+                  22, 0.8, // Adjust the icon size for zoom level 22
+                ],
+                iconAllowOverlap: true,
+              }}
+            />
+          </MapLibreGL.ShapeSource>
+        </Map>
+      </View>
+  );
+```
