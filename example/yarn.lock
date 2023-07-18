@@ -1544,6 +1544,13 @@
   dependencies:
     regenerator-runtime "^0.13.10"
 
+"@babel/runtime@^7.21.0":
+  version "7.22.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.6.tgz#57d64b9ae3cff1d67eb067ae117dac087f5bd438"
+  integrity sha512-wDb5pWm4WDdF6LFUde3Jl8WzPA+3ZbxYqkC6xAXuD3irdEHN1k0NfTRrJD8ZD378SJ61miMLCqIOXYhd8x+AJQ==
+  dependencies:
+    regenerator-runtime "^0.13.11"
+
 "@babel/runtime@^7.8.4":
   version "7.13.8"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.13.8.tgz"
@@ -7741,6 +7748,11 @@ radar-sdk-js@^3.5.0:
   resolved "https://registry.npmjs.org/radar-sdk-js/-/radar-sdk-js-3.5.0.tgz"
   integrity sha512-KIRGSN4EU45lzjcvoiAYyclONoHRgpHyJhBaNXVHOFZWY/SuwMqHtiUOSI4sKPtD/TfeMht8PIN9FYxAmzttQQ==
 
+radar-sdk-js@^3.6.0:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/radar-sdk-js/-/radar-sdk-js-3.7.1.tgz#f0f38009e478b5457db510f28546784e1e60ccd5"
+  integrity sha512-yhuvEfyOeOEZpPf9XGOaC/TZlf3iib6iCcvZnwHR+fRV6r5f4/BIEO9xcEiU0WF/sl7pA22Vx4KXi8vsfBrstg==
+
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/range-parser/-/range-parser-1.2.1.tgz"
@@ -7804,10 +7816,11 @@ react-native-gesture-handler@~1.10.2:
     prop-types "^15.7.2"
 
 react-native-radar@../:
-  version "3.5.8"
+  version "3.7.5"
   dependencies:
+    "@babel/runtime" "^7.21.0"
     "@react-native-community/netinfo" "^7.1.3"
-    radar-sdk-js "^3.5.0"
+    radar-sdk-js "^3.6.0"
 
 react-native-reanimated@~2.2.0:
   version "2.2.4"
@@ -8015,6 +8028,11 @@ regenerator-runtime@^0.13.10:
   version "0.13.10"
   resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.10.tgz"
   integrity sha512-KepLsg4dU12hryUO7bp/axHAKvwGOCV0sGloQtpagJ12ai+ojVDqkeGSiRX1zlq+kjIMZ1t7gpze+26QqtdGqw==
+
+regenerator-runtime@^0.13.11:
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
+  integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
 regenerator-runtime@^0.13.2, regenerator-runtime@^0.13.4:
   version "0.13.7"
@@ -9418,9 +9436,9 @@ which@^2.0.1, which@^2.0.2:
     isexe "^2.0.0"
 
 word-wrap@~1.2.3:
-  version "1.2.3"
-  resolved "https://registry.npmjs.org/word-wrap/-/word-wrap-1.2.3.tgz"
-  integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.4.tgz#cb4b50ec9aca570abd1f52f33cd45b6c61739a9f"
+  integrity sha512-2V81OA4ugVo5pRo46hAoD2ivUJx8jXmWXfUkY4KFNw0hEptvN0QfH3K4nHiwzGeKl5rFKedV48QVoqYavy4YpA==
 
 wrap-ansi@^6.2.0:
   version "6.2.0"
