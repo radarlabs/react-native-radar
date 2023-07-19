@@ -32,7 +32,7 @@ export default function App() {
   }
 
   return (
-      <View style={{ marginTop: 50}}>>
+      <View style={{ marginTop: 50}}>
           <Autocomplete location={location} onSelect={onSelect} />
       </View>
   );
