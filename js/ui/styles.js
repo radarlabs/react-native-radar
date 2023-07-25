@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export default StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
@@ -107,4 +107,38 @@ export default StyleSheet.create({
     height: 15,
     resizeMode: 'contain',
   },
+  mapContainer: {
+    flex: 1,
+  },
+  map: {
+    flex: 1,
+  },
+  mapLogo: {
+    position: 'absolute',
+    bottom: -10,
+    left: 5,
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
+  },
+  userLocation: {
+    pulse: {
+      circleRadius: 15,
+      circleColor: '#000257',
+      circleOpacity: 0.2,
+      circlePitchAlignment: 'map',
+    },
+    background: {
+      circleRadius: 9,
+      circleColor: '#fff',
+      circlePitchAlignment: 'map',
+    },
+    foreground: {
+      circleRadius: 6,
+      circleColor: '#000257',
+      circlePitchAlignment: 'map',
+    },
+  },
 });
+
+export default styles;

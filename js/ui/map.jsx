@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { View, Image } from 'react-native';
+import Radar from '../index.native';
 import { getHost, getPublishableKey } from '../helpers';
+import styles from './styles';
 
 let MapLibreGL;
 try {
@@ -11,23 +13,6 @@ try {
 
 const DEFAULT_STYLE = 'radar-default-v1';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    flex: 1,
-  },
-  logo: {
-    position: 'absolute',
-    bottom: -10,
-    left: 5,
-    width: 50,
-    height: 50,
-    resizeMode: 'contain',
-  },
-});
-
 const createStyleURL = async (style = DEFAULT_STYLE) => {
   const host = await getHost();
   const publishableKey = await getPublishableKey();
@@ -36,10 +21,20 @@ const createStyleURL = async (style = DEFAULT_STYLE) => {
 
 const RadarMap = ({ mapOptions, children }) => {
   const [styleURL, setStyleURL] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     createStyleURL(mapOptions?.mapStyle || DEFAULT_STYLE).then((result) => {
       setStyleURL(result);
+    });
+  }, [mapOptions]);
+
+  useEffect(() => {
+    Radar.getLocation().then((result) => {
+      setUserLocation({
+        latitude: result.location.latitude,
+        longitude: result.location.longitude,
+      });
     });
   }, [mapOptions]);
 
@@ -51,8 +46,42 @@ const RadarMap = ({ mapOptions, children }) => {
     return null;
   }
 
+  const geoJSONUserLocation = {
+    type: 'FeatureCollection',
+    features: userLocation?.longitude !== undefined ? [
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [userLocation.longitude, userLocation.latitude],
+        },
+      },
+    ] : [],
+  };
+
+  const userLocationMapIndicator = (
+    <MapLibreGL.ShapeSource
+      id="user-location"
+      shape={geoJSONUserLocation}
+    >
+      <MapLibreGL.CircleLayer
+        id="user-location-inner"
+        style={styles.userLocation.pulse}
+      />
+      <MapLibreGL.CircleLayer
+        id="user-location-middle"
+        style={styles.userLocation.background}
+      />
+      <MapLibreGL.CircleLayer
+        id="user-location-outer"
+        style={styles.userLocation.foreground}
+      />
+
+    </MapLibreGL.ShapeSource>
+  );
+
   return (
-    <View style={styles.container}>
+    <View style={styles.mapContainer}>
       <MapLibreGL.MapView
         style={styles.map}
         pitchEnabled={false}
@@ -62,12 +91,12 @@ const RadarMap = ({ mapOptions, children }) => {
         onRegionDidChange={mapOptions?.onRegionDidChange ? mapOptions.onRegionDidChange : null}
         styleURL={styleURL}
       >
-        <MapLibreGL.UserLocation />
+        {userLocationMapIndicator}
         {children}
       </MapLibreGL.MapView>
       <Image
         source={require('./map-logo.png')}
-        style={styles.logo}
+        style={styles.mapLogo}
       />
     </View>
   );

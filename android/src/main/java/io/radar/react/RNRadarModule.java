@@ -149,6 +149,24 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void getHost(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(Radar.getHost());
+    }
+
+    @ReactMethod
+    public void getPublishableKey(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(Radar.getPublishableKey());
+    }
+
+    @ReactMethod
     public void getPermissionsStatus(final Promise promise) {
         if (promise == null) {
             return;

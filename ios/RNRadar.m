@@ -139,11 +139,11 @@ RCT_EXPORT_METHOD(setAnonymousTrackingEnabled:(BOOL)enabled) {
     [Radar setAnonymousTrackingEnabled:enabled];
 }
 
-RCT_EXPORT_METHOD(host:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getHost:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     resolve([RadarSettings host]);
 }
 
-RCT_EXPORT_METHOD(publishableKey:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getPublishableKey:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     resolve([RadarSettings publishableKey]);
 }
 

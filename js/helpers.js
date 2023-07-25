@@ -5,11 +5,11 @@ if (!NativeModules.RNRadar && (Platform.OS === 'ios' || Platform.OS === 'android
 }
 
 const getHost = () => (
-  NativeModules.RNRadar.host()
+  NativeModules.RNRadar.getHost()
 );
 
 const getPublishableKey = () => (
-  NativeModules.RNRadar.publishableKey()
+  NativeModules.RNRadar.getPublishableKey()
 );
 
 export { getHost, getPublishableKey };
