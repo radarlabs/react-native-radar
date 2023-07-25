@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the leading geofencing and location tracking platform",
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
-  "version": "3.7.6-beta.3",
+  "version": "3.7.6-beta.4",
   "main": "js/index.js",
   "files": [
     "android",
@@ -13,7 +13,9 @@
     "react-native-radar.podspec"
   ],
   "scripts": {
-    "test": "jest ./test/*.test.js"
+    "test": "jest ./test/*.test.js",
+    "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
+    "check-beta-tag": "node ./scripts/check-beta-tag.cjs"
   },
   "jest": {
     "preset": "react-native",

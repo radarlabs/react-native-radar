@@ -7,7 +7,7 @@ console.log('Checking tag:', tagVersion);
 
 
 if (!tagVersion.includes('-beta')) {
-  console.error('Prelease version should contiain a "-beta" suffix');
+  console.error('Prelease version should contain a "-beta" suffix');
   process.exit(1);
 }
 
