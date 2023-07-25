@@ -1,5 +1,5 @@
 // Autocomplete.js
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   View,
   TextInput,
@@ -16,8 +16,8 @@ import {
   Keyboard,
   SafeAreaView,
   Pressable,
-} from "react-native";
-import Radar from "../index.native";
+} from 'react-native';
+import Radar from '../index.native';
 import {
   BACK_ICON,
   SEARCH_ICON,
@@ -25,7 +25,7 @@ import {
   MARKER_ICON,
   CLOSE_ICON,
 } from "./images";
-import { default as defaultStyles } from "./styles";
+import { default as defaultStyles } from './styles';
 
 const defaultAutocompleteOptions = {
   debounceMS: 200,
