@@ -1,4 +1,4 @@
-name: Publish Package to npmjs
+name: Publish beta package to npmjs
 on:
   release:
     types: [ prereleased ]
