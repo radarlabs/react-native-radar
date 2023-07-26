@@ -5,10 +5,7 @@ const packageLockJSON = require('../package-lock.json');
 let tagVersion = process.env.GITHUB_REF_NAME || '';
 console.log('Checking tag:', tagVersion);
 
-if (!tagVersion.startsWith('v')) {
-  console.error('Tag must start with "v"');
-  process.exit(1);
-}
+
 if (tagVersion.includes('-')) {
   console.error('Latest tag should not include any suffix:', `-${tagVersion.split('-')[1]}`);
   process.exit(1);
