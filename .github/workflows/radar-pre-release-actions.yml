@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm ci --force
+      - run: npm ci
       - run: npm run check-beta-tag
       - run: npm publish --tag beta
         env:
