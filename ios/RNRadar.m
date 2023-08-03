@@ -756,7 +756,10 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     }
 
     NSArray *layers = optionsDict[@"layers"];
-    NSString *country = optionsDict[@"country"];
+    NSString *country = optionsDict[@"countryCode"];
+    if (country == nil) {
+        country = optionsDict[@"country"];
+    }
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;

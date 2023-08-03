@@ -871,7 +871,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         near.setLatitude(latitude);
         near.setLongitude(longitude);
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
-        String country = optionsMap.hasKey("country") ? optionsMap.getString("country") : null;
+        String country = optionsMap.hasKey("countryCode") ? optionsMap.getString("countryCode") : optionsMap.hasKey("country") ? optionsMap.getString("country") : null;
         String[] layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
 
         Radar.autocomplete(query, near, layers, limit, country, new Radar.RadarGeocodeCallback() {
