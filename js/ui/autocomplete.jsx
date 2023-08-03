@@ -36,7 +36,7 @@ const defaultAutocompleteOptions = {
   disabled: false,
 };
 
-const autocompleteUI = ({ options = {}, style = {} }) => {
+const autocompleteUI = ({ options = {} }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +45,7 @@ const autocompleteUI = ({ options = {}, style = {} }) => {
   const textInputRef = useRef(null);
 
   const config = { ...defaultAutocompleteOptions, ...options };
+  const style = config.style || {};
 
   const fetchResults = useCallback(
     async (searchQuery) => {
@@ -227,7 +228,7 @@ const autocompleteUI = ({ options = {}, style = {} }) => {
           style={styles.inputContainer}
           onPress={() => {
             if (config.disabled) return;
-            
+
             setIsOpen(true);
             // Set the focus on the other textinput after it opens
             setTimeout(() => {
