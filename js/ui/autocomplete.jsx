@@ -226,6 +226,8 @@ const autocompleteUI = ({ options = {}, style = {} }) => {
         <TouchableOpacity
           style={styles.inputContainer}
           onPress={() => {
+            if (config.disabled) return;
+            
             setIsOpen(true);
             // Set the focus on the other textinput after it opens
             setTimeout(() => {
