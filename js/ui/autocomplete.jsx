@@ -35,7 +35,7 @@ const defaultAutocompleteOptions = {
   showPin: true,
 };
 
-const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
+const autocompleteUI = ({ options = {}, onSelection, location, style = {} }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -93,8 +93,8 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     setQuery(item.formattedAddress);
     setIsOpen(false);
 
-    if (typeof onSelect === "function") {
-      onSelect(item);
+    if (typeof onSelection === "function") {
+      onSelection(item);
     }
   };
 
