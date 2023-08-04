@@ -51,11 +51,11 @@ const autocompleteUI = ({ options = {} }) => {
     async (searchQuery) => {
       if (searchQuery.length < config.threshold) return;
 
-      const { limit, layers, countryCode} = config;
+      const { limit, layers, countryCode } = config;
       const params = { query: searchQuery, limit, layers, countryCode };
 
-      if (config.location && config.location.latitude && config.location.longitude) {
-        params.near = config.location;
+      if (config.near && config.near.latitude && config.near.longitude) {
+        params.near = config.near;
       }
 
       try {
