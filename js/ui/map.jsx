@@ -24,7 +24,8 @@ const RadarMap = ({ mapOptions, children }) => {
   const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
-    createStyleURL(mapOptions?.mapStyle || DEFAULT_STYLE).then((result) => {
+    const style = mapOptions?.style || mapOptions?.mapStyle || DEFAULT_STYLE;
+    createStyleURL(style).then((result) => {
       setStyleURL(result);
     });
   }, [mapOptions]);
