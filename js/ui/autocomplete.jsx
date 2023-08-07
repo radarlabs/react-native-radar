@@ -28,14 +28,15 @@ import {
 import { default as defaultStyles } from './styles';
 
 const defaultAutocompleteOptions = {
-  debounceMS: 200,
-  threshold: 3,
-  limit: 8,
-  placeholder: "Search address",
-  showPin: true,
+  debounceMS: 200, // Debounce time in milliseconds
+  threshold: 3, // Minimum number of characters to trigger autocomplete
+  limit: 8, // Maximum number of results to return
+  placeholder: "Search address", // Placeholder text for the input field
+  showMarkers: true,
+  disabled: false,
 };
 
-const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
+const autocompleteUI = ({ options = {} }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -44,19 +45,26 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
   const textInputRef = useRef(null);
 
   const config = { ...defaultAutocompleteOptions, ...options };
+  const style = config.style || {};
 
   const fetchResults = useCallback(
     async (searchQuery) => {
       if (searchQuery.length < config.threshold) return;
 
-      const params = { query: searchQuery, limit: config.limit };
+      const { limit, layers, countryCode } = config;
+      const params = { query: searchQuery, limit, layers, countryCode };
 
-      if (location && location.latitude && location.longitude) {
-        params.near = location;
+      if (config.near && config.near.latitude && config.near.longitude) {
+        params.near = config.near;
       }
 
       try {
         const result = await Radar.autocomplete(params);
+
+        if (config.onResults && typeof config.onResults === "function") {
+          config.onResults(result.addresses);
+        }
+
         setResults(result.addresses);
         setIsOpen(true);
       } catch (error) {
@@ -93,8 +101,8 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     setQuery(item.formattedAddress);
     setIsOpen(false);
 
-    if (typeof onSelect === "function") {
-      onSelect(item);
+    if (typeof config.onSelection === "function") {
+      config.onSelection(item);
     }
   };
 
@@ -129,7 +137,7 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
     >
       <View style={styles.addressContainer}>
         <View style={styles.pinIconContainer}>
-          {config.showPin ? (
+          {config.showMarkers ? (
             <Image source={MARKER_ICON} style={styles.pinIcon} />
           ) : null}
         </View>
@@ -219,6 +227,8 @@ const autocompleteUI = ({ options = {}, onSelect, location, style = {} }) => {
         <TouchableOpacity
           style={styles.inputContainer}
           onPress={() => {
+            if (config.disabled) return;
+
             setIsOpen(true);
             // Set the focus on the other textinput after it opens
             setTimeout(() => {
