@@ -756,12 +756,21 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     }
 
     NSArray *layers = optionsDict[@"layers"];
-    NSString *country = optionsDict[@"country"];
+    
+    NSString *countryCode = nil;
+    // Country is a deprecated field, it still supported but will be over-ridden if countryCode field is defined
+    if (optionsDict[@"country"] != nil ) {
+        countryCode = optionsDict[@"country"];
+    }
+    if(countryCode == nil || optionsDict[@"countryCode"] != nil){
+        countryCode = optionsDict[@"countryCode"];
+    }
+    
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar autocompleteQuery:query near:near layers:layers limit:limit country:country completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
+    [Radar autocompleteQuery:query near:near layers:layers limit:limit countryCode:countryCode completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
