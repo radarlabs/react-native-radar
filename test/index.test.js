@@ -371,6 +371,7 @@ describe('calls native implementation', () => {
         longitude: -73.975363,
       },
       limit: 10,
+      countryCode:'US',
     };
     Radar.autocomplete(options);
 
