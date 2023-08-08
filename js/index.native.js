@@ -146,9 +146,12 @@ const searchGeofences = options => (
   NativeModules.RNRadar.searchGeofences(options)
 );
 
-const autocomplete = options => (
+const autocomplete = options => {
+  console.log("react layer got ", options)
   NativeModules.RNRadar.autocomplete(options)
-);
+}
+  
+;
 
 const geocode = address => (
   NativeModules.RNRadar.geocode(address)
