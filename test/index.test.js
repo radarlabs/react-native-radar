@@ -366,11 +366,14 @@ describe('calls native implementation', () => {
   test('autocomplete', () => {
     const options = {
       query: 'brooklyn roasting',
+      layers: ['"address'],
       near: {
         latitude: 40.783826,
         longitude: -73.975363,
       },
       limit: 10,
+      countryCode: "US",
+      expandUnits: true
     };
     Radar.autocomplete(options);
 

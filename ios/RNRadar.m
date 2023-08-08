@@ -760,11 +760,19 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     if (country == nil) {
         country = optionsDict[@"country"];
     }
+    
+    NSNumber *expandUnitsPointer = optionsDict[@"expandUnits"];
+    bool expandUnits;
+    if (expandUnitsPointer != nil && [expandUnitsPointer isKindOfClass:[NSNumber class]]) {
+        expandUnits = [expandUnitsPointer boolValue];
+    } else {
+        expandUnits = false;
+    }
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar autocompleteQuery:query near:near layers:layers limit:limit country:country completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
+    [Radar autocompleteQuery:query near:near layers:layers limit:limit country:country, expandUnits: expandUnits, completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
