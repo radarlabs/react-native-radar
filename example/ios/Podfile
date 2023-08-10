@@ -24,6 +24,8 @@ target 'example' do
 
   post_install do |installer|
     react_native_post_install(installer)
+    $RNMBGL.post_install(installer)
+
 
     # Workaround `Cycle inside FBReactNativeSpec` error for react-native 0.64
     # Reference: https://github.com/software-mansion/react-native-screens/issues/842#issuecomment-812543933

@@ -44,6 +44,7 @@ const autocompleteUI = ({ options = {} }) => {
   const timerRef = useRef(null);
   const textInputRef = useRef(null);
 
+
   const config = { ...defaultAutocompleteOptions, ...options };
   const style = config.style || {};
 
@@ -171,7 +172,7 @@ const autocompleteUI = ({ options = {} }) => {
       style.modalInputContainer
     ),
     resultList: StyleSheet.compose(defaultStyles.resultList, style.resultList),
-    resultItem: StyleSheet.compose(defaultStyles.resultItem, style.resultItem),
+    resultItem: StyleSheet.compose({...defaultStyles.resultItem, pressedBackgroundColor: '#F6FAFC'}, style.resultItem),
     addressContainer: StyleSheet.compose(
       defaultStyles.addressContainer,
       style.addressContainer

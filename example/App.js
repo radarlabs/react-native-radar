@@ -1,7 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Radar from 'react-native-radar';
+import Radar, { Map, Autocomplete} from 'react-native-radar';
+import MapLibreGL from '@maplibre/maplibre-react-native';
+
+MapLibreGL.setAccessToken(null);
+
 
 const stringify = obj => (
   JSON.stringify(obj, null, 2)
@@ -28,7 +32,7 @@ Radar.on('log', (result) => {
 });
 
 export default function App() {
-  Radar.initialize('prj_test_pk_0000000000000000000000000000000000000000');
+  Radar.initialize('prj_live_pk_...');
 
   Radar.setLogLevel('info');
 
@@ -300,10 +304,13 @@ export default function App() {
 
   Radar.completeTrip();
   
-  Radar.sendEvent(
-    "in_app_purchase",
-    {"price": "$150"}
-  ).then((result) => {
+  Radar.logConversion({
+    name: 'in_app_purchase',
+    revenue: 150,
+    metadata: {
+      sku: '123456789',
+    },
+  }).then((result) => {
     console.log("sendEvent:", stringify(result));
   }).catch((err) => {
     console.log("sendEvent:", err);
@@ -311,8 +318,20 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <View style={{ width: '100%', height: '50%'}}>
+        <Map />
+      </View>
+      <View style={{ width: '100%', height: '15%'}}>
+      <Autocomplete options={{
+            near: {
+              latitude: 40.7342,
+              longitude: -73.9911,
+            }
+          }} />
+      </View>
+      <View style={{ width: '100%', height: '35%'}}>
+          {/* buttons go here  */}
+      </View>
     </View>
   );
 }

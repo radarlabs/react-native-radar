@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 12,
     backgroundColor: 'white',
-    pressedBackgroundColor: '#F6FAFC',
   },
   addressContainer: {
     flexDirection: 'row',
@@ -120,24 +119,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     resizeMode: 'contain',
-  },
-  userLocation: {
-    pulse: {
-      circleRadius: 15,
-      circleColor: '#000257',
-      circleOpacity: 0.2,
-      circlePitchAlignment: 'map',
-    },
-    background: {
-      circleRadius: 9,
-      circleColor: '#fff',
-      circlePitchAlignment: 'map',
-    },
-    foreground: {
-      circleRadius: 6,
-      circleColor: '#000257',
-      circlePitchAlignment: 'map',
-    },
   },
 });
 
