@@ -150,10 +150,7 @@ export default function App() {
       latitude: 40.783826,
       longitude: -73.975363,
     },
-    layers:["address"],
     limit: 10,
-    countryCode: "US",
-    expandUnits:true
   }).then((result) => {
     console.log('autocomplete:', stringify(result));
   }).catch((err) => {
