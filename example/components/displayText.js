@@ -16,6 +16,8 @@ const DisplayText = () => {
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.displayText}>{displayText}</Text>
+      </ScrollView>
+      <ScrollView>
         <ExampleButton
           title="getUser"
           onPress={() => {
@@ -89,6 +91,19 @@ const DisplayText = () => {
           }}
         />
         <ExampleButton
+          title="trackOnce"
+          onPress={() => {
+            Radar.trackOnce()
+              .then((result) => {
+                handlePopulateText("trackOnce:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("trackOnce:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
           title="trackOnce manual"
           onPress={() => {
             Radar.trackOnce({
@@ -112,17 +127,82 @@ const DisplayText = () => {
           }}
         />
         <ExampleButton
-          title="trackOnce"
+          title="trackOnce manual with beacons:"
           onPress={() => {
-            Radar.trackOnce()
+            Radar.trackOnce({
+              desiredAccuracy: "medium",
+              beacons: true,
+            })
               .then((result) => {
-                handlePopulateText("trackOnce:" + stringify(result));
+                handlePopulateText(
+                  "trackOnce manual with beacons:" + stringify(result)
+                );
               })
               .catch((err) => {
-                handlePopulateText("trackOnce:" + err);
+                handlePopulateText("trackOnce manual with beacons:" + err);
               });
           }}
         />
+        <ExampleButton
+          title="trackOnce for back compatible"
+          onPress={() => {
+            Radar.trackOnce({
+              latitude: 39.2904,
+              longitude: -76.6122,
+              accuracy: 65,
+            })
+              .then((result) => {
+                handlePopulateText(
+                  "trackOnce for back compatible:" + stringify(result)
+                );
+              })
+              .catch((err) => {
+                handlePopulateText("trackOnce for back compatible:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
+          title="searchPlaces"
+          onPress={() => {
+            Radar.searchPlaces({
+              near: {
+                latitude: 40.783826,
+                longitude: -73.975363,
+              },
+              radius: 1000,
+              chains: ["starbucks"],
+              chainMetadata: {
+                customFlag: "true",
+              },
+              limit: 10,
+            })
+              .then((result) => {
+                handlePopulateText("searchPlaces:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("searchPlaces:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
+          title="searchGeofences"
+          onPress={() => {
+            Radar.searchGeofences({
+              radius: 1000,
+              tags: ["venue"],
+              limit: 10,
+            })
+              .then((result) => {
+                handlePopulateText("searchGeofences:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("searchGeofences:" + err);
+              });
+          }}
+        />
+
         <ExampleButton
           title="autocomplete"
           onPress={() => {
@@ -146,12 +226,196 @@ const DisplayText = () => {
         <ExampleButton
           title="geocode"
           onPress={() => {
-            Radar.getUserId()
+            Radar.geocode("20 jay st brooklyn")
               .then((result) => {
                 handlePopulateText("geocode:" + stringify(result));
               })
               .catch((err) => {
                 handlePopulateText("geocode:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
+          title="reverseGeocode"
+          onPress={() => {
+            Radar.reverseGeocode({
+              latitude: 40.783826,
+              longitude: -73.975363,
+            })
+              .then((result) => {
+                handlePopulateText("reverseGeocode:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("reverseGeocode:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
+          title="ipGeocode"
+          onPress={() => {
+            Radar.ipGeocode()
+              .then((result) => {
+                handlePopulateText("ipGeocode:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("ipGeocode:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
+          title="getDistance"
+          onPress={() => {
+            Radar.getDistance({
+              origin: {
+                latitude: 40.78382,
+                longitude: -73.97536,
+              },
+              destination: {
+                latitude: 40.7039,
+                longitude: -73.9867,
+              },
+              modes: ["foot", "car"],
+              units: "imperial",
+            })
+              .then((result) => {
+                handlePopulateText("getDistance:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("getDistance:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
+          title="getMatrix"
+          onPress={() => {
+            Radar.getMatrix({
+              origins: [
+                {
+                  latitude: 40.78382,
+                  longitude: -73.97536,
+                },
+                {
+                  latitude: 40.7039,
+                  longitude: -73.9867,
+                },
+              ],
+              destinations: [
+                {
+                  latitude: 40.64189,
+                  longitude: -73.78779,
+                },
+                {
+                  latitude: 35.99801,
+                  longitude: -78.94294,
+                },
+              ],
+              mode: "car",
+              units: "imperial",
+            })
+              .then((result) => {
+                handlePopulateText("getMatrix:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("getMatrix:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
+          title="startTrip"
+          onPress={() => {
+            Radar.startTrip({
+              tripOptions: {
+                externalId: "300",
+                destinationGeofenceTag: "store",
+                destinationGeofenceExternalId: "123",
+                mode: "car",
+                scheduledArrivalAt: new Date("2023-10-10T12:20:30Z").getTime(),
+              },
+            })
+              .then((result) => {
+                handlePopulateText("startTrip:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("startTrip:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
+          title="startTrip"
+          onPress={() => {
+            Radar.startTrip({
+              tripOptions: {
+                externalId: "302",
+                destinationGeofenceTag: "store",
+                destinationGeofenceExternalId: "123",
+                mode: "car",
+                scheduledArrivalAt: new Date("2023-10-10T12:20:30Z").getTime(),
+              },
+              trackingOptions: {
+                desiredStoppedUpdateInterval: 30,
+                fastestStoppedUpdateInterval: 30,
+                desiredMovingUpdateInterval: 30,
+                fastestMovingUpdateInterval: 30,
+                desiredSyncInterval: 20,
+                desiredAccuracy: "high",
+                stopDuration: 0,
+                stopDistance: 0,
+                replay: "none",
+                sync: "all",
+                showBlueBar: true,
+                useStoppedGeofence: false,
+                stoppedGeofenceRadius: 0,
+                useMovingGeofence: false,
+                movingGeofenceRadius: 0,
+                syncGeofences: false,
+                syncGeofencesLimit: 0,
+                beacons: false,
+                foregroundServiceEnabled: false,
+              },
+            })
+              .then((result) => {
+                handlePopulateText("startTrip:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("startTrip:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
+          title="completeTrip"
+          onPress={() => {
+            Radar.completeTrip()
+              .then((result) => {
+                handlePopulateText("completeTrip:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("completeTrip:" + err);
+              });
+          }}
+        />
+
+        <ExampleButton
+          title="logConversion"
+          onPress={() => {
+            Radar.logConversion({
+              name: "in_app_purchase",
+              revenue: 150,
+              metadata: {
+                sku: "123456789",
+              },
+            })
+              .then((result) => {
+                handlePopulateText("logConversion:" + stringify(result));
+              })
+              .catch((err) => {
+                handlePopulateText("logConversion:" + err);
               });
           }}
         />
