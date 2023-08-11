@@ -30,7 +30,8 @@ Radar.on("log", (result) => {
 });
 
 export default function App() {
-  Radar.initialize("prj_test_pk_4ce462a534c0f749af3fdaac6fff9f485d65e720");
+  // add in your test code here!
+  Radar.initialize("prj_test_pk_...");
 
   Radar.setLogLevel("info");
 
