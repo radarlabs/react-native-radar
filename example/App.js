@@ -56,10 +56,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={{ width: "100%", height: "50%" }}>
+      <View style={{ width: "100%", height: "40%" }}>
         <Map />
       </View>
-      <View style={{ width: "100%", height: "15%" }}>
+      <View style={{ width: "100%", height: "10%" }}>
         <Autocomplete
           options={{
             near: {
@@ -69,10 +69,7 @@ export default function App() {
           }}
         />
       </View>
-      {/* <View style={{ width: "100%", height: "35%" }}>
-        <DisplayText />
-      </View> */}
-      <View style={{ width: "100%", height: "35%" }}>
+      <View style={{ width: "100%", height: "50%" }}>
         <ScrollView>
           <Text style={styles.displayText}>{displayText}</Text>
         </ScrollView>
