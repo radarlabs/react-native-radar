@@ -242,7 +242,7 @@ PODS:
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
   - React-jsinspector (0.64.3)
-  - react-native-radar (3.8.4):
+  - react-native-radar (3.8.5):
     - RadarSDK (~> 3.8.4)
     - React
   - react-native-safe-area-context (3.3.2):
@@ -529,7 +529,7 @@ SPEC CHECKSUMS:
   EXUpdates: 061b67c33f0e7f8fd335bbb48697c4a4fc8a5157
   EXUpdatesInterface: e1c01b4f5ec76bd1d6cc714938f9edf5ef6379b9
   FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
-  FBReactNativeSpec: d55cc83d9dc993d9832c60fb5343bf811f1cd092
+  FBReactNativeSpec: 0927ccb6f474e439386ebce65cccb07b9612e950
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   maplibre-react-native: f08cc1b867c4b3080b34955f8e2ce938361df4c2
   RadarSDK: 00aac8132174517cd0de9b43af0aa168edaf5a4c
@@ -544,7 +544,7 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-radar: 120e6fb7d2c87fe3ea917a5e83a86e53e36eee3c
+  react-native-radar: 387abf87eb20ad528ee5bd5cd81fa57e8a230475
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   React-perflogger: cc76a4254d19640f1d8ad1c66fdee800414b805c
   React-RCTActionSheet: 7448f049318d8d7e8a9a1ebb742ada721757eea8
@@ -567,4 +567,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ac3241f9540525d739bc6e1ec2f5381dee057b14
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

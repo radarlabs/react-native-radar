@@ -189,6 +189,7 @@ dependencies {
         strictly '1.3.1'
         }
     }
+    implementation 'com.google.android.play:integrity:1.0.2'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

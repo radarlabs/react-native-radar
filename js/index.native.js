@@ -6,8 +6,8 @@ if (!NativeModules.RNRadar && (Platform.OS === 'ios' || Platform.OS === 'android
 
 const eventEmitter = new NativeEventEmitter(NativeModules.RNRadar);
 
-const initialize = (publishableKey) => {
-  NativeModules.RNRadar.initialize(publishableKey);
+const initialize = (publishableKey, fraud) => {
+  NativeModules.RNRadar.initialize(publishableKey, fraud);
 };
 
 const setLogLevel = (level) => {
