@@ -78,9 +78,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void initialize(String publishableKey) {
-        Radar.initialize(getReactApplicationContext(), publishableKey);
-        Radar.setReceiver(receiver);
+    public void initialize(String publishableKey, boolean fraud) {
+        if (fraud) {
+            Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, true);
+        } else {
+            Radar.initialize(getReactApplicationContext(), publishableKey);
+            Radar.setReceiver(receiver);
+        }
     }
 
     @ReactMethod
