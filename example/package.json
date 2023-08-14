@@ -4,31 +4,39 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "postinstall": "patch-package"
   },
   "dependencies": {
+    "@babel/runtime": "^7.22.10",
+    "@maplibre/maplibre-react-native": "^9.0.1",
+    "@react-native/normalize-color": "^2.1.0",
+    "babel": "^6.23.0",
+    "blueimp-md5": "^2.19.0",
     "expo": "^43.0.0",
+    "expo-asset": "^8.10.1",
     "expo-splash-screen": "~0.13.5",
     "expo-status-bar": "~1.1.0",
     "expo-updates": "~0.10.15",
+    "patch-package": "^8.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-radar": "../",
     "react-native-reanimated": "~2.2.0",
+    "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
     "react-native-unimodules": "~0.15.0",
-    "react-native-web": "0.17.1",
-    "react-native-safe-area-context": "3.3.2"
+    "react-native-web": "0.17.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "babel-jest": "~25.2.6",
     "jest": "~25.2.6",
+    "jest-expo": "~43.0.1",
     "radar-sdk-js": "^3.5.0",
-    "react-test-renderer": "17.0.1",
-    "jest-expo": "~43.0.1"
+    "react-test-renderer": "17.0.1"
   },
   "private": true,
   "name": "example",
