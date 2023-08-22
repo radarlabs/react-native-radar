@@ -6,7 +6,7 @@ if (!NativeModules.RNRadar && (Platform.OS === 'ios' || Platform.OS === 'android
 
 const eventEmitter = new NativeEventEmitter(NativeModules.RNRadar);
 
-const initialize = (publishableKey, fraud) => {
+const initialize = (publishableKey, fraud = false) => {
   NativeModules.RNRadar.initialize(publishableKey, fraud);
 };
 
