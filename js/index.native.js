@@ -102,6 +102,10 @@ const getTrackingOptions = () => (
   NativeModules.RNRadar.getTrackingOptions()
 )
 
+const isUsingRemoteTrackingOptions = () => (
+  NativeModules.RNRadar.isUsingRemoteTrackingOptions()
+)
+
 const isTracking = () => (
   NativeModules.RNRadar.isTracking()
 )

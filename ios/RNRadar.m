@@ -407,6 +407,11 @@ RCT_EXPORT_METHOD(isTracking:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseR
     resolve(@(res));
 }
 
+RCT_EXPORT_METHOD(isUsingRemoteTrackingOptions:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    BOOL res = [Radar isUsingRemoteTrackingOptions];
+    resolve(@(res));
+}
+
 RCT_EXPORT_METHOD(getTrackingOptions:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (resolve == nil) {
         return;
