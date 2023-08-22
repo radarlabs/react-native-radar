@@ -91,6 +91,10 @@ const trackVerified = () => {
   // not implemented
 };
 
+const trackVerifiedToken = () => {
+  // not implemented
+};
+
 const startTrackingEfficient = () => {  
   // not implemented
 };
@@ -376,6 +380,7 @@ const Radar = {
   getLocation,
   trackOnce,
   trackVerified,
+  trackVerifiedToken,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,

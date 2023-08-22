@@ -70,6 +70,10 @@ const trackVerified = () => (
   NativeModules.RNRadar.trackVerified()
 );
 
+const trackVerifiedToken = () => (
+  NativeModules.RNRadar.trackVerifiedToken()
+);
+
 const startTrackingEfficient = () => (
   NativeModules.RNRadar.startTrackingEfficient()
 );
@@ -205,6 +209,7 @@ const Radar = {
   getLocation,
   trackOnce,
   trackVerified,
+  trackVerifiedToken,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,
