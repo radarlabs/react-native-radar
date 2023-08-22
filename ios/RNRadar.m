@@ -319,6 +319,27 @@ RCT_EXPORT_METHOD(trackVerified:(RCTPromiseResolveBlock)resolve reject:(RCTPromi
     [Radar trackVerifiedWithCompletionHandler:completionHandler];
 }
 
+RCT_EXPORT_METHOD(trackVerifiedToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+        __block RCTPromiseResolveBlock resolver = resolve;
+        __block RCTPromiseRejectBlock rejecter = reject;
+
+       RadarTrackTokenCompletionHandler completionHandler = ^(RadarStatus status, NSString * _Nullable token) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (token) {
+                [dict setObject:token forKey:@"token"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    }; 
+
+    [Radar trackVerifiedTokenWithCompletionHandler:completionHandler];
+}
 
 RCT_EXPORT_METHOD(startTrackingEfficient) {
     [Radar startTrackingWithOptions:RadarTrackingOptions.presetEfficient];

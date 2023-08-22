@@ -48,7 +48,7 @@ PODS:
   - maplibre-react-native/DynamicLibrary (9.0.1):
     - React
     - React-Core
-  - RadarSDK (3.8.4)
+  - RadarSDK (3.8.5)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -242,8 +242,8 @@ PODS:
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
   - React-jsinspector (0.64.3)
-  - react-native-radar (3.8.5):
-    - RadarSDK (~> 3.8.4)
+  - react-native-radar (3.8.7):
+    - RadarSDK (~> 3.8.5)
     - React
   - react-native-safe-area-context (3.3.2):
     - React-Core
@@ -532,7 +532,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 0927ccb6f474e439386ebce65cccb07b9612e950
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   maplibre-react-native: f08cc1b867c4b3080b34955f8e2ce938361df4c2
-  RadarSDK: 00aac8132174517cd0de9b43af0aa168edaf5a4c
+  RadarSDK: 7e5e130540c796cfc0a326bbe10b8992d852f2e1
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: d34bf57e17cb6e3b2681f4809b13843c021feb6c
   RCTTypeSafety: 8dab4933124ed39bb0c1d88d74d61b1eb950f28f
@@ -544,7 +544,7 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-radar: 387abf87eb20ad528ee5bd5cd81fa57e8a230475
+  react-native-radar: 02f813320fc911110f1d056d3a1688784ce4ec9d
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   React-perflogger: cc76a4254d19640f1d8ad1c66fdee800414b805c
   React-RCTActionSheet: 7448f049318d8d7e8a9a1ebb742ada721757eea8

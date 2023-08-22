@@ -492,6 +492,19 @@ export default function App() {
                 });
             }}
           />
+
+          <ExampleButton
+            title="trackVerifiedToken"
+            onPress={() => {
+              Radar.trackVerifiedToken()
+                .then((result) => {
+                  handlePopulateText("trackVerifiedToken:" + stringify(result));
+                })
+                .catch((err) => {
+                  handlePopulateText("trackVerifiedToken:" + err);
+                });
+            }}
+          />
         </ScrollView>
       </View>
     </View>
