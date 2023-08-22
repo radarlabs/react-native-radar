@@ -397,8 +397,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     } else {
                         promise.reject(status.toString(), status.toString());
                     }
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSONException", e);
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception", e);
                     promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             }
