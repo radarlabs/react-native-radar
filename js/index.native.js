@@ -208,6 +208,7 @@ const Radar = {
   setMetadata,
   getMetadata,
   setAnonymousTrackingEnabled,
+  isUsingRemoteTrackingOptions,
   getPermissionsStatus,
   requestPermissions,
   getLocation,
