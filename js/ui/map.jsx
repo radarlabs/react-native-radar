@@ -66,17 +66,29 @@ const RadarMap = ({ mapOptions, children }) => {
     >
       <MapLibreGL.CircleLayer
         id="user-location-inner"
-        style={styles.userLocation.pulse}
+        style={{
+          circleRadius: 15,
+          circleColor: '#000257',
+          circleOpacity: 0.2,
+          circlePitchAlignment: 'map',
+        }}
       />
       <MapLibreGL.CircleLayer
         id="user-location-middle"
-        style={styles.userLocation.background}
+        style={{
+          circleRadius: 9,
+          circleColor: '#fff',
+          circlePitchAlignment: 'map',
+        }}
       />
       <MapLibreGL.CircleLayer
         id="user-location-outer"
-        style={styles.userLocation.foreground}
+        style={{
+          circleRadius: 6,
+          circleColor: '#000257',
+          circlePitchAlignment: 'map',
+        }}
       />
-
     </MapLibreGL.ShapeSource>
   );
 

@@ -3,7 +3,7 @@ PODS:
   - DoubleConversion (1.1.6)
   - EXApplication (4.0.2):
     - ExpoModulesCore
-  - EXConstants (12.0.0):
+  - EXConstants (12.1.3):
     - ExpoModulesCore
   - EXFileSystem (13.0.3):
     - ExpoModulesCore
@@ -41,7 +41,14 @@ PODS:
     - React-jsi (= 0.64.3)
     - ReactCommon/turbomodule/core (= 0.64.3)
   - glog (0.3.5)
-  - RadarSDK (3.5.9)
+  - maplibre-react-native (9.0.1):
+    - maplibre-react-native/DynamicLibrary (= 9.0.1)
+    - React
+    - React-Core
+  - maplibre-react-native/DynamicLibrary (9.0.1):
+    - React
+    - React-Core
+  - RadarSDK (3.8.5)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -235,8 +242,8 @@ PODS:
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
   - React-jsinspector (0.64.3)
-  - react-native-radar (3.5.8):
-    - RadarSDK (~> 3.5.9)
+  - react-native-radar (3.8.6):
+    - RadarSDK (~> 3.8.5)
     - React
   - react-native-safe-area-context (3.3.2):
     - React-Core
@@ -362,6 +369,7 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - "maplibre-react-native (from `../node_modules/@maplibre/maplibre-react-native`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -375,7 +383,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-radar (from `../node_modules/react-native-radar`)
+  - react-native-radar (from `../..`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -438,6 +446,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  maplibre-react-native:
+    :path: "../node_modules/@maplibre/maplibre-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -461,7 +471,7 @@ EXTERNAL SOURCES:
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-radar:
-    :path: "../node_modules/react-native-radar"
+    :path: "../.."
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-perflogger:
@@ -505,7 +515,7 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   EXApplication: 54fe5bd6268d697771645e8f1aef8b806a65247a
-  EXConstants: b14b472da01b8191c1cfe86f29caa1e0c6a46bed
+  EXConstants: 6d585d93723b18d7a8c283591a335609e3bc153e
   EXFileSystem: 99aac7962c11c680681819dd9cbca24e20e5b1e7
   EXFont: 2597c10ac85a69d348d44d7873eccf5a7576ef5e
   EXImageLoader: 939451be6f7b731aaa6588920b90743f20121a4d
@@ -519,9 +529,10 @@ SPEC CHECKSUMS:
   EXUpdates: 061b67c33f0e7f8fd335bbb48697c4a4fc8a5157
   EXUpdatesInterface: e1c01b4f5ec76bd1d6cc714938f9edf5ef6379b9
   FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
-  FBReactNativeSpec: 49e3b1196c098eae8fa4c35c55441b8906659966
+  FBReactNativeSpec: 0927ccb6f474e439386ebce65cccb07b9612e950
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
-  RadarSDK: 9c3b51e9aafcd35d7d80fd4d0d81d9feca36490e
+  maplibre-react-native: f08cc1b867c4b3080b34955f8e2ce938361df4c2
+  RadarSDK: 7e5e130540c796cfc0a326bbe10b8992d852f2e1
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: d34bf57e17cb6e3b2681f4809b13843c021feb6c
   RCTTypeSafety: 8dab4933124ed39bb0c1d88d74d61b1eb950f28f
@@ -533,7 +544,7 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-radar: 46e9349505e71d8fb28ca0d43929c05e22303ed9
+  react-native-radar: b9fc20f190820ae8c5018b004fc3af1df5a153d8
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   React-perflogger: cc76a4254d19640f1d8ad1c66fdee800414b805c
   React-RCTActionSheet: 7448f049318d8d7e8a9a1ebb742ada721757eea8
@@ -554,6 +565,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 5654c50e68af11b19b9d05452bacf23d19b3f30f
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
 
-PODFILE CHECKSUM: 24051a3ecfdb115a8c042c84c1f821c9b67c036d
+PODFILE CHECKSUM: ac3241f9540525d739bc6e1ec2f5381dee057b14
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

@@ -6,8 +6,8 @@ if (!NativeModules.RNRadar && (Platform.OS === 'ios' || Platform.OS === 'android
 
 const eventEmitter = new NativeEventEmitter(NativeModules.RNRadar);
 
-const initialize = (publishableKey) => {
-  NativeModules.RNRadar.initialize(publishableKey);
+const initialize = (publishableKey, fraud = false) => {
+  NativeModules.RNRadar.initialize(publishableKey, fraud);
 };
 
 const setLogLevel = (level) => {
@@ -70,6 +70,10 @@ const trackVerified = () => (
   NativeModules.RNRadar.trackVerified()
 );
 
+const trackVerifiedToken = () => (
+  NativeModules.RNRadar.trackVerifiedToken()
+);
+
 const startTrackingEfficient = () => (
   NativeModules.RNRadar.startTrackingEfficient()
 );
@@ -96,6 +100,10 @@ const stopTracking = () => (
 
 const getTrackingOptions = () => (
   NativeModules.RNRadar.getTrackingOptions()
+)
+
+const isUsingRemoteTrackingOptions = () => (
+  NativeModules.RNRadar.isUsingRemoteTrackingOptions()
 )
 
 const isTracking = () => (
@@ -200,11 +208,13 @@ const Radar = {
   setMetadata,
   getMetadata,
   setAnonymousTrackingEnabled,
+  isUsingRemoteTrackingOptions,
   getPermissionsStatus,
   requestPermissions,
   getLocation,
   trackOnce,
   trackVerified,
+  trackVerifiedToken,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,
