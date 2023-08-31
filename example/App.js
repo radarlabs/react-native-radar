@@ -29,7 +29,6 @@ Radar.on("log", (result) => {
 });
 
 export default function App() {
-
   // add in your test code here!
   const [displayText, setDisplayText] = useState("");
 

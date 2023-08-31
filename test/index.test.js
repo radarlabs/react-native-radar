@@ -366,7 +366,7 @@ describe('calls native implementation', () => {
   test('autocomplete', () => {
     const options = {
       query: 'brooklyn roasting',
-      layers: ['"address'],
+      layers: ['address'],
       near: {
         latitude: 40.783826,
         longitude: -73.975363,

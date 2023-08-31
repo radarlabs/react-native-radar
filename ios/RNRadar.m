@@ -788,9 +788,9 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     }
 
     BOOL expandUnits = false;
-    NSNumber *expandUnitsPointer = optionsDict[@"expandUnits"];
-    if (expandUnitsPointer != nil && [expandUnitsPointer isKindOfClass:[NSNumber class]]) {
-        expandUnits = [expandUnitsPointer boolValue]; 
+    NSNumber *expandUnitsNumber = optionsDict[@"expandUnits"];
+    if (expandUnitsNumber != nil && [expandUnitsNumber isKindOfClass:[NSNumber class]]) {
+        expandUnits = [expandUnitsNumber boolValue]; 
     }
 
     __block RCTPromiseResolveBlock resolver = resolve;
