@@ -9,6 +9,7 @@ MapLibreGL.setAccessToken(null);
 const stringify = (obj) => JSON.stringify(obj, null, 2);
 
 Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
+
 Radar.setLogLevel("info");
 
 Radar.setUserId("foo");
