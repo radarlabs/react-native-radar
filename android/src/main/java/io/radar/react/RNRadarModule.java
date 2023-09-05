@@ -915,7 +915,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         String country = optionsMap.hasKey("countryCode") ? optionsMap.getString("countryCode") : optionsMap.hasKey("country") ? optionsMap.getString("country") : null;
         String[] layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
 
-        Radar.autocomplete(query, near, layers, limit, country, new Radar.RadarGeocodeCallback() {
+        boolean expandUnits = optionsMap.hasKey("expandUnits") ? optionsMap.getBoolean("expandUnits") : false;
+
+        Radar.autocomplete(query, near, layers, limit, country, expandUnits,new Radar.RadarGeocodeCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
