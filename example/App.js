@@ -8,6 +8,8 @@ MapLibreGL.setAccessToken(null);
 
 const stringify = (obj) => JSON.stringify(obj, null, 2);
 
+Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
+
 Radar.on("events", (result) => {
   console.log("events:", stringify(result));
 });
@@ -39,7 +41,6 @@ export default function App() {
   const stringify = (obj) => JSON.stringify(obj, null, 2);
 
   useEffect(() => {
-    Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
 
     Radar.setLogLevel("info");
 
