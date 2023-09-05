@@ -9,6 +9,17 @@ MapLibreGL.setAccessToken(null);
 const stringify = (obj) => JSON.stringify(obj, null, 2);
 
 Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
+Radar.setLogLevel("info");
+
+Radar.setUserId("foo");
+
+Radar.setDescription("description");
+
+Radar.setMetadata({
+  foo: "bar",
+  baz: true,
+  qux: 1,
+});
 
 Radar.on("events", (result) => {
   console.log("events:", stringify(result));
@@ -42,17 +53,7 @@ export default function App() {
 
   useEffect(() => {
 
-    Radar.setLogLevel("info");
 
-    Radar.setUserId("foo");
-
-    Radar.setDescription("description");
-
-    Radar.setMetadata({
-      foo: "bar",
-      baz: true,
-      qux: 1,
-    });
   }, []);
 
   return (
