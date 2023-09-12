@@ -31,13 +31,12 @@ const RadarMap = ({ mapOptions, children }) => {
 
   useEffect(() => {
     Radar.getLocation().then((result) => {
-      if (!result.location || !result.location.latitude || !result.location.longitude) {
-        return;
+      if (result?.location?.latitude && result?.location?.longitude) {
+        setUserLocation({
+          latitude: result.location.latitude,
+          longitude: result.location.longitude,
+        });
       }
-      setUserLocation({
-        latitude: result.location.latitude,
-        longitude: result.location.longitude,
-      });
     }).catch((err) => {
       // eslint-disable-next-line no-console
       console.warn(`Radar SDK: Failed to get location: ${err}`);
