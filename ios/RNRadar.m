@@ -132,9 +132,7 @@ RCT_EXPORT_METHOD(getLogLevel:(RCTPromiseResolveBlock)resolve reject:(RCTPromise
             logLevelString = @"DEBUG";
             break;
     }
-     NSLog(@"Current log level: %@", logLevelString); 
-    NSString *fetchedData = @"This is the fetched data";
-    resolve(fetchedData);
+    resolve(logLevelString);
 }
 
 RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {
