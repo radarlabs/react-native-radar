@@ -39,7 +39,10 @@ export default function App() {
   const stringify = (obj) => JSON.stringify(obj, null, 2);
 
   useEffect(() => {
-    Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
+    Radar.initialize(
+      "prj_test_pk_0000000000000000000000000000000000000000",
+      true
+    );
 
     Radar.setLogLevel("info");
 
@@ -83,6 +86,19 @@ export default function App() {
                 })
                 .catch((err) => {
                   handlePopulateText("getUserId:" + err);
+                });
+            }}
+          />
+
+          <ExampleButton
+            title="getLogLevel"
+            onPress={() => {
+              Radar.getLogLevel()
+                .then((result) => {
+                  handlePopulateText("getLogLevel:" + result);
+                })
+                .catch((err) => {
+                  handlePopulateText("getLogLevel:" + err);
                 });
             }}
           />

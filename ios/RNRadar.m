@@ -111,6 +111,10 @@ RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {
     [Radar setLogLevel:logLevel];
 }
 
+RCT_EXPORT_METHOD(getLogLevel:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getLogLevel]);
+}
+
 RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {
     [Radar setUserId:userId];
 }
