@@ -112,7 +112,29 @@ RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {
 }
 
 RCT_EXPORT_METHOD(getLogLevel:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    resolve([Radar getLogLevel]);
+   RadarLogLevel logLevel = [Radar getLogLevel];
+    NSString *logLevelString;
+    
+    switch (logLevel) {
+        case RadarLogLevelNone:
+            logLevelString = @"NONE";
+            break;
+        case RadarLogLevelError:
+            logLevelString = @"ERROR";
+            break;
+        case RadarLogLevelWarning:
+            logLevelString = @"WARNING";
+            break;
+        case RadarLogLevelInfo:
+            logLevelString = @"INFO";
+            break;
+        default:
+            logLevelString = @"DEBUG";
+            break;
+    }
+     NSLog(@"Current log level: %@", logLevelString); 
+    NSString *fetchedData = @"This is the fetched data";
+    resolve(fetchedData);
 }
 
 RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {

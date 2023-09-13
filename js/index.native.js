@@ -14,9 +14,9 @@ const setLogLevel = (level) => {
   NativeModules.RNRadar.setLogLevel(level);
 };
 
-const getLogLevel = ()=>{
-  NativeModules.RNRadar.getLogLevel();
-}
+const getLogLevel = () => {
+  NativeModules.RNRadar.getLogLevel()
+};
 
 const setUserId = (userId) => {
   NativeModules.RNRadar.setUserId(userId);
@@ -205,7 +205,7 @@ const off = (event, callback) => {
 const Radar = {
   initialize,
   setLogLevel,
-  setLogLevel,
+  getLogLevel,
   setUserId,
   getUserId,
   setDescription,
