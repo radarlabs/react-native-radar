@@ -105,6 +105,36 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void getLogLevel(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+        Radar.RadarLogLevel currentLogLevel = Radar.getLogLevel();
+        String levelString = "";
+    
+        switch (currentLogLevel) {
+            case ERROR:
+                levelString = "ERROR";
+                break;
+            case WARNING:
+                levelString = "WARNING";
+                break;
+            case INFO:
+                levelString = "INFO";
+                break;
+            case DEBUG:
+                levelString = "DEBUG";
+                break;
+            default:
+                levelString = "NONE";
+                break;
+        }
+
+
+        promise.resolve(levelString);
+    }
+
+    @ReactMethod
     public void setUserId(String userId) {
         Radar.setUserId(userId);
     }
