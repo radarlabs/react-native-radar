@@ -19,6 +19,7 @@ android {
         targetSdkVersion 31
         versionCode 1
         versionName '3.8.11'
+        buildConfigField "String", "NATIVE_VERSION", "\"${radarNativeVersion}\""
     }
     lintOptions {
         abortOnError false
@@ -45,5 +46,5 @@ repositories {
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.8.11'
+    api "io.radar:sdk:${radarNativeVersion}"
 }
