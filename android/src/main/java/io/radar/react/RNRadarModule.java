@@ -142,7 +142,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         if (myProperty != null) {
             promise.resolve(myProperty); 
         } else {
-            promise.resolve(Radar.getUserId());
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
         }
     }
 
