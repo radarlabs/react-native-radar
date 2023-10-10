@@ -137,10 +137,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         if (promise == null) {
             return;
         }
-        String myProperty = BuildConfig.NATIVE_VERSION;
+        String sdkVersion = Radar.sdkVersion();
 
-        if (myProperty != null) {
-            promise.resolve(myProperty); 
+        if (sdkVersion != null) {
+            promise.resolve(sdkVersion); 
         } else {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
         }
