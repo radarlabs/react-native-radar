@@ -205,7 +205,6 @@ const nativeSdkVersion = () => (
 
 const rnSdkVersion = () => (version)
 
-
 const Radar = {
   initialize,
   setLogLevel,
