@@ -20,7 +20,7 @@ const setUserId = (userId) => {
 };
 
 const getUserId = () => (
-  NativeModules.RNRadar.getUserId()206G
+  NativeModules.RNRadar.getUserId()
 );
 
 const setDescription = (description) => {
