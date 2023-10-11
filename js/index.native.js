@@ -1,5 +1,5 @@
 import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
-import {version} from '../package.json'
+import { version } from '../package.json'
 
 if (!NativeModules.RNRadar && (Platform.OS === 'ios' || Platform.OS === 'android')) {
   throw new Error('NativeModules.RNRadar is undefined');
@@ -20,7 +20,7 @@ const setUserId = (userId) => {
 };
 
 const getUserId = () => (
-  NativeModules.RNRadar.getUserId()
+  NativeModules.RNRadar.getUserId()206G
 );
 
 const setDescription = (description) => {
@@ -203,7 +203,7 @@ const nativeSdkVersion = () => (
   NativeModules.RNRadar.nativeSdkVersion()
 );
 
-const rnSdkVersion =()=>(version)
+const rnSdkVersion = () => (version)
 
 
 const Radar = {
