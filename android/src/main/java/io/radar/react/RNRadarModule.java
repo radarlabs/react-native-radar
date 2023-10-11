@@ -133,6 +133,20 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void nativeSdkVersion(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+        String sdkVersion = Radar.sdkVersion();
+
+        if (sdkVersion != null) {
+            promise.resolve(sdkVersion); 
+        } else {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+        }
+    }
+
+    @ReactMethod
     public void setMetadata(ReadableMap metadataMap) throws JSONException {
         Radar.setMetadata(RNRadarUtils.jsonForMap(metadataMap));
     }

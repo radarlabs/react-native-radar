@@ -1,4 +1,5 @@
 import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
+import { version } from '../package.json'
 
 if (!NativeModules.RNRadar && (Platform.OS === 'ios' || Platform.OS === 'android')) {
   throw new Error('NativeModules.RNRadar is undefined');
@@ -198,6 +199,12 @@ const off = (event, callback) => {
   }
 };
 
+const nativeSdkVersion = () => (
+  NativeModules.RNRadar.nativeSdkVersion()
+);
+
+const rnSdkVersion = () => (version)
+
 const Radar = {
   initialize,
   setLogLevel,
@@ -244,6 +251,8 @@ const Radar = {
   sendEvent,
   on,
   off,
+  nativeSdkVersion,
+  rnSdkVersion,
 };
 
 export default Radar;

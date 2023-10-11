@@ -119,6 +119,10 @@ RCT_EXPORT_METHOD(getUserId:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRe
     resolve([Radar getUserId]);
 }
 
+RCT_EXPORT_METHOD(nativeSdkVersion:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
+    resolve([Radar sdkVersion]);
+}
+
 RCT_EXPORT_METHOD(setDescription:(NSString *)description) {
     [Radar setDescription:description];
 }
