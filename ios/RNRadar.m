@@ -357,6 +357,10 @@ RCT_EXPORT_METHOD(startTrackingContinuous) {
     [Radar startTrackingWithOptions:RadarTrackingOptions.presetContinuous];
 }
 
+RCT_EXPORT_METHOD(startTrackingVerified:(BOOL)token) {
+    [Radar startTrackingVerified:token];
+}
+
 RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
     RadarTrackingOptions *options = [RadarTrackingOptions trackingOptionsFromDictionary:optionsDict];
     [Radar startTrackingWithOptions:options];

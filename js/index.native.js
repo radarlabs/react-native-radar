@@ -91,6 +91,10 @@ const startTrackingCustom = options => (
   NativeModules.RNRadar.startTrackingCustom(options)
 );
 
+const startTrackingVerified = token => (
+  NativeModules.RNRadar.startTrackingVerified(token)
+);
+
 const mockTracking = options => (
   NativeModules.RNRadar.mockTracking(options)
 );
@@ -222,6 +226,7 @@ const Radar = {
   trackOnce,
   trackVerified,
   trackVerifiedToken,
+  startTrackingVerified,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,
