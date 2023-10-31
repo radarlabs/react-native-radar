@@ -16,6 +16,7 @@ RCT_EXPORT_MODULE();
     self = [super init];
     if (self) {
         [Radar setDelegate:self];
+        [Radar setVerifiedDelegate:self];
         locationManager = [CLLocationManager new];
         locationManager.delegate = self;
     }
