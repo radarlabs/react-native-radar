@@ -16,6 +16,7 @@ RCT_EXPORT_MODULE();
     self = [super init];
     if (self) {
         [Radar setDelegate:self];
+        [Radar setVerifiedDelegate:self];
         locationManager = [CLLocationManager new];
         locationManager.delegate = self;
     }
@@ -38,7 +39,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"events", @"location", @"clientLocation", @"error", @"log"];
+    return @[@"events", @"location", @"clientLocation", @"error", @"log", @"token"];
 }
 
 - (void)startObserving {
@@ -88,6 +89,12 @@ RCT_EXPORT_MODULE();
 - (void)didLogMessage:(NSString *)message {
     if (hasListeners) {
         [self sendEventWithName:@"log" body:message];
+    }
+}
+
+- (void)didUpdateToken:(NSString *)token {
+    if(hasListeners) {
+       [self sendEventWithName:@"token" body:token]; 
     }
 }
 
@@ -355,6 +362,10 @@ RCT_EXPORT_METHOD(startTrackingResponsive) {
 
 RCT_EXPORT_METHOD(startTrackingContinuous) {
     [Radar startTrackingWithOptions:RadarTrackingOptions.presetContinuous];
+}
+
+RCT_EXPORT_METHOD(startTrackingVerified:(BOOL)token) {
+    [Radar startTrackingVerified:token];
 }
 
 RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {

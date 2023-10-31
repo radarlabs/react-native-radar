@@ -435,6 +435,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void startTrackingVerified(boolean token) {
+       //not implemented
+    }
+
+    @ReactMethod
     public void startTrackingCustom(ReadableMap optionsMap) {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
