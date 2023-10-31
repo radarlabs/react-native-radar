@@ -93,7 +93,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (void)didUpdateToken:(NSString *)token {
-    if(hasListeners){
+    if(hasListeners) {
        [self sendEventWithName:@"token" body:token]; 
     }
 }
