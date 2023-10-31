@@ -91,6 +91,12 @@ RCT_EXPORT_MODULE();
     }
 }
 
+- (void)didUpdateToken:(NSString *)token {
+    if(hasListeners){
+       [self sendEventWithName:@"token" body:token]; 
+    }
+}
+
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [Radar initializeWithPublishableKey:publishableKey];
 }
