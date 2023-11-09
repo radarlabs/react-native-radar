@@ -3,7 +3,7 @@ jobs:
   node:
     working_directory: ~/react-native-radar
     docker:
-      - image: circleci/node:8
+      - image: cimg/node:18.0
     steps:
       - checkout
       - run: npm install
@@ -25,7 +25,7 @@ jobs:
   android:
     working_directory: ~/react-native-radar/example
     docker:
-      - image: circleci/android:api-28-node
+      - image: cimg/android:2023.02.1-browsers
     steps:
       - checkout:
           path: ~/react-native-radar
@@ -40,6 +40,17 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
+      - run:
+        name: Install nvm
+        command: |
+          set +e
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm install 18
+          nvm use 18
+          nvm alias default 18
+          set -e
       - run: yarn install
       - run: sudo yarn global add react-native-cli @react-native-community/cli
       - run: cd ios && pod update RadarSDK && pod install
