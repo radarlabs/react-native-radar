@@ -3,7 +3,7 @@ jobs:
   node:
     working_directory: ~/react-native-radar
     docker:
-      - image: circleci/node:8
+      - image: cimg/node:18.0
     steps:
       - checkout
       - run: npm install
