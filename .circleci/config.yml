@@ -1,11 +1,9 @@
-version: 2.1
-orbs:
-  node: circleci/node@5.1.0
+version: 2
 jobs:
   node:
     working_directory: ~/react-native-radar
     docker:
-      -  - image: circleci/node:10
+      - image: circleci/node:10
     steps:
       - checkout
       - run: npm install
