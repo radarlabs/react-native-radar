@@ -3,7 +3,7 @@ jobs:
   node:
     working_directory: ~/react-native-radar
     docker:
-      - image: circleci/node:8
+      - image: cimg/node:18.0
     steps:
       - checkout
       - run: npm install
@@ -41,7 +41,7 @@ jobs:
       - checkout:
           path: ~/react-native-radar
       - run: yarn install
-      - run: sudo yarn global add react-native-cli @react-native-community/cli
+      - run: sudo yarn global add react-native-cli @react-native-community/cli@11.3.10
       - run: cd ios && pod update RadarSDK && pod install
       - run: react-native run-ios
 workflows:
