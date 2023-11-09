@@ -37,6 +37,8 @@ jobs:
     macos:
       xcode: "13.4.1"
     working_directory: ~/react-native-radar/example
+    docker:
+      - image: cimg/node:18.0
     steps:
       - checkout:
           path: ~/react-native-radar
