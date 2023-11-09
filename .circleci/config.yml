@@ -40,18 +40,6 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
-      - run:
-        name: Install nvm
-        command: |
-          set +e
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          nvm install 18
-          nvm use 18
-          nvm alias default 18
-          set -e
-      - run: yarn install
       - run: sudo yarn global add react-native-cli @react-native-community/cli
       - run: cd ios && pod update RadarSDK && pod install
       - run: react-native run-ios
