@@ -46,5 +46,4 @@ repositories {
 dependencies {
     api 'com.facebook.react:react-native:+'
     api 'io.radar:sdk:3.8.15'
-    
 }
