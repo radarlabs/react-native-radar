@@ -520,7 +520,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     public void setForegroundServiceOptions(ReadableMap optionsMap) {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
-            RadarTrackingOptionsForegroundService options = RadarTrackingOptionsForegroundService.fromJson(optionsObj);
+            RadarTrackingOptionsForegroundService options = RadarTrackingOptionsForegroundService.fromJson(optionsObj.getJSONObject("options"));
             Radar.setForegroundServiceOptions(options);
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
