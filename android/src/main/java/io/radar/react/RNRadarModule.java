@@ -34,7 +34,7 @@ import io.radar.sdk.model.RadarRouteMatrix;
 import io.radar.sdk.model.RadarRoutes;
 import io.radar.sdk.model.RadarTrip;
 import io.radar.sdk.model.RadarUser;
-import io.radar.sdk.RadarNotificationsOptions;
+import io.radar.sdk.RadarNotificationOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -529,11 +529,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void setAndroidNotificationsOptions(ReadableMap optionsMap) {
+    public void setAndroidNotificationOptions(ReadableMap optionsMap) {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
-            RadarNotificationsOptions options = RadarNotificationsOptions.fromJson(optionsObj);
-            Radar.setNotificationsOptions(options);
+            RadarNotificationOptions options = RadarNotificationOptions.fromJson(optionsObj);
+            Radar.setNotificationOptions(options);
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
         }

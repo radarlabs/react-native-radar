@@ -429,7 +429,7 @@ RCT_EXPORT_METHOD(setForegroundServiceOptions:(NSDictionary *)optionsDict) {
     // not implemented
 }
 
-RCT_EXPORT_METHOD(setAndroidNotificationsOptions:(NSDictionary *)optionsDict) {
+RCT_EXPORT_METHOD(setAndroidNotificationOptions:(NSDictionary *)optionsDict) {
     // not implemented
 }
 
