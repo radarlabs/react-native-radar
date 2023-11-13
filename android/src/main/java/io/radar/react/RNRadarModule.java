@@ -529,7 +529,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void setAndroidNotificationOptions(ReadableMap optionsMap) {
+    public void setNotificationOptions(ReadableMap optionsMap) {
         try {
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
             RadarNotificationOptions options = RadarNotificationOptions.fromJson(optionsObj);
