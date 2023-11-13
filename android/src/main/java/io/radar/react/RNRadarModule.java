@@ -34,6 +34,7 @@ import io.radar.sdk.model.RadarRouteMatrix;
 import io.radar.sdk.model.RadarRoutes;
 import io.radar.sdk.model.RadarTrip;
 import io.radar.sdk.model.RadarUser;
+import io.radar.sdk.RadarNotificationsOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -522,6 +523,17 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
             RadarTrackingOptionsForegroundService options = RadarTrackingOptionsForegroundService.fromJson(optionsObj);
             Radar.setForegroundServiceOptions(options);
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
+        }
+    }
+
+    @ReactMethod
+    public void setAndroidNotificationsOptions(ReadableMap optionsMap) {
+        try {
+            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            RadarNotificationsOptions options = RadarNotificationsOptions.fromJson(optionsObj);
+            Radar.setNotificationsOptions(options);
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
         }
