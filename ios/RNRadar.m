@@ -425,7 +425,11 @@ RCT_EXPORT_METHOD(getTrackingOptions:(RCTPromiseResolveBlock)resolve reject:(RCT
     resolve([options dictionaryValue]);
 }
 
-RCT_EXPORT_METHOD(setForegroundServiceOptions) {
+RCT_EXPORT_METHOD(setForegroundServiceOptions:(NSDictionary *)optionsDict) {
+    // not implemented
+}
+
+RCT_EXPORT_METHOD(setNotificationOptions:(NSDictionary *)optionsDict) {
     // not implemented
 }
 
