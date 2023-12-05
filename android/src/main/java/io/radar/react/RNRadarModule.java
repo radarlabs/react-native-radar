@@ -1274,4 +1274,14 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
+    @ReactMethod
+    public void logEnteringBackground() {
+        Radar.logEnteringBackground();
+    }
+
+    @ReactMethod
+    public void logResignActive(){
+        Radar.logResignActive();
+    }
+
 }

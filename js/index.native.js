@@ -187,6 +187,15 @@ const logConversion = options => (
   NativeModules.RNRadar.logConversion(options)
 )
 
+const logResignActive = () => (
+  NativeModules.RNRadar.logResignActive()
+);
+
+const logEnteringBackground = () => (
+  NativeModules.RNRadar.logEnteringBackground()
+);
+
+
 const sendEvent = (name, metadata) => (
   NativeModules.RNRadar.sendEvent(name, metadata)
 )
@@ -253,6 +262,8 @@ const Radar = {
   getDistance,
   getMatrix,
   logConversion,
+  logResignActive,
+  logEnteringBackground,
   sendEvent,
   on,
   off,

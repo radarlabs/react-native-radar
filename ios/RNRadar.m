@@ -1084,4 +1084,12 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         [Radar logConversionWithName:name revenue:revenue metadata:metadata completionHandler:completionHandler];
     }
 }
+
+RCT_EXPORT_METHOD(logEnteringBackground) {
+    [Radar logEnteringBackground];
+}
+
+RCT_EXPORT_METHOD(logResignActive){
+    [Radar logResignActive];
+}
 @end
