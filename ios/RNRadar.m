@@ -1089,7 +1089,7 @@ RCT_EXPORT_METHOD(logEnteringBackground) {
     [Radar logEnteringBackground];
 }
 
-RCT_EXPORT_METHOD(logResignActive){
+RCT_EXPORT_METHOD(logResignActive) {
     [Radar logResignActive];
 }
 @end
