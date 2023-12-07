@@ -192,7 +192,7 @@ const logResignActive = () => (
 );
 
 const logEnterBackground = () => (
-  NativeModules.RNRadar.logEnteringBackground()
+  NativeModules.RNRadar.logEnterBackground()
 );
 
 
