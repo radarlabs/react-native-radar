@@ -4,13 +4,14 @@
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
   "version": "3.8.15",
-  "main": "js/index.js",
+  "main": "js/index.ts",
   "files": [
     "android",
     "ios",
     "js",
     "README.md",
-    "react-native-radar.podspec"
+    "react-native-radar.podspec",
+    "/dist"
   ],
   "scripts": {
     "test": "jest ./test/*.test.js",
@@ -26,9 +27,9 @@
     ]
   },
   "peerDependencies": {
+    "@maplibre/maplibre-react-native": "^9.0.1",
     "react": ">= 16.8.6",
-    "react-native": ">= 0.60.0",
-    "@maplibre/maplibre-react-native": "^9.0.1"
+    "react-native": ">= 0.60.0"
   },
   "peerDependenciesMeta": {
     "@maplibre/maplibre-react-native": {
@@ -40,6 +41,7 @@
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
+    "@types/react-native": "^0.72.8",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.4.2",
@@ -56,7 +58,9 @@
     "metro-react-native-babel-preset": "^0.51.1",
     "npm-run-all": "^4.1.5",
     "react": "16.8.6",
-    "react-native": "0.60.0"
+    "react-native": "0.60.0",
+    "react-native-typescript-transformer": "^1.2.13",
+    "typescript": "^5.3.3"
   },
   "bugs": {
     "url": "https://github.com/radarlabs/react-native-radar/issues"
