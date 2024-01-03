@@ -1085,11 +1085,11 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     }
 }
 
-RCT_EXPORT_METHOD(logEnterBackground) {
-    [Radar logEnterBackground];
+RCT_EXPORT_METHOD(logBackgrounding) {
+    [Radar logBackgrounding];
 }
 
-RCT_EXPORT_METHOD(logResignActive) {
-    [Radar logResignActive];
+RCT_EXPORT_METHOD(logResigningActive) {
+    [Radar logResigningActive];
 }
 @end
