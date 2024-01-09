@@ -373,7 +373,7 @@ describe('calls native implementation', () => {
       },
       limit: 10,
       countryCode: "US",
-      expandUnits: true
+      mailable: true
     };
     Radar.autocomplete(options);
 
