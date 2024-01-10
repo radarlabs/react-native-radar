@@ -795,16 +795,16 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         country = optionsDict[@"country"];
     }
 
-    BOOL expandUnits = false;
-    NSNumber *expandUnitsNumber = optionsDict[@"expandUnits"];
-    if (expandUnitsNumber != nil && [expandUnitsNumber isKindOfClass:[NSNumber class]]) {
-        expandUnits = [expandUnitsNumber boolValue]; 
+    BOOL mailable = false;
+    NSNumber *mailableNumber = optionsDict[@"mailable"];
+    if (mailableNumber != nil && [mailableNumber isKindOfClass:[NSNumber class]]) {
+        mailable = [mailableNumber boolValue]; 
     }
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar autocompleteQuery:query near:near layers:layers limit:limit country:country expandUnits:expandUnits completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
+    [Radar autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
