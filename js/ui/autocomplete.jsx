@@ -29,7 +29,7 @@ import { default as defaultStyles } from './styles';
 
 const defaultAutocompleteOptions = {
   debounceMS: 200, // Debounce time in milliseconds
-  threshold: 3, // Minimum number of characters to trigger autocomplete
+  minCharacters: 3, // Minimum number of characters to trigger autocomplete
   limit: 8, // Maximum number of results to return
   placeholder: "Search address", // Placeholder text for the input field
   showMarkers: true,
@@ -50,7 +50,7 @@ const autocompleteUI = ({ options = {} }) => {
 
   const fetchResults = useCallback(
     async (searchQuery) => {
-      if (searchQuery.length < config.threshold) return;
+      if (searchQuery.length < config.minCharacters) return;
 
       const { limit, layers, countryCode } = config;
       const params = { query: searchQuery, limit, layers, countryCode };
@@ -86,7 +86,7 @@ const autocompleteUI = ({ options = {} }) => {
         clearTimeout(timerRef.current);
       }
 
-      if (text.length < config.threshold) {
+      if (text.length < config.minCharacters) {
         return;
       }
 
