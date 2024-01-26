@@ -5,8 +5,8 @@
     "compilerOptions": {
       "target": "esnext",
       "module": "commonjs",
-      "types": ["react-native", "node"],
-      "typeRoots": [ "./node_modules/@types", "./src/@types" ],
+      "types": ["node"],
+      "typeRoots": [ "./node_modules/@types", "./src/@types"],
       "lib": [
         "es2019",
         "es2020.bigint",
@@ -23,8 +23,9 @@
         "es2022.string"
       ],
       "allowJs": true,
+      "declaration": true,
       "jsx": "react-native",
-      "noEmit": true,
+      "outDir": "./dist", 
       "isolatedModules": true,
       "strict": true,
       "moduleResolution": "node",
@@ -33,6 +34,16 @@
       "forceConsistentCasingInFileNames": false,
       "esModuleInterop": true,
       "skipLibCheck": true,
-      "noImplicitAny": false
-    }
+      "noImplicitAny": false,
+    },
+    "include": [
+      "src/index.ts"
+    ],
+    "exclude": [
+      "node_modules",
+      "babel.config.js",
+      "metro.config.js",
+      "jest.config.js",
+      "example"
+    ]
   }

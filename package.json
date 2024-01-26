@@ -10,8 +10,10 @@
     "ios",
     "js",
     "README.md",
-    "react-native-radar.podspec"
+    "react-native-radar.podspec",
+    "/dist"
   ],
+  "types":"dist/src/index.d.ts",
   "scripts": {
     "test": "jest ./test/*.test.js",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
