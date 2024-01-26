@@ -1,6 +1,6 @@
 import { NativeEventEmitter, NativeModules } from 'react-native';
 
-import Radar from '../src/index';
+import Radar from '../src/index.ts';
 
 jest.mock('NativeEventEmitter', () => jest.fn(() => ({
   addListener: jest.fn(),
