@@ -5,7 +5,8 @@
     "compilerOptions": {
       "target": "esnext",
       "module": "commonjs",
-      "types": ["react-native", "jest"],
+      "types": ["react-native", "node"],
+      "typeRoots": [ "./node_modules/@types" ],
       "lib": [
         "es2019",
         "es2020.bigint",
@@ -32,6 +33,6 @@
       "forceConsistentCasingInFileNames": false,
       "esModuleInterop": true,
       "skipLibCheck": true,
-      "noImplicitAny": false
+      
     }
   }
