@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Platform } from 'react-native';
 
 let module = {};
