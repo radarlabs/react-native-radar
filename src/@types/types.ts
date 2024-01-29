@@ -41,11 +41,7 @@ export type RadarPermissionsStatus =
   | "NOT_DETERMINED"
   | "UNKNOWN";
 
-export type Event = 
-|"clientLocation"
-|"location"
-|"error"
-|"events"
+export type Event = "clientLocation" | "location" | "error" | "events";
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
@@ -157,7 +153,7 @@ export interface RadarUser {
   deviceId?: string;
   description?: string;
   metadata?: object;
-  location?: Point;
+  location?: RadarCoordinate;
   geofences?: RadarGeofence[];
   place?: RadarPlace;
   beacons?: RadarBeacon[];
@@ -184,8 +180,8 @@ export interface RadarAutocompleteOptions {
   expandUnits?: boolean;
 }
 
-export interface Point {
-  type: "Point";
+export interface RadarCoordinate {
+  type: string;
   coordinates: [number, number];
 }
 
@@ -240,7 +236,7 @@ export interface RadarEvent {
   beacon?: RadarBeacon;
   trip?: RadarTrip;
   alternatePlaces?: RadarPlace[];
-  location?: Point;
+  location?: RadarCoordinate;
   metadata?: object;
 }
 
@@ -295,6 +291,11 @@ export interface RadarGeofence {
   tag?: string;
   externalId?: string;
   metadata?: object;
+  type?: string;
+  geometryRadius?: number;
+  geometryCenter?: RadarCoordinate;
+  coordinates?: number[][];
+
 }
 
 export interface RadarBeacon {
@@ -404,7 +405,6 @@ export interface RadarFraud {
   mocked: boolean;
   compromised: boolean;
   jumped: boolean;
-  sharing: boolean;
 }
 
 export interface RadarMockTrackingOptions {
