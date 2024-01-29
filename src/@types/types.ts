@@ -302,10 +302,12 @@ export interface RadarBeacon {
   _id: string;
   metadata?: object;
   type: RadarBeaconType;
-  uid?: string;
+  uuid?: string;
   instance?: string;
   major?: string;
   minor?: string;
+  geometry?: RadarCoordinate;
+  rss?: number;
 }
 
 export interface RadarPlace {
@@ -328,6 +330,7 @@ export interface RadarRegion {
   code: string;
   name: string;
   allowed?: boolean;
+  flag?:string;
 }
 
 export interface RadarLocationPermissionsCallback {
