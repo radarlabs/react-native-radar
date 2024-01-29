@@ -4,7 +4,7 @@
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
   "version": "3.9.2",
-  "main": "src/index.ts",
+  "main": "dist/src/index.ts",
   "files": [
     "android",
     "ios",
@@ -17,7 +17,8 @@
   "scripts": {
     "test": "jest ./test/*.test.js",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
-    "check-beta-tag": "node ./scripts/check-beta-tag.cjs"
+    "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
+    "prepublish": "tsc"
   },
   "jest": {
     "preset": "react-native",
