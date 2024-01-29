@@ -4,11 +4,11 @@
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
   "version": "3.9.2",
-  "main": "js/index.ts",
+  "main": "src/index.ts",
   "files": [
     "android",
     "ios",
-    "js",
+    "src",
     "README.md",
     "react-native-radar.podspec",
     "/dist"
