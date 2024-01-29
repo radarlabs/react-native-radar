@@ -18,7 +18,7 @@
     "test": "jest ./test/*.test.js",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
-    "prepublish": "tsc"
+    "build": "tsc"
   },
   "jest": {
     "preset": "react-native",
