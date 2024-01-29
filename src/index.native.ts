@@ -30,6 +30,7 @@ import {
   RadarTripCallback,
   RadarTripOptions,
   RadarUpdateTripOptions,
+  Event,
 } from "./@types/types";
 
 if (
@@ -197,13 +198,13 @@ const logConversion = (
 ): Promise<RadarLogConversionCallback> =>
   NativeModules.RNRadar.logConversion(options);
 
-//??????
-const sendEvent = (name, metadata) =>
+const sendEvent = (name: string, metadata: Object): void =>
   NativeModules.RNRadar.sendEvent(name, metadata);
 
-const on = (event, callback) => eventEmitter.addListener(event, callback);
+const on = (event: Event, callback: Function | undefined): void =>
+  eventEmitter.addListener(event, callback);
 
-const off = (event, callback) => {
+const off = (event: Event, callback: Function | undefined): void => {
   if (callback) {
     // @ts-ignore
     eventEmitter.removeListener(event, callback);

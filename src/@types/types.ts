@@ -41,6 +41,12 @@ export type RadarPermissionsStatus =
   | "NOT_DETERMINED"
   | "UNKNOWN";
 
+export type Event = 
+|"clientLocation"
+|"location"
+|"error"
+|"events"
+
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
 export interface RadarTrackTokenCallback {
