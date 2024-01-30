@@ -29,6 +29,7 @@ import {
   RadarUpdateTripOptions,
   Event,
   RadarListenerCallback,
+  RadarGetMatrixOptions,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -85,7 +86,7 @@ export interface RadarNativeInterface {
   reverseGeocode: (location: any) => Promise<RadarGeocodeCallback>;
   ipGeocode: () => Promise<RadarGeocodeCallback>;
   getDistance: (option: RadarGetDistanceOptions) => Promise<RadarRouteCallback>;
-  getMatrix: (option: RadarGetDistanceOptions) => Promise<RadarRouteMatrix>;
+  getMatrix: (option: RadarGetMatrixOptions) => Promise<RadarRouteMatrix>;
   logConversion: (
     options: RadarLogConversionOptions
   ) => Promise<RadarLogConversionCallback>;

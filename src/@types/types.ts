@@ -11,6 +11,13 @@ export interface RadarGetDistanceOptions {
   units?: "metric" | "imperial";
 }
 
+export interface RadarGetMatrixOptions {
+  origins?: Location[];
+  destinations?: Location[];
+  modes?: RadarRouteMode;
+  units?: "metric" | "imperial";
+}
+
 export interface RadarUpdateTripOptions {
   options: RadarTripOptions;
   status: RadarTripStatus;

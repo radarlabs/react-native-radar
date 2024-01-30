@@ -32,6 +32,7 @@ import {
   RadarUpdateTripOptions,
   Event,
   RadarListenerCallback,
+  RadarGetMatrixOptions,
 } from "./@types/types";
 
 if (
@@ -192,7 +193,7 @@ const getDistance = (
 ): Promise<RadarRouteCallback> => NativeModules.RNRadar.getDistance(options);
 
 const getMatrix = (
-  options: RadarGetDistanceOptions
+  options: RadarGetMatrixOptions
 ): Promise<RadarRouteMatrix> => NativeModules.RNRadar.getMatrix(options);
 
 const logConversion = (
