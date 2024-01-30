@@ -14,7 +14,7 @@ export interface RadarGetDistanceOptions {
 export interface RadarGetMatrixOptions {
   origins?: Location[];
   destinations?: Location[];
-  modes?: RadarRouteMode;
+  mode?: RadarRouteMode;
   units?: "metric" | "imperial";
 }
 
@@ -25,7 +25,7 @@ export interface RadarUpdateTripOptions {
 
 export interface RadarStartTripOptions {
   tripOptions: RadarTripOptions;
-  trackingOptions: RadarTrackingOptions;
+  trackingOptions?: RadarTrackingOptions;
 }
 
 export interface RadarLocationCallback {
