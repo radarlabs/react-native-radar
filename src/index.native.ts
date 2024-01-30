@@ -31,6 +31,7 @@ import {
   RadarTripOptions,
   RadarUpdateTripOptions,
   Event,
+  RadarListenerCallback,
 } from "./@types/types";
 
 if (
@@ -136,7 +137,8 @@ const setForegroundServiceOptions = (
 const setNotificationOptions = (options: RadarNotificationOptions): void =>
   NativeModules.RNRadar.setNotificationOptions(options);
 
-const getTripOptions = (): Promise<RadarTripOptions> =>
+// Take a closer look?
+  const getTripOptions = (): Promise<RadarTripOptions> =>
   NativeModules.RNRadar.getTripOptions();
 
 const startTrip = (
@@ -198,10 +200,10 @@ const logConversion = (
 ): Promise<RadarLogConversionCallback> =>
   NativeModules.RNRadar.logConversion(options);
 
-const sendEvent = (name: string, metadata: Object): void =>
+const sendEvent = (name: string, metadata: object): void =>
   NativeModules.RNRadar.sendEvent(name, metadata);
 
-const on = (event: Event, callback: Function | undefined): void =>
+const on = (event: Event, callback: RadarListenerCallback): void =>
   eventEmitter.addListener(event, callback);
 
 const off = (event: Event, callback: Function | undefined): void => {

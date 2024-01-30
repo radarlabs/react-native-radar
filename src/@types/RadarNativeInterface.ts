@@ -28,6 +28,7 @@ import {
   RadarTripOptions,
   RadarUpdateTripOptions,
   Event,
+  RadarListenerCallback,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -88,8 +89,8 @@ export interface RadarNativeInterface {
   logConversion: (
     options: RadarLogConversionOptions
   ) => Promise<RadarLogConversionCallback>;
-  sendEvent: (name: string, metadata: Object) => void;
-  on: (event: Event, callback: Function | undefined) => void;
+  sendEvent: (name: string, metadata: object) => void;
+  on: (event: Event, callback: RadarListenerCallback) => void;
   off: (event: Event, callback: Function | undefined) => void;
   nativeSdkVersion: () => Promise<string>;
   rnSdkVersion: () => string;

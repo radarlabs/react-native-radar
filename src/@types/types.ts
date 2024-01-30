@@ -7,8 +7,8 @@ export interface RadarTrackOnceOptions {
 export interface RadarGetDistanceOptions {
   origin?: Location;
   destination?: Location;
-  modes: string[];
-  units: string;
+  modes?: RadarRouteMode[];
+  units?: "metric" | "imperial";
 }
 
 export interface RadarUpdateTripOptions {
@@ -24,7 +24,7 @@ export interface RadarStartTripOptions {
 export interface RadarLocationCallback {
   status: string;
   location?: Location;
-  stopped?: boolean;
+  stopped: boolean;
 }
 
 export interface RadarTrackCallback {
@@ -76,10 +76,10 @@ export interface RadarSearchGeofencesCallback {
 
 export interface RadarSearchGeofencesOptions {
   near?: Location;
-  radius: number;
+  radius?: number;
   metadata?: object;
   tags?: string[];
-  limit: number;
+  limit?: number;
 }
 
 export interface RadarGeocodeCallback {
@@ -96,7 +96,9 @@ export interface RadarValidateAddressCallback {
 export interface RadarIPGeocodeCallback {
   status: string;
   address?: RadarAddress;
+  proxy?: boolean;
 }
+
 
 export interface RadarTrackingOptionsForegroundServiceOptions {
   text?: string;
@@ -122,17 +124,17 @@ export interface RadarLogConversionCallback {
 
 export interface RadarRouteMatrix {
   status: string;
-  matrix?: object;
+  matrix?: object[];
 }
 
 export interface RadarSearchPlacesOptions {
   near?: Location;
-  radius: number;
+  radius?: number;
   chains?: string[];
   chainMetadata?: object;
   categories?: string[];
   groups?: string[];
-  limit: number;
+  limit?: number;
 }
 
 export interface Location {
@@ -145,6 +147,7 @@ export interface Location {
   verticalAccuracy?: number;
   speedAccuracy?: number;
   courseAccuracy?: number;
+  mocked?: boolean;
 }
 
 export interface RadarUser {
@@ -354,10 +357,15 @@ export interface RadarAddress {
   county?: string;
   neighborhood?: string;
   number?: string;
+  street?: string;
+  unit?: string;
   distance?: number;
   confidence?: string;
   layer?: string;
   plus4?: string;
+  dmaCode?: string;
+  dma?: string;
+  metadata?: object;
 }
 
 export interface RadarAddressVerificationStatus {
@@ -365,7 +373,7 @@ export interface RadarAddressVerificationStatus {
 }
 
 export interface RadarRoutes {
-  geodesic: RadarRoute;
+  geodesic?: RadarRouteDistance;
   foot?: RadarRoute;
   bike?: RadarRoute;
   car?: RadarRoute;
@@ -424,26 +432,29 @@ export type RadarTrackingOptionsSync = "none" | "stopsAndExits" | "all";
 
 export interface RadarTrackingOptions {
   desiredStoppedUpdateInterval: number;
-  fastestStoppedUpdateInterval: number;
+  fastestStoppedUpdateInterval?: number;
   desiredMovingUpdateInterval: number;
-  fastestMovingUpdateInterval: number;
+  fastestMovingUpdateInterval?: number;
   desiredSyncInterval: number;
-  desiredAccuracy: RadarTrackingOptionsDesiredAccuracy;
+  desiredAccuracy: String;
   stopDuration: number;
   stopDistance: number;
-  startTrackingAfter?: Date;
-  stopTrackingAfter?: Date;
-  replay: RadarTrackingOptionsReplay;
-  sync: RadarTrackingOptionsSync;
-  showBlueBar: boolean;
+  sync: String;
+  replay: String;
   useStoppedGeofence: boolean;
+  showBlueBar?: boolean;
+  foregroundServiceEnabled?: boolean;
+  startTrackingAfter?: number | undefined;
+  stopTrackingAfter?: number | undefined;
+  syncLocations?: String;
   stoppedGeofenceRadius: number;
   useMovingGeofence: boolean;
   movingGeofenceRadius: number;
   syncGeofences: boolean;
-  syncGeofencesLimit: number;
-  foregroundServiceEnabled: boolean;
+  useVisits?: boolean;
+  useSignificantLocationChanges?: boolean;
   beacons: boolean;
+  syncGeofencesLimit?: number;
 }
 
 export interface RadarLogConversionOptions {
@@ -487,3 +498,43 @@ export type RadarTripStatus =
   | "expired"
   | "completed"
   | "canceled";
+
+interface RadarEventUpdate {
+  user: RadarUser;
+  events: RadarEvent[];
+}
+
+interface RadarEventUpdateCallback {
+  (args: RadarEventUpdate): void;
+}
+
+
+
+interface RadarLocationUpdate{
+  location: Location;
+  user: RadarUser;
+}
+
+interface RadarLocationUpdateCallback{
+  (args: RadarLocationUpdate): void;
+}
+
+interface RadarClientLocationUpdate {
+  location: Location;
+  stopped: boolean;
+  source: string;
+}
+
+interface RadarClientLocationUpdateCallback{
+  (args: RadarClientLocationUpdate): void;
+}
+
+interface RadarErrorCallback{
+  (status: string): void;
+}
+
+interface RadarLogUpdateCallback{
+  (status: string): void;
+}
+
+export type RadarListenerCallback = RadarEventUpdateCallback | RadarLocationUpdateCallback | RadarClientLocationUpdateCallback | RadarErrorCallback | RadarLogUpdateCallback;
