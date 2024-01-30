@@ -15,6 +15,7 @@ jobs:
       - run: npm ci
       - run: npm run check-beta-tag
       - run: npm run build
+      - run: npm run copy-assets
       - run: npm publish --tag beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
