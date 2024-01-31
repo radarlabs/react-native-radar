@@ -50,7 +50,7 @@ export type RadarPermissionsStatus =
   | "NOT_DETERMINED"
   | "UNKNOWN";
 
-export type Event = "clientLocation" | "location" | "error" | "events";
+export type Event = "clientLocation" | "location" | "error" | "events" | "log";
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
@@ -508,41 +508,41 @@ export type RadarTripStatus =
   | "completed"
   | "canceled";
 
-interface RadarEventUpdate {
+export interface RadarEventUpdate {
   user: RadarUser;
   events: RadarEvent[];
 }
 
-interface RadarEventUpdateCallback {
+export interface RadarEventUpdateCallback {
   (args: RadarEventUpdate): void;
 }
 
 
 
-interface RadarLocationUpdate{
+export interface RadarLocationUpdate{
   location: Location;
   user: RadarUser;
 }
 
-interface RadarLocationUpdateCallback{
+export interface RadarLocationUpdateCallback{
   (args: RadarLocationUpdate): void;
 }
 
-interface RadarClientLocationUpdate {
+export interface RadarClientLocationUpdate {
   location: Location;
   stopped: boolean;
   source: string;
 }
 
-interface RadarClientLocationUpdateCallback{
+export interface RadarClientLocationUpdateCallback{
   (args: RadarClientLocationUpdate): void;
 }
 
-interface RadarErrorCallback{
+export interface RadarErrorCallback{
   (status: string): void;
 }
 
-interface RadarLogUpdateCallback{
+export interface RadarLogUpdateCallback{
   (status: string): void;
 }
 
