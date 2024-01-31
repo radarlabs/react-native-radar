@@ -1,3 +1,5 @@
+export type RadarMetadata = Record<string, string | number | boolean>;
+
 export interface RadarTrackOnceOptions {
   location?: Location;
   desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy;
@@ -84,7 +86,7 @@ export interface RadarSearchGeofencesCallback {
 export interface RadarSearchGeofencesOptions {
   near?: Location;
   radius?: number;
-  metadata?: object;
+  metadata?: RadarMetadata;
   tags?: string[];
   limit?: number;
 }
@@ -138,7 +140,7 @@ export interface RadarSearchPlacesOptions {
   near?: Location;
   radius?: number;
   chains?: string[];
-  chainMetadata?: object;
+  chainMetadata?: RadarMetadata;
   categories?: string[];
   groups?: string[];
   limit?: number;
@@ -162,7 +164,7 @@ export interface RadarUser {
   userId?: string;
   deviceId?: string;
   description?: string;
-  metadata?: object;
+  metadata?: RadarMetadata;
   location?: RadarCoordinate;
   geofences?: RadarGeofence[];
   place?: RadarPlace;
@@ -173,9 +175,9 @@ export interface RadarUser {
   state?: RadarRegion;
   dma?: RadarRegion;
   postalCode?: RadarRegion;
-  nearbyPlaceChains?: RadarPlace[];
+  nearbyPlaceChains?: RadarChain[];
   segments?: RadarSegment[];
-  topChains?: RadarPlace[];
+  topChains?: RadarChain[];
   source?: LocationSource;
   trip?: RadarTrip;
   debug?: boolean;
@@ -211,7 +213,7 @@ export type LocationSource =
 export interface RadarTrip {
   _id: string;
   externalId: string;
-  metadata?: object;
+  metadata?: RadarMetadata;
   destinationGeofenceTag?: string;
   destinationGeofenceExternalId?: string;
   mode?: string;
@@ -247,7 +249,7 @@ export interface RadarEvent {
   trip?: RadarTrip;
   alternatePlaces?: RadarPlace[];
   location?: RadarCoordinate;
-  metadata?: object;
+  metadata?: RadarMetadata;
 }
 
 export enum RadarEventConfidence {
@@ -300,7 +302,7 @@ export interface RadarGeofence {
   description: string;
   tag?: string;
   externalId?: string;
-  metadata?: object;
+  metadata?: RadarMetadata;
   type?: string;
   geometryRadius?: number;
   geometryCenter?: RadarCoordinate;
@@ -310,7 +312,7 @@ export interface RadarGeofence {
 
 export interface RadarBeacon {
   _id: string;
-  metadata?: object;
+  metadata?: RadarMetadata;
   type: RadarBeaconType;
   uuid?: string;
   instance?: string;
@@ -331,7 +333,7 @@ export interface RadarChain {
   name: string;
   slug: string;
   externalId?: string;
-  metadata?: object;
+  metadata?: RadarMetadata;
 }
 
 export interface RadarRegion {
@@ -372,7 +374,7 @@ export interface RadarAddress {
   plus4?: string;
   dmaCode?: string;
   dma?: string;
-  metadata?: object;
+  metadata?: RadarMetadata;
 }
 
 export interface RadarAddressVerificationStatus {
@@ -467,7 +469,7 @@ export interface RadarTrackingOptions {
 export interface RadarLogConversionOptions {
   name: string;
   revenue?: number;
-  metadata?: object;
+  metadata?: RadarMetadata;
 }
 
 export type RadarRouteMode = "foot" | "bike" | "car";
@@ -489,7 +491,7 @@ export interface RadarTrackingOptionsForegroundService {
 
 export interface RadarTripOptions {
   externalId: string;
-  metadata?: object;
+  metadata?: RadarMetadata;
   destinationGeofenceTag?: string;
   destinationGeofenceExternalId?: string;
   mode?: RadarRouteMode;
