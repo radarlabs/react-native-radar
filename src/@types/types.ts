@@ -91,7 +91,7 @@ export interface RadarSearchGeofencesOptions {
   limit?: number;
 }
 
-export interface RadarGeocodeCallback {
+export interface RadarAddressCallback {
   status: string;
   addresses?: RadarAddress[];
 }
@@ -250,6 +250,9 @@ export interface RadarEvent {
   alternatePlaces?: RadarPlace[];
   location?: RadarCoordinate;
   metadata?: RadarMetadata;
+  replayed?: boolean;
+  createdAt: string;
+  actualCreatedAt: string;
 }
 
 export enum RadarEventConfidence {
@@ -327,6 +330,9 @@ export interface RadarPlace {
   name: string;
   categories: string[];
   chain?: RadarChain;
+  location:Location;
+  metadata?: RadarMetadata;
+  group?: string;
 }
 
 export interface RadarChain {
@@ -386,11 +392,19 @@ export interface RadarRoutes {
   foot?: RadarRoute;
   bike?: RadarRoute;
   car?: RadarRoute;
+  truck?: RadarRoute;
+  motorbike?: RadarRoute;
+}
+
+export interface RadarRouteGeometry {
+  type: string;
+  coordinates: number[][];
 }
 
 export interface RadarRoute {
   distance?: RadarRouteDistance;
   duration?: RadarRouteDuration;
+  geometry?: RadarRouteGeometry;
 }
 
 export interface RadarRouteDistance {

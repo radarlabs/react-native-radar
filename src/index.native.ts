@@ -5,7 +5,7 @@ import {
   Location,
   RadarAutocompleteOptions,
   RadarContextCallback,
-  RadarGeocodeCallback,
+  RadarAddressCallback,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -33,6 +33,7 @@ import {
   Event,
   RadarListenerCallback,
   RadarGetMatrixOptions,
+  RadarMetadata,
 } from "./@types/types";
 
 if (
@@ -64,11 +65,11 @@ const setDescription = (description: string): void => {
 const getDescription = (): Promise<string> =>
   NativeModules.RNRadar.getDescription();
 
-const setMetadata = (metadata: object): void => {
+const setMetadata = (metadata: RadarMetadata): void => {
   NativeModules.RNRadar.setMetadata(metadata);
 };
 
-const getMetadata = (): Promise<object> => NativeModules.RNRadar.getMetadata();
+const getMetadata = (): Promise<RadarMetadata> => NativeModules.RNRadar.getMetadata();
 
 const setAnonymousTrackingEnabled = (enabled: boolean): void =>
   NativeModules.RNRadar.setAnonymousTrackingEnabled(enabled);
@@ -177,15 +178,15 @@ const searchGeofences = (
 
 const autocomplete = (
   options: RadarAutocompleteOptions
-): Promise<RadarGeocodeCallback> => NativeModules.RNRadar.autocomplete(options);
+): Promise<RadarAddressCallback> => NativeModules.RNRadar.autocomplete(options);
 
-const geocode = (address: string): Promise<RadarGeocodeCallback> =>
+const geocode = (address: string): Promise<RadarAddressCallback> =>
   NativeModules.RNRadar.geocode(address);
 
-const reverseGeocode = (location: Location): Promise<RadarGeocodeCallback> =>
+const reverseGeocode = (location: Location): Promise<RadarAddressCallback> =>
   NativeModules.RNRadar.reverseGeocode(location);
 
-const ipGeocode = (): Promise<RadarGeocodeCallback> =>
+const ipGeocode = (): Promise<RadarAddressCallback> =>
   NativeModules.RNRadar.ipGeocode();
 
 const getDistance = (
@@ -201,7 +202,7 @@ const logConversion = (
 ): Promise<RadarLogConversionCallback> =>
   NativeModules.RNRadar.logConversion(options);
 
-const sendEvent = (name: string, metadata: object): void =>
+const sendEvent = (name: string, metadata: RadarMetadata): void =>
   NativeModules.RNRadar.sendEvent(name, metadata);
 
 const on = (event: Event, callback: RadarListenerCallback): void =>

@@ -2,7 +2,7 @@ import {
   Location,
   RadarAutocompleteOptions,
   RadarContextCallback,
-  RadarGeocodeCallback,
+  RadarAddressCallback,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -30,6 +30,7 @@ import {
   Event,
   RadarListenerCallback,
   RadarGetMatrixOptions,
+  RadarMetadata,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -39,8 +40,8 @@ export interface RadarNativeInterface {
   getUserId: () => Promise<string>;
   setDescription: (description: string) => void;
   getDescription: () => Promise<string>;
-  setMetadata: (metadata: object) => void;
-  getMetadata: () => Promise<object>;
+  setMetadata: (metadata: RadarMetadata) => void;
+  getMetadata: () => Promise<RadarMetadata>;
   setAnonymousTrackingEnabled: (enabled: boolean) => void;
   getPermissionsStatus: () => Promise<RadarPermissionsStatus>;
   requestPermissions: (background: boolean) => Promise<RadarPermissionsStatus>;
@@ -81,16 +82,16 @@ export interface RadarNativeInterface {
   ) => Promise<RadarSearchGeofencesCallback>;
   autocomplete: (
     options: RadarAutocompleteOptions
-  ) => Promise<RadarGeocodeCallback>;
-  geocode: (address: string) => Promise<RadarGeocodeCallback>;
-  reverseGeocode: (location: any) => Promise<RadarGeocodeCallback>;
-  ipGeocode: () => Promise<RadarGeocodeCallback>;
+  ) => Promise<RadarAddressCallback>;
+  geocode: (address: string) => Promise<RadarAddressCallback>;
+  reverseGeocode: (location: any) => Promise<RadarAddressCallback>;
+  ipGeocode: () => Promise<RadarAddressCallback>;
   getDistance: (option: RadarGetDistanceOptions) => Promise<RadarRouteCallback>;
   getMatrix: (option: RadarGetMatrixOptions) => Promise<RadarRouteMatrix>;
   logConversion: (
     options: RadarLogConversionOptions
   ) => Promise<RadarLogConversionCallback>;
-  sendEvent: (name: string, metadata: object) => void;
+  sendEvent: (name: string, metadata: RadarMetadata) => void;
   on: (event: Event, callback: RadarListenerCallback) => void;
   off: (event: Event, callback?: Function | undefined) => void;
   nativeSdkVersion: () => Promise<string>;
