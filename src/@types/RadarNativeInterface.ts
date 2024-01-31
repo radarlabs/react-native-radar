@@ -92,7 +92,7 @@ export interface RadarNativeInterface {
   ) => Promise<RadarLogConversionCallback>;
   sendEvent: (name: string, metadata: object) => void;
   on: (event: Event, callback: RadarListenerCallback) => void;
-  off: (event: Event, callback: Function | undefined) => void;
+  off: (event: Event, callback?: Function | undefined) => void;
   nativeSdkVersion: () => Promise<string>;
   rnSdkVersion: () => string;
 }
