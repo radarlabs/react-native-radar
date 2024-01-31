@@ -207,7 +207,7 @@ const sendEvent = (name: string, metadata: object): void =>
 const on = (event: Event, callback: RadarListenerCallback): void =>
   eventEmitter.addListener(event, callback);
 
-const off = (event: Event, callback: Function | undefined): void => {
+const off = (event: Event, callback?: Function | undefined): void => {
   if (callback) {
     // @ts-ignore
     eventEmitter.removeListener(event, callback);
