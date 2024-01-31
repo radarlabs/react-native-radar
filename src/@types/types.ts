@@ -108,7 +108,6 @@ export interface RadarIPGeocodeCallback {
   proxy?: boolean;
 }
 
-
 export interface RadarTrackingOptionsForegroundServiceOptions {
   text?: string;
   title?: string;
@@ -220,6 +219,7 @@ export interface RadarTrip {
   eta?: RadarTripEta;
   status: string;
   scheduledArrivalAt?: Date;
+  destinationLocation: Location;
 }
 
 export interface RadarSegment {
@@ -310,7 +310,6 @@ export interface RadarGeofence {
   geometryRadius?: number;
   geometryCenter?: RadarCoordinate;
   coordinates?: number[][];
-
 }
 
 export interface RadarBeacon {
@@ -330,7 +329,7 @@ export interface RadarPlace {
   name: string;
   categories: string[];
   chain?: RadarChain;
-  location:Location;
+  location: Location;
   metadata?: RadarMetadata;
   group?: string;
 }
@@ -348,7 +347,7 @@ export interface RadarRegion {
   code: string;
   name: string;
   allowed?: boolean;
-  flag?:string;
+  flag?: string;
 }
 
 export interface RadarLocationPermissionsCallback {
@@ -531,14 +530,12 @@ export interface RadarEventUpdateCallback {
   (args: RadarEventUpdate): void;
 }
 
-
-
-export interface RadarLocationUpdate{
+export interface RadarLocationUpdate {
   location: Location;
   user: RadarUser;
 }
 
-export interface RadarLocationUpdateCallback{
+export interface RadarLocationUpdateCallback {
   (args: RadarLocationUpdate): void;
 }
 
@@ -548,16 +545,21 @@ export interface RadarClientLocationUpdate {
   source: string;
 }
 
-export interface RadarClientLocationUpdateCallback{
+export interface RadarClientLocationUpdateCallback {
   (args: RadarClientLocationUpdate): void;
 }
 
-export interface RadarErrorCallback{
+export interface RadarErrorCallback {
   (status: string): void;
 }
 
-export interface RadarLogUpdateCallback{
+export interface RadarLogUpdateCallback {
   (status: string): void;
 }
 
-export type RadarListenerCallback = RadarEventUpdateCallback | RadarLocationUpdateCallback | RadarClientLocationUpdateCallback | RadarErrorCallback | RadarLogUpdateCallback;
+export type RadarListenerCallback =
+  | RadarEventUpdateCallback
+  | RadarLocationUpdateCallback
+  | RadarClientLocationUpdateCallback
+  | RadarErrorCallback
+  | RadarLogUpdateCallback;
