@@ -16,6 +16,7 @@ RCT_EXPORT_MODULE();
     self = [super init];
     if (self) {
         [Radar setDelegate:self];
+        [Radar setVerifiedDelegate:self];
         locationManager = [CLLocationManager new];
         locationManager.delegate = self;
     }
@@ -88,6 +89,12 @@ RCT_EXPORT_MODULE();
 - (void)didLogMessage:(NSString *)message {
     if (hasListeners) {
         [self sendEventWithName:@"log" body:message];
+    }
+}
+
+- (void)didUpdateToken:(NSString *)token {
+    if (hasListeners) {
+        [self sendEventWithName:@"token" body:token];
     }
 }
 
@@ -295,7 +302,9 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     }
 }
 
-RCT_EXPORT_METHOD(trackVerified:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+        BOOL beaconsTrackingOption = NO;
+
         __block RCTPromiseResolveBlock resolver = resolve;
         __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -318,16 +327,24 @@ RCT_EXPORT_METHOD(trackVerified:(RCTPromiseResolveBlock)resolve reject:(RCTPromi
         }
         resolver = nil;
         rejecter = nil;
-    }; 
+    };
 
-    [Radar trackVerifiedWithCompletionHandler:completionHandler];
+    BOOL beacons = optionsDict[@"beacons"];
+
+    if (beacons) {
+        beaconsTrackingOption = beacons;
+    }
+
+    [Radar trackVerifiedWithBeacons:beaconsTrackingOption completionHandler:completionHandler];
 }
 
-RCT_EXPORT_METHOD(trackVerifiedToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-        __block RCTPromiseResolveBlock resolver = resolve;
-        __block RCTPromiseRejectBlock rejecter = reject;
+RCT_EXPORT_METHOD(trackVerifiedToken:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    BOOL beaconsTrackingOption = NO;
 
-       RadarTrackTokenCompletionHandler completionHandler = ^(RadarStatus status, NSString * _Nullable token) {
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    RadarTrackTokenCompletionHandler completionHandler = ^(RadarStatus status, NSString * _Nullable token) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -340,9 +357,15 @@ RCT_EXPORT_METHOD(trackVerifiedToken:(RCTPromiseResolveBlock)resolve reject:(RCT
         }
         resolver = nil;
         rejecter = nil;
-    }; 
+    };
 
-    [Radar trackVerifiedTokenWithCompletionHandler:completionHandler];
+    BOOL beacons = optionsDict[@"beacons"];
+
+    if (beacons) {
+        beaconsTrackingOption = beacons;
+    }
+
+    [Radar trackVerifiedTokenWithBeacons:beaconsTrackingOption completionHandler:completionHandler];
 }
 
 RCT_EXPORT_METHOD(startTrackingEfficient) {
@@ -360,6 +383,31 @@ RCT_EXPORT_METHOD(startTrackingContinuous) {
 RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
     RadarTrackingOptions *options = [RadarTrackingOptions trackingOptionsFromDictionary:optionsDict];
     [Radar startTrackingWithOptions:options];
+}
+
+RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
+    if (optionsDict == nil) {
+        return;
+    }
+
+    BOOL tokenTrackingOption = NO;
+    BOOL beaconTrackingOption = NO;
+    double interval = 1;
+
+    BOOL token = optionsDict[@"token"];
+    if (token) {
+        tokenTrackingOption = token;
+    }
+    BOOL beacons = optionsDict[@"beacons"];
+    if (beacons) {
+        beaconTrackingOption = beacons;
+    }
+    NSNumber *intervalNumber = optionsDict[@"interval"];
+    if (intervalNumber != nil && [intervalNumber isKindOfClass:[NSNumber class]]) {
+        interval = [intervalNumber doubleValue];
+    }
+
+    [Radar startTrackingVerified:tokenTrackingOption interval:interval beacons:beaconTrackingOption];
 }
 
 RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict) {

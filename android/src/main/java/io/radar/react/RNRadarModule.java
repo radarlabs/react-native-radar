@@ -25,6 +25,7 @@ import io.radar.sdk.Radar;
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.RadarTrackingOptions.RadarTrackingOptionsForegroundService;
 import io.radar.sdk.RadarTripOptions;
+import io.radar.sdk.RadarVerifiedReceiver;
 import io.radar.sdk.model.RadarAddress;
 import io.radar.sdk.model.RadarContext;
 import io.radar.sdk.model.RadarEvent;
@@ -49,16 +50,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     private Promise mPermissionsRequestPromise;
 
     private RNRadarReceiver receiver;
+    private RNRadarVerifiedReceiver verifiedReceiver;    
     private int listenerCount = 0;
+    private boolean fraud = false;
 
     public RNRadarModule(ReactApplicationContext reactContext) {
         super(reactContext);
         receiver = new RNRadarReceiver();
+        verifiedReceiver = new RNRadarVerifiedReceiver();
     }
 
     @ReactMethod
     public void addListener(String eventName) {
         if (listenerCount == 0) {
+            if (fraud) {
+                verifiedReceiver.hasListeners = true;
+            }
             receiver.hasListeners = true;
         }
 
@@ -69,6 +76,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     public void removeListeners(Integer count) {
         listenerCount -= count;
         if (listenerCount == 0) {
+            if (fraud) {
+                verifiedReceiver.hasListeners = false;
+            }
             receiver.hasListeners = false;
         }
     }
@@ -80,8 +90,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void initialize(String publishableKey, boolean fraud) {
+        this.fraud = fraud;
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
+            Radar.setVerifiedReceiver(verifiedReceiver);
         } else {
             Radar.initialize(getReactApplicationContext(), publishableKey);
             Radar.setReceiver(receiver);
@@ -359,8 +371,17 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void trackVerified(final Promise promise) {
-        Radar.trackVerified(new Radar.RadarTrackCallback() {
+    public void trackVerified(ReadableMap optionsMap, final Promise promise) {
+
+        boolean beaconsTrackingOption = false;
+
+        if (optionsMap != null) {
+            if (optionsMap.hasKey("beacons")) {
+                beaconsTrackingOption = optionsMap.getBoolean("beacons");
+            }
+        }
+
+        Radar.RadarTrackCallback trackCallback = new Radar.RadarTrackCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
                 if (promise == null) {
@@ -389,12 +410,23 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             }
-        });
+        };
+
+        Radar.trackVerified(beaconsTrackingOption, trackCallback);
     }
 
     @ReactMethod
-    public void trackVerifiedToken(final Promise promise) {
-        Radar.trackVerifiedToken(new Radar.RadarTrackTokenCallback() {
+    public void trackVerifiedToken(ReadableMap optionsMap, final Promise promise) {
+
+        boolean beaconsTrackingOption = false;
+
+        if (optionsMap != null) {
+            if (optionsMap.hasKey("beacons")) {
+                beaconsTrackingOption = optionsMap.getBoolean("beacons");
+            }
+        }
+
+        Radar.RadarTrackTokenCallback trackTokenCallback = new Radar.RadarTrackTokenCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable String token) {
                 if (promise == null) {
@@ -417,7 +449,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             }
-        });
+        };
+
+        Radar.trackVerifiedToken(beaconsTrackingOption, trackTokenCallback);
     }
 
     @ReactMethod
@@ -444,6 +478,19 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         } catch (JSONException e) {
             Log.e(TAG, "JSONException", e);
         }
+    }
+
+    @ReactMethod
+    public void startTrackingVerified(ReadableMap optionsMap) {
+        if (optionsMap == null) {
+            return;
+        }
+
+        boolean token = optionsMap.hasKey("token") ? optionsMap.getBoolean("token") : false;
+        boolean beacons = optionsMap.hasKey("beacons") ? optionsMap.getBoolean("beacons") : false;
+        int interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : 1;
+
+        Radar.startTrackingVerified(token, interval, beacons);
     }
 
     @ReactMethod
