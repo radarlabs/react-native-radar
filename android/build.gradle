@@ -15,7 +15,7 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 31
         versionCode 1
         versionName '3.9.3-beta.1'
