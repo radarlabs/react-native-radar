@@ -6,6 +6,41 @@ export interface RadarTrackOnceOptions {
   beacons?: boolean;
 }
 
+export interface RadarTrackingOptions {
+  desiredStoppedUpdateInterval: number;
+  fastestStoppedUpdateInterval?: number;
+  desiredMovingUpdateInterval: number;
+  fastestMovingUpdateInterval?: number;
+  desiredSyncInterval: number;
+  desiredAccuracy: String;
+  stopDuration: number;
+  stopDistance: number;
+  sync: String;
+  replay: String;
+  useStoppedGeofence: boolean;
+  showBlueBar?: boolean;
+  foregroundServiceEnabled?: boolean;
+  startTrackingAfter?: number | undefined;
+  stopTrackingAfter?: number | undefined;
+  syncLocations?: String;
+  stoppedGeofenceRadius: number;
+  useMovingGeofence: boolean;
+  movingGeofenceRadius: number;
+  syncGeofences: boolean;
+  useVisits?: boolean;
+  useSignificantLocationChanges?: boolean;
+  beacons: boolean;
+  syncGeofencesLimit?: number;
+}
+
+export interface RadarMockTrackingOptions {
+  origin: Location;
+  destination: Location;
+  mode: RadarRouteMode;
+  steps: number;
+  interval: number;
+}
+
 export interface RadarGetDistanceOptions {
   origin?: Location;
   destination?: Location;
@@ -30,10 +65,69 @@ export interface RadarStartTripOptions {
   trackingOptions?: RadarTrackingOptions;
 }
 
-export interface RadarLocationCallback {
-  status: string;
-  location?: Location;
-  stopped: boolean;
+export interface RadarSearchGeofencesOptions {
+  near?: Location;
+  radius?: number;
+  metadata?: RadarMetadata;
+  tags?: string[];
+  limit?: number;
+}
+
+export interface RadarTrackingOptionsForegroundServiceOptions {
+  text?: string;
+  title?: string;
+  updatesOnly: boolean;
+  activity?: string;
+  importance?: number;
+  id?: number;
+  channelName?: string;
+  iconString?: string;
+  iconColor?: string;
+}
+
+export interface RadarSearchPlacesOptions {
+  near?: Location;
+  radius?: number;
+  chains?: string[];
+  chainMetadata?: RadarMetadata;
+  categories?: string[];
+  groups?: string[];
+  limit?: number;
+}
+
+export interface RadarAutocompleteOptions {
+  query: string;
+  near?: Location;
+  layers?: string[];
+  limit: number;
+  country?: string;
+  expandUnits?: boolean;
+  mailable?: boolean;
+}
+
+export interface RadarNotificationOptions {
+  iconString?: string;
+  iconColor?: string;
+  foregroundServiceIconString?: string;
+  foregroundServiceIconColor?: string;
+  eventIconString?: string;
+  eventIconColor?: string;
+}
+
+export interface RadarLogConversionOptions {
+  name: string;
+  revenue?: number;
+  metadata?: RadarMetadata;
+}
+
+export interface RadarTripOptions {
+  externalId: string;
+  metadata?: RadarMetadata;
+  destinationGeofenceTag?: string;
+  destinationGeofenceExternalId?: string;
+  mode?: RadarRouteMode;
+  scheduledArrivalAt?: Date;
+  approachingThreshold?: number;
 }
 
 export interface RadarTrackCallback {
@@ -43,20 +137,10 @@ export interface RadarTrackCallback {
   events?: RadarEvent[];
 }
 
-export type RadarPermissionsStatus =
-  | "GRANTED_FOREGROUND"
-  | "GRANTED_FOREGROUND"
-  | "DENIED"
-  | "NOT_DETERMINED"
-  | "UNKNOWN";
-
-export type Event = "clientLocation" | "location" | "error" | "events" | "log";
-
-export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
-
-export interface RadarTrackTokenCallback {
+export interface RadarLocationCallback {
   status: string;
-  token?: String;
+  location?: Location;
+  stopped: boolean;
 }
 
 export interface RadarTripCallback {
@@ -83,17 +167,15 @@ export interface RadarSearchGeofencesCallback {
   geofences?: RadarGeofence[];
 }
 
-export interface RadarSearchGeofencesOptions {
-  near?: Location;
-  radius?: number;
-  metadata?: RadarMetadata;
-  tags?: string[];
-  limit?: number;
-}
-
 export interface RadarAddressCallback {
   status: string;
   addresses?: RadarAddress[];
+}
+
+export interface RadarIPGeocodeCallback {
+  status: string;
+  address?: RadarAddress;
+  proxy?: boolean;
 }
 
 export interface RadarValidateAddressCallback {
@@ -108,18 +190,6 @@ export interface RadarIPGeocodeCallback {
   proxy?: boolean;
 }
 
-export interface RadarTrackingOptionsForegroundServiceOptions {
-  text?: string;
-  title?: string;
-  updatesOnly: boolean;
-  activity?: string;
-  importance?: number;
-  id?: number;
-  channelName?: string;
-  iconString?: string;
-  iconColor?: string;
-}
-
 export interface RadarRouteCallback {
   status: string;
   routes?: RadarRoutes;
@@ -127,22 +197,71 @@ export interface RadarRouteCallback {
 
 export interface RadarLogConversionCallback {
   status: string;
-  event: RadarEvent;
+  event?: RadarEvent;
 }
+
+export interface RadarTrackTokenCallback {
+  status: string;
+  token?: String;
+}
+
+export interface RadarEventUpdate {
+  user: RadarUser;
+  events: RadarEvent[];
+}
+
+export interface RadarEventUpdateCallback {
+  (args: RadarEventUpdate): void;
+}
+
+export interface RadarLocationUpdate {
+  location: Location;
+  user: RadarUser;
+}
+
+export interface RadarLocationUpdateCallback {
+  (args: RadarLocationUpdate): void;
+}
+
+export interface RadarClientLocationUpdate {
+  location: Location;
+  stopped: boolean;
+  source: string;
+}
+
+export interface RadarClientLocationUpdateCallback {
+  (args: RadarClientLocationUpdate): void;
+}
+
+export interface RadarErrorCallback {
+  (status: string): void;
+}
+
+export interface RadarLogUpdateCallback {
+  (status: string): void;
+}
+
+export type RadarListenerCallback =
+  | RadarEventUpdateCallback
+  | RadarLocationUpdateCallback
+  | RadarClientLocationUpdateCallback
+  | RadarErrorCallback
+  | RadarLogUpdateCallback;
+
+export type RadarPermissionsStatus =
+  | "GRANTED_FOREGROUND"
+  | "GRANTED_FOREGROUND"
+  | "DENIED"
+  | "NOT_DETERMINED"
+  | "UNKNOWN";
+
+export type Event = "clientLocation" | "location" | "error" | "events" | "log";
+
+export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
 export interface RadarRouteMatrix {
   status: string;
   matrix?: object[];
-}
-
-export interface RadarSearchPlacesOptions {
-  near?: Location;
-  radius?: number;
-  chains?: string[];
-  chainMetadata?: RadarMetadata;
-  categories?: string[];
-  groups?: string[];
-  limit?: number;
 }
 
 export interface Location {
@@ -181,14 +300,6 @@ export interface RadarUser {
   trip?: RadarTrip;
   debug?: boolean;
   fraud?: RadarFraud;
-}
-export interface RadarAutocompleteOptions {
-  query: string;
-  near?: Location;
-  layers?: string[];
-  limit: number;
-  country?: string;
-  expandUnits?: boolean;
 }
 
 export interface RadarCoordinate {
@@ -350,10 +461,6 @@ export interface RadarRegion {
   flag?: string;
 }
 
-export interface RadarLocationPermissionsCallback {
-  status: string;
-}
-
 export interface RadarAddress {
   latitude: number;
   longitude: number;
@@ -411,15 +518,6 @@ export interface RadarRouteDistance {
   text: string;
 }
 
-export interface RadarNotificationOptions {
-  iconString?: string;
-  iconColor?: string;
-  foregroundServiceIconString?: string;
-  foregroundServiceIconColor?: string;
-  eventIconString?: string;
-  eventIconColor?: string;
-}
-
 export interface RadarRouteDuration {
   value: number;
   text: string;
@@ -440,50 +538,9 @@ export interface RadarFraud {
   jumped: boolean;
 }
 
-export interface RadarMockTrackingOptions {
-  origin: Location;
-  destination: Location;
-  mode: RadarRouteMode;
-  steps: number;
-  interval: number;
-}
-
 export type RadarTrackingOptionsReplay = "all" | "stops" | "none";
 
 export type RadarTrackingOptionsSync = "none" | "stopsAndExits" | "all";
-
-export interface RadarTrackingOptions {
-  desiredStoppedUpdateInterval: number;
-  fastestStoppedUpdateInterval?: number;
-  desiredMovingUpdateInterval: number;
-  fastestMovingUpdateInterval?: number;
-  desiredSyncInterval: number;
-  desiredAccuracy: String;
-  stopDuration: number;
-  stopDistance: number;
-  sync: String;
-  replay: String;
-  useStoppedGeofence: boolean;
-  showBlueBar?: boolean;
-  foregroundServiceEnabled?: boolean;
-  startTrackingAfter?: number | undefined;
-  stopTrackingAfter?: number | undefined;
-  syncLocations?: String;
-  stoppedGeofenceRadius: number;
-  useMovingGeofence: boolean;
-  movingGeofenceRadius: number;
-  syncGeofences: boolean;
-  useVisits?: boolean;
-  useSignificantLocationChanges?: boolean;
-  beacons: boolean;
-  syncGeofencesLimit?: number;
-}
-
-export interface RadarLogConversionOptions {
-  name: string;
-  revenue?: number;
-  metadata?: RadarMetadata;
-}
 
 export type RadarRouteMode = "foot" | "bike" | "car";
 
@@ -502,16 +559,6 @@ export interface RadarTrackingOptionsForegroundService {
   channelName?: string;
 }
 
-export interface RadarTripOptions {
-  externalId: string;
-  metadata?: RadarMetadata;
-  destinationGeofenceTag?: string;
-  destinationGeofenceExternalId?: string;
-  mode?: RadarRouteMode;
-  scheduledArrivalAt?: Date;
-  approachingThreshold?: number;
-}
-
 export type RadarTripStatus =
   | "unknown"
   | "started"
@@ -520,46 +567,3 @@ export type RadarTripStatus =
   | "expired"
   | "completed"
   | "canceled";
-
-export interface RadarEventUpdate {
-  user: RadarUser;
-  events: RadarEvent[];
-}
-
-export interface RadarEventUpdateCallback {
-  (args: RadarEventUpdate): void;
-}
-
-export interface RadarLocationUpdate {
-  location: Location;
-  user: RadarUser;
-}
-
-export interface RadarLocationUpdateCallback {
-  (args: RadarLocationUpdate): void;
-}
-
-export interface RadarClientLocationUpdate {
-  location: Location;
-  stopped: boolean;
-  source: string;
-}
-
-export interface RadarClientLocationUpdateCallback {
-  (args: RadarClientLocationUpdate): void;
-}
-
-export interface RadarErrorCallback {
-  (status: string): void;
-}
-
-export interface RadarLogUpdateCallback {
-  (status: string): void;
-}
-
-export type RadarListenerCallback =
-  | RadarEventUpdateCallback
-  | RadarLocationUpdateCallback
-  | RadarClientLocationUpdateCallback
-  | RadarErrorCallback
-  | RadarLogUpdateCallback;

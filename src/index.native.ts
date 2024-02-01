@@ -34,6 +34,7 @@ import {
   RadarListenerCallback,
   RadarGetMatrixOptions,
   RadarMetadata,
+  RadarIPGeocodeCallback,
 } from "./@types/types";
 
 if (
@@ -69,7 +70,8 @@ const setMetadata = (metadata: RadarMetadata): void => {
   NativeModules.RNRadar.setMetadata(metadata);
 };
 
-const getMetadata = (): Promise<RadarMetadata> => NativeModules.RNRadar.getMetadata();
+const getMetadata = (): Promise<RadarMetadata> =>
+  NativeModules.RNRadar.getMetadata();
 
 const setAnonymousTrackingEnabled = (enabled: boolean): void =>
   NativeModules.RNRadar.setAnonymousTrackingEnabled(enabled);
@@ -139,8 +141,7 @@ const setForegroundServiceOptions = (
 const setNotificationOptions = (options: RadarNotificationOptions): void =>
   NativeModules.RNRadar.setNotificationOptions(options);
 
-// Take a closer look?
-  const getTripOptions = (): Promise<RadarTripOptions> =>
+const getTripOptions = (): Promise<RadarTripOptions> =>
   NativeModules.RNRadar.getTripOptions();
 
 const startTrip = (
@@ -186,16 +187,15 @@ const geocode = (address: string): Promise<RadarAddressCallback> =>
 const reverseGeocode = (location: Location): Promise<RadarAddressCallback> =>
   NativeModules.RNRadar.reverseGeocode(location);
 
-const ipGeocode = (): Promise<RadarAddressCallback> =>
+const ipGeocode = (): Promise<RadarIPGeocodeCallback> =>
   NativeModules.RNRadar.ipGeocode();
 
 const getDistance = (
   options: RadarGetDistanceOptions
 ): Promise<RadarRouteCallback> => NativeModules.RNRadar.getDistance(options);
 
-const getMatrix = (
-  options: RadarGetMatrixOptions
-): Promise<RadarRouteMatrix> => NativeModules.RNRadar.getMatrix(options);
+const getMatrix = (options: RadarGetMatrixOptions): Promise<RadarRouteMatrix> =>
+  NativeModules.RNRadar.getMatrix(options);
 
 const logConversion = (
   options: RadarLogConversionOptions
