@@ -259,6 +259,8 @@ export type Event = "clientLocation" | "location" | "error" | "events" | "log";
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
+export type RadarHost = "na" | "eu" | "default";
+
 export interface RadarRouteMatrix {
   status: string;
   matrix?: object[];

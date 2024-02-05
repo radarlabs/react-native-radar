@@ -4,6 +4,7 @@ import {
   RadarContextCallback,
   RadarAddressCallback,
   RadarGetDistanceOptions,
+  RadarHost,
   RadarLocationCallback,
   RadarLogConversionCallback,
   RadarLogConversionOptions,
@@ -35,7 +36,7 @@ import {
 } from "./types";
 
 export interface RadarNativeInterface {
-  initialize: (publishableKey: string, fraud: boolean) => void;
+  initialize: (publishableKey: string, fraud: boolean, host: RadarHost) => void;
   setLogLevel: (level: RadarLogLevel) => void;
   setUserId: (userId: string) => void;
   getUserId: () => Promise<string>;

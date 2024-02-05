@@ -91,7 +91,7 @@ RCT_EXPORT_MODULE();
     }
 }
 
-RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
+RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud host:(NSString *)host) {
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
