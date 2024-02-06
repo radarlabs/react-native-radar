@@ -92,7 +92,18 @@ RCT_EXPORT_MODULE();
 }
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud host:(NSString *)host) {
-    [Radar initializeWithPublishableKey:publishableKey];
+    RadarHost radarHost = RadarHostDefault;
+    
+    if (host) {
+        NSString *lowerHost = [host lowercaseString];
+        if ([lowerHost isEqualToString:@"na"]) {
+            radarHost = RadarHostNorthAmerica;
+        } else if ([lowerAccuracy isEqualToString:@"eu"]) {
+            radarHost = RadarHostEurope;
+        }
+    }
+
+    [Radar initializeWithPublishableKey:publishableKey fraud:fraud host:radarHost];
 }
 
 RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {

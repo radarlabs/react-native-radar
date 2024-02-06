@@ -22,6 +22,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import io.radar.sdk.Radar;
+import io.radar.sdk.RadarHost;
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.RadarTrackingOptions.RadarTrackingOptionsForegroundService;
 import io.radar.sdk.RadarTripOptions;
@@ -79,11 +80,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void initialize(String publishableKey, boolean fraud) {
+    public void initialize(String publishableKey, boolean fraud, String host) {
+        RadarHost radarHost = RadarHost.DEFAULT;        
+        String lowerHost = host != null ? host.toLowerCase() : "default";
+        
+        if (lowerHost.equals("na")) {
+            radarHost = RadarHost.NORTH_AMERICA;
+        } else if (lowerHost.equals("eu")) {
+            radarHost = RadarHost.EUROPE;
+        } else if (lowerHost.equals("default")) {
+            radarHost = RadarHost.DEFAULT;
+        }
+
         if (fraud) {
-            Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
+            Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, radarHost);
         } else {
-            Radar.initialize(getReactApplicationContext(), publishableKey);
+            Radar.initialize(getReactApplicationContext(), publishableKey, radarHost);
             Radar.setReceiver(receiver);
         }
     }
