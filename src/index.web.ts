@@ -1,75 +1,81 @@
-import RadarJS from 'radar-sdk-js';
+import RadarJS from "radar-sdk-js";
+import { RadarLocationCallback, RadarLogLevel, RadarMetadata, RadarPermissionsStatus, RadarTrackCallback, RadarTrackingOptionsDesiredAccuracy, RadarTripCallback } from "./@types/types";
+import { RadarNativeInterface } from "./@types/RadarNativeInterface";
 
-const initialize = (publishableKey) => {
+const initialize = (publishableKey: string, fraud: boolean = false): void => {
   RadarJS.initialize(publishableKey);
-}
+};
 
-const setLogLevel = (level) => {
+const setLogLevel = (level:RadarLogLevel) => {
   // not implemented
 };
 
-const setUserId = (userId) => {
+const setUserId = (userId:string):void => {
   RadarJS.setUserId(userId);
 };
 
+// not exported???
 const setDeviceId = (deviceId, installId) => {
   RadarJS.setDeviceId(deviceId, installId);
-}
+};
+
+// not exported???
 const setDeviceType = (deviceType) => {
   RadarJS.setDeviceType(deviceType);
-}
+};
 
+// not exported???
 const setRequestHeaders = (headers) => {
   RadarJS.setRequestHeaders(headers);
-}
+};
 
-const setDescription = (description) => {
+const setDescription = (description:string):void => {
   RadarJS.setDescription(description);
 };
 
-const setMetadata = (metadata) => {
+const setMetadata = (metadata:RadarMetadata):void => {
   RadarJS.setMetadata(metadata);
 };
 
-const getPermissionsStatus = () => {
-  return new Promise(resolve => {
+const getPermissionsStatus = ():Promise<RadarPermissionsStatus> => {
+  return new Promise((resolve) => {
     const navigator = window.navigator;
 
     if (!navigator.permissions) {
-      resolve({
-        status: 'UNKNOWN'
-      });
+      resolve(
+        "UNKNOWN",
+      );
     } else {
-      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-        resolve({
-          status: result.state === 'granted' ? 'GRANTED_FOREGROUND' : 'DENIED',
-        });
+      navigator.permissions.query({ name: "geolocation" }).then((result) => {
+        resolve( result.state === "granted" ? "GRANTED_FOREGROUND" : "DENIED",
+        );
       });
     }
   });
 };
 
-const requestPermissions = background => {
-  // not implemented
+const requestPermissions = (background:boolean):Promise<RadarPermissionsStatus> => {
+  return Promise.reject(new Error('Not Implemented'));
 };
 
-const getLocation = () => {
-  return new Promise((resolve, reject) => {    
+const getLocation = (desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy): Promise<RadarLocationCallback> => {
+  return new Promise((resolve, reject) => {
     RadarJS.getLocation((err, result) => {
-      if (err)
-        reject(err);
-      else
-        resolve(result);
-    })
+      if (err) reject(err);
+      // TODO: this is wrong, we need to change the shape of this return value
+      else resolve(result);
+    });
   });
 };
 
-const trackOnce = options => {
+// the shape of options is different from the native version
+const trackOnce = (options):Promise<RadarTrackCallback> => {
   return new Promise((resolve, reject) => {
     const callback = (err, { status, location, user, events }) => {
       if (err) {
         reject(err);
       } else {
+        // TODO: not really sure how status field is gotten? from code seems wrong
         resolve({
           status,
           location,
@@ -80,7 +86,10 @@ const trackOnce = options => {
     };
 
     if (options) {
-      RadarJS.trackOnce(options.location ? options.location : options, callback);
+      RadarJS.trackOnce(
+        options.location ? options.location : options,
+        callback
+      );
     } else {
       RadarJS.trackOnce(callback);
     }
@@ -88,14 +97,14 @@ const trackOnce = options => {
 };
 
 const trackVerified = () => {
-  // not implemented
+  return Promise.reject(new Error('Not Implemented'));
 };
 
 const trackVerifiedToken = () => {
-  // not implemented
+  return Promise.reject(new Error('Not Implemented'));
 };
 
-const startTrackingEfficient = () => {  
+const startTrackingEfficient = () => {
   // not implemented
 };
 
@@ -107,11 +116,11 @@ const startTrackingContinuous = () => {
   // not implemented
 };
 
-const startTrackingCustom = options => {
+const startTrackingCustom = (options) => {
   // not implemented
 };
 
-const mockTracking = options => {
+const mockTracking = (options) => {
   // not implemented
 };
 
@@ -119,11 +128,12 @@ const stopTracking = () => {
   // not implemented
 };
 
-const setForegroundServiceOptions = options => {
+const setForegroundServiceOptions = (options) => {
   // not implemented
 };
 
-const startTrip = options => {
+// wrong shape, trip options is the top level object in web while native has both trip option and tracking options
+const startTrip = (options):Promise<RadarTripCallback> => {
   return new Promise((resolve, reject) => {
     const callback = (err, { trip, events, status }) => {
       if (err) {
@@ -132,7 +142,7 @@ const startTrip = options => {
         resolve({
           trip,
           events,
-          status
+          status,
         });
       }
     };
@@ -150,11 +160,11 @@ const completeTrip = () => {
         resolve({
           trip,
           events,
-          status
+          status,
         });
       }
     };
-    
+
     RadarJS.completeTrip(callback);
   });
 };
@@ -168,16 +178,16 @@ const cancelTrip = () => {
         resolve({
           trip,
           events,
-          status
+          status,
         });
       }
     };
-    
+
     RadarJS.cancelTrip(callback);
   });
 };
 
-const updateTrip = (tripOptions) => {  
+const updateTrip = (tripOptions) => {
   return new Promise((resolve, reject) => {
     const callback = (err, { trip, events, status }) => {
       if (err) {
@@ -186,11 +196,11 @@ const updateTrip = (tripOptions) => {
         resolve({
           trip,
           events,
-          status
+          status,
         });
       }
     };
-    
+
     RadarJS.updateTrip(tripOptions.options, tripOptions.status, callback);
   });
 };
@@ -199,11 +209,11 @@ const acceptEvent = (eventId, verifiedPlaceId) => {
   // not implemented
 };
 
-const rejectEvent = eventId => {
+const rejectEvent = (eventId) => {
   // not implemented
 };
 
-const getContext = options => {
+const getContext = (options) => {
   return new Promise((resolve, reject) => {
     const callback = (err, { status, location, context }) => {
       if (err) {
@@ -225,7 +235,7 @@ const getContext = options => {
   });
 };
 
-const searchPlaces = options => {
+const searchPlaces = (options) => {
   return new Promise((resolve, reject) => {
     RadarJS.searchPlaces(options, (err, { status, location, places }) => {
       if (err) {
@@ -241,7 +251,7 @@ const searchPlaces = options => {
   });
 };
 
-const searchGeofences = options => {
+const searchGeofences = (options) => {
   return new Promise((resolve, reject) => {
     RadarJS.searchGeofences(options, (err, { status, location, geofences }) => {
       if (err) {
@@ -257,7 +267,7 @@ const searchGeofences = options => {
   });
 };
 
-const autocomplete = options => {
+const autocomplete = (options) => {
   return new Promise((resolve, reject) => {
     RadarJS.autocomplete(options, (err, { status, addresses }) => {
       if (err) {
@@ -272,14 +282,14 @@ const autocomplete = options => {
   });
 };
 
-const geocode = options => {
+const geocode = (options) => {
   return new Promise((resolve, reject) => {
     let newOptions = options;
-    if (typeof options === 'string')
+    if (typeof options === "string")
       newOptions = {
-        query: options
+        query: options,
       };
-    
+
     RadarJS.geocode(newOptions, (err, { status, addresses }) => {
       if (err) {
         reject(err);
@@ -293,7 +303,7 @@ const geocode = options => {
   });
 };
 
-const reverseGeocode = options => {
+const reverseGeocode = (options) => {
   return new Promise((resolve, reject) => {
     const callback = (err, { status, addresses }) => {
       if (err) {
@@ -329,7 +339,7 @@ const ipGeocode = () => {
   });
 };
 
-const getDistance = options => {
+const getDistance = (options) => {
   return new Promise((resolve, reject) => {
     RadarJS.getDistance(options, (err, { status, routes }) => {
       if (err) {
@@ -344,20 +354,23 @@ const getDistance = options => {
   });
 };
 
-const getMatrix = options => {
+const getMatrix = (options) => {
   return new Promise((resolve, reject) => {
-    RadarJS.getMatrix(options, (err, { origins, destinations, matrix, status }) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve({
-          origins,
-          destinations,
-          matrix,
-          status,
-        });
+    RadarJS.getMatrix(
+      options,
+      (err, { origins, destinations, matrix, status }) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({
+            origins,
+            destinations,
+            matrix,
+            status,
+          });
+        }
       }
-    });
+    );
   });
 };
 
@@ -369,7 +382,7 @@ const off = (event, callback) => {
   // not implemented
 };
 
-const Radar = {
+const Radar:RadarNativeInterface = {
   initialize,
   setLogLevel,
   setUserId,
