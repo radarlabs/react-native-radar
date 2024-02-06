@@ -7,7 +7,7 @@ import {
   RadarContextCallback,
   RadarAddressCallback,
   RadarGetDistanceOptions,
-  RadarHost,
+  RadarHostRegion,
   RadarLocationCallback,
   RadarLogConversionCallback,
   RadarLogConversionOptions,
@@ -46,8 +46,8 @@ if (
 }
 
 const eventEmitter = new NativeEventEmitter(NativeModules.RNRadar);
-const initialize = (publishableKey: string, fraud: boolean = false, host: RadarHost = "default"): void => {
-  NativeModules.RNRadar.initialize(publishableKey, fraud, host);
+const initialize = (publishableKey: string, fraud: boolean = false, region: RadarHostRegion = "global"): void => {
+  NativeModules.RNRadar.initialize(publishableKey, fraud, region);
 };
 
 const setLogLevel = (level: RadarLogLevel): void => {

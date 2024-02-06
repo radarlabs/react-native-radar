@@ -22,7 +22,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import io.radar.sdk.Radar;
-import io.radar.sdk.RadarHost;
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.RadarTrackingOptions.RadarTrackingOptionsForegroundService;
 import io.radar.sdk.RadarTripOptions;
@@ -80,22 +79,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void initialize(String publishableKey, boolean fraud, String host) {
-        RadarHost radarHost = RadarHost.DEFAULT;        
-        String lowerHost = host != null ? host.toLowerCase() : "default";
+    public void initialize(String publishableKey, boolean fraud, String region) {
+        Radar.RadarHostRegion hostRegion = Radar.RadarHostRegion.GLOBAL;        
+        String lowerRegion = region != null ? region.toLowerCase() : "global";
         
         if (lowerHost.equals("na")) {
-            radarHost = RadarHost.NORTH_AMERICA;
+            hostRegion = Radar.RadarHostRegion.NORTH_AMERICA;
         } else if (lowerHost.equals("eu")) {
-            radarHost = RadarHost.EUROPE;
-        } else if (lowerHost.equals("default")) {
-            radarHost = RadarHost.DEFAULT;
+            hostRegion = Radar.RadarHostRegion.EUROPE;
+        } else if (lowerHost.equals("global")) {
+            hostRegion = Radar.RadarHostRegion.GLOBAL;
         }
 
         if (fraud) {
-            Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, radarHost);
+            Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, hostRegion);
         } else {
-            Radar.initialize(getReactApplicationContext(), publishableKey, radarHost);
+            Radar.initialize(getReactApplicationContext(), publishableKey, hostRegion);
             Radar.setReceiver(receiver);
         }
     }
