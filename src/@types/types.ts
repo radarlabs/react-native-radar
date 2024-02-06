@@ -20,8 +20,8 @@ export interface RadarTrackingOptions {
   useStoppedGeofence: boolean;
   showBlueBar?: boolean;
   foregroundServiceEnabled?: boolean;
-  startTrackingAfter?: number | undefined;
-  stopTrackingAfter?: number | undefined;
+  startTrackingAfter?: number;
+  stopTrackingAfter?: number;
   syncLocations?: String;
   stoppedGeofenceRadius: number;
   useMovingGeofence: boolean;
@@ -101,6 +101,7 @@ export interface RadarAutocompleteOptions {
   layers?: string[];
   limit: number;
   country?: string;
+  /** @deprecated this is always true, regardless of the value passed here */
   expandUnits?: boolean;
   mailable?: boolean;
 }
@@ -206,7 +207,7 @@ export interface RadarTrackTokenCallback {
 }
 
 export interface RadarEventUpdate {
-  user: RadarUser;
+  user?: RadarUser;
   events: RadarEvent[];
 }
 
@@ -261,7 +262,7 @@ export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
 export interface RadarRouteMatrix {
   status: string;
-  matrix?: object[];
+  matrix?: RadarRoute[][];
 }
 
 export interface Location {
@@ -417,9 +418,10 @@ export interface RadarGeofence {
   tag?: string;
   externalId?: string;
   metadata?: RadarMetadata;
-  type?: string;
+  type?: "Circle" | "Polygon";
   geometryRadius?: number;
   geometryCenter?: RadarCoordinate;
+  // only available for geofences of type "Polygon"
   coordinates?: number[][];
 }
 
@@ -489,9 +491,11 @@ export interface RadarAddress {
   metadata?: RadarMetadata;
 }
 
-export interface RadarAddressVerificationStatus {
-  status: string;
-}
+export type RadarVerificationStatus =
+  | "verified"
+  | "partially verified"
+  | "ambiguous"
+  | "unverified";
 
 export interface RadarRoutes {
   geodesic?: RadarRouteDistance;
@@ -543,10 +547,6 @@ export type RadarTrackingOptionsReplay = "all" | "stops" | "none";
 export type RadarTrackingOptionsSync = "none" | "stopsAndExits" | "all";
 
 export type RadarRouteMode = "foot" | "bike" | "car";
-
-export interface RadarTrackingStatus {
-  isTracking: string;
-}
 
 export interface RadarTrackingOptionsForegroundService {
   text?: string;
