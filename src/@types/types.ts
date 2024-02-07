@@ -16,16 +16,15 @@ export interface RadarTrackingOptions {
   desiredMovingUpdateInterval: number;
   fastestMovingUpdateInterval?: number;
   desiredSyncInterval: number;
-  desiredAccuracy: String;
+  desiredAccuracy: RadarTrackingOptionsDesiredAccuracy;
   stopDuration: number;
   stopDistance: number;
-  sync: String;
-  replay: String;
+  sync: "all" | "stopsAndExits" | "none";
+  replay: "all" | "stops" | "none";
   useStoppedGeofence: boolean;
   showBlueBar?: boolean;
   startTrackingAfter?: number;
   stopTrackingAfter?: number;
-  syncLocations?: String;
   stoppedGeofenceRadius: number;
   useMovingGeofence: boolean;
   movingGeofenceRadius: number;
@@ -207,7 +206,7 @@ export interface RadarLogConversionCallback {
 
 export interface RadarTrackTokenCallback {
   status: string;
-  token?: String;
+  token?: string;
 }
 
 export interface RadarEventUpdate {
@@ -231,7 +230,7 @@ export interface RadarLocationUpdateCallback {
 export interface RadarClientLocationUpdate {
   location: Location;
   stopped: boolean;
-  source: string;
+  source: RadarLocationSource;
 }
 
 export interface RadarClientLocationUpdateCallback {
@@ -258,6 +257,20 @@ export type RadarPermissionsStatus =
   | "GRANTED_FOREGROUND"
   | "DENIED"
   | "NOT_DETERMINED"
+  | "UNKNOWN";
+
+export type RadarLocationSource =
+  | "FOREGROUND_LOCATION"
+  | "BACKGROUND_LOCATION"
+  | "MANUAL_LOCATION"
+  | "VISIT_ARRIVAL"
+  | "VISIT_DEPARTURE"
+  | "GEOFENCE_ENTER"
+  | "GEOFENCE_DWELL"
+  | "GEOFENCE_EXIT"
+  | "MOCK_LOCATION"
+  | "BEACON_ENTER"
+  | "BEACON_EXIT"
   | "UNKNOWN";
 
 export type Event = "clientLocation" | "location" | "error" | "events" | "log";
@@ -331,9 +344,9 @@ export interface RadarTrip {
   metadata?: RadarMetadata;
   destinationGeofenceTag?: string;
   destinationGeofenceExternalId?: string;
-  mode?: string;
+  mode?: RadarRouteMode;
   eta?: RadarTripEta;
-  status: string;
+  status: RadarTripStatus;
   scheduledArrivalAt?: Date;
   destinationLocation: Location;
 }
@@ -550,7 +563,7 @@ export type RadarTrackingOptionsReplay = "all" | "stops" | "none";
 
 export type RadarTrackingOptionsSync = "none" | "stopsAndExits" | "all";
 
-export type RadarRouteMode = "foot" | "bike" | "car";
+export type RadarRouteMode = "foot" | "bike" | "car" | "truck" | "motorbike";
 
 export interface RadarTrackingOptionsForegroundService {
   text?: string;
