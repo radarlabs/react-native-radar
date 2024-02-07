@@ -6,6 +6,10 @@ export interface RadarTrackOnceOptions {
   beacons?: boolean;
 }
 
+/**
+ * Options for tracking the user's location.
+ * @see {@link https://radar.com/documentation/sdk/tracking}
+ */
 export interface RadarTrackingOptions {
   desiredStoppedUpdateInterval: number;
   fastestStoppedUpdateInterval?: number;
@@ -19,7 +23,6 @@ export interface RadarTrackingOptions {
   replay: String;
   useStoppedGeofence: boolean;
   showBlueBar?: boolean;
-  foregroundServiceEnabled?: boolean;
   startTrackingAfter?: number;
   stopTrackingAfter?: number;
   syncLocations?: String;
@@ -31,6 +34,7 @@ export interface RadarTrackingOptions {
   useSignificantLocationChanges?: boolean;
   beacons: boolean;
   syncGeofencesLimit?: number;
+  foregroundServiceEnabled?: boolean;
 }
 
 export interface RadarMockTrackingOptions {
@@ -182,7 +186,7 @@ export interface RadarIPGeocodeCallback {
 export interface RadarValidateAddressCallback {
   status: string;
   address?: RadarAddress;
-  verificationStatus?: RadarAddressVerificationStatus;
+  verificationStatus?: RadarVerificationStatus;
 }
 
 export interface RadarIPGeocodeCallback {
@@ -464,31 +468,31 @@ export interface RadarRegion {
 }
 
 export interface RadarAddress {
-  latitude: number;
-  longitude: number;
-  placeLabel?: string;
   addressLabel?: string;
-  formattedAddress?: string;
+  borough?: string;
+  city?: string;
+  confidence?: string;
   country?: string;
   countryCode?: string;
   countryFlag?: string;
-  state?: string;
-  stateCode?: string;
-  postalCode?: string;
-  city?: string;
-  borough?: string;
   county?: string;
+  distance?: number;
+  dma?: string;
+  dmaCode?: string;
+  formattedAddress?: string;
+  latitude: number;
+  layer?: string;
+  longitude: number;
+  metadata?: RadarMetadata;
   neighborhood?: string;
   number?: string;
+  placeLabel?: string;
+  plus4?: string;
+  postalCode?: string;
+  state?: string;
+  stateCode?: string;
   street?: string;
   unit?: string;
-  distance?: number;
-  confidence?: string;
-  layer?: string;
-  plus4?: string;
-  dmaCode?: string;
-  dma?: string;
-  metadata?: RadarMetadata;
 }
 
 export type RadarVerificationStatus =
