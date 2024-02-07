@@ -6,6 +6,10 @@ export interface RadarTrackOnceOptions {
   beacons?: boolean;
 }
 
+export interface RadarTrackVerifiedOptions {
+  beacons?: boolean;
+}
+
 /**
  * Options for tracking the user's location.
  * @see {@link https://radar.com/documentation/sdk/tracking}
@@ -42,6 +46,12 @@ export interface RadarMockTrackingOptions {
   mode: RadarRouteMode;
   steps: number;
   interval: number;
+}
+
+export interface RadarVerifiedTrackingOptions {
+  token?: boolean;
+  interval?: number;
+  beacons?: boolean;
 }
 
 export interface RadarGetDistanceOptions {

@@ -30,11 +30,13 @@ import {
   RadarTripCallback,
   RadarTripOptions,
   RadarUpdateTripOptions,
+  RadarVerifiedTrackingOptions,
   Event,
   RadarListenerCallback,
   RadarGetMatrixOptions,
   RadarMetadata,
   RadarIPGeocodeCallback,
+  RadarTrackVerifiedOptions,
 } from "./@types/types";
 
 if (
@@ -103,11 +105,11 @@ const trackOnce = (
   return NativeModules.RNRadar.trackOnce(backCompatibleOptions);
 };
 
-const trackVerified = (): Promise<RadarTrackCallback> =>
-  NativeModules.RNRadar.trackVerified();
+const trackVerified = (options: RadarTrackVerifiedOptions): Promise<RadarTrackCallback> =>
+  NativeModules.RNRadar.trackVerified(options);
 
-const trackVerifiedToken = (): Promise<RadarTrackTokenCallback> =>
-  NativeModules.RNRadar.trackVerifiedToken();
+const trackVerifiedToken = (options: RadarTrackVerifiedOptions): Promise<RadarTrackTokenCallback> =>
+  NativeModules.RNRadar.trackVerifiedToken(options);
 
 const startTrackingEfficient = (): void =>
   NativeModules.RNRadar.startTrackingEfficient();
@@ -120,6 +122,9 @@ const startTrackingContinuous = (): void =>
 
 const startTrackingCustom = (options: RadarTrackingOptions): void =>
   NativeModules.RNRadar.startTrackingCustom(options);
+
+const startTrackingVerified = (options: RadarVerifiedTrackingOptions): void =>
+  NativeModules.RNRadar.startTrackingVerified(options);
 
 const mockTracking = (options: RadarMockTrackingOptions): void =>
   NativeModules.RNRadar.mockTracking(options);
@@ -243,6 +248,7 @@ const Radar: RadarNativeInterface = {
   startTrackingResponsive,
   startTrackingContinuous,
   startTrackingCustom,
+  startTrackingVerified,
   mockTracking,
   stopTracking,
   isTracking,

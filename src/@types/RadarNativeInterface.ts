@@ -24,9 +24,11 @@ import {
   RadarTrackingOptions,
   RadarTrackingOptionsDesiredAccuracy,
   RadarTrackingOptionsForegroundService,
+  RadarTrackVerifiedOptions,
   RadarTripCallback,
   RadarTripOptions,
   RadarUpdateTripOptions,
+  RadarVerifiedTrackingOptions,
   Event,
   RadarListenerCallback,
   RadarGetMatrixOptions,
@@ -52,12 +54,13 @@ export interface RadarNativeInterface {
   trackOnce: (
     options?: RadarTrackOnceOptions | Location
   ) => Promise<RadarTrackCallback>;
-  trackVerifiedToken: () => Promise<RadarTrackTokenCallback>;
-  trackVerified: () => Promise<RadarTrackCallback>;
+  trackVerifiedToken: (options: RadarTrackVerifiedOptions) => Promise<RadarTrackTokenCallback>;
+  trackVerified: (options: RadarTrackVerifiedOptions) => Promise<RadarTrackCallback>;
   startTrackingEfficient: () => void;
   startTrackingResponsive: () => void;
   startTrackingContinuous: () => void;
   startTrackingCustom: (options: RadarTrackingOptions) => void;
+  startTrackingVerified: (options: RadarVerifiedTrackingOptions) => void;
   mockTracking: (options: RadarMockTrackingOptions) => void;
   stopTracking: () => void;
   getTrackingOptions: () => Promise<RadarTrackingOptions>;
