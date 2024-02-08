@@ -79,11 +79,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void initialize(String publishableKey, boolean fraud) {
+    public void initialize(String publishableKey, boolean fraud, String region) {
+        Radar.RadarHostRegion hostRegion = Radar.RadarHostRegion.GLOBAL;        
+        String lowerRegion = region != null ? region.toLowerCase() : "global";
+        
+        if (lowerHost.equals("na")) {
+            hostRegion = Radar.RadarHostRegion.NORTH_AMERICA;
+        } else if (lowerHost.equals("eu")) {
+            hostRegion = Radar.RadarHostRegion.EUROPE;
+        } else if (lowerHost.equals("global")) {
+            hostRegion = Radar.RadarHostRegion.GLOBAL;
+        }
+
         if (fraud) {
-            Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
+            Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, hostRegion);
         } else {
-            Radar.initialize(getReactApplicationContext(), publishableKey);
+            Radar.initialize(getReactApplicationContext(), publishableKey, hostRegion);
             Radar.setReceiver(receiver);
         }
     }

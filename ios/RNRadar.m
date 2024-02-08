@@ -91,8 +91,21 @@ RCT_EXPORT_MODULE();
     }
 }
 
-RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
-    [Radar initializeWithPublishableKey:publishableKey];
+RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud region:(NSString *)region) {
+    RadarHostRegion hostRegion = RadarHostRegionGlobal;
+    
+    if (region) {
+        NSString *lowerRegion = [region lowercaseString];
+        if ([lowerHost isEqualToString:@"na"]) {
+            hostRegion = RadarHostRegionNorthAmerica;
+        } else if ([lowerRegion isEqualToString:@"eu"]) {
+            hostRegion = RadarHostRegionEurope;
+        } else if ([lowerRegion isEqualToString:@"global"]) {
+            hostRegion = RadarHostRegionGlobal;
+        }
+    }
+
+    [Radar initializeWithPublishableKey:publishableKey fraud:fraud region:hostRegion];
 }
 
 RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {
