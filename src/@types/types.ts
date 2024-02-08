@@ -264,7 +264,7 @@ export type RadarListenerCallback =
 
 export type RadarPermissionsStatus =
   | "GRANTED_FOREGROUND"
-  | "GRANTED_FOREGROUND"
+  | "GRANTED_BACKGROUND"
   | "DENIED"
   | "NOT_DETERMINED"
   | "UNKNOWN";
