@@ -27,5 +27,3 @@ android/.project
 ios/Carthage/Checkouts
 ios/Carthage/Build
 junit.xml
-dist/
-
