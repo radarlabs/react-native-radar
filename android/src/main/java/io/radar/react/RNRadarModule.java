@@ -482,13 +482,15 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void startTrackingVerified(ReadableMap optionsMap) {
-        if (optionsMap == null) {
-            return;
-        }
+        boolean token = false;
+        boolean beacons = false;
+        int interval = 1;
 
-        boolean token = optionsMap.hasKey("token") ? optionsMap.getBoolean("token") : false;
-        boolean beacons = optionsMap.hasKey("beacons") ? optionsMap.getBoolean("beacons") : false;
-        int interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : 1;
+        if (optionsMap != null) {
+            token = optionsMap.hasKey("token") ? optionsMap.getBoolean("token") : token;
+            beacons = optionsMap.hasKey("beacons") ? optionsMap.getBoolean("beacons") : beacons;
+            interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : interval;
+        }
 
         Radar.startTrackingVerified(token, interval, beacons);
     }

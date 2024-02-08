@@ -105,10 +105,10 @@ const trackOnce = (
   return NativeModules.RNRadar.trackOnce(backCompatibleOptions);
 };
 
-const trackVerified = (options: RadarTrackVerifiedOptions): Promise<RadarTrackCallback> =>
+const trackVerified = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackCallback> =>
   NativeModules.RNRadar.trackVerified(options);
 
-const trackVerifiedToken = (options: RadarTrackVerifiedOptions): Promise<RadarTrackTokenCallback> =>
+const trackVerifiedToken = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackTokenCallback> =>
   NativeModules.RNRadar.trackVerifiedToken(options);
 
 const startTrackingEfficient = (): void =>
@@ -123,7 +123,7 @@ const startTrackingContinuous = (): void =>
 const startTrackingCustom = (options: RadarTrackingOptions): void =>
   NativeModules.RNRadar.startTrackingCustom(options);
 
-const startTrackingVerified = (options: RadarVerifiedTrackingOptions): void =>
+const startTrackingVerified = (options?: RadarVerifiedTrackingOptions): void =>
   NativeModules.RNRadar.startTrackingVerified(options);
 
 const mockTracking = (options: RadarMockTrackingOptions): void =>

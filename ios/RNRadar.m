@@ -329,10 +329,12 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         rejecter = nil;
     };
 
-    BOOL beacons = optionsDict[@"beacons"];
+    if (optionsDict != nil) {
+        BOOL beacons = optionsDict[@"beacons"];
 
-    if (beacons) {
-        beaconsTrackingOption = beacons;
+        if (beacons) {
+            beaconsTrackingOption = beacons;
+        }
     }
 
     [Radar trackVerifiedWithBeacons:beaconsTrackingOption completionHandler:completionHandler];
@@ -358,11 +360,13 @@ RCT_EXPORT_METHOD(trackVerifiedToken:(NSDictionary *)optionsDict resolve:(RCTPro
         resolver = nil;
         rejecter = nil;
     };
+    
+    if (optionsDict != nil) {
+        BOOL beacons = optionsDict[@"beacons"];
 
-    BOOL beacons = optionsDict[@"beacons"];
-
-    if (beacons) {
-        beaconsTrackingOption = beacons;
+        if (beacons) {
+            beaconsTrackingOption = beacons;
+        }
     }
 
     [Radar trackVerifiedTokenWithBeacons:beaconsTrackingOption completionHandler:completionHandler];
@@ -386,25 +390,23 @@ RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
 }
 
 RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
-    if (optionsDict == nil) {
-        return;
-    }
-
     BOOL tokenTrackingOption = NO;
     BOOL beaconTrackingOption = NO;
     double interval = 1;
 
-    BOOL token = optionsDict[@"token"];
-    if (token) {
-        tokenTrackingOption = token;
-    }
-    BOOL beacons = optionsDict[@"beacons"];
-    if (beacons) {
-        beaconTrackingOption = beacons;
-    }
-    NSNumber *intervalNumber = optionsDict[@"interval"];
-    if (intervalNumber != nil && [intervalNumber isKindOfClass:[NSNumber class]]) {
-        interval = [intervalNumber doubleValue];
+    if (optionsDict != nil) {
+        BOOL token = optionsDict[@"token"];
+        if (token) {
+            tokenTrackingOption = token;
+        }
+        BOOL beacons = optionsDict[@"beacons"];
+        if (beacons) {
+            beaconTrackingOption = beacons;
+        }
+        NSNumber *intervalNumber = optionsDict[@"interval"];
+        if (intervalNumber != nil && [intervalNumber isKindOfClass:[NSNumber class]]) {
+            interval = [intervalNumber doubleValue];
+        }
     }
 
     [Radar startTrackingVerified:tokenTrackingOption interval:interval beacons:beaconTrackingOption];
