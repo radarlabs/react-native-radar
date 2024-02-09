@@ -3,6 +3,7 @@ import {
   RadarAutocompleteOptions,
   RadarContextCallback,
   RadarAddressCallback,
+  RadarEventChannel,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -29,7 +30,6 @@ import {
   RadarTripOptions,
   RadarUpdateTripOptions,
   RadarVerifiedTrackingOptions,
-  Event,
   RadarListenerCallback,
   RadarGetMatrixOptions,
   RadarMetadata,
@@ -96,8 +96,8 @@ export interface RadarNativeInterface {
     options: RadarLogConversionOptions
   ) => Promise<RadarLogConversionCallback>;
   sendEvent: (name: string, metadata: RadarMetadata) => void;
-  on: (event: Event, callback: RadarListenerCallback) => void;
-  off: (event: Event, callback?: Function | undefined) => void;
+  on: (channel: RadarEventChannel, callback: RadarListenerCallback) => void;
+  off: (channel: RadarEventChannel, callback?: Function | undefined) => void;
   nativeSdkVersion: () => Promise<string>;
   rnSdkVersion: () => string;
 }

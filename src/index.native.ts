@@ -6,6 +6,7 @@ import {
   RadarAutocompleteOptions,
   RadarContextCallback,
   RadarAddressCallback,
+  RadarEventChannel,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -31,7 +32,6 @@ import {
   RadarTripOptions,
   RadarUpdateTripOptions,
   RadarVerifiedTrackingOptions,
-  Event,
   RadarListenerCallback,
   RadarGetMatrixOptions,
   RadarMetadata,
@@ -210,10 +210,10 @@ const logConversion = (
 const sendEvent = (name: string, metadata: RadarMetadata): void =>
   NativeModules.RNRadar.sendEvent(name, metadata);
 
-const on = (event: Event, callback: RadarListenerCallback): void =>
+const on = (event: CallbackChannel, callback: RadarListenerCallback): void =>
   eventEmitter.addListener(event, callback);
 
-const off = (event: Event, callback?: Function | undefined): void => {
+const off = (event: CallbackChannel, callback?: Function | undefined): void => {
   if (callback) {
     // @ts-ignore
     eventEmitter.removeListener(event, callback);
