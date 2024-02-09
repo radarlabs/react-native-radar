@@ -3,6 +3,7 @@ import {
   RadarAutocompleteOptions,
   RadarContextCallback,
   RadarAddressCallback,
+  RadarEventChannel,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -24,10 +25,11 @@ import {
   RadarTrackingOptions,
   RadarTrackingOptionsDesiredAccuracy,
   RadarTrackingOptionsForegroundService,
+  RadarTrackVerifiedOptions,
   RadarTripCallback,
   RadarTripOptions,
   RadarUpdateTripOptions,
-  Event,
+  RadarVerifiedTrackingOptions,
   RadarListenerCallback,
   RadarGetMatrixOptions,
   RadarMetadata,
@@ -52,12 +54,13 @@ export interface RadarNativeInterface {
   trackOnce: (
     options?: RadarTrackOnceOptions | Location
   ) => Promise<RadarTrackCallback>;
-  trackVerifiedToken: () => Promise<RadarTrackTokenCallback>;
-  trackVerified: () => Promise<RadarTrackCallback>;
+  trackVerifiedToken: (options?: RadarTrackVerifiedOptions) => Promise<RadarTrackTokenCallback>;
+  trackVerified: (options?: RadarTrackVerifiedOptions) => Promise<RadarTrackCallback>;
   startTrackingEfficient: () => void;
   startTrackingResponsive: () => void;
   startTrackingContinuous: () => void;
   startTrackingCustom: (options: RadarTrackingOptions) => void;
+  startTrackingVerified: (options?: RadarVerifiedTrackingOptions) => void;
   mockTracking: (options: RadarMockTrackingOptions) => void;
   stopTracking: () => void;
   getTrackingOptions: () => Promise<RadarTrackingOptions>;
@@ -93,8 +96,8 @@ export interface RadarNativeInterface {
     options: RadarLogConversionOptions
   ) => Promise<RadarLogConversionCallback>;
   sendEvent: (name: string, metadata: RadarMetadata) => void;
-  on: (event: Event, callback: RadarListenerCallback) => void;
-  off: (event: Event, callback?: Function | undefined) => void;
+  on: (channel: RadarEventChannel, callback: RadarListenerCallback) => void;
+  off: (channel: RadarEventChannel, callback?: Function | undefined) => void;
   nativeSdkVersion: () => Promise<string>;
   rnSdkVersion: () => string;
 }

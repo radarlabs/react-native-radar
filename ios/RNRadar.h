@@ -3,6 +3,6 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-@interface RNRadar : RCTEventEmitter <RadarDelegate, RCTBridgeModule, CLLocationManagerDelegate>
+@interface RNRadar : RCTEventEmitter <RadarDelegate, RadarVerifiedDelegate, RCTBridgeModule, CLLocationManagerDelegate>
 
 @end

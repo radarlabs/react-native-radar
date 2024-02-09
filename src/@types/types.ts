@@ -6,6 +6,10 @@ export interface RadarTrackOnceOptions {
   beacons?: boolean;
 }
 
+export interface RadarTrackVerifiedOptions {
+  beacons?: boolean;
+}
+
 /**
  * Options for tracking the user's location.
  * @see {@link https://radar.com/documentation/sdk/tracking}
@@ -42,6 +46,12 @@ export interface RadarMockTrackingOptions {
   mode: RadarRouteMode;
   steps: number;
   interval: number;
+}
+
+export interface RadarVerifiedTrackingOptions {
+  token?: boolean;
+  interval?: number;
+  beacons?: boolean;
 }
 
 export interface RadarGetDistanceOptions {
@@ -273,7 +283,7 @@ export type RadarLocationSource =
   | "BEACON_EXIT"
   | "UNKNOWN";
 
-export type Event = "clientLocation" | "location" | "error" | "events" | "log";
+export type CallbackChannel = "clientLocation" | "location" | "error" | "events" | "log" | "token";
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 

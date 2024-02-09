@@ -6,6 +6,7 @@ import {
   RadarAutocompleteOptions,
   RadarContextCallback,
   RadarAddressCallback,
+  RadarEventChannel,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -30,11 +31,12 @@ import {
   RadarTripCallback,
   RadarTripOptions,
   RadarUpdateTripOptions,
-  Event,
+  RadarVerifiedTrackingOptions,
   RadarListenerCallback,
   RadarGetMatrixOptions,
   RadarMetadata,
   RadarIPGeocodeCallback,
+  RadarTrackVerifiedOptions,
 } from "./@types/types";
 
 if (
@@ -103,11 +105,11 @@ const trackOnce = (
   return NativeModules.RNRadar.trackOnce(backCompatibleOptions);
 };
 
-const trackVerified = (): Promise<RadarTrackCallback> =>
-  NativeModules.RNRadar.trackVerified();
+const trackVerified = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackCallback> =>
+  NativeModules.RNRadar.trackVerified(options);
 
-const trackVerifiedToken = (): Promise<RadarTrackTokenCallback> =>
-  NativeModules.RNRadar.trackVerifiedToken();
+const trackVerifiedToken = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackTokenCallback> =>
+  NativeModules.RNRadar.trackVerifiedToken(options);
 
 const startTrackingEfficient = (): void =>
   NativeModules.RNRadar.startTrackingEfficient();
@@ -120,6 +122,9 @@ const startTrackingContinuous = (): void =>
 
 const startTrackingCustom = (options: RadarTrackingOptions): void =>
   NativeModules.RNRadar.startTrackingCustom(options);
+
+const startTrackingVerified = (options?: RadarVerifiedTrackingOptions): void =>
+  NativeModules.RNRadar.startTrackingVerified(options);
 
 const mockTracking = (options: RadarMockTrackingOptions): void =>
   NativeModules.RNRadar.mockTracking(options);
@@ -205,15 +210,15 @@ const logConversion = (
 const sendEvent = (name: string, metadata: RadarMetadata): void =>
   NativeModules.RNRadar.sendEvent(name, metadata);
 
-const on = (event: Event, callback: RadarListenerCallback): void =>
-  eventEmitter.addListener(event, callback);
+const on = (channel: RadarEventChannel, callback: RadarListenerCallback): void =>
+  eventEmitter.addListener(channel, callback);
 
-const off = (event: Event, callback?: Function | undefined): void => {
+const off = (channel: RadarEventChannel, callback?: Function | undefined): void => {
   if (callback) {
     // @ts-ignore
-    eventEmitter.removeListener(event, callback);
+    eventEmitter.removeListener(channel, callback);
   } else {
-    eventEmitter.removeAllListeners(event);
+    eventEmitter.removeAllListeners(channel);
   }
 };
 
@@ -243,6 +248,7 @@ const Radar: RadarNativeInterface = {
   startTrackingResponsive,
   startTrackingContinuous,
   startTrackingCustom,
+  startTrackingVerified,
   mockTracking,
   stopTracking,
   isTracking,
