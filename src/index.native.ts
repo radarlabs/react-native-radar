@@ -210,15 +210,15 @@ const logConversion = (
 const sendEvent = (name: string, metadata: RadarMetadata): void =>
   NativeModules.RNRadar.sendEvent(name, metadata);
 
-const on = (event: CallbackChannel, callback: RadarListenerCallback): void =>
-  eventEmitter.addListener(event, callback);
+const on = (channel: RadarEventChannel, callback: RadarListenerCallback): void =>
+  eventEmitter.addListener(channel, callback);
 
-const off = (event: CallbackChannel, callback?: Function | undefined): void => {
+const off = (channel: RadarEventChannel, callback?: Function | undefined): void => {
   if (callback) {
     // @ts-ignore
-    eventEmitter.removeListener(event, callback);
+    eventEmitter.removeListener(channel, callback);
   } else {
-    eventEmitter.removeAllListeners(event);
+    eventEmitter.removeAllListeners(channel);
   }
 };
 
