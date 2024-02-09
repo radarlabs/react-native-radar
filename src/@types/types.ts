@@ -283,7 +283,7 @@ export type RadarLocationSource =
   | "BEACON_EXIT"
   | "UNKNOWN";
 
-export type Event = "clientLocation" | "location" | "error" | "events" | "log";
+export type Event = "clientLocation" | "location" | "error" | "events" | "log" | "token";
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
