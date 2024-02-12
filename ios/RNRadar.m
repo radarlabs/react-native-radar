@@ -303,12 +303,18 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
 }
 
 RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-        BOOL beaconsTrackingOption = NO;
+    BOOL beacons = NO;
+    if (optionsDict != nil) {
+        NSNumber *beaconsNumber = optionsDict[@"beacons"];
+        if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
+            beacons = [beaconsNumber boolValue]; 
+        }
+    }
 
-        __block RCTPromiseResolveBlock resolver = resolve;
-        __block RCTPromiseRejectBlock rejecter = reject;
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
 
-       RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
+    RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -329,19 +335,17 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         rejecter = nil;
     };
 
-    if (optionsDict != nil) {
-        BOOL beacons = optionsDict[@"beacons"];
-
-        if (beacons) {
-            beaconsTrackingOption = beacons;
-        }
-    }
-
-    [Radar trackVerifiedWithBeacons:beaconsTrackingOption completionHandler:completionHandler];
+    [Radar trackVerifiedWithBeacons:beacons completionHandler:completionHandler];
 }
 
 RCT_EXPORT_METHOD(trackVerifiedToken:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    BOOL beaconsTrackingOption = NO;
+    BOOL beacons = NO;
+    if (optionsDict != nil) {
+        NSNumber *beaconsNumber = optionsDict[@"beacons"];
+        if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
+            beacons = [beaconsNumber boolValue]; 
+        }
+    }
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
@@ -360,16 +364,8 @@ RCT_EXPORT_METHOD(trackVerifiedToken:(NSDictionary *)optionsDict resolve:(RCTPro
         resolver = nil;
         rejecter = nil;
     };
-    
-    if (optionsDict != nil) {
-        BOOL beacons = optionsDict[@"beacons"];
 
-        if (beacons) {
-            beaconsTrackingOption = beacons;
-        }
-    }
-
-    [Radar trackVerifiedTokenWithBeacons:beaconsTrackingOption completionHandler:completionHandler];
+    [Radar trackVerifiedTokenWithBeacons:beacons completionHandler:completionHandler];
 }
 
 RCT_EXPORT_METHOD(startTrackingEfficient) {
@@ -390,18 +386,18 @@ RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
 }
 
 RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
-    BOOL tokenTrackingOption = NO;
-    BOOL beaconTrackingOption = NO;
+    BOOL token = NO;
+    BOOL beacons = NO;
     double interval = 1;
 
     if (optionsDict != nil) {
-        BOOL token = optionsDict[@"token"];
-        if (token) {
-            tokenTrackingOption = token;
+        NSNumber *tokenNumber = optionsDict[@"token"];
+        if (tokenNumber != nil && [tokenNumber isKindOfClass:[NSNumber class]]) {
+            token = [tokenNumber boolValue]; 
         }
-        BOOL beacons = optionsDict[@"beacons"];
-        if (beacons) {
-            beaconTrackingOption = beacons;
+        NSNumber *beaconsNumber = optionsDict[@"beacons"];
+        if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
+            beacons = [beaconsNumber boolValue]; 
         }
         NSNumber *intervalNumber = optionsDict[@"interval"];
         if (intervalNumber != nil && [intervalNumber isKindOfClass:[NSNumber class]]) {
@@ -409,7 +405,7 @@ RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
         }
     }
 
-    [Radar startTrackingVerified:tokenTrackingOption interval:interval beacons:beaconTrackingOption];
+    [Radar startTrackingVerified:token interval:interval beacons:beacons];
 }
 
 RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict) {
