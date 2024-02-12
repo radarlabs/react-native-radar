@@ -14,6 +14,9 @@ jobs:
             npm run test
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+      - run:
+        name: Type-check
+        command: npx tsc --noEmit
       - persist_to_workspace:
           root: ~/react-native-radar
           paths:
