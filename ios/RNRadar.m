@@ -292,10 +292,9 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
             }
         }
         
-        BOOL beacons = optionsDict[@"beacons"];
-
-        if (beacons) {
-            beaconsTrackingOption = beacons;
+        NSNumber *beaconsNumber = optionsDict[@"beacons"];
+        if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
+            beacons = [beaconsNumber boolValue]; 
         }
         
         [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons:beaconsTrackingOption completionHandler:completionHandler];
