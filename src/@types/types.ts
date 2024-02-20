@@ -23,6 +23,8 @@ export interface RadarTrackingOptions {
   desiredAccuracy: RadarTrackingOptionsDesiredAccuracy;
   stopDuration: number;
   stopDistance: number;
+  rampUpRadius?: number;
+  rampedUpInterval?: number;
   sync: "all" | "stopsAndExits" | "none";
   replay: "all" | "stops" | "none";
   useStoppedGeofence: boolean;
