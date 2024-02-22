@@ -429,6 +429,7 @@ export type RadarEventType =
 
 export type RadarTrackingOptionsDesiredAccuracy =
   | "high"
+  | "mediumHigh"
   | "medium"
   | "low"
   | "none";

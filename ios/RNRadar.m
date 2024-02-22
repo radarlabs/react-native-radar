@@ -206,6 +206,8 @@ RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseRes
         NSString *lowerAccuracy = [desiredAccuracy lowercaseString];
         if ([lowerAccuracy isEqualToString:@"high"]) {
             accuracy = RadarTrackingOptionsDesiredAccuracyHigh;
+        } else if  ([lowerAccuracy isEqualToString:@"mediumhigh"]) {
+            accuracy = RadarTrackingOptionsDesiredAccuracyMediumHigh;
         } else if ([lowerAccuracy isEqualToString:@"medium"]) {
             accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
         } else if ([lowerAccuracy isEqualToString:@"low"]) {
