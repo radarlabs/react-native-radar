@@ -3,7 +3,7 @@
     "display": "React Native",
     "_version": "3.0.2",
     "compilerOptions": {
-      "target": "es2015",
+      "target": "es5",
       "module": "commonjs",
       "types": ["node"],
       "typeRoots": [ "./node_modules/@types", "./src/@types"],
