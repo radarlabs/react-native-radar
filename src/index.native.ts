@@ -47,6 +47,7 @@ if (
 }
 
 const eventEmitter = new NativeEventEmitter(NativeModules.RNRadar);
+
 const initialize = (publishableKey: string, fraud: boolean = false): void => {
   NativeModules.RNRadar.initialize(publishableKey, fraud);
 };
