@@ -100,7 +100,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [Radar initializeWithPublishableKey:publishableKey]; 
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.10.4-beta.2" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.10.4" forKey:@"radar-xPlatformSDKVersion"];
 }
 
 RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {

@@ -105,7 +105,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
         SharedPreferences sharedPref = reactContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("x_platform_sdk_version", "3.10.4-beta.2");
+        editor.putString("x_platform_sdk_version", "3.10.4");
         editor.apply();
     }
 
