@@ -30,6 +30,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [["./withRadar",{}]]
+
   }
 }
