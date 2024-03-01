@@ -42,6 +42,8 @@ import org.json.JSONObject;
 
 import java.util.EnumSet;
 import java.util.Map;
+import android.content.SharedPreferences;
+import android.content.Context;
 
 public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener {
 
@@ -53,11 +55,14 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     private RNRadarVerifiedReceiver verifiedReceiver;    
     private int listenerCount = 0;
     private boolean fraud = false;
+    private final ReactApplicationContext reactContext;
+    
 
     public RNRadarModule(ReactApplicationContext reactContext) {
         super(reactContext);
         receiver = new RNRadarReceiver();
         verifiedReceiver = new RNRadarVerifiedReceiver();
+        this.reactContext = reactContext;
     }
 
     @ReactMethod
@@ -98,6 +103,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             Radar.initialize(getReactApplicationContext(), publishableKey);
             Radar.setReceiver(receiver);
         }
+        SharedPreferences sharedPref = reactContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("x_platform_sdk_version", "3.10.4");
+        editor.apply();
     }
 
     @ReactMethod
