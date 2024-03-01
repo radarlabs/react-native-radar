@@ -730,6 +730,8 @@ export interface RadarTrackingOptionsForegroundService {
   importance?: number;
   id?: number;
   channelName?: string;
+  iconString?: string;
+  iconColor?: string;
 }
 
 export type RadarTripStatus =

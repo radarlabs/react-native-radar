@@ -37,7 +37,7 @@ import {
 } from "./types";
 
 export interface RadarNativeInterface {
-  initialize: (publishableKey: string, fraud: boolean) => void;
+  initialize: (publishableKey: string, fraud?: boolean) => void;
   setLogLevel: (level: RadarLogLevel) => void;
   setUserId: (userId: string) => void;
   getUserId: () => Promise<string>;
