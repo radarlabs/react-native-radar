@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import Radar, { Map, Autocomplete } from "react-native-radar";
+import Radar, { Map, Autocomplete, presetEfficient } from "react-native-radar";
 import MapLibreGL from "@maplibre/maplibre-react-native";
 import ExampleButton from "./components/exampleButton";
-
 MapLibreGL.setAccessToken(null);
 
 const stringify = (obj) => JSON.stringify(obj, null, 2);
@@ -39,7 +38,10 @@ export default function App() {
   const stringify = (obj) => JSON.stringify(obj, null, 2);
 
   useEffect(() => {
-    Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
+    Radar.initialize(
+      "prj_test_pk_0000000000000000000000000000000000000000",
+      true
+    );
 
     Radar.setLogLevel("info");
 
@@ -503,6 +505,14 @@ export default function App() {
                 .catch((err) => {
                   handlePopulateText("trackVerifiedToken:" + err);
                 });
+            }}
+          />
+
+          <ExampleButton
+            title="startTrackingCustom"
+            onPress={() => {
+              const customTrackingOptions = {...presetEfficient, beacons: true};
+              Radar.startTrackingCustom(customTrackingOptions)
             }}
           />
         </ScrollView>
