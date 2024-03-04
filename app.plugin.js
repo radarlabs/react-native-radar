@@ -1,1 +1,1 @@
-module.exports = require('./plugin/withRadar');
+module.exports = require('./plugin/build');

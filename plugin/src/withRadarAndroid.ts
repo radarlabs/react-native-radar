@@ -1,14 +1,15 @@
 // withMyPlugin.js
-const { withAndroidManifest, withGradleProperties, withProjectBuildGradle, AndroidConfig, createRunOncePlugin } = require('@expo/config-plugins');
+const { ConfigPlugin, withAndroidManifest, withGradleProperties, withAppBuildGradle, AndroidConfig, WarningAggregator } = require('@expo/config-plugins');
 const { Document } = require('xmlbuilder2');
+import type { ExpoConfig } from 'expo/config';
 
-export const withRadarAndroid = (config, { locationVersion = '21.0.1' } = {}) => {
-  config = withAndroidManifest(config, (config) => {
+export const withRadarAndroid: ConfigPlugin = (config) => {
+  config = withAndroidManifest(config, (config: { modResults: any; }) => {
     config.modResults = addPermission(config.modResults, 'android.permission.ACCESS_BACKGROUND_LOCATION');
     return config;
   });
 
-  config = withAppBuildGradle(config, (config) => {
+  return withAppBuildGradle(config, (config: { modResults: { language: string; contents: any; }; }) => {
     if (config.modResults.language === 'groovy') {
       config.modResults.contents = modifyAppBuildGradle(config.modResults.contents);
     } else {
@@ -19,16 +20,15 @@ export const withRadarAndroid = (config, { locationVersion = '21.0.1' } = {}) =>
     return config;
   });
 
-  return config;
 };
 
-function addPermission(androidManifest, permission) {
+function addPermission(androidManifest: any, permission: string) {
   const app = AndroidConfig.Manifest.getMainApplicationOrThrow(androidManifest);
   AndroidConfig.Permissions.addPermission(app, permission);
   return androidManifest;
 }
 
-export function modifyAppBuildGradle(buildGradle) {
+export function modifyAppBuildGradle(buildGradle: string) {
   if (buildGradle.includes('com.google.android.gms:play-services-location:21.0.1"')) {
     return buildGradle;
   }
@@ -46,6 +46,6 @@ export function modifyAppBuildGradle(buildGradle) {
   
   return buildGradle.replace(
     pattern,
-    match => dependencies + '\n\n' + 'implementation "com.google.android.gms:play-services-location:21.0.1"'
+    (match: string) => match + '\n\n' + 'implementation "com.google.android.gms:play-services-location:21.0.1"'
   );
 }

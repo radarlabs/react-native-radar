@@ -16,13 +16,19 @@
     "radar.js",
     "/plugin"
   ],
-  "types":"dist/src/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "scripts": {
-    "test": "jest ./test/*.test.js",
+    "test-sdk": "jest ./test/*.test.js",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
-    "build": "tsc",
-    "copy-assets": "./copyAssets.sh"
+    "build-sdk": "tsc",
+    "copy-assets": "./copyAssets.sh",
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "test": "expo-module test",
+    "prepare": "expo-module prepare",
+    "prepublishOnly": "expo-module prepublishOnly",
+    "expo-module": "expo-module"
   },
   "jest": {
     "preset": "react-native",
@@ -34,9 +40,9 @@
   },
   "peerDependencies": {
     "@maplibre/maplibre-react-native": "^9.0.1",
+    "expo": ">=43.0.5",
     "react": ">= 16.8.6",
-    "react-native": ">= 0.60.0",
-    "expo": ">=43.0.5"
+    "react-native": ">= 0.60.0"
   },
   "peerDependenciesMeta": {
     "@maplibre/maplibre-react-native": {
@@ -51,8 +57,6 @@
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
-    "@types/node": "^20.11.7",
-    "@types/react-native": "^0.73.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.4.2",
@@ -63,6 +67,8 @@
     "eslint-plugin-jest": "^22.1.2",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
+    "expo": "^47.0.0",
+    "expo-module-scripts": "^3.4.1",
     "jest": "^23.6.0",
     "jest-junit": "^5.2.0",
     "logkitty": ">=0.7.1",
@@ -70,8 +76,7 @@
     "npm-run-all": "^4.1.5",
     "react": "16.8.6",
     "react-native": "0.60.0",
-    "typescript": "^5.3.3",
-    "expo": "^47.0.0"
+    "typescript": "^5.3.3"
   },
   "bugs": {
     "url": "https://github.com/radarlabs/react-native-radar/issues"

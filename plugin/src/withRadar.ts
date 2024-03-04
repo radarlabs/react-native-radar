@@ -3,12 +3,13 @@ import {
   createRunOncePlugin,
   WarningAggregator,
 } from "expo/config-plugins";
+import type { ExpoConfig } from 'expo/config';
 
 import { withRadarAndroid } from "./withRadarAndroid";
 import { withRadarIOS } from "./withRadarIOS";
 
 
-const withRadar = (config) => {
+const withRadar: ConfigPlugin = (config) => {
   try {
     config = withRadarAndroid(config);
   } catch (e) {
