@@ -1,7 +1,7 @@
 import { ConfigPlugin, withInfoPlist } from 'expo/config-plugins';
 
 // Pass `<string>` to specify that this plugin requires a string property.
-const withRadar: ConfigPlugin<string> = (config) => {
+export const withRadarIOS = (config) => {
   return withInfoPlist(config, config => {
     config.modResults.NSLocationWhenInUseUsageDescription = 'This app uses the location service to provide location-based services.';
     config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription = 'This app uses the location service to provide location-based services.';
@@ -26,4 +26,4 @@ const withRadar: ConfigPlugin<string> = (config) => {
   });
 };
 
-module.exports.withRadar = withRadar;
+

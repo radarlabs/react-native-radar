@@ -11,7 +11,10 @@
     "src",
     "README.md",
     "react-native-radar.podspec",
-    "/dist"
+    "/dist",
+    "app.plugin.js",
+    "radar.js",
+    "/plugin"
   ],
   "types":"dist/src/index.d.ts",
   "scripts": {
@@ -33,7 +36,7 @@
     "@maplibre/maplibre-react-native": "^9.0.1",
     "react": ">= 16.8.6",
     "react-native": ">= 0.60.0",
-    "expo": ">=47.0.0"
+    "expo": ">=43.0.5"
   },
   "peerDependenciesMeta": {
     "@maplibre/maplibre-react-native": {

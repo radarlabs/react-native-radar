@@ -2,6 +2,7 @@
   "expo": {
     "name": "example",
     "slug": "example",
+    "plugins": ["react-native-radar"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -30,8 +31,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [["./withRadar",{}]]
-
+    }
   }
 }
