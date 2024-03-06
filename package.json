@@ -8,6 +8,7 @@
   "files": [
     "android",
     "ios",
+    "src",
     "README.md",
     "react-native-radar.podspec",
     "/dist",
@@ -21,7 +22,8 @@
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
     "build": "tsc",
     "copy-assets": "./copyAssets.sh",
-    "build-plugin": "tsc --build plugin/"
+    "build-plugin": "tsc --build plugin/",
+    "prepare":"npm run build && npm run build-plugin && npm run copy-assets"
   },
   "jest": {
     "preset": "react-native",
