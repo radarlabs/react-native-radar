@@ -4,19 +4,17 @@
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
   "version": "3.10.3",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "files": [
     "android",
     "ios",
-    "src",
     "README.md",
     "react-native-radar.podspec",
     "/dist",
     "app.plugin.js",
-    "radar.js",
-    "/plugin"
+    "/plugin/build"
   ],
-  "types": "dist/src/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test-sdk": "jest ./test/*.test.js",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",

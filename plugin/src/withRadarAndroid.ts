@@ -1,51 +1,126 @@
-// withMyPlugin.js
-const { ConfigPlugin, withAndroidManifest, withGradleProperties, withAppBuildGradle, AndroidConfig, WarningAggregator } = require('@expo/config-plugins');
-const { Document } = require('xmlbuilder2');
-import type { ExpoConfig } from 'expo/config';
+import { ExpoConfig } from "expo/config";
 
-export const withRadarAndroid: ConfigPlugin = (config) => {
-  config = withAndroidManifest(config, (config: { modResults: any; }) => {
-    config.modResults = addPermission(config.modResults, 'android.permission.ACCESS_BACKGROUND_LOCATION');
+import {
+  withAndroidManifest,
+  withAppBuildGradle,
+  AndroidConfig,
+  WarningAggregator,
+  withDangerousMod
+}  from "expo/config-plugins";
+import fs from 'fs';
+import path from 'path';
+
+const { addPermission } = AndroidConfig.Permissions;
+
+
+export const withRadarAndroid = (config: ExpoConfig) => {
+  config = withAndroidManifest(config, async (config) => {
+    config.modResults = await setCustomConfigAsync(config, config.modResults);
     return config;
   });
 
-  return withAppBuildGradle(config, (config: { modResults: { language: string; contents: any; }; }) => {
-    if (config.modResults.language === 'groovy') {
-      config.modResults.contents = modifyAppBuildGradle(config.modResults.contents);
-    } else {
-      throw new Error(
-        'Cannot configure Sentry in the app gradle because the build.gradle is not groovy'
-      );
+  config = withDangerousMod(config, [
+    'android',
+    async (config) => {
+      // Get the path to the Android folder
+      const androidPath = path.join(config.modRequest.projectRoot, 'android', 'app', 'src', 'main', 'res', 'xml');
+
+          // Check if the directory exists, if not, create it
+    if (!fs.existsSync(androidPath)){
+      fs.mkdirSync(androidPath, { recursive: true });
     }
-    return config;
-  });
 
+      // Create the path to the new file
+      const newFilePath = path.join(androidPath, 'network_security_config.xml');
+
+      // Define xml content
+
+      const xml = `<?xml version="1.0" encoding="utf-8"?>
+      <network-security-config>
+          <!-- for React Native -->
+          <domain-config cleartextTrafficPermitted="true">
+              <domain includeSubdomains="true">localhost</domain>
+          </domain-config>
+      
+          <!-- for SSL pinning -->
+          <domain-config cleartextTrafficPermitted="false">
+              <domain includeSubdomains="true">api-verified.radar.io</domain>
+              <pin-set>
+                  <pin digest="SHA-256">15ktYXSSU2llpy7YyCgeqUKDBkjcimK/weUcec960sI=</pin>
+                  <pin digest="SHA-256">15ktYXSSU2llpy7YyCgeqUKDBkjcimK/weUcec960sI=</pin>
+              </pin-set>
+          </domain-config>
+      </network-security-config>`;
+
+      // Write to the new file
+      fs.writeFileSync(newFilePath, xml);
+
+      return config;
+    },
+  ]);
+
+
+  return withAppBuildGradle(
+    config,
+    config => {
+
+      if (config.modResults.language === "groovy") {
+        config.modResults.contents = modifyAppBuildGradle(
+          config.modResults.contents
+        );
+      } else {
+        throw new Error(
+          "Cannot configure Sentry in the app gradle because the build.gradle is not groovy"
+        );
+      }
+      return config;
+    }
+  );
 };
 
-function addPermission(androidManifest: any, permission: string) {
-  const app = AndroidConfig.Manifest.getMainApplicationOrThrow(androidManifest);
-  AndroidConfig.Permissions.addPermission(app, permission);
+async function setCustomConfigAsync(
+  config: any,
+  androidManifest: AndroidConfig.Manifest.AndroidManifest
+): Promise<AndroidConfig.Manifest.AndroidManifest> {
+  if(!androidManifest.manifest['uses-permission']) {
+    androidManifest.manifest['uses-permission'] = [];
+  }
+  // Add permissions
+  if (!androidManifest.manifest["uses-permission"].some(e => e['$']['android:name'] === 'android.permission.ACCESS_FINE_LOCATION')) {
+    addPermission(androidManifest, 'android.permission.ACCESS_FINE_LOCATION');
+  }
+  if (!androidManifest.manifest["uses-permission"].some(e => e['$']['android:name'] === 'android.permission.ACCESS_BACKGROUND_LOCATION')) {
+    addPermission(androidManifest, 'android.permission.ACCESS_BACKGROUND_LOCATION');
+  }
+
   return androidManifest;
 }
 
 export function modifyAppBuildGradle(buildGradle: string) {
-  if (buildGradle.includes('com.google.android.gms:play-services-location:21.0.1"')) {
+  if (
+    buildGradle.includes(
+      'com.google.android.gms:play-services-location:21.0.1"'
+    )
+  ) {
     return buildGradle;
   }
 
-  // Use the same location that sentry-wizard uses
-  // See: https://github.com/getsentry/sentry-wizard/blob/e9b4522f27a852069c862bd458bdf9b07cab6e33/lib/Steps/Integrations/ReactNative.ts#L232
   const pattern = /^dependencies {/m;
 
   if (!buildGradle.match(pattern)) {
     WarningAggregator.addWarningAndroid(
-      'react-native-radar',
-      'Could not find react.gradle script in android/app/build.gradle.'
+      "react-native-radar",
+      "Could not find react.gradle script in android/app/build.gradle."
     );
   }
-  
+
   return buildGradle.replace(
     pattern,
-    (match: string) => match + '\n\n' + 'implementation "com.google.android.gms:play-services-location:21.0.1"'
+    (match: string) =>
+      match +
+      "\n\n" +
+      '    implementation "com.google.android.gms:play-services-location:21.0.1"' +
+      "\n\n" +
+      '    implementation "com.google.android.play:integrity:1.2.0"' 
   );
 }

@@ -3,13 +3,13 @@ import {
   createRunOncePlugin,
   WarningAggregator,
 } from "expo/config-plugins";
-import type { ExpoConfig } from 'expo/config';
+
 
 import { withRadarAndroid } from "./withRadarAndroid";
 import { withRadarIOS } from "./withRadarIOS";
+const pkg = require("../../package.json");
 
-
-const withRadar: ConfigPlugin = (config) => {
+const withRadarPlugin: ConfigPlugin = (config) => {
   try {
     config = withRadarAndroid(config);
   } catch (e) {
@@ -32,4 +32,6 @@ const withRadar: ConfigPlugin = (config) => {
   return config;
 };
 
-export default createRunOncePlugin(withRadar, 'react-native-radar', undefined);
+const withRadar = createRunOncePlugin(withRadarPlugin, pkg.name, pkg.version);
+
+export { withRadar };

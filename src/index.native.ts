@@ -1,5 +1,5 @@
 import { NativeEventEmitter, NativeModules, Platform } from "react-native";
-import { version } from "../package.json";
+
 import { RadarNativeInterface } from "./@types/RadarNativeInterface";
 import {
   Location,
@@ -226,7 +226,7 @@ const off = (channel: RadarEventChannel, callback?: Function | undefined): void 
 const nativeSdkVersion = (): Promise<string> =>
   NativeModules.RNRadar.nativeSdkVersion();
 
-const rnSdkVersion = (): string => version;
+const rnSdkVersion = (): string => '1.0.0';
 
 const Radar: RadarNativeInterface = {
   initialize,
