@@ -5,33 +5,48 @@ import {
   withAppBuildGradle,
   AndroidConfig,
   WarningAggregator,
-  withDangerousMod
-}  from "expo/config-plugins";
-import fs from 'fs';
-import path from 'path';
+  withDangerousMod,
+} from "expo/config-plugins";
+import fs from "fs";
+import path from "path";
 
 const { addPermission } = AndroidConfig.Permissions;
 
+import { RadarPluginProps } from "./types";
 
-export const withRadarAndroid = (config: ExpoConfig) => {
+export const withRadarAndroid = (
+  config: ExpoConfig,
+  args: RadarPluginProps
+) => {
   config = withAndroidManifest(config, async (config) => {
-    config.modResults = await setCustomConfigAsync(config, config.modResults);
+    config.modResults = await setCustomConfigAsync(config, config.modResults, args);
     return config;
   });
 
   config = withDangerousMod(config, [
-    'android',
+    "android",
     async (config) => {
+      if (!args.androidFraud) {
+        return config;
+      }
       // Get the path to the Android folder
-      const androidPath = path.join(config.modRequest.projectRoot, 'android', 'app', 'src', 'main', 'res', 'xml');
+      const androidPath = path.join(
+        config.modRequest.projectRoot,
+        "android",
+        "app",
+        "src",
+        "main",
+        "res",
+        "xml"
+      );
 
-          // Check if the directory exists, if not, create it
-    if (!fs.existsSync(androidPath)){
-      fs.mkdirSync(androidPath, { recursive: true });
-    }
+      // Check if the directory exists, if not, create it
+      if (!fs.existsSync(androidPath)) {
+        fs.mkdirSync(androidPath, { recursive: true });
+      }
 
       // Create the path to the new file
-      const newFilePath = path.join(androidPath, 'network_security_config.xml');
+      const newFilePath = path.join(androidPath, "network_security_config.xml");
 
       // Define xml content
 
@@ -59,44 +74,72 @@ export const withRadarAndroid = (config: ExpoConfig) => {
     },
   ]);
 
-
-  return withAppBuildGradle(
-    config,
-    config => {
-
-      if (config.modResults.language === "groovy") {
-        config.modResults.contents = modifyAppBuildGradle(
-          config.modResults.contents
-        );
-      } else {
-        throw new Error(
-          "Cannot configure Sentry in the app gradle because the build.gradle is not groovy"
-        );
-      }
-      return config;
+  return withAppBuildGradle(config, (config) => {
+    if (config.modResults.language === "groovy") {
+      config.modResults.contents = modifyAppBuildGradle(
+        config.modResults.contents,
+        args.androidFraud ?? false
+      );
+    } else {
+      throw new Error(
+        "Cannot configure Sentry in the app gradle because the build.gradle is not groovy"
+      );
     }
-  );
+    return config;
+  });
 };
 
 async function setCustomConfigAsync(
   config: any,
-  androidManifest: AndroidConfig.Manifest.AndroidManifest
+  androidManifest: AndroidConfig.Manifest.AndroidManifest,
+  args: RadarPluginProps
 ): Promise<AndroidConfig.Manifest.AndroidManifest> {
-  if(!androidManifest.manifest['uses-permission']) {
-    androidManifest.manifest['uses-permission'] = [];
+  if (!androidManifest.manifest["uses-permission"]) {
+    androidManifest.manifest["uses-permission"] = [];
   }
   // Add permissions
-  if (!androidManifest.manifest["uses-permission"].some(e => e['$']['android:name'] === 'android.permission.ACCESS_FINE_LOCATION')) {
-    addPermission(androidManifest, 'android.permission.ACCESS_FINE_LOCATION');
+  if (
+    args.androidFineLocationPermission && !androidManifest.manifest["uses-permission"].some(
+      (e) =>
+        e["$"]["android:name"] === "android.permission.ACCESS_FINE_LOCATION"
+    )
+  ) {
+    addPermission(androidManifest, "android.permission.ACCESS_FINE_LOCATION");
   }
-  if (!androidManifest.manifest["uses-permission"].some(e => e['$']['android:name'] === 'android.permission.ACCESS_BACKGROUND_LOCATION')) {
-    addPermission(androidManifest, 'android.permission.ACCESS_BACKGROUND_LOCATION');
+  if (
+    args.androidBackgroundPermission && !androidManifest.manifest["uses-permission"].some(
+      (e) =>
+        e["$"]["android:name"] ===
+        "android.permission.ACCESS_BACKGROUND_LOCATION"
+    )
+  ) {
+    addPermission(
+      androidManifest,
+      "android.permission.ACCESS_BACKGROUND_LOCATION"
+    );
+  }
+  if (
+    !androidManifest.manifest["uses-permission"].some(
+      (e) =>
+        e["$"]["android:name"] === "android.permission.ACCESS_COARSE_LOCATION"
+    )
+  ) {
+    addPermission(androidManifest, "android.permission.ACCESS_COARSE_LOCATION");
+  }
+  if (
+    !androidManifest.manifest["uses-permission"].some(
+      (e) => e["$"]["android:name"] === "android.permission.FOREGROUND_SERVICE"
+    )
+  ) {
+    addPermission(androidManifest, "android.permission.FOREGROUND_SERVICE");
   }
 
   return androidManifest;
 }
 
-export function modifyAppBuildGradle(buildGradle: string) {
+function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
+
+  // this is not robust logic, need to fix!! do not merge!
   if (
     buildGradle.includes(
       'com.google.android.gms:play-services-location:21.0.1"'
@@ -114,13 +157,17 @@ export function modifyAppBuildGradle(buildGradle: string) {
     );
   }
 
+  let replacementString =
+    "\n\n" +
+    '    implementation "com.google.android.gms:play-services-location:21.0.1"';
+
+  if (androidFraud) {
+    replacementString +=
+      "\n\n" + '    implementation "com.google.android.play:integrity:1.2.0"';
+  }
+
   return buildGradle.replace(
     pattern,
-    (match: string) =>
-      match +
-      "\n\n" +
-      '    implementation "com.google.android.gms:play-services-location:21.0.1"' +
-      "\n\n" +
-      '    implementation "com.google.android.play:integrity:1.2.0"' 
+    (match: string) => match + replacementString
   );
 }

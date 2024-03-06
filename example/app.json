@@ -16,18 +16,18 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kennyhuradar.example"
+      "bundleIdentifier": "com.radar.example"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kennyhuradar.example"
+      "package": "com.radar.example"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins":["react-native-radar"]
+    "plugins":[["react-native-radar", {"iosFraud":true, "iosNSLocationAlwaysAndWhenInUseUsageDescription":"test value", "iosBackgroundMode":true, "androidFraud":true, "androidBackgroundPermission":true, "androidFineLocationPermission":true}]]
   }
 }

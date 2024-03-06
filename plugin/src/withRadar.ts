@@ -9,9 +9,11 @@ import { withRadarAndroid } from "./withRadarAndroid";
 import { withRadarIOS } from "./withRadarIOS";
 const pkg = require("../../package.json");
 
-const withRadarPlugin: ConfigPlugin = (config) => {
+import type { RadarPluginProps } from "./types";
+
+const withRadarPlugin: ConfigPlugin<RadarPluginProps> = (config, args = {}) => {
   try {
-    config = withRadarAndroid(config);
+    config = withRadarAndroid(config, args);
   } catch (e) {
     WarningAggregator.addWarningAndroid(
       "react-native-radar",
@@ -20,7 +22,7 @@ const withRadarPlugin: ConfigPlugin = (config) => {
     );
   }
   try {
-    config = withRadarIOS(config);
+    config = withRadarIOS(config, args);
   } catch (e) {
     WarningAggregator.addWarningIOS(
       "react-native-radar",

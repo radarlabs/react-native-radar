@@ -5,7 +5,8 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "install-radar": "npm un react-native-radar ; npm i file:.. && expo prebuild"
   },
   "dependencies": {
     "expo": "~50.0.8",

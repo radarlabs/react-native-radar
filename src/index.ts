@@ -1,10 +1,10 @@
 import { RadarNativeInterface } from "./@types/RadarNativeInterface";
 
-let RadarModule: RadarNativeInterface;
+let module: RadarNativeInterface;
 
-RadarModule = require("./index.native").default;
+module = require("./index.native").default;
 
-export default RadarModule;
+export default module;
 
 export { default as RadarRNWeb } from "./index.web";
 export { default as Autocomplete } from "./ui/autocomplete";
