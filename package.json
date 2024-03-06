@@ -16,17 +16,12 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "test-sdk": "jest ./test/*.test.js",
+    "test": "jest ./test/*.test.js",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
-    "build-sdk": "tsc",
+    "build": "tsc",
     "copy-assets": "./copyAssets.sh",
-    "build": "expo-module build",
-    "clean": "expo-module clean",
-    "test": "expo-module test",
-    "prepare": "expo-module prepare",
-    "prepublishOnly": "expo-module prepublishOnly",
-    "expo-module": "expo-module"
+    "build-plugin": "tsc --build plugin/"
   },
   "jest": {
     "preset": "react-native",
