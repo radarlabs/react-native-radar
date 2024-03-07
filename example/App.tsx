@@ -38,10 +38,7 @@ export default function App() {
   const stringify = (obj) => JSON.stringify(obj, null, 2);
 
   useEffect(() => {
-    Radar.initialize(
-      "prj_test_pk_",
-      true
-    );
+    Radar.initialize("prj_test_pk_", true);
 
     Radar.setLogLevel("info");
 
@@ -113,9 +110,22 @@ export default function App() {
             }}
           />
           <ExampleButton
-            title="requestPermissions"
+            title="requestPermissionsForeground"
             onPress={() => {
               Radar.requestPermissions(false)
+                .then((result) => {
+                  handlePopulateText("requestPermissions:" + result);
+                })
+                .catch((err) => {
+                  handlePopulateText("requestPermissions:" + err);
+                });
+            }}
+          />
+
+          <ExampleButton
+            title="requestPermissionsBackground"
+            onPress={() => {
+              Radar.requestPermissions(true)
                 .then((result) => {
                   handlePopulateText("requestPermissions:" + result);
                 })
@@ -392,9 +402,7 @@ export default function App() {
                   destinationGeofenceTag: "store",
                   destinationGeofenceExternalId: "123",
                   mode: "car",
-                  scheduledArrivalAt: new Date(
-                    "2023-10-10T12:20:30Z"
-                  ),
+                  scheduledArrivalAt: new Date("2023-10-10T12:20:30Z"),
                 },
               })
                 .then((result) => {
@@ -415,9 +423,7 @@ export default function App() {
                   destinationGeofenceTag: "store",
                   destinationGeofenceExternalId: "123",
                   mode: "car",
-                  scheduledArrivalAt: new Date(
-                    "2023-10-10T12:20:30Z"
-                  ),
+                  scheduledArrivalAt: new Date("2023-10-10T12:20:30Z"),
                 },
                 trackingOptions: {
                   desiredStoppedUpdateInterval: 30,
@@ -507,8 +513,6 @@ export default function App() {
                 });
             }}
           />
-
-          
         </ScrollView>
       </View>
     </View>

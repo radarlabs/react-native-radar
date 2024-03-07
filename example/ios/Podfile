@@ -70,6 +70,7 @@ target 'example' do
         end
       end
     end
+    $RNMBGL.post_install(installer)
   end
 
   post_integrate do |installer|

@@ -1,4 +1,4 @@
-package com.kennyhuradar.example
+package com.radar.example
 
 import android.app.Application
 import android.content.res.Configuration

@@ -27,7 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.kennyhuradar.example</string>
+          <string>com.radar.example</string>
         </array>
       </dict>
     </array>
@@ -60,7 +60,7 @@
       </dict>
     </dict>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>test value</string>
+    <string>This is the test value</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>This app uses the location service to provide location-based services.</string>
     <key>UIBackgroundModes</key>

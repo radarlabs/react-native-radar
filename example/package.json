@@ -6,14 +6,16 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "install-radar": "npm un react-native-radar ; npm i file:.. && expo prebuild"
+    "install-radar": "npm un --no-save react-native-radar ; npm i --no-save --install-links",
+    "install-radar-rebuild": "npm un --no-save react-native-radar ; npm i --no-save --install-links ../ && expo prebuild --clean"
   },
   "dependencies": {
-    "expo": "~50.0.8",
+    "@maplibre/maplibre-react-native": "^9.1.0",
+    "expo": "~50.0.11",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
     "react-native": "0.73.4",
-    "react-native-radar": "file:.."
+    "react-native-radar": "3.10.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
