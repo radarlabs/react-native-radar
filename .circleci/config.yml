@@ -32,10 +32,24 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
-      - run: yarn install
-      - run: sudo yarn global add react-native
-      - run: chown -R $USER:$USER android
-      - run: cd android && ./gradlew assembleDebug
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Install Radar from local path
+          command: npm run install-radar-rebuild -y
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Install Expo CLI
+          command: npm install -g expo-cli
+      - run:
+          name: Run Expo App
+          command: npx expo run:android
   ios:
     macos:
       xcode: "13.4.1"

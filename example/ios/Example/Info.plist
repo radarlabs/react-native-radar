@@ -60,7 +60,7 @@
       </dict>
     </dict>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>This is the test value</string>
+    <string>test value</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>This app uses the location service to provide location-based services.</string>
     <key>UIBackgroundModes</key>
