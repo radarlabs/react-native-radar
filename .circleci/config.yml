@@ -41,7 +41,8 @@ jobs:
       xcode: "13.4.1"
     working_directory: ~/react-native-radar/example
     steps:
-       - checkout
+      - checkout:
+          path: ~/react-native-radar
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
