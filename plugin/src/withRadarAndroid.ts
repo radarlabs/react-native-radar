@@ -19,7 +19,11 @@ export const withRadarAndroid = (
   args: RadarPluginProps
 ) => {
   config = withAndroidManifest(config, async (config) => {
-    config.modResults = await setCustomConfigAsync(config, config.modResults, args);
+    config.modResults = await setCustomConfigAsync(
+      config,
+      config.modResults,
+      args
+    );
     return config;
   });
 
@@ -99,7 +103,8 @@ async function setCustomConfigAsync(
   }
   // Add permissions
   if (
-    args.androidFineLocationPermission && !androidManifest.manifest["uses-permission"].some(
+    args.androidFineLocationPermission &&
+    !androidManifest.manifest["uses-permission"].some(
       (e) =>
         e["$"]["android:name"] === "android.permission.ACCESS_FINE_LOCATION"
     )
@@ -107,7 +112,8 @@ async function setCustomConfigAsync(
     addPermission(androidManifest, "android.permission.ACCESS_FINE_LOCATION");
   }
   if (
-    args.androidBackgroundPermission && !androidManifest.manifest["uses-permission"].some(
+    args.androidBackgroundPermission &&
+    !androidManifest.manifest["uses-permission"].some(
       (e) =>
         e["$"]["android:name"] ===
         "android.permission.ACCESS_BACKGROUND_LOCATION"
@@ -138,14 +144,18 @@ async function setCustomConfigAsync(
 }
 
 function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
-
-  // this is not robust logic, need to fix!! do not merge!
+  let hasLocationService = false;
+  let hasPlayIntegrity = false;
   if (
     buildGradle.includes(
       'com.google.android.gms:play-services-location:21.0.1"'
     )
   ) {
-    return buildGradle;
+    hasLocationService = true;
+  }
+
+  if (buildGradle.includes('com.google.android.play:integrity:1.2.0"')) {
+    hasPlayIntegrity = true;
   }
 
   const pattern = /^dependencies {/m;
@@ -159,9 +169,11 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
 
   let replacementString =
     "\n\n" +
-    '    implementation "com.google.android.gms:play-services-location:21.0.1"';
+    (!hasLocationService
+      ? '    implementation "com.google.android.gms:play-services-location:21.0.1"'
+      : "");
 
-  if (androidFraud) {
+  if (androidFraud && !hasPlayIntegrity) {
     replacementString +=
       "\n\n" + '    implementation "com.google.android.play:integrity:1.2.0"';
   }
