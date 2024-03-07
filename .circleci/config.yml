@@ -35,6 +35,7 @@ jobs:
           path: ~/react-native-radar
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
+      - run: npm install -g typescript
       - run:
           name: Install Dependencies
           command: npm install
@@ -73,6 +74,7 @@ jobs:
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
+      - run: npm install -g typescript
       - run:
           name: Install Dependencies
           command: npm install
