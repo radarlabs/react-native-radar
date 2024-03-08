@@ -69,7 +69,7 @@ jobs:
           name: Install Radar from local path
           command: npm run install-radar-rebuild-dirty
       - run: cd ios && pod update RadarSDK && pod install
-      - run: xcodebuild -workspace ios/example.xcworkspace -scheme example -sdk iphonesimulator
+      - run: xcodebuild -workspace ios/example.xcworkspace -scheme Radar -sdk iphonesimulator
  
 
 workflows:
