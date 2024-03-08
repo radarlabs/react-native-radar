@@ -48,6 +48,9 @@ jobs:
           name: Install Radar from local path
           command: npm run install-radar-rebuild -y
       - run: sudo yarn global add react-native
+      - run:
+          name: Install Ninja
+          command: sudo apt-get update && sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
       - run: npx react-native run-android
   ios:
