@@ -28,6 +28,7 @@ jobs:
             - dist
             - app.plugin.js
             - plugin/build
+            - example
       - store_test_results:
           path: test-results
       - store_artifacts:
