@@ -21,7 +21,13 @@ jobs:
       - persist_to_workspace:
           root: ~/react-native-radar
           paths:
-            - node_modules
+            - android
+            - ios
+            - README.md
+            - react-native-radar.podspec
+            - dist
+            - app.plugin.js
+            - plugin/build
       - store_test_results:
           path: test-results
       - store_artifacts:
@@ -31,9 +37,8 @@ jobs:
     docker:
       - image: cimg/android:2023.02.1-browsers
     steps:
-      - checkout:
-          path: ~/react-native-radar
-      - run: cd .. && npx tsc &&  npx tsc -- build plugin/ && npx run copy-assets && cd example
+      - attach_workspace:
+          at: ~/react-native-radar
       - run:
           name: Install Dependencies
           command: npm install

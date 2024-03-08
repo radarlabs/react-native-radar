@@ -6,8 +6,8 @@
   "version": "3.10.4",
   "main": "dist/index.js",
   "files": [
-    "android",
-    "ios",
+    "/android",
+    "/ios",
     "README.md",
     "react-native-radar.podspec",
     "/dist",
