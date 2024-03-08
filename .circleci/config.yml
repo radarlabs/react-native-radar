@@ -49,7 +49,7 @@ jobs:
           command: npm run install-radar-rebuild -y
       - run: sudo yarn global add react-native
       - run: chown -R $USER:$USER android
-      - run: cd android && ./gradlew assembleDebug
+      - run: npx react-native run-android
   ios:
     macos:
       xcode: "13.4.1"
