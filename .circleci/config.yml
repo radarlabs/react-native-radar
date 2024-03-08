@@ -48,9 +48,6 @@ jobs:
           name: Install Radar from local path
           command: npm run install-radar-rebuild -y
       - run:
-          name: Install Expo CLI
-          command: npm install -g expo-cli
-      - run:
           name: Run Expo App
           command: npx expo run:android
   ios:
