@@ -7,6 +7,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "install-radar": "npm un --no-save react-native-radar ; npm i --no-save --install-links",
+    "install-radar-rebuild-dirty": "npm un --no-save react-native-radar ; npm i --no-save --install-links ../ && expo prebuild",
     "install-radar-rebuild": "npm un --no-save react-native-radar ; npm i --no-save --install-links ../ && expo prebuild --clean"
   },
   "dependencies": {
