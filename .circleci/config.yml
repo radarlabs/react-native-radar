@@ -52,7 +52,7 @@ jobs:
           name: Install Ninja
           command: sudo apt-get update && sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
-      - run: npx react-native run-android
+      - run: cd android && ./gradlew assembleDebug
   ios:
     macos:
       xcode: "13.4.1"
@@ -73,29 +73,14 @@ jobs:
 
             echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run: npm install -g typescript
       - run:
           name: Install Dependencies
           command: npm install
       - run:
           name: Install Radar from local path
-          command: npm run install-radar
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: Install Expo CLI
-          command: npm install -g expo-cli
-      - run:
-          name: Install CocoaPods dependencies
-          command: |
-            npx pod-install
-      - run:
-          name: Run Expo App
-          command: npx expo run:ios
+          command: npm run install-radar-rebuild -y
+      - run: sudo yarn global add react-native-cli @react-native-community/cli@11.3.10
+      - run: cd ios && react-native run-ios
 workflows:
   version: 2
   node-android-ios:
