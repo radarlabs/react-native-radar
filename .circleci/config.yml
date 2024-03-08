@@ -1,4 +1,6 @@
 version: 2
+orbs:
+  macos: circleci/macos@2
 jobs:
   node:
     working_directory: ~/react-native-radar
@@ -58,6 +60,10 @@ jobs:
       xcode: "15.3.0"
     working_directory: ~/react-native-radar/example
     steps:
+      - macos/preboot-simulator:
+          version: "15.0"
+          platform: "iOS"
+          device: "iPhone 13 Pro Max"
       - attach_workspace:
           at: ~/react-native-radar
       - run:
