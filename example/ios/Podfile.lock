@@ -32,14 +32,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.73.4)
   - hermes-engine/Pre-built (0.73.4)
   - libevent (2.1.12)
-  - maplibre-react-native (9.1.0):
-    - maplibre-react-native/DynamicLibrary (= 9.1.0)
-    - React
-    - React-Core
-  - maplibre-react-native/DynamicLibrary (9.1.0):
-    - React
-    - React-Core
-  - RadarSDK (3.9.9)
+  - RadarSDK (3.9.10)
   - RCT-Folly (2022.05.16.00):
     - boost
     - DoubleConversion
@@ -1098,7 +1091,6 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
-  - "maplibre-react-native (from `../node_modules/@maplibre/maplibre-react-native`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -1178,8 +1170,6 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-11-17-RNv0.73.0-21043a3fc062be445e56a2c10ecd8be028dd9cc5
-  maplibre-react-native:
-    :path: "../node_modules/@maplibre/maplibre-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -1282,8 +1272,7 @@ SPEC CHECKSUMS:
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: b2669ce35fc4ac14f523b307aff8896799829fe2
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  maplibre-react-native: 3a0d9beca427ff9000d75e0974c366ecd3c5375e
-  RadarSDK: 5abb82a42f4707758ef6830b82710567839527cc
+  RadarSDK: e7c81d3a8b13f964fc5e94a790c99f1f8d24fcc4
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: ab7f915c15569f04a49669e573e6e319a53f9faa
   RCTTypeSafety: 63b97ced7b766865057e7154db0e81ce4ee6cf1e
@@ -1329,6 +1318,6 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 64cd2a583ead952b0315d5135bf39e053ae9be70
 
-PODFILE CHECKSUM: 5aa211126614b821f31bd4fe18f449304a264b0f
+PODFILE CHECKSUM: ccf269edb0bea18332a45d5cb241e588ae4aaec6
 
 COCOAPODS: 1.14.3
