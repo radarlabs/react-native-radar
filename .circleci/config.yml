@@ -17,7 +17,7 @@ jobs:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
       - run:
           name: Type-check
-          command: npm run prepare
+          command: npm run build-all
       - persist_to_workspace:
           root: ~/react-native-radar
           paths:

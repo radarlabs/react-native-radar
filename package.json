@@ -22,7 +22,7 @@
     "build": "tsc",
     "copy-assets": "./copyAssets.sh",
     "build-plugin": "tsc --build plugin/",
-    "prepare": "npm run build && npm run build-plugin && npm run copy-assets"
+    "build-all": "npm run build && npm run build-plugin && npm run copy-assets"
   },
   "jest": {
     "preset": "react-native",
