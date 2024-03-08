@@ -47,9 +47,9 @@ jobs:
       - run:
           name: Install Radar from local path
           command: npm run install-radar-rebuild -y
-      - run:
-          name: Run Expo App
-          command: npx expo run:android
+      - run: sudo yarn global add react-native
+      - run: chown -R $USER:$USER android
+      - run: cd android && ./gradlew assembleDebug
   ios:
     macos:
       xcode: "13.4.1"
