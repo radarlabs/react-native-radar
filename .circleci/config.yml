@@ -52,7 +52,7 @@ jobs:
           name: Install Ninja
           command: sudo apt-get update && sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
-      - run: cd android && ./gradlew assembleDebug
+      - run: npx expo run:android
   ios:
     macos:
       xcode: "15.3.0"
