@@ -52,7 +52,7 @@ jobs:
           name: Install Ninja
           command: sudo apt-get update && sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
-      - run: npx expo run:android
+      - run: cd android && ./gradlew 
   ios:
     macos:
       xcode: "15.3.0"
@@ -79,7 +79,7 @@ jobs:
       - run:
           name: Install Radar from local path
           command: npm run install-radar-rebuild
-      - run: npx expo run:ios
+      - run: react-native run-ios
 
 workflows:
   version: 2
