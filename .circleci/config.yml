@@ -60,10 +60,6 @@ jobs:
       xcode: "15.3.0"
     working_directory: ~/react-native-radar/example
     steps:
-      - macos/preboot-simulator:
-          version: "15.0"
-          platform: "iOS"
-          device: "iPhone 13 Pro Max"
       - attach_workspace:
           at: ~/react-native-radar
       - run:
@@ -73,7 +69,7 @@ jobs:
           name: Install Radar from local path
           command: npm run install-radar-rebuild-dirty
       - run: cd ios && pod update RadarSDK && pod install
-      - run: npx expo run:ios
+      - run: xcodebuild -workspace ios/example.xcworkspace -scheme example -sdk iphonesimulator
  
 
 workflows:
