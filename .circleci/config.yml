@@ -55,7 +55,7 @@ jobs:
       - run: cd android && ./gradlew assembleDebug
   ios:
     macos:
-      xcode: "13.4.1"
+      xcode: "15.3.0"
     working_directory: ~/react-native-radar/example
     steps:
       - attach_workspace:
