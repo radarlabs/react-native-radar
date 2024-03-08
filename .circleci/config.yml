@@ -80,7 +80,7 @@ jobs:
           name: Install Radar from local path
           command: npm run install-radar-rebuild -y
       - run: sudo yarn global add react-native-cli @react-native-community/cli@11.3.10
-      - run: cd ios && react-native run-ios
+      - run: react-native run-ios
 workflows:
   version: 2
   node-android-ios:
