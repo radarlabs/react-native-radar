@@ -2,6 +2,8 @@ package io.radar.react;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -91,6 +93,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void initialize(String publishableKey, boolean fraud) {
         this.fraud = fraud;
+        SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
+        editor.putString("x_platform_sdk_type", "ReactNative");
+        editor.putString("x_platform_sdk_version", "3.10.4");
+        editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
             Radar.setVerifiedReceiver(verifiedReceiver);
