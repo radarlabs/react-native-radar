@@ -69,7 +69,9 @@ jobs:
           name: Install Radar from local path
           command: npm run install-radar-rebuild-dirty
       - run: cd ios && pod update RadarSDK && pod install
-      - run: xcodebuild -workspace ios/Example.xcworkspace -scheme example -sdk iphonesimulator
+      - run: sudo yarn global add react-native-cli @react-native-community/cli@11.3.10
+      - run: cd ios && pod update RadarSDK && pod install
+      - run: react-native run-ios
  
 
 workflows:
