@@ -226,7 +226,7 @@ const off = (channel: RadarEventChannel, callback?: Function | undefined): void 
 const nativeSdkVersion = (): Promise<string> =>
   NativeModules.RNRadar.nativeSdkVersion();
 
-const rnSdkVersion = (): string => '3.10.4';
+const rnSdkVersion = (): string => '3.10.6';
 
 const Radar: RadarNativeInterface = {
   initialize,
