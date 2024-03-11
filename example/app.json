@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "example",
-    "slug": "example",
+    "name": "Example",
+    "slug": "Example",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,6 +28,18 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins":[["react-native-radar", {"iosFraud":true, "iosNSLocationAlwaysAndWhenInUseUsageDescription":"test value", "iosBackgroundMode":true, "androidFraud":true, "androidBackgroundPermission":true, "androidFineLocationPermission":true}]]
+    "plugins": [
+      [
+        "react-native-radar",
+        {
+          "iosFraud": true,
+          "iosNSLocationAlwaysAndWhenInUseUsageDescription": "test value",
+          "iosBackgroundMode": true,
+          "androidFraud": true,
+          "androidBackgroundPermission": true,
+          "androidFineLocationPermission": true
+        }
+      ]
+    ]
   }
 }

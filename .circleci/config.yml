@@ -37,7 +37,7 @@ jobs:
       - store_artifacts:
           path: test-results
   android:
-    working_directory: ~/react-native-radar/example
+    working_directory: ~/react-native-radar/Example
     docker:
       - image: cimg/android:2024.01.1-browsers
     steps:
@@ -58,7 +58,7 @@ jobs:
   ios:
     macos:
       xcode: "15.3.0"
-    working_directory: ~/react-native-radar/example
+    working_directory: ~/react-native-radar/Example
     steps:
       - attach_workspace:
           at: ~/react-native-radar
@@ -69,7 +69,7 @@ jobs:
           name: Install Radar from local path
           command: npm run install-radar-rebuild-dirty
       - run: cd ios && pod update RadarSDK && pod install
-      - run: xcodebuild -workspace ios/example.xcworkspace -scheme Radar -sdk iphonesimulator
+      - run: xcodebuild -workspace ios/Example.xcworkspace -scheme Example -sdk iphonesimulator
  
 
 workflows:
