@@ -569,7 +569,11 @@ export type RadarEventType =
   | "user.updated_trip"
   | "user.approaching_trip_destination"
   | "user.arrived_at_trip_destination"
-  | "user.stopped_trip";
+  | "user.stopped_trip"
+  | "user.arrived_at_wrong_trip_destination"
+  | "user.failed_fraud"
+  | "user.delayed_during_trip";
+
 
 export type RadarTrackingOptionsDesiredAccuracy =
   | "high"
