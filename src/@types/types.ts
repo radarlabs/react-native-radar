@@ -286,7 +286,7 @@ export interface RadarTripOptions {
   destinationGeofenceTag?: string;
   destinationGeofenceExternalId?: string;
   mode?: RadarRouteMode;
-  scheduledArrivalAt?: Date;
+  scheduledArrivalAt?: number;
   approachingThreshold?: number;
 }
 
@@ -505,6 +505,12 @@ export interface RadarTrip {
   status: RadarTripStatus;
   scheduledArrivalAt?: Date;
   destinationLocation: Location;
+  delay:RadarDelay;
+}
+
+export interface RadarDelay {
+  delayed:boolean;
+  scheduledArrivalTimeDelay:number;
 }
 
 export interface RadarSegment {
@@ -538,6 +544,7 @@ export interface RadarEvent {
   replayed?: boolean;
   createdAt: string;
   actualCreatedAt: string;
+  fraud?: RadarFraud;
 }
 
 export enum RadarEventConfidence {
@@ -569,7 +576,11 @@ export type RadarEventType =
   | "user.updated_trip"
   | "user.approaching_trip_destination"
   | "user.arrived_at_trip_destination"
-  | "user.stopped_trip";
+  | "user.stopped_trip"
+  | "user.arrived_at_wrong_trip_destination"
+  | "user.failed_fraud"
+  | "user.delayed_during_trip";
+
 
 export type RadarTrackingOptionsDesiredAccuracy =
   | "high"
@@ -634,6 +645,10 @@ export interface RadarRegion {
   name: string;
   allowed?: boolean;
   flag?: string;
+  passed?: boolean;
+  inExclusionZone?: boolean;
+  inBufferZone?: boolean;
+  distanceToBorder?: number;
 }
 
 export interface RadarAddress {
@@ -713,6 +728,7 @@ export interface RadarFraud {
   mocked: boolean;
   compromised: boolean;
   jumped: boolean;
+  inaccurate: boolean;
 }
 
 export type RadarTrackingOptionsReplay = "all" | "stops" | "none";
