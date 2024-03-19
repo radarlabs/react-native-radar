@@ -18,7 +18,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 31
         versionCode 1
-        versionName '3.10.5'
+        versionName '3.10.6-beta.1'
     }
     lintOptions {
         abortOnError false
@@ -45,5 +45,5 @@ repositories {
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.9.5'
+    api 'io.radar:sdk:3.9.8-beta.9'
 }
