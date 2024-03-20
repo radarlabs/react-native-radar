@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+      <network-security-config>
+          <!-- for React Native -->
+          <domain-config cleartextTrafficPermitted="true">
+              <domain includeSubdomains="true">localhost</domain>
+          </domain-config>
+      
+          <!-- for SSL pinning -->
+          <domain-config cleartextTrafficPermitted="false">
+              <domain includeSubdomains="true">api-verified.radar.io</domain>
+              <pin-set>
+                  <pin digest="SHA-256">15ktYXSSU2llpy7YyCgeqUKDBkjcimK/weUcec960sI=</pin>
+                  <pin digest="SHA-256">15ktYXSSU2llpy7YyCgeqUKDBkjcimK/weUcec960sI=</pin>
+              </pin-set>
+          </domain-config>
+      </network-security-config>
