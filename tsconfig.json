@@ -22,7 +22,9 @@
       "noImplicitAny": false,
     },
     "include": [
-      "src/index.ts"
+      "src/index.ts",
+      "src/index.web.js",
+      "src/ui"
     ],
     "exclude": [
       "node_modules",
