@@ -780,6 +780,12 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
         limit = 10;
     }
 
+    BOOL includeGeometry = false;
+    NSNumber *includeGeometryNumber = optionsDict[@"includeGeometry"];
+    if (includeGeometryNumber != nil && [includeGeometryNumber isKindOfClass:[NSNumber class]]) {
+        includeGeometry = [includeGeometryNumber boolValue]; 
+    } 
+
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -802,9 +808,9 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
     };
 
     if (near) {
-        [Radar searchGeofencesNear:near radius:radius tags:tags metadata:metadata limit:limit completionHandler:completionHandler];
+        [Radar searchGeofencesNear:near radius:radius tags:tags metadata:metadata limit:limit includeGeometry:includeGeometry completionHandler:completionHandler];
     } else {
-        [Radar searchGeofencesWithRadius:radius tags:tags metadata:metadata limit:limit completionHandler:completionHandler];
+        [Radar searchGeofencesWithRadius:radius tags:tags metadata:metadata limit:limit includeGeometry:includeGeometry completionHandler:completionHandler];
     }
 }
 

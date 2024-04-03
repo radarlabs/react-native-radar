@@ -230,6 +230,7 @@ export interface RadarSearchGeofencesOptions {
   metadata?: RadarMetadata;
   tags?: string[];
   limit?: number;
+  includeGeometry?: boolean;
 }
 
 export interface RadarTrackingOptionsForegroundServiceOptions {

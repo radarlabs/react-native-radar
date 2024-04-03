@@ -942,6 +942,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
+        boolean includeGeometry = optionsMap.hasKey("includeGeometry") ? optionsMap.getBoolean("includeGeometry") : false;
+
         Radar.RadarSearchGeofencesCallback callback = new Radar.RadarSearchGeofencesCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarGeofence[] geofences) {
@@ -967,9 +969,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         };
 
         if (near != null) {
-            Radar.searchGeofences(near, radius, tags, metadata, limit, callback);
+            Radar.searchGeofences(near, radius, tags, metadata, limit, includeGeometry, callback);
         } else {
-            Radar.searchGeofences(radius, tags, metadata, limit, callback);
+            Radar.searchGeofences(radius, tags, metadata, limit, includeGeometry, callback);
         }
     }
 
