@@ -95,7 +95,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.10.8");
+        editor.putString("x_platform_sdk_version", "3.10.9");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -926,7 +926,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             near.setLatitude(latitude);
             near.setLongitude(longitude);
         }
-        int radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : 1000;
+        int? radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : null;
         String[] tags = optionsMap.hasKey("tags") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags")) : null;
         JSONObject metadata = null;
         if (optionsMap.hasKey("metadata")) {
@@ -940,7 +940,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
         }
 
-        int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
+        int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 100;
+        boolean includeGeometry = optionsMap.hasKey("includeGeometry") ? optionsMap.getBoolean("includeGeometry") : false; 
 
         Radar.RadarSearchGeofencesCallback callback = new Radar.RadarSearchGeofencesCallback() {
             @Override
@@ -967,9 +968,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         };
 
         if (near != null) {
-            Radar.searchGeofences(near, radius, tags, metadata, limit, callback);
+            Radar.searchGeofences(near, radius, tags, metadata, limit, includeGeometry, callback);
         } else {
-            Radar.searchGeofences(radius, tags, metadata, limit, callback);
+            Radar.searchGeofences(radius, tags, metadata, limit, includeGeometry, callback);
         }
     }
 

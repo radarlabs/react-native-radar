@@ -100,7 +100,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.10.8" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.10.9" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -768,7 +768,7 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
     if (radiusNumber != nil && [radiusNumber isKindOfClass:[NSNumber class]]) {
         radius = [radiusNumber intValue];
     } else {
-        radius = 1000;
+        radius = -1;
     }
     NSArray *tags = optionsDict[@"tags"];
     NSDictionary *metadata = optionsDict[@"metadata"];
@@ -777,8 +777,16 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
     if (limitNumber != nil && [limitNumber isKindOfClass:[NSNumber class]]) {
         limit = [limitNumber intValue];
     } else {
-        limit = 10;
+        limit = 100;
     }
+
+    BOOL includeGeometry = NO;
+    
+    NSNumber *includeGeometryNumber = optionsDict[@"includeGeometry"];
+    if (includeGeometryNumber != nil && [includeGeometryNumber isKindOfClass:[NSNumber class]]) {
+        includeGeometry = [includeGeometryNumber boolValue]; 
+    }
+    
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
@@ -801,11 +809,9 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
         rejecter = nil;
     };
 
-    if (near) {
-        [Radar searchGeofencesNear:near radius:radius tags:tags metadata:metadata limit:limit completionHandler:completionHandler];
-    } else {
-        [Radar searchGeofencesWithRadius:radius tags:tags metadata:metadata limit:limit completionHandler:completionHandler];
-    }
+
+    [Radar searchGeofencesNear:near radius:radius tags:tags metadata:metadata limit:limit includeGeometry:includeGeometry completionHandler:completionHandler];
+
 }
 
 RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
