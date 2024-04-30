@@ -926,7 +926,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             near.setLatitude(latitude);
             near.setLongitude(longitude);
         }
-        int? radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : null;
+        Integer radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : null;
         String[] tags = optionsMap.hasKey("tags") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags")) : null;
         JSONObject metadata = null;
         if (optionsMap.hasKey("metadata")) {
