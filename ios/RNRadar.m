@@ -315,6 +315,8 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
+    
+    /*
     RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
@@ -335,8 +337,9 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         resolver = nil;
         rejecter = nil;
     };
+    */
 
-    [Radar trackVerifiedWithBeacons:beacons completionHandler:completionHandler];
+//    [Radar trackVerifiedWithBeacons:beacons completionHandler:completionHandler];
 }
 
 RCT_EXPORT_METHOD(trackVerifiedToken:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
@@ -350,7 +353,7 @@ RCT_EXPORT_METHOD(trackVerifiedToken:(NSDictionary *)optionsDict resolve:(RCTPro
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
-
+    /*
     RadarTrackTokenCompletionHandler completionHandler = ^(RadarStatus status, NSString * _Nullable token) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
@@ -367,6 +370,7 @@ RCT_EXPORT_METHOD(trackVerifiedToken:(NSDictionary *)optionsDict resolve:(RCTPro
     };
 
     [Radar trackVerifiedTokenWithBeacons:beacons completionHandler:completionHandler];
+    */
 }
 
 RCT_EXPORT_METHOD(startTrackingEfficient) {
@@ -406,7 +410,9 @@ RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
         }
     }
 
+    /*
     [Radar startTrackingVerified:token interval:interval beacons:beacons];
+    */
 }
 
 RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict) {
@@ -1091,6 +1097,21 @@ RCT_EXPORT_METHOD(getMatrix:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
         resolver = nil;
         rejecter = nil;
     }];
+}
+
+RCT_EXPORT_METHOD(doIndoorSurvey:(NSString *)placeLabel forLength:(int)surveyLengthSeconds resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    RadarIndoorsSurveyCompletionHandler completionHandler = ^(NSString * _Nullable response) {
+        NSMutableDictionary *dict = [NSMutableDictionary new];
+        [dict setObject:response forKey:@"response"];
+        resolver(dict);
+        resolver = nil;
+        rejecter = nil;
+    };
+
+    [Radar doIndoorSurvey:placeLabel forLength:surveyLengthSeconds completionHandler:completionHandler];
 }
 
 RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
