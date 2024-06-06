@@ -7,6 +7,7 @@ import {
   RadarContextCallback,
   RadarAddressCallback,
   RadarEventChannel,
+  RadarGeocodeOptions,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -15,6 +16,7 @@ import {
   RadarMockTrackingOptions,
   RadarNotificationOptions,
   RadarPermissionsStatus,
+  RadarReverseGeocodeOptions,
   RadarRouteCallback,
   RadarRouteMatrix,
   RadarSearchGeofencesCallback,
@@ -187,11 +189,11 @@ const autocomplete = (
   options: RadarAutocompleteOptions
 ): Promise<RadarAddressCallback> => NativeModules.RNRadar.autocomplete(options);
 
-const geocode = (address: string): Promise<RadarAddressCallback> =>
-  NativeModules.RNRadar.geocode(address);
+const geocode = (options: RadarGeocodeOptions): Promise<RadarAddressCallback> =>
+  NativeModules.RNRadar.geocode(options);
 
-const reverseGeocode = (location: Location): Promise<RadarAddressCallback> =>
-  NativeModules.RNRadar.reverseGeocode(location);
+const reverseGeocode = (options?: RadarReverseGeocodeOptions): Promise<RadarAddressCallback> =>
+  NativeModules.RNRadar.reverseGeocode(options);
 
 const ipGeocode = (): Promise<RadarIPGeocodeCallback> =>
   NativeModules.RNRadar.ipGeocode();

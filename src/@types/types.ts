@@ -266,6 +266,17 @@ export interface RadarAutocompleteOptions {
   mailable?: boolean;
 }
 
+export interface RadarGeocodeOptions {
+  address: string;
+  layers?: string[];
+  countries?: string[];
+}
+
+export interface RadarReverseGeocodeOptions {
+  location?: Location;
+  layers?: string[];
+}
+
 export interface RadarNotificationOptions {
   iconString?: string;
   iconColor?: string;

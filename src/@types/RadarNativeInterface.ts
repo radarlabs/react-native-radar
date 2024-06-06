@@ -4,6 +4,7 @@ import {
   RadarContextCallback,
   RadarAddressCallback,
   RadarEventChannel,
+  RadarGeocodeOptions,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -12,6 +13,7 @@ import {
   RadarMockTrackingOptions,
   RadarNotificationOptions,
   RadarPermissionsStatus,
+  RadarReverseGeocodeOptions,
   RadarRouteCallback,
   RadarRouteMatrix,
   RadarSearchGeofencesCallback,
@@ -87,8 +89,8 @@ export interface RadarNativeInterface {
   autocomplete: (
     options: RadarAutocompleteOptions
   ) => Promise<RadarAddressCallback>;
-  geocode: (address: string) => Promise<RadarAddressCallback>;
-  reverseGeocode: (location: any) => Promise<RadarAddressCallback>;
+  geocode: (options: RadarGeocodeOptions) => Promise<RadarAddressCallback>;
+  reverseGeocode: (options?: RadarReverseGeocodeOptions) => Promise<RadarAddressCallback>;
   ipGeocode: () => Promise<RadarIPGeocodeCallback>;
   getDistance: (option: RadarGetDistanceOptions) => Promise<RadarRouteCallback>;
   getMatrix: (option: RadarGetMatrixOptions) => Promise<RadarRouteMatrix>;
