@@ -1,4 +1,5 @@
 #import "RNRadar.h"
+#include <Foundation/Foundation.h>
 
 #import <CoreLocation/CoreLocation.h>
 #import <React/RCTConvert.h>
@@ -100,7 +101,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.11.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.11.2" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -873,11 +874,23 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     }];
 }
 
-RCT_EXPORT_METHOD(geocode:(NSString *)query resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(geocode:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (optionsDict[@"address"] == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
+    }
+    
+    NSString *query = optionsDict[@"address"];
+    NSArray *layers = optionsDict[@"layers"];
+    NSArray *countries = optionsDict[@"countries"];
+    
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar geocodeAddress:query completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
+    [Radar geocodeAddress:query layers:layers countries:countries completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -893,13 +906,13 @@ RCT_EXPORT_METHOD(geocode:(NSString *)query resolve:(RCTPromiseResolveBlock)reso
     }];
 }
 
-RCT_EXPORT_METHOD(reverseGeocode:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    CLLocation *location;
-    if (locationDict != nil && [locationDict isKindOfClass:[NSDictionary class]]) {
-        double latitude = [RCTConvert double:locationDict[@"latitude"]];
-        double longitude = [RCTConvert double:locationDict[@"longitude"]];
-        NSDate *timestamp = [NSDate new];
-        location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
+RCT_EXPORT_METHOD(reverseGeocode:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    NSDictionary *locationDict = nil;
+    NSArray *layers = nil;
+
+    if (optionsDict != nil) {
+        locationDict = optionsDict[@"location"];
+        layers = optionsDict[@"layers"];
     }
 
     __block RCTPromiseResolveBlock resolver = resolve;
@@ -920,10 +933,18 @@ RCT_EXPORT_METHOD(reverseGeocode:(NSDictionary *)locationDict resolve:(RCTPromis
         rejecter = nil;
     };
 
-    if (location) {
-        [Radar reverseGeocodeLocation:location completionHandler:completionHandler];
+    if (locationDict != nil && [locationDict isKindOfClass:[NSDictionary class]]) {
+        double latitude = [RCTConvert double:locationDict[@"latitude"]];
+        double longitude = [RCTConvert double:locationDict[@"longitude"]];
+        NSDate *timestamp = [NSDate new];
+        CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) 
+                                                             altitude:-1 
+                                                   horizontalAccuracy:5
+                                                     verticalAccuracy:-1 
+                                                            timestamp:timestamp];
+        [Radar reverseGeocodeLocation:location layers:layers completionHandler:completionHandler];
     } else {
-        [Radar reverseGeocodeWithCompletionHandler:completionHandler];
+        [Radar reverseGeocodeWithLayers:layers completionHandler:completionHandler];
     }
 }
 
