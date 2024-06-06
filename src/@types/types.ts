@@ -195,9 +195,17 @@ export interface RadarMockTrackingOptions {
 }
 
 export interface RadarVerifiedTrackingOptions {
-  token?: boolean;
   interval?: number;
   beacons?: boolean;
+}
+
+export interface RadarVerifiedLocationToken {
+  user: RadarUser;
+  events: RadarEvent[];
+  token: string;
+  expiresAt: Date;
+  expiresIn: number;
+  passed: boolean;
 }
 
 export interface RadarGetDistanceOptions {
@@ -372,9 +380,9 @@ export interface RadarLogConversionCallback {
   event?: RadarEvent;
 }
 
-export interface RadarTrackTokenCallback {
+export interface RadarTrackVerifiedCallback {
   status: string;
-  token?: string;
+  token?: RadarVerifiedLocationToken;
 }
 
 export interface RadarEventUpdate {

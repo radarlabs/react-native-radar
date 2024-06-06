@@ -38,6 +38,7 @@ import io.radar.sdk.model.RadarRouteMatrix;
 import io.radar.sdk.model.RadarRoutes;
 import io.radar.sdk.model.RadarTrip;
 import io.radar.sdk.model.RadarUser;
+import io.radar.sdk.model.RadarVerifiedLocationToken;
 import io.radar.sdk.RadarNotificationOptions;
 
 import org.json.JSONException;
@@ -96,7 +97,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.12.0");
+        editor.putString("x_platform_sdk_version", "3.13.0");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -388,27 +389,16 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
         }
 
-        Radar.RadarTrackCallback trackCallback = new Radar.RadarTrackCallback() {
+        Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
                 if (promise == null) {
                     return;
                 }
 
                 try {
                     if (status == Radar.RadarStatus.SUCCESS) {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                        }
-                        if (user != null) {
-                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
-                        }
-                        promise.resolve(map);
+                        promise.resolve(token != null ? RNRadarUtils.mapForJson(token.toJson()) : null);
                     } else {
                         promise.reject(status.toString(), status.toString());
                     }
@@ -420,45 +410,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         };
 
         Radar.trackVerified(beaconsTrackingOption, trackCallback);
-    }
-
-    @ReactMethod
-    public void trackVerifiedToken(ReadableMap optionsMap, final Promise promise) {
-
-        boolean beaconsTrackingOption = false;
-
-        if (optionsMap != null) {
-            if (optionsMap.hasKey("beacons")) {
-                beaconsTrackingOption = optionsMap.getBoolean("beacons");
-            }
-        }
-
-        Radar.RadarTrackTokenCallback trackTokenCallback = new Radar.RadarTrackTokenCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable String token) {
-                if (promise == null) {
-                    return;
-                }
-
-                try {
-                    if (status == Radar.RadarStatus.SUCCESS) {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (token != null) {
-                            map.putString("token", token);
-                        }
-                        promise.resolve(map);
-                    } else {
-                        promise.reject(status.toString(), status.toString());
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "Exception", e);
-                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-                }
-            }
-        };
-
-        Radar.trackVerifiedToken(beaconsTrackingOption, trackTokenCallback);
     }
 
     @ReactMethod
@@ -489,17 +440,15 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void startTrackingVerified(ReadableMap optionsMap) {
-        boolean token = false;
         boolean beacons = false;
         int interval = 1;
 
         if (optionsMap != null) {
-            token = optionsMap.hasKey("token") ? optionsMap.getBoolean("token") : token;
             beacons = optionsMap.hasKey("beacons") ? optionsMap.getBoolean("beacons") : beacons;
             interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : interval;
         }
 
-        Radar.startTrackingVerified(token, interval, beacons);
+        Radar.startTrackingVerified(interval, beacons);
     }
 
     @ReactMethod
@@ -1344,7 +1293,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
         }
     }
-    
+
     @ReactMethod
     public void openAppSettings() {
         Radar.openAppSettings();
