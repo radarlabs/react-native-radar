@@ -322,7 +322,11 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
+<<<<<<< HEAD
     RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, RadarVerifiedLocationToken * _Nullable token) {
+=======
+    RadarTrackVerifiedCompletionHandler completionHandler = ^(RadarStatus status, RadarVerifiedLocationToken * _Nullable token) {
+>>>>>>> bump-3.13.0
         if (status == RadarStatusSuccess && resolver) {
             if (token != nil) {
                 resolver([token dictionaryValue]);
@@ -376,7 +380,7 @@ RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
         }
     }
 
-    [Radar startTrackingVerified:token interval:interval beacons:beacons];
+    [Radar startTrackingVerifiedWithInterval:interval beacons:beacons];
 }
 
 RCT_EXPORT_METHOD(mockTracking:(NSDictionary *)optionsDict) {

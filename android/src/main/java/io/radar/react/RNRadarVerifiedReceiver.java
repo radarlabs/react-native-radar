@@ -16,6 +16,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import io.radar.sdk.Radar;
 import io.radar.sdk.RadarVerifiedReceiver;
+import io.radar.sdk.model.RadarVerifiedLocationToken;
 
 public class RNRadarVerifiedReceiver extends RadarVerifiedReceiver {
 
