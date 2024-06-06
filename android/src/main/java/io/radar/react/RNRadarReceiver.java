@@ -118,7 +118,7 @@ public class RNRadarReceiver extends RadarReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("locationPermissionStatus", status.toJson());
+            sendEvent("locationPermissionStatus", RNRadarUtils.mapForJson(status.toJson()));
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }

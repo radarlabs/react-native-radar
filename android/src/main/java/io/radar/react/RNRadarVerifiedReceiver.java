@@ -32,12 +32,12 @@ public class RNRadarVerifiedReceiver extends RadarVerifiedReceiver {
     }
 
     @Override
-    public void onTokenUpdated(@NonNull Context context, @NonNull String token) {
+    public void onTokenUpdated(@NonNull Context context, @NonNull RadarVerifiedLocationToken token) {
         try {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("token", token);
+            sendEvent("token", RNRadarUtils.mapForJson(token.toJson()));
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }

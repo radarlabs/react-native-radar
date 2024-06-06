@@ -26,7 +26,6 @@ import {
   RadarStartTripOptions,
   RadarTrackCallback,
   RadarTrackOnceOptions,
-  RadarTrackTokenCallback,
   RadarTrackingOptions,
   RadarTrackingOptionsDesiredAccuracy,
   RadarTrackingOptionsForegroundService,
@@ -111,9 +110,6 @@ const trackOnce = (
 
 const trackVerified = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackCallback> =>
   NativeModules.RNRadar.trackVerified(options);
-
-const trackVerifiedToken = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackTokenCallback> =>
-  NativeModules.RNRadar.trackVerifiedToken(options);
 
 const startTrackingEfficient = (): void =>
   NativeModules.RNRadar.startTrackingEfficient();
@@ -258,7 +254,6 @@ const Radar: RadarNativeInterface = {
   getLocation,
   trackOnce,
   trackVerified,
-  trackVerifiedToken,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,
