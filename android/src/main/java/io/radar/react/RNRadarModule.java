@@ -32,6 +32,7 @@ import io.radar.sdk.model.RadarAddress;
 import io.radar.sdk.model.RadarContext;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarGeofence;
+import io.radar.sdk.model.RadarLocationPermissionStatus;
 import io.radar.sdk.model.RadarPlace;
 import io.radar.sdk.model.RadarRouteMatrix;
 import io.radar.sdk.model.RadarRoutes;
@@ -95,7 +96,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.11.1");
+        editor.putString("x_platform_sdk_version", "3.12.0");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -1320,4 +1321,32 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
+    @ReactMethod
+    public void requestForegroundLocationPermission() {
+        Radar.requestForegroundLocationPermission();
+    }
+
+    @ReactMethod
+    public void requestBackgroundLocationPermission() {
+        Radar.requestBackgroundLocationPermission();
+    }
+
+    @ReactMethod
+    public void getLocationPermissionStatus(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+        try {
+            RadarLocationPermissionStatus options = Radar.getLocationPermissionStatus();
+            promise.resolve(RNRadarUtils.mapForJson(options.toJson()));
+        } catch(JSONException e) {
+            Log.e(TAG, "JSONException", e);
+            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        }
+    }
+    
+    @ReactMethod
+    public void openAppSettings() {
+        Radar.openAppSettings();
+    }
 }

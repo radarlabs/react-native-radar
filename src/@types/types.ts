@@ -770,3 +770,27 @@ export type RadarTripStatus =
   | "expired"
   | "completed"
   | "canceled";
+
+export interface RadarLocationPermissionStatus {
+  status: LocationPermissionState;
+  foregroundPermissionResult: boolean;
+  backgroundPermissionResult: boolean;
+  shouldShowRequestPermissionRationaleFG: boolean;
+  shouldShowRequestPermissionRationaleBG: boolean;
+  previouslyDeniedForeground: boolean;
+  inLocationPopup: boolean;
+  approximatePermissionResult: boolean;
+  previouslyDeniedBackground: boolean;
+}
+
+export type LocationPermissionState = 
+  | "NO_PERMISSION_GRANTED"
+  | "FOREGROUND_PERMISSION_GRANTED"
+  | "APPROXIMATE_PERMISSION_GRANTED"
+  | "FOREGROUND_PERMISSION_REJECTED_ONCE"
+  | "FOREGROUND_PERMISSION_REJECTED"
+  | "FOREGROUND_PERMISSION_PENDING"
+  | "BACKGROUND_PERMISSION_GRANTED"
+  | "BACKGROUND_PERMISSION_REJECTED"
+  | "BACKGROUND_PERMISSION_REJECTED_ONCE"
+  | "UNKNOWN";

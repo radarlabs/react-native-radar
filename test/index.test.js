@@ -48,6 +48,10 @@ jest.mock('NativeModules', () => ({
     getTrackingOptions: jest.fn(),
     getTripOptions: jest.fn(),
     logConversion: jest.fn(),
+    requestForegroundLocationPermission: jest.fn(),
+    requestBackgroundLocationPermission: jest.fn(),
+    getLocationPermissionStatus: jest.fn(),
+    openAppSettings: jest.fn(),
   },
 }));
 
@@ -534,5 +538,29 @@ describe('calls native implementation', () => {
     Radar.logConversion(options);
 
     expect(mockModule.logConversion).toHaveBeenCalledTimes(1);
+  });
+
+  test('requestForegroundLocationPermission', () => {
+    Radar.requestForegroundLocationPermission();
+
+    expect(mockModule.requestForegroundLocationPermission).toHaveBeenCalledTimes(1);
+  });
+
+  test('requestBackgroundLocationPermission', () => {
+    Radar.requestBackgroundLocationPermission();
+
+    expect(mockModule.requestBackgroundLocationPermission).toHaveBeenCalledTimes(1);
+  });
+
+  test('getLocationPermissionStatus: () ', () => {
+    Radar.getLocationPermissionStatus();
+
+    expect(mockModule.getLocationPermissionStatus).toHaveBeenCalledTimes(1);
+  });
+
+  test('openAppSettings', () => {
+    Radar.openAppSettings();
+
+    expect(mockModule.openAppSettings).toHaveBeenCalledTimes(1);
   });
 });

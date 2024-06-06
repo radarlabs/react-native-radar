@@ -39,6 +39,7 @@ import {
   RadarMetadata,
   RadarIPGeocodeCallback,
   RadarTrackVerifiedOptions,
+  RadarLocationPermissionStatus,
 } from "./@types/types";
 
 if (
@@ -230,6 +231,17 @@ const nativeSdkVersion = (): Promise<string> =>
 
 const rnSdkVersion = (): string => version;
 
+const requestForegroundLocationPermission = () => 
+  NativeModules.RNRadar.requestForegroundLocationPermission();
+
+const requestBackgroundLocationPermission = () => 
+  NativeModules.RNRadar.requestBackgroundLocationPermission();
+
+const getLocationPermissionStatus = (): Promise<RadarLocationPermissionStatus> => 
+  NativeModules.RNRadar.getLocationPermissionStatus();
+
+const openAppSettings = () => NativeModules.RNRadar.openAppSettings()
+
 const Radar: RadarNativeInterface = {
   initialize,
   setLogLevel,
@@ -280,6 +292,10 @@ const Radar: RadarNativeInterface = {
   off,
   nativeSdkVersion,
   rnSdkVersion,
+  requestForegroundLocationPermission,
+  requestBackgroundLocationPermission,
+  getLocationPermissionStatus,
+  openAppSettings,
 };
 
 export default Radar;

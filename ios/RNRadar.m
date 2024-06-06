@@ -99,9 +99,15 @@ RCT_EXPORT_MODULE();
     }
 }
 
+- (void)didUpdateLocationPermissionStatus:(RadarLocationPermissionStatus *)status {
+    if (hasListeners) {
+        [self sendEventWithName:@"locationPermissionStatus" body:[status dictionaryValue]];
+    }
+}
+
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.11.2" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.12.0" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -1158,4 +1164,22 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         [Radar logConversionWithName:name revenue:revenue metadata:metadata completionHandler:completionHandler];
     }
 }
+
+RCT_EXPORT_METHOD(requestForegroundLocationPermission) {
+    [Radar requestForegroundLocationPermission];
+}
+
+RCT_EXPORT_METHOD(requestBackgroundLocationPermission) {
+    [Radar requestBackgroundLocationPermission];
+}
+
+RCT_EXPORT_METHOD(getLocationPermissionStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    RadarLocationPermissionStatus* status = [Radar getLocationPermissionStatus];
+    resolve([status dictionaryValue]);
+}
+
+RCT_EXPORT_METHOD(openAppSettings) {
+    [Radar openAppSettings];
+}
+
 @end
