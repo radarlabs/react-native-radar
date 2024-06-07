@@ -413,6 +413,31 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void getVerifiedLocationToken(final Promise promise) {
+        Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
+                if (promise == null) {
+                    return;
+                }
+
+                try {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        promise.resolve(token != null ? RNRadarUtils.mapForJson(token.toJson()) : null);
+                    } else {
+                        promise.reject(status.toString(), status.toString());
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                }
+            }
+        };
+
+        Radar.getVerifiedLocationToken(trackCallback);
+    }
+
+    @ReactMethod
     public void startTrackingEfficient() {
         Radar.startTracking(RadarTrackingOptions.EFFICIENT);
     }

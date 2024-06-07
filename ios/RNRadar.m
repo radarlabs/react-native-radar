@@ -369,6 +369,27 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     [Radar trackVerifiedWithBeacons:beacons completionHandler:completionHandler];
 }
 
+RCT_EXPORT_METHOD(getVerifiedLocationToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    RadarTrackVerifiedCompletionHandler completionHandler = ^(RadarStatus status, RadarVerifiedLocationToken * _Nullable token) {
+        if (status == RadarStatusSuccess && resolver) {
+            if (token != nil) {
+                resolver([token dictionaryValue]);
+            } else {
+                resolver(nil);
+            }
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    };
+
+    [Radar getVerifiedLocationToken:completionHandler];
+}
+
 RCT_EXPORT_METHOD(startTrackingEfficient) {
     [Radar startTrackingWithOptions:RadarTrackingOptions.presetEfficient];
 }
