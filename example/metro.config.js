@@ -1,35 +1,45 @@
-// https://github.com/callstack/react-native-builder-bob
+// Learn more https://docs.expo.io/guides/customizing-metro
+// const { getDefaultConfig } = require('expo/metro-config');
+// const path = require('path');
+// const reactNativeSvgTransformer = require.resolve('react-native-svg-transformer');
 
-const exclusionList = require('metro-config/src/defaults/exclusionList');
+// /** @type {import('expo/metro-config').MetroConfig} */
+// const config = getDefaultConfig(__dirname);
 
+// module.exports = config;
+
+
+// new config copied from old project
+
+const { getDefaultConfig } = require('expo/metro-config');
 const path = require('path');
-const escape = require('escape-string-regexp');
-const { getDefaultConfig } = require('@expo/metro-config');
-const pak = require('../package.json');
 
-const root = path.resolve(__dirname, '..');
+const config = getDefaultConfig(__dirname);
 
-const modules = Object.keys({
-  ...pak.peerDependencies,
-});
+const watchFolders = [
+    path.resolve(path.join(__dirname, '/node_modules'))
+];
 
-const defaultConfig = getDefaultConfig(__dirname);
+const nodeModulesPaths = [path.resolve(path.join(__dirname, './node_modules'))];
 
-module.exports = {
-  ...defaultConfig,
-  projectRoot: __dirname,
-  watchFolders: [root],
-  resolver: {
-    ...defaultConfig.resolver,
-    blacklistRE: exclusionList(
-      modules.map(
-        (m) =>
-          new RegExp(`^${escape(path.join(root, 'node_modules', m))}\\/.*$`)
-      )
-    ),
-    extraNodeModules: modules.reduce((acc, name) => {
-      acc[name] = path.join(__dirname, 'node_modules', name);
-      return acc;
-    }, {}),
-  },
+config.transformer = {
+    ...config.transformer,
+    getTransformOptions: async () => ({
+        transform: {
+            experimentalImportSupport: true,
+            inlineRequires: true,
+        },
+    }),
 };
+
+config.resolver = {
+    ...config.resolver,
+    // extraNodeModules,
+    nodeModulesPaths,
+    assetExts: config.resolver.assetExts.filter((ext) => ext !== 'svg'),
+    sourceExts: [...config.resolver.sourceExts, 'svg'],
+};
+
+config.watchFolders = watchFolders;
+
+module.exports = config;
