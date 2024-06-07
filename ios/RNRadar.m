@@ -24,6 +24,36 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
++ (NSDictionary *)mapLocationPermissionStatus:(NSDictionary *)status {
+    NSString *statusString = status[@"locationPermissionState"];
+    NSString *newStatusString;
+
+    if ([statusString isEqualToString:@"NoPermissionGranted"]) {
+        newStatusString = @"NO_PERMISSION_GRANTED";
+    } else if ([statusString isEqualToString:@"ForegroundPermissionGranted"]) {
+        newStatusString = @"FOREGROUND_PERMISSION_GRANTED";
+    } else if ([statusString isEqualToString:@"ForegroundPermissionRejected"]) {
+        newStatusString = @"FOREGROUND_PERMISSION_REJECTED";
+    } else if ([statusString isEqualToString:@"ForegroundPermissionPending"]) {
+        newStatusString = @"FOREGROUND_PERMISSION_PENDING";
+    } else if ([statusString isEqualToString:@"BackgroundPermissionGranted"]) {
+        newStatusString = @"BACKGROUND_PERMISSION_GRANTED";
+    } else if ([statusString isEqualToString:@"BackgroundPermissionRejected"]) {
+        newStatusString = @"BACKGROUND_PERMISSION_REJECTED";
+    } else if ([statusString isEqualToString:@"BackgroundPermissionPending"]) {
+        newStatusString = @"FOREGROUND_PERMISSION_PENDING";
+    } else if ([statusString isEqualToString:@"PermissionRestricted"]) {
+        newStatusString = @"PERMISSION_RESTRICTED";
+    } else {
+        newStatusString = @"UNKNOWN";
+    }
+
+    NSMutableDictionary *newStatus = [status mutableCopy];
+    [newStatus removeObjectForKey:@"locationPermissionState"];
+    [newStatus setValue:newStatusString forKey:@"status"];
+    return newStatus;
+}
+
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if (permissionsRequestResolver) {
         [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
@@ -101,7 +131,7 @@ RCT_EXPORT_MODULE();
 
 - (void)didUpdateLocationPermissionStatus:(RadarLocationPermissionStatus *)status {
     if (hasListeners) {
-        [self sendEventWithName:@"locationPermissionStatus" body:[status dictionaryValue]];
+        [self sendEventWithName:@"locationPermissionStatus" body:[RNRadar mapLocationPermissionStatus:[status dictionaryValue]]];
     }
 }
 
@@ -1142,7 +1172,7 @@ RCT_EXPORT_METHOD(requestBackgroundLocationPermission) {
 
 RCT_EXPORT_METHOD(getLocationPermissionStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     RadarLocationPermissionStatus* status = [Radar getLocationPermissionStatus];
-    resolve([status dictionaryValue]);
+    resolve([RNRadar mapLocationPermissionStatus:[status dictionaryValue]]);
 }
 
 RCT_EXPORT_METHOD(openAppSettings) {
