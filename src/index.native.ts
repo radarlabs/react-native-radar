@@ -7,6 +7,7 @@ import {
   RadarContextCallback,
   RadarAddressCallback,
   RadarEventChannel,
+  RadarGeocodeOptions,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -15,6 +16,7 @@ import {
   RadarMockTrackingOptions,
   RadarNotificationOptions,
   RadarPermissionsStatus,
+  RadarReverseGeocodeOptions,
   RadarRouteCallback,
   RadarRouteMatrix,
   RadarSearchGeofencesCallback,
@@ -24,7 +26,6 @@ import {
   RadarStartTripOptions,
   RadarTrackCallback,
   RadarTrackOnceOptions,
-  RadarTrackTokenCallback,
   RadarTrackingOptions,
   RadarTrackingOptionsDesiredAccuracy,
   RadarTrackingOptionsForegroundService,
@@ -37,6 +38,7 @@ import {
   RadarMetadata,
   RadarIPGeocodeCallback,
   RadarTrackVerifiedOptions,
+  RadarTrackVerifiedCallback,
 } from "./@types/types";
 
 if (
@@ -106,11 +108,11 @@ const trackOnce = (
   return NativeModules.RNRadar.trackOnce(backCompatibleOptions);
 };
 
-const trackVerified = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackCallback> =>
+const trackVerified = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackVerifiedCallback> =>
   NativeModules.RNRadar.trackVerified(options);
 
-const trackVerifiedToken = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackTokenCallback> =>
-  NativeModules.RNRadar.trackVerifiedToken(options);
+const getVerifiedLocationToken = (): Promise<RadarTrackVerifiedCallback> => 
+  NativeModules.RNRadar.getVerifiedLocationToken();
 
 const startTrackingEfficient = (): void =>
   NativeModules.RNRadar.startTrackingEfficient();
@@ -187,11 +189,11 @@ const autocomplete = (
   options: RadarAutocompleteOptions
 ): Promise<RadarAddressCallback> => NativeModules.RNRadar.autocomplete(options);
 
-const geocode = (address: string): Promise<RadarAddressCallback> =>
-  NativeModules.RNRadar.geocode(address);
+const geocode = (options: RadarGeocodeOptions): Promise<RadarAddressCallback> =>
+  NativeModules.RNRadar.geocode(options);
 
-const reverseGeocode = (location: Location): Promise<RadarAddressCallback> =>
-  NativeModules.RNRadar.reverseGeocode(location);
+const reverseGeocode = (options?: RadarReverseGeocodeOptions): Promise<RadarAddressCallback> =>
+  NativeModules.RNRadar.reverseGeocode(options);
 
 const ipGeocode = (): Promise<RadarIPGeocodeCallback> =>
   NativeModules.RNRadar.ipGeocode();
@@ -244,7 +246,7 @@ const Radar: RadarNativeInterface = {
   getLocation,
   trackOnce,
   trackVerified,
-  trackVerifiedToken,
+  getVerifiedLocationToken,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,

@@ -195,9 +195,17 @@ export interface RadarMockTrackingOptions {
 }
 
 export interface RadarVerifiedTrackingOptions {
-  token?: boolean;
   interval?: number;
   beacons?: boolean;
+}
+
+export interface RadarVerifiedLocationToken {
+  user: RadarUser;
+  events: RadarEvent[];
+  token: string;
+  expiresAt: Date;
+  expiresIn: number;
+  passed: boolean;
 }
 
 export interface RadarGetDistanceOptions {
@@ -264,6 +272,17 @@ export interface RadarAutocompleteOptions {
   /** @deprecated this is always true, regardless of the value passed here */
   expandUnits?: boolean;
   mailable?: boolean;
+}
+
+export interface RadarGeocodeOptions {
+  address: string;
+  layers?: string[];
+  countries?: string[];
+}
+
+export interface RadarReverseGeocodeOptions {
+  location?: Location;
+  layers?: string[];
 }
 
 export interface RadarNotificationOptions {
@@ -361,9 +380,9 @@ export interface RadarLogConversionCallback {
   event?: RadarEvent;
 }
 
-export interface RadarTrackTokenCallback {
+export interface RadarTrackVerifiedCallback {
   status: string;
-  token?: string;
+  token?: RadarVerifiedLocationToken;
 }
 
 export interface RadarEventUpdate {
@@ -402,12 +421,17 @@ export interface RadarLogUpdateCallback {
   (status: string): void;
 }
 
+export interface RadarLocationPermissionStatusCallback {
+  (status: RadarLocationPermissionStatus): void;
+}
+
 export type RadarListenerCallback =
   | RadarEventUpdateCallback
   | RadarLocationUpdateCallback
   | RadarClientLocationUpdateCallback
   | RadarErrorCallback
-  | RadarLogUpdateCallback;
+  | RadarLogUpdateCallback
+  | RadarLocationPermissionStatusCallback;
 
 export type RadarPermissionsStatus =
   | "GRANTED_FOREGROUND"
@@ -430,7 +454,7 @@ export type RadarLocationSource =
   | "BEACON_EXIT"
   | "UNKNOWN";
 
-export type RadarEventChannel = "clientLocation" | "location" | "error" | "events" | "log" | "token";
+export type RadarEventChannel = "clientLocation" | "location" | "error" | "events" | "log" | "token" | "locationPermissionStatus";
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
@@ -759,3 +783,47 @@ export type RadarTripStatus =
   | "expired"
   | "completed"
   | "canceled";
+
+export interface RadarLocationPermissionStatusAndroid {
+  status: LocationPermissionState;
+  foregroundPermissionResult: boolean;
+  backgroundPermissionResult: boolean;
+  shouldShowRequestPermissionRationaleFG: boolean;
+  shouldShowRequestPermissionRationaleBG: boolean;
+  previouslyDeniedForeground: boolean;
+  inLocationPopup: boolean;
+  approximatePermissionResult: boolean;
+  previouslyDeniedBackground: boolean;
+}
+
+export interface RadarLocationPermissionStatusIOS {
+  status: LocationPermissionState;
+  locationManagerStatus: LocationManagerStatus;
+  backgroundPopupAvailable: boolean;
+  inForegroundPopup: boolean;
+  userRejectedBackgroundPermission: boolean;
+}
+
+export type RadarLocationPermissionStatus = 
+  RadarLocationPermissionStatusAndroid | RadarLocationPermissionStatusIOS
+
+export type LocationPermissionState = 
+  | "NO_PERMISSION_GRANTED"
+  | "FOREGROUND_PERMISSION_GRANTED"
+  | "APPROXIMATE_PERMISSION_GRANTED"
+  | "FOREGROUND_PERMISSION_REJECTED_ONCE"
+  | "FOREGROUND_PERMISSION_REJECTED"
+  | "FOREGROUND_PERMISSION_PENDING"
+  | "BACKGROUND_PERMISSION_GRANTED"
+  | "BACKGROUND_PERMISSION_REJECTED"
+  | "BACKGROUND_PERMISSION_REJECTED_ONCE"
+  | "PERMISSION_RESTRICTED"
+  | "UNKNOWN";
+
+export type LocationManagerStatus = 
+  | "NotDetermined"
+  | "Restricted"
+  | "Denied"
+  | "AuthorizedAlways"
+  | "AuthorizedWhenInUse"
+  | "Unknown";

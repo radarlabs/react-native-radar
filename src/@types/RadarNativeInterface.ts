@@ -4,6 +4,7 @@ import {
   RadarContextCallback,
   RadarAddressCallback,
   RadarEventChannel,
+  RadarGeocodeOptions,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -12,6 +13,7 @@ import {
   RadarMockTrackingOptions,
   RadarNotificationOptions,
   RadarPermissionsStatus,
+  RadarReverseGeocodeOptions,
   RadarRouteCallback,
   RadarRouteMatrix,
   RadarSearchGeofencesCallback,
@@ -21,7 +23,7 @@ import {
   RadarStartTripOptions,
   RadarTrackCallback,
   RadarTrackOnceOptions,
-  RadarTrackTokenCallback,
+  RadarTrackVerifiedCallback,
   RadarTrackingOptions,
   RadarTrackingOptionsDesiredAccuracy,
   RadarTrackingOptionsForegroundService,
@@ -34,6 +36,7 @@ import {
   RadarGetMatrixOptions,
   RadarMetadata,
   RadarIPGeocodeCallback,
+  RadarLocationPermissionStatus,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -54,8 +57,8 @@ export interface RadarNativeInterface {
   trackOnce: (
     options?: RadarTrackOnceOptions | Location
   ) => Promise<RadarTrackCallback>;
-  trackVerifiedToken: (options?: RadarTrackVerifiedOptions) => Promise<RadarTrackTokenCallback>;
-  trackVerified: (options?: RadarTrackVerifiedOptions) => Promise<RadarTrackCallback>;
+  trackVerified: (options?: RadarTrackVerifiedOptions) => Promise<RadarTrackVerifiedCallback>;
+  getVerifiedLocationToken: () => Promise<RadarTrackVerifiedCallback>;
   startTrackingEfficient: () => void;
   startTrackingResponsive: () => void;
   startTrackingContinuous: () => void;
@@ -87,8 +90,8 @@ export interface RadarNativeInterface {
   autocomplete: (
     options: RadarAutocompleteOptions
   ) => Promise<RadarAddressCallback>;
-  geocode: (address: string) => Promise<RadarAddressCallback>;
-  reverseGeocode: (location: any) => Promise<RadarAddressCallback>;
+  geocode: (options: RadarGeocodeOptions) => Promise<RadarAddressCallback>;
+  reverseGeocode: (options?: RadarReverseGeocodeOptions) => Promise<RadarAddressCallback>;
   ipGeocode: () => Promise<RadarIPGeocodeCallback>;
   getDistance: (option: RadarGetDistanceOptions) => Promise<RadarRouteCallback>;
   getMatrix: (option: RadarGetMatrixOptions) => Promise<RadarRouteMatrix>;
