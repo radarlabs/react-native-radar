@@ -93,9 +93,9 @@ RCT_EXPORT_MODULE();
     }
 }
 
-- (void)didUpdateToken:(NSString *)token {
+- (void)didUpdateToken:(RadarVerifiedLocationToken *)token  {
     if (hasListeners) {
-        [self sendEventWithName:@"token" body:token];
+        [self sendEventWithName:@"token" body:[token dictionaryValue]];
     }
 }
 
