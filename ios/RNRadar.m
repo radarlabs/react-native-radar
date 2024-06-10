@@ -41,7 +41,7 @@ RCT_EXPORT_MODULE();
     } else if ([statusString isEqualToString:@"BackgroundPermissionRejected"]) {
         newStatusString = @"BACKGROUND_PERMISSION_REJECTED";
     } else if ([statusString isEqualToString:@"BackgroundPermissionPending"]) {
-        newStatusString = @"FOREGROUND_PERMISSION_PENDING";
+        newStatusString = @"BACKGROUND_PERMISSION_PENDING";
     } else if ([statusString isEqualToString:@"PermissionRestricted"]) {
         newStatusString = @"PERMISSION_RESTRICTED";
     } else {
@@ -137,7 +137,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.12.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.13.0" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
