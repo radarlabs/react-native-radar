@@ -41,7 +41,7 @@ RCT_EXPORT_MODULE();
     } else if ([statusString isEqualToString:@"BackgroundPermissionRejected"]) {
         newStatusString = @"BACKGROUND_PERMISSION_REJECTED";
     } else if ([statusString isEqualToString:@"BackgroundPermissionPending"]) {
-        newStatusString = @"FOREGROUND_PERMISSION_PENDING";
+        newStatusString = @"BACKGROUND_PERMISSION_PENDING";
     } else if ([statusString isEqualToString:@"PermissionRestricted"]) {
         newStatusString = @"PERMISSION_RESTRICTED";
     } else {
