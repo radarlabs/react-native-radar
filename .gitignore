@@ -27,7 +27,6 @@ android/.project
 ios/Carthage/Checkouts
 ios/Carthage/Build
 junit.xml
-dist/
 
 example2
 react-native-radar-*.tgz
