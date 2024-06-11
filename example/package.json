@@ -7,7 +7,6 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "postinstall": "patch-package && react-native setup-ios-permissions",
     "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\"",
     "lint": "eslint . **/*.ts *.tsx"
   },
