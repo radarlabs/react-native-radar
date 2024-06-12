@@ -13,7 +13,7 @@
     "react-native-radar.podspec",
     "/dist"
   ],
-  "types":"dist/src/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "test": "jest ./test/*.test.js",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
@@ -34,7 +34,7 @@
     ]
   },
   "peerDependencies": {
-    "@maplibre/maplibre-react-native": "^9.0.1",
+    "@maplibre/maplibre-react-native": "^10.0.0-alpha.4",
     "react": ">= 16.8.6",
     "react-native": ">= 0.60.0"
   },
