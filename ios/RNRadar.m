@@ -137,7 +137,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.12.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.12.1" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -354,11 +354,12 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
 
     RadarTrackVerifiedCompletionHandler completionHandler = ^(RadarStatus status, RadarVerifiedLocationToken * _Nullable token) {
         if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
             if (token != nil) {
-                resolver([token dictionaryValue]);
-            } else {
-                resolver(nil);
+                [dict setObject:[token dictionaryValue] forKey:@"token"];
             }
+            resolver(dict);
         } else if (rejecter) {
             rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
         }
@@ -375,11 +376,12 @@ RCT_EXPORT_METHOD(getVerifiedLocationToken:(RCTPromiseResolveBlock)resolve rejec
 
     RadarTrackVerifiedCompletionHandler completionHandler = ^(RadarStatus status, RadarVerifiedLocationToken * _Nullable token) {
         if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
             if (token != nil) {
-                resolver([token dictionaryValue]);
-            } else {
-                resolver(nil);
+                [dict setObject:[token dictionaryValue] forKey:@"token"];
             }
+            resolver(dict);
         } else if (rejecter) {
             rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
         }
@@ -410,13 +412,9 @@ RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
 RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
     BOOL token = NO;
     BOOL beacons = NO;
-    double interval = 1;
+    double interval = 1200;
 
     if (optionsDict != nil) {
-        NSNumber *tokenNumber = optionsDict[@"token"];
-        if (tokenNumber != nil && [tokenNumber isKindOfClass:[NSNumber class]]) {
-            token = [tokenNumber boolValue]; 
-        }
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
             beacons = [beaconsNumber boolValue]; 
