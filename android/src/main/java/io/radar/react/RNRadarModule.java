@@ -97,7 +97,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
+<<<<<<< HEAD
         editor.putString("x_platform_sdk_version", "3.14.0");
+=======
+        editor.putString("x_platform_sdk_version", "3.12.1");
+>>>>>>> master
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -398,7 +402,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
                 try {
                     if (status == Radar.RadarStatus.SUCCESS) {
-                        promise.resolve(token != null ? RNRadarUtils.mapForJson(token.toJson()) : null);
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (token != null) {
+                            map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
+                        }
+                        promise.resolve(map);
                     } else {
                         promise.reject(status.toString(), status.toString());
                     }
@@ -423,7 +432,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
                 try {
                     if (status == Radar.RadarStatus.SUCCESS) {
-                        promise.resolve(token != null ? RNRadarUtils.mapForJson(token.toJson()) : null);
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (token != null) {
+                            map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
+                        }
+                        promise.resolve(map);
                     } else {
                         promise.reject(status.toString(), status.toString());
                     }
@@ -466,7 +480,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void startTrackingVerified(ReadableMap optionsMap) {
         boolean beacons = false;
-        int interval = 1;
+        int interval = 1200;
 
         if (optionsMap != null) {
             beacons = optionsMap.hasKey("beacons") ? optionsMap.getBoolean("beacons") : beacons;
