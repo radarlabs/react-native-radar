@@ -398,7 +398,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
                 try {
                     if (status == Radar.RadarStatus.SUCCESS) {
-                        promise.resolve(token != null ? RNRadarUtils.mapForJson(token.toJson()) : null);
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (token != null) {
+                            map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
+                        }
+                        promise.resolve(map);
                     } else {
                         promise.reject(status.toString(), status.toString());
                     }
@@ -423,7 +428,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
                 try {
                     if (status == Radar.RadarStatus.SUCCESS) {
-                        promise.resolve(token != null ? RNRadarUtils.mapForJson(token.toJson()) : null);
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (token != null) {
+                            map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
+                        }
+                        promise.resolve(map);
                     } else {
                         promise.reject(status.toString(), status.toString());
                     }
