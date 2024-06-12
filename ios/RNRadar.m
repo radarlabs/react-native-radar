@@ -412,13 +412,9 @@ RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
 RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
     BOOL token = NO;
     BOOL beacons = NO;
-    double interval = 1;
+    double interval = 1200;
 
     if (optionsDict != nil) {
-        NSNumber *tokenNumber = optionsDict[@"token"];
-        if (tokenNumber != nil && [tokenNumber isKindOfClass:[NSNumber class]]) {
-            token = [tokenNumber boolValue]; 
-        }
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
             beacons = [beaconsNumber boolValue]; 

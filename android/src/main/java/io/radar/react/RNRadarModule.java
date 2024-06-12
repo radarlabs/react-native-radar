@@ -476,7 +476,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void startTrackingVerified(ReadableMap optionsMap) {
         boolean beacons = false;
-        int interval = 1;
+        int interval = 1200;
 
         if (optionsMap != null) {
             beacons = optionsMap.hasKey("beacons") ? optionsMap.getBoolean("beacons") : beacons;
