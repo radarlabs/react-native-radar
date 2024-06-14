@@ -32,7 +32,8 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
-      - run: npm install
+      - run: cd ../ && npm run pack && cd example
+      - run: npm install ../react-native-radar-*.tgz && npm install
       - run: npm run ios
   ios:
     macos:
@@ -41,7 +42,8 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
-      - run: npm install
+      - run: cd ../ && npm run pack && cd example
+      - run: npm install ../react-native-radar-*.tgz && npm install
       - run: npm run ios
 workflows:
   version: 2

@@ -19,7 +19,8 @@
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
     "build": "tsc",
-    "copy-assets": "./copyAssets.sh"
+    "copy-assets": "./copyAssets.sh",
+    "pack": "npm run build && npm run copy-assets && npm pack"
   },
   "jest": {
     "preset": "react-native",
