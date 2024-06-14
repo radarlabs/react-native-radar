@@ -34,7 +34,7 @@ jobs:
           path: ~/react-native-radar
       - run: cd ../ && npm install && npm run pack && cd example
       - run: npm install ../react-native-radar-*.tgz && npm install
-      - run: npm run ios
+      - run: npm run android
   ios:
     macos:
       xcode: "13.4.1"
