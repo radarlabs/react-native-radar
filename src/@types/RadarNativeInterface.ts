@@ -58,6 +58,7 @@ export interface RadarNativeInterface {
     options?: RadarTrackOnceOptions | Location
   ) => Promise<RadarTrackCallback>;
   trackVerified: (options?: RadarTrackVerifiedOptions) => Promise<RadarTrackVerifiedCallback>;
+  getVerifiedLocationToken: () => Promise<RadarTrackVerifiedCallback>;
   startTrackingEfficient: () => void;
   startTrackingResponsive: () => void;
   startTrackingContinuous: () => void;

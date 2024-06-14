@@ -386,7 +386,9 @@ describe('calls native implementation', () => {
   });
 
   test('geocode', () => {
-    const query = '20 jay st brooklyn';
+    const query = {
+      address: '20 jay st brooklyn'
+    };
     Radar.geocode(query);
 
     expect(mockModule.geocode).toHaveBeenCalledTimes(1);
@@ -394,14 +396,16 @@ describe('calls native implementation', () => {
   });
 
   test('reverseGeocode', () => {
-    const location = {
-      latitude: 40.783826,
-      longitude: -73.975363,
+    const query = {
+      location: {
+        latitude: 40.783826,
+        longitude: -73.975363,
+      }
     };
-    Radar.reverseGeocode(location);
+    Radar.reverseGeocode(query);
 
     expect(mockModule.reverseGeocode).toHaveBeenCalledTimes(1);
-    expect(mockModule.reverseGeocode).toBeCalledWith(location);
+    expect(mockModule.reverseGeocode).toBeCalledWith(query);
   });
 
   test('ipGeocode', () => {

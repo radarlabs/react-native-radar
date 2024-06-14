@@ -39,6 +39,7 @@ import {
   RadarIPGeocodeCallback,
   RadarTrackVerifiedOptions,
   RadarLocationPermissionStatus,
+  RadarTrackVerifiedCallback,
 } from "./@types/types";
 
 if (
@@ -108,8 +109,11 @@ const trackOnce = (
   return NativeModules.RNRadar.trackOnce(backCompatibleOptions);
 };
 
-const trackVerified = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackCallback> =>
+const trackVerified = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackVerifiedCallback> =>
   NativeModules.RNRadar.trackVerified(options);
+
+const getVerifiedLocationToken = (): Promise<RadarTrackVerifiedCallback> => 
+  NativeModules.RNRadar.getVerifiedLocationToken();
 
 const startTrackingEfficient = (): void =>
   NativeModules.RNRadar.startTrackingEfficient();
@@ -254,6 +258,7 @@ const Radar: RadarNativeInterface = {
   getLocation,
   trackOnce,
   trackVerified,
+  getVerifiedLocationToken,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,

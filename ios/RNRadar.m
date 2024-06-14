@@ -24,6 +24,36 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
++ (NSDictionary *)mapLocationPermissionStatus:(NSDictionary *)status {
+    NSString *statusString = status[@"locationPermissionState"];
+    NSString *newStatusString;
+
+    if ([statusString isEqualToString:@"NoPermissionGranted"]) {
+        newStatusString = @"NO_PERMISSION_GRANTED";
+    } else if ([statusString isEqualToString:@"ForegroundPermissionGranted"]) {
+        newStatusString = @"FOREGROUND_PERMISSION_GRANTED";
+    } else if ([statusString isEqualToString:@"ForegroundPermissionRejected"]) {
+        newStatusString = @"FOREGROUND_PERMISSION_REJECTED";
+    } else if ([statusString isEqualToString:@"ForegroundPermissionPending"]) {
+        newStatusString = @"FOREGROUND_PERMISSION_PENDING";
+    } else if ([statusString isEqualToString:@"BackgroundPermissionGranted"]) {
+        newStatusString = @"BACKGROUND_PERMISSION_GRANTED";
+    } else if ([statusString isEqualToString:@"BackgroundPermissionRejected"]) {
+        newStatusString = @"BACKGROUND_PERMISSION_REJECTED";
+    } else if ([statusString isEqualToString:@"BackgroundPermissionPending"]) {
+        newStatusString = @"FOREGROUND_PERMISSION_PENDING";
+    } else if ([statusString isEqualToString:@"PermissionRestricted"]) {
+        newStatusString = @"PERMISSION_RESTRICTED";
+    } else {
+        newStatusString = @"UNKNOWN";
+    }
+
+    NSMutableDictionary *newStatus = [status mutableCopy];
+    [newStatus removeObjectForKey:@"locationPermissionState"];
+    [newStatus setValue:newStatusString forKey:@"status"];
+    return newStatus;
+}
+
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if (permissionsRequestResolver) {
         [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
@@ -93,9 +123,15 @@ RCT_EXPORT_MODULE();
     }
 }
 
-- (void)didUpdateToken:(NSString *)token {
+- (void)didUpdateToken:(RadarVerifiedLocationToken *)token  {
     if (hasListeners) {
-        [self sendEventWithName:@"token" body:token];
+        [self sendEventWithName:@"token" body:[token dictionaryValue]];
+    }
+}
+
+- (void)didUpdateLocationPermissionStatus:(RadarLocationPermissionStatus *)status {
+    if (hasListeners) {
+        [self sendEventWithName:@"locationPermissionStatus" body:[RNRadar mapLocationPermissionStatus:[status dictionaryValue]]];
     }
 }
 
@@ -107,7 +143,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.13.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.12.1" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -323,6 +359,7 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     __block RCTPromiseRejectBlock rejecter = reject;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, RadarVerifiedLocationToken * _Nullable token) {
 =======
     RadarTrackVerifiedCompletionHandler completionHandler = ^(RadarStatus status, RadarVerifiedLocationToken * _Nullable token) {
@@ -333,6 +370,16 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
             } else {
                 resolver(nil);
             }
+=======
+    RadarTrackVerifiedCompletionHandler completionHandler = ^(RadarStatus status, RadarVerifiedLocationToken * _Nullable token) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (token != nil) {
+                [dict setObject:[token dictionaryValue] forKey:@"token"];
+            }
+            resolver(dict);
+>>>>>>> master
         } else if (rejecter) {
             rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
         }
@@ -343,6 +390,31 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     [Radar trackVerifiedWithBeacons:beacons completionHandler:completionHandler];
 }
 
+<<<<<<< HEAD
+=======
+RCT_EXPORT_METHOD(getVerifiedLocationToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    RadarTrackVerifiedCompletionHandler completionHandler = ^(RadarStatus status, RadarVerifiedLocationToken * _Nullable token) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (token != nil) {
+                [dict setObject:[token dictionaryValue] forKey:@"token"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    };
+
+    [Radar getVerifiedLocationToken:completionHandler];
+}
+
+>>>>>>> master
 RCT_EXPORT_METHOD(startTrackingEfficient) {
     [Radar startTrackingWithOptions:RadarTrackingOptions.presetEfficient];
 }
@@ -363,13 +435,9 @@ RCT_EXPORT_METHOD(startTrackingCustom:(NSDictionary *)optionsDict) {
 RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
     BOOL token = NO;
     BOOL beacons = NO;
-    double interval = 1;
+    double interval = 1200;
 
     if (optionsDict != nil) {
-        NSNumber *tokenNumber = optionsDict[@"token"];
-        if (tokenNumber != nil && [tokenNumber isKindOfClass:[NSNumber class]]) {
-            token = [tokenNumber boolValue]; 
-        }
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
             beacons = [beaconsNumber boolValue]; 
@@ -1146,7 +1214,11 @@ RCT_EXPORT_METHOD(requestBackgroundLocationPermission) {
 
 RCT_EXPORT_METHOD(getLocationPermissionStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     RadarLocationPermissionStatus* status = [Radar getLocationPermissionStatus];
+<<<<<<< HEAD
     resolve([status dictionaryValue]);
+=======
+    resolve([RNRadar mapLocationPermissionStatus:[status dictionaryValue]]);
+>>>>>>> master
 }
 
 RCT_EXPORT_METHOD(openAppSettings) {
