@@ -32,7 +32,7 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
-      - run: cd ../ && npm run pack && cd example
+      - run: cd ../ && npm install && npm run pack && cd example
       - run: npm install ../react-native-radar-*.tgz && npm install
       - run: npm run ios
   ios:
@@ -42,7 +42,7 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
-      - run: cd ../ && npm run pack && cd example
+      - run: cd ../ && npm install && npm run pack && cd example
       - run: npm install ../react-native-radar-*.tgz && npm install
       - run: npm run ios
 workflows:
