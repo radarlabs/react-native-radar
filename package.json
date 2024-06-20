@@ -34,7 +34,7 @@
     ]
   },
   "peerDependencies": {
-    "@maplibre/maplibre-react-native": "^10.0.0-alpha.4",
+    "@maplibre/maplibre-react-native": "^10.0.0-alpha.5",
     "react": ">= 16.8.6",
     "react-native": ">= 0.60.0"
   },
