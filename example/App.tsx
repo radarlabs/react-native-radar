@@ -1,4 +1,4 @@
-//Responsibility: handle the redux and state
+import React from 'react';
 import Radar from 'react-native-radar';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
@@ -139,13 +139,13 @@ export default function App() {
           <Button
             title="isTracking"
             onPress={() => {
-              handlePopulateText("isTracking:" + Radar.isTracking())
-                // .then((result) => {
-                //   handlePopulateText("isTracking:" + result);
-                // })
-                // .catch((err) => {
-                //   handlePopulateText("isTracking:" + err);
-                // });
+              Radar.isTracking()
+                .then((result) => {
+                  handlePopulateText("isTracking:" + result);
+                })
+                .catch((err) => {
+                  handlePopulateText("isTracking:" + err);
+                });
             }}
           />
           <Button
