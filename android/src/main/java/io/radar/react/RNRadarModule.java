@@ -526,6 +526,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void stopTrackingVerified() {
+        Radar.stopTrackingVerified();
+    }
+
+    @ReactMethod
     public void isTracking(final Promise promise) {
         if (promise == null) {
             return;
