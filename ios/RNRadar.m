@@ -24,6 +24,9 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
+/**
+ map iOS status string which is PascalCase into standard UPPER_SNAKE_CASE, which is consistent with android and javascript styling.
+ */
 + (NSDictionary *)mapLocationPermissionStatus:(NSDictionary *)status {
     NSString *statusString = status[@"locationPermissionState"];
     NSString *newStatusString;
