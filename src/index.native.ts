@@ -134,13 +134,15 @@ const mockTracking = (options: RadarMockTrackingOptions): void =>
 
 const stopTracking = (): void => NativeModules.RNRadar.stopTracking();
 
+const stopTrackingVerified = (): void => NativeModules.RNRadar.stopTracking();
+
 const getTrackingOptions = (): Promise<RadarTrackingOptions> =>
   NativeModules.RNRadar.getTrackingOptions();
 
 const isUsingRemoteTrackingOptions = (): Promise<boolean> =>
   NativeModules.RNRadar.isUsingRemoteTrackingOptions();
 
-const isTracking = (): boolean => NativeModules.RNRadar.isTracking();
+const isTracking = (): Promise<boolean> => NativeModules.RNRadar.isTracking();
 
 const setForegroundServiceOptions = (
   options: RadarTrackingOptionsForegroundService
@@ -254,6 +256,7 @@ const Radar: RadarNativeInterface = {
   startTrackingVerified,
   mockTracking,
   stopTracking,
+  stopTrackingVerified,
   isTracking,
   getTrackingOptions,
   setForegroundServiceOptions,
