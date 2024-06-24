@@ -472,6 +472,10 @@ RCT_EXPORT_METHOD(stopTracking) {
     [Radar stopTracking];
 }
 
+RCT_EXPORT_METHOD(stopTrackingVerified) {
+    [Radar stopTrackingVerified];
+}
+
 RCT_EXPORT_METHOD(isTracking:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     BOOL res = [Radar isTracking];
     resolve(@(res));
