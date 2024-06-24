@@ -142,7 +142,7 @@ const getTrackingOptions = (): Promise<RadarTrackingOptions> =>
 const isUsingRemoteTrackingOptions = (): Promise<boolean> =>
   NativeModules.RNRadar.isUsingRemoteTrackingOptions();
 
-const isTracking = (): boolean => NativeModules.RNRadar.isTracking();
+const isTracking = (): Promise<boolean> => NativeModules.RNRadar.isTracking();
 
 const setForegroundServiceOptions = (
   options: RadarTrackingOptionsForegroundService
