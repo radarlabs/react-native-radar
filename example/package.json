@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "install-radar": "npm install ../react-native-radar-*.tgz",
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -26,7 +27,7 @@
     "react-native": "0.72.4",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.12.0",
-    "react-native-radar": "file:../react-native-radar-3.12.1.tgz",
+    "react-native-radar": "file:../react-native-radar-3.12.2.tgz",
     "react-native-reanimated": "~3.3.0",
     "react-native-restart": "^0.0.27",
     "react-native-safe-area-context": "4.6.3",
@@ -38,7 +39,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@react-native-community/datetimepicker": "^7.6.1",
     "@react-native-picker/picker": "^2.5.1",
     "@types/react-native": "^0.72.8",
     "@typescript-eslint/eslint-plugin": "^6.11.0",

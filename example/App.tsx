@@ -15,7 +15,7 @@ export default function App() {
 
   useEffect(() => {
     Radar.initialize(
-      "prj_test_pk_ca1c535d59d979f05256cd964ec3c15f3016bb8e",
+      "prj_test_pk_333df0ef19f87a254f12cb1818de8443181054a7",
       true
     );
 
