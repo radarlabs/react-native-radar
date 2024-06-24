@@ -35,7 +35,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={{ width: "100%", height: "40%" }}>
-        <Map />
+        {/* <Map /> */}
       </View>
       <View style={{ width: "100%", height: "10%" }}>
         {/* <Autocomplete
@@ -136,7 +136,18 @@ export default function App() {
                 });
             }}
           />
-
+          <Button
+            title="isTracking"
+            onPress={() => {
+              handlePopulateText("isTracking:" + Radar.isTracking())
+                // .then((result) => {
+                //   handlePopulateText("isTracking:" + result);
+                // })
+                // .catch((err) => {
+                //   handlePopulateText("isTracking:" + err);
+                // });
+            }}
+          />
           <Button
             title="trackOnce manual"
             onPress={() => {
