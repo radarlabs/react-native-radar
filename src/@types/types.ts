@@ -754,6 +754,8 @@ export interface RadarFraud {
   compromised: boolean;
   jumped: boolean;
   inaccurate: boolean;
+  blocked: boolean;
+  sharing: boolean;
 }
 
 export type RadarTrackingOptionsReplay = "all" | "stops" | "none";
