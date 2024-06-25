@@ -1,45 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
-import Radar, { Map, Autocomplete, presetEfficient } from "react-native-radar";
-import MapLibreGL from "@maplibre/maplibre-react-native";
-import ExampleButton from "./components/exampleButton";
-MapLibreGL.setAccessToken(null);
-
-const stringify = (obj) => JSON.stringify(obj, null, 2);
-
-Radar.on("events", (result) => {
-  console.log("events:", stringify(result));
-});
-
-Radar.on("location", (result) => {
-  console.log("location:", stringify(result));
-});
-
-Radar.on("clientLocation", (result) => {
-  console.log("clientLocation:", stringify(result));
-});
-
-Radar.on("error", (err) => {
-  console.log("error:", stringify(err));
-});
-
-Radar.on("log", (result) => {
-  console.log("log:", stringify(result));
-});
+import React from 'react';
+import Radar from 'react-native-radar';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 
 export default function App() {
   // add in your test code here!
   const [displayText, setDisplayText] = useState("");
 
-  const handlePopulateText = (displayText) => {
+  const handlePopulateText = (displayText: any) => {
     setDisplayText(displayText);
   };
 
-  const stringify = (obj) => JSON.stringify(obj, null, 2);
+  const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 
   useEffect(() => {
     Radar.initialize(
-      "prj_test_pk_0000000000000000000000000000000000000000",
+      "prj_test_pk_333df0ef19f87a254f12cb1818de8443181054a7",
       true
     );
 
@@ -59,24 +35,24 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={{ width: "100%", height: "40%" }}>
-        <Map />
+        {/* <Map /> */}
       </View>
       <View style={{ width: "100%", height: "10%" }}>
-        <Autocomplete
+        {/* <Autocomplete
           options={{
             near: {
               latitude: 40.7342,
               longitude: -73.9911,
             },
           }}
-        />
+        /> */}
       </View>
       <View style={{ width: "100%", height: "50%" }}>
         <ScrollView>
           <Text style={styles.displayText}>{displayText}</Text>
         </ScrollView>
         <ScrollView>
-          <ExampleButton
+          <Button
             title="getUser"
             onPress={() => {
               Radar.getUserId()
@@ -88,7 +64,7 @@ export default function App() {
                 });
             }}
           />
-          <ExampleButton
+          <Button
             title="getDescription"
             onPress={() => {
               Radar.getDescription()
@@ -100,7 +76,7 @@ export default function App() {
                 });
             }}
           />
-          <ExampleButton
+          <Button
             title="getMetadata"
             onPress={() => {
               Radar.getMetadata()
@@ -112,7 +88,7 @@ export default function App() {
                 });
             }}
           />
-          <ExampleButton
+          <Button
             title="requestPermissions"
             onPress={() => {
               Radar.requestPermissions(false)
@@ -124,7 +100,7 @@ export default function App() {
                 });
             }}
           />
-          <ExampleButton
+          <Button
             title="getPermissionsStatus"
             onPress={() => {
               Radar.getPermissionsStatus()
@@ -136,7 +112,7 @@ export default function App() {
                 });
             }}
           />
-          <ExampleButton
+          <Button
             title="getLocation"
             onPress={() => {
               Radar.getLocation()
@@ -148,7 +124,7 @@ export default function App() {
                 });
             }}
           />
-          <ExampleButton
+          <Button
             title="trackOnce"
             onPress={() => {
               Radar.trackOnce()
@@ -160,8 +136,19 @@ export default function App() {
                 });
             }}
           />
-
-          <ExampleButton
+          <Button
+            title="isTracking"
+            onPress={() => {
+              Radar.isTracking()
+                .then((result) => {
+                  handlePopulateText("isTracking:" + result);
+                })
+                .catch((err) => {
+                  handlePopulateText("isTracking:" + err);
+                });
+            }}
+          />
+          <Button
             title="trackOnce manual"
             onPress={() => {
               Radar.trackOnce({
@@ -184,7 +171,7 @@ export default function App() {
                 });
             }}
           />
-          <ExampleButton
+          <Button
             title="trackOnce manual with beacons:"
             onPress={() => {
               Radar.trackOnce({
@@ -201,7 +188,7 @@ export default function App() {
                 });
             }}
           />
-          <ExampleButton
+          <Button
             title="trackOnce for back compatible"
             onPress={() => {
               Radar.trackOnce({
@@ -220,7 +207,7 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
             title="searchPlaces"
             onPress={() => {
               Radar.searchPlaces({
@@ -244,13 +231,14 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
             title="searchGeofences"
             onPress={() => {
               Radar.searchGeofences({
                 radius: 1000,
                 tags: ["venue"],
                 limit: 10,
+                includeGeometry: false,
               })
                 .then((result) => {
                   handlePopulateText("searchGeofences:" + stringify(result));
@@ -261,7 +249,7 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
             title="autocomplete"
             onPress={() => {
               Radar.autocomplete({
@@ -281,10 +269,12 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
             title="geocode"
             onPress={() => {
-              Radar.geocode("20 jay st brooklyn")
+              Radar.geocode({
+                  address: "20 jay st brooklyn"
+                })
                 .then((result) => {
                   handlePopulateText("geocode:" + stringify(result));
                 })
@@ -294,12 +284,32 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+
+          <Button
+            title="geocode with countries and layers"
+            onPress={() => {
+              Radar.geocode({
+                  address: "20 jay st",
+                  countries: ["CA"],
+                  layers: ["locality"],
+                })
+                .then((result) => {
+                  handlePopulateText("geocode:" + stringify(result));
+                })
+                .catch((err) => {
+                  handlePopulateText("geocode:" + err);
+                });
+            }}
+          />
+
+          <Button
             title="reverseGeocode"
             onPress={() => {
               Radar.reverseGeocode({
-                latitude: 40.783826,
-                longitude: -73.975363,
+                location: {
+                  latitude: 40.783826,
+                  longitude: -73.975363,
+                }
               })
                 .then((result) => {
                   handlePopulateText("reverseGeocode:" + stringify(result));
@@ -310,7 +320,26 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
+            title="reverseGeocode with layers"
+            onPress={() => {
+              Radar.reverseGeocode({
+                location: {
+                  latitude: 40.783826,
+                  longitude: -73.975363,
+                },
+                layers: ["county"]
+              })
+                .then((result) => {
+                  handlePopulateText("reverseGeocode:" + stringify(result));
+                })
+                .catch((err) => {
+                  handlePopulateText("reverseGeocode:" + err);
+                });
+            }}
+          />
+
+          <Button
             title="ipGeocode"
             onPress={() => {
               Radar.ipGeocode()
@@ -323,7 +352,7 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
             title="getDistance"
             onPress={() => {
               Radar.getDistance({
@@ -347,7 +376,7 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
             title="getMatrix"
             onPress={() => {
               Radar.getMatrix({
@@ -383,7 +412,7 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
             title="startTrip"
             onPress={() => {
               Radar.startTrip({
@@ -406,8 +435,8 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
-            title="startTrip"
+          <Button
+            title="startTrip with tracking options"
             onPress={() => {
               Radar.startTrip({
                 tripOptions: {
@@ -450,7 +479,7 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
             title="completeTrip"
             onPress={() => {
               Radar.completeTrip()
@@ -463,7 +492,7 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
             title="logConversion"
             onPress={() => {
               Radar.logConversion({
@@ -482,7 +511,7 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
+          <Button
             title="trackVerified"
             onPress={() => {
               Radar.trackVerified()
@@ -495,24 +524,45 @@ export default function App() {
             }}
           />
 
-          <ExampleButton
-            title="trackVerifiedToken"
-            onPress={() => {
-              Radar.trackVerifiedToken()
-                .then((result) => {
-                  handlePopulateText("trackVerifiedToken:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("trackVerifiedToken:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
+          {/* <Button
             title="startTrackingCustom"
             onPress={() => {
               const customTrackingOptions = {...presetEfficient, beacons: true};
               Radar.startTrackingCustom(customTrackingOptions)
+            }}
+          /> */}
+
+          <Button
+            title="requestForegroundLocationPermission"
+            onPress={() => {
+              Radar.requestForegroundLocationPermission();
+            }}
+          />
+
+          <Button
+            title="requestBackgroundLocationPermission"
+            onPress={() => {
+              Radar.requestBackgroundLocationPermission();
+            }}
+          />
+
+          <Button
+            title="getLocationPermissionStatus"
+            onPress={() => {
+              Radar.getLocationPermissionStatus()
+                .then((result) => {
+                  handlePopulateText("getLocationPermissionStatus:" + stringify(result));
+                })
+                .catch((err) => {
+                  handlePopulateText("getLocationPermissionStatus:" + err);
+                });
+            }}
+          />
+
+          <Button
+            title="openAppSettings"
+            onPress={() => {
+              Radar.openAppSettings();
             }}
           />
         </ScrollView>
@@ -524,8 +574,11 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  displayText: {
+
+  }
 });

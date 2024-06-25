@@ -1,0 +1,46 @@
+{
+    "root": true,
+
+    "env": {
+        "es2021": true,
+        "node": true,
+        "react-native/react-native": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "react",
+      "react-native"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "airbnb",
+      "airbnb/hooks"
+    ],
+    "rules": {
+      "no-console": 1,       // Means warning
+      // allow .js files to contain JSX code
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx",".ts", ".tsx"] }],
+                  
+      // prevent eslint to complain about the "styles" variable being used before it was defined
+      "no-use-before-define": ["error", { "variables": false }],
+
+      // ignore errors for the react-navigation package
+      "react/prop-types": ["error", {"ignore": ["navigation", "navigation.navigate"]}],
+
+      // ignore errors for import directives
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          "js": "never",
+          "jsx": "never",
+          "ts": "never",
+          "tsx": "never"
+        }
+      ]
+
+    }
+  }

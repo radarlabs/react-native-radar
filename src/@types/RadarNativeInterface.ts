@@ -104,4 +104,8 @@ export interface RadarNativeInterface {
   off: (channel: RadarEventChannel, callback?: Function | undefined) => void;
   nativeSdkVersion: () => Promise<string>;
   rnSdkVersion: () => string;
+  requestForegroundLocationPermission: () => void;
+  requestBackgroundLocationPermission: () => void;
+  getLocationPermissionStatus: () => Promise<RadarLocationPermissionStatus>;
+  openAppSettings: () => void;
 }

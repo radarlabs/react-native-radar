@@ -543,4 +543,28 @@ describe('calls native implementation', () => {
 
     expect(mockModule.logConversion).toHaveBeenCalledTimes(1);
   });
+
+  test('requestForegroundLocationPermission', () => {
+    Radar.requestForegroundLocationPermission();
+
+    expect(mockModule.requestForegroundLocationPermission).toHaveBeenCalledTimes(1);
+  });
+
+  test('requestBackgroundLocationPermission', () => {
+    Radar.requestBackgroundLocationPermission();
+
+    expect(mockModule.requestBackgroundLocationPermission).toHaveBeenCalledTimes(1);
+  });
+
+  test('getLocationPermissionStatus: () ', () => {
+    Radar.getLocationPermissionStatus();
+
+    expect(mockModule.getLocationPermissionStatus).toHaveBeenCalledTimes(1);
+  });
+
+  test('openAppSettings', () => {
+    Radar.openAppSettings();
+
+    expect(mockModule.openAppSettings).toHaveBeenCalledTimes(1);
+  });
 });

@@ -13,13 +13,14 @@
     "react-native-radar.podspec",
     "/dist"
   ],
-  "types":"dist/src/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "test": "jest ./test/*.test.js",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
     "build": "tsc",
-    "copy-assets": "./copyAssets.sh"
+    "copy-assets": "./copyAssets.sh",
+    "pack": "npm run build && npm run copy-assets && npm pack"
   },
   "jest": {
     "preset": "react-native",
@@ -34,7 +35,7 @@
     ]
   },
   "peerDependencies": {
-    "@maplibre/maplibre-react-native": "^9.0.1",
+    "@maplibre/maplibre-react-native": "^9.1.0",
     "react": ">= 16.8.6",
     "react-native": ">= 0.60.0"
   },

@@ -32,10 +32,9 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
-      - run: yarn install
-      - run: sudo yarn global add react-native
-      - run: chown -R $USER:$USER android
-      - run: cd android && ./gradlew assembleDebug
+      - run: cd ../ && npm install && npm run pack && cd example
+      - run: npm install ../react-native-radar-*.tgz && npm install
+      - run: cd android && ./gradlew
   ios:
     macos:
       xcode: "13.4.1"
@@ -43,10 +42,10 @@ jobs:
     steps:
       - checkout:
           path: ~/react-native-radar
-      - run: yarn install
-      - run: sudo yarn global add react-native-cli @react-native-community/cli@11.3.10
+      - run: cd ../ && npm install && npm run pack && cd example
+      - run: npm install ../react-native-radar-*.tgz && npm install
       - run: cd ios && pod update RadarSDK && pod install
-      - run: react-native run-ios
+      - run: xcodebuild -workspace ios/Example.xcworkspace -scheme example -sdk iphonesimulator
 workflows:
   version: 2
   node-android-ios:
