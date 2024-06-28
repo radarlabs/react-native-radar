@@ -360,7 +360,7 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
             if (token != nil) {
-                [dict setObject:[RNRadar mapLocationPermissionStatus:[token dictionaryValue]] forKey:@"token"];
+                [dict setObject:[token dictionaryValue] forKey:@"token"];
             }
             resolver(dict);
         } else if (rejecter) {
