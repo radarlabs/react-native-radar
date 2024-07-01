@@ -6,7 +6,12 @@ import {
   AndroidConfig,
   WarningAggregator,
   withDangerousMod,
+  withMainActivity,
 } from "expo/config-plugins";
+import {
+  addImports,
+  appendContentsInsideDeclarationBlock,
+} from '@expo/config-plugins/build/android/codeMod';
 import fs from "fs";
 import path from "path";
 
@@ -77,6 +82,29 @@ export const withRadarAndroid = (
       return config;
     },
   ]);
+
+  config = withMainActivity(config, (config) => {
+    let mainActivity = config.modResults.contents;
+    const isJava = config.modResults.language === 'java';
+    // add RNRadar module import if it doesn't exist
+    if (!mainActivity.match(/\s+import io.radar.react.RNRadarModule\(/m)) {
+      mainActivity = addImports(
+        mainActivity,
+        ['io.radar.react.RNRadarModule'],
+        isJava
+      );
+    }
+    // add on create call to initialize RNRadar
+    if (!mainActivity.match(/\s+RNRadarModule.onActivityCreate(this, getApplicationContext())\(/m)) {
+      mainActivity = appendContentsInsideDeclarationBlock(
+        mainActivity,
+        'onCreate',
+        `  RNRadarModule.onActivityCreate(this, getApplicationContext())${isJava ? ';' : ''}\n`
+      );
+    }
+    config.modResults.contents = mainActivity;
+    return config;
+  })
 
   return withAppBuildGradle(config, (config) => {
     if (config.modResults.language === "groovy") {
