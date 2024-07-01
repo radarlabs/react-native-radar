@@ -16,6 +16,7 @@ import {
   Keyboard,
   SafeAreaView,
   Pressable,
+  Platform,
 } from 'react-native';
 import Radar from '../index.native';
 import {
