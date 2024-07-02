@@ -12,6 +12,7 @@
     "install-radar-rebuild": "npm run install-radar && expo prebuild --clean"
   },
   "dependencies": {
+    "@maplibre/maplibre-react-native": "^10.0.0-alpha.5",
     "expo": "~50.0.19",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",

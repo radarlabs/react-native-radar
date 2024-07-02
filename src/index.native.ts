@@ -146,7 +146,7 @@ const mockTracking = (options: RadarMockTrackingOptions): void =>
 
 const stopTracking = (): void => NativeModules.RNRadar.stopTracking();
 
-const stopTrackingVerified = (): void => NativeModules.RNRadar.stopTracking();
+const stopTrackingVerified = (): void => NativeModules.RNRadar.stopTrackingVerified();
 
 const getTrackingOptions = (): Promise<RadarTrackingOptions> =>
   NativeModules.RNRadar.getTrackingOptions();
