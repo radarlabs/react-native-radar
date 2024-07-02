@@ -66,7 +66,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     public static void onActivityCreate(Activity activity, Context context) {
         // Radar.onActivityCreate(activity, context);
-        System.out.println("ActivityCreateCalled");
+        System.out.println("RNRadar: ActivityCreateCalled");
     }
 
     @ReactMethod
