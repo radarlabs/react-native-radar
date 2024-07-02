@@ -38,9 +38,9 @@ export default function App() {
 
   const stringify = (obj) => JSON.stringify(obj, null, 2);
 
-  Radar.initialize("prj_test_pk_", true);
-
   useEffect(() => {
+    Radar.initialize("prj_test_pk_", true);
+
     Radar.setLogLevel("info");
 
     Radar.setUserId("foo");
