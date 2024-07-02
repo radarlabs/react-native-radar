@@ -87,15 +87,13 @@ export const withRadarAndroid = (
     let mainActivity = config.modResults.contents;
     const isJava = config.modResults.language === 'java';
     // add RNRadar module import if it doesn't exist
-    if (!mainActivity.match(/\s+import io.radar.react.RNRadarModule\(/m)) {
-      mainActivity = addImports(
-        mainActivity,
-        ['io.radar.react.RNRadarModule'],
-        isJava
-      );
-    }
+    mainActivity = addImports(
+      mainActivity,
+      ['io.radar.react.RNRadarModule'],
+      isJava
+    );
     // add on create call to initialize RNRadar
-    if (!mainActivity.match(/\s+RNRadarModule.onActivityCreate(this, getApplicationContext())\(/m)) {
+    if (!mainActivity.match(/\s+RNRadarModule.onActivityCreate/m)) {
       mainActivity = appendContentsInsideDeclarationBlock(
         mainActivity,
         'onCreate',
@@ -104,7 +102,7 @@ export const withRadarAndroid = (
     }
     config.modResults.contents = mainActivity;
     return config;
-  })
+  });
 
   return withAppBuildGradle(config, (config) => {
     if (config.modResults.language === "groovy") {

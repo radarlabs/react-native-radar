@@ -64,6 +64,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         verifiedReceiver = new RNRadarVerifiedReceiver();
     }
 
+    public static void onActivityCreate(Activity activity, Context context) {
+        // Radar.onActivityCreate(activity, context);
+        System.out.println("ActivityCreateCalled");
+    }
+
     @ReactMethod
     public void addListener(String eventName) {
         if (listenerCount == 0) {

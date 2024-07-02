@@ -1,4 +1,5 @@
 package com.radar.example
+import io.radar.react.RNRadarModule
 
 import android.os.Build
 import android.os.Bundle
@@ -17,7 +18,8 @@ class MainActivity : ReactActivity() {
     // This is required for expo-splash-screen.
     setTheme(R.style.AppTheme);
     super.onCreate(null)
-  }
+    RNRadarModule.onActivityCreate(this, getApplicationContext())
+}
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
