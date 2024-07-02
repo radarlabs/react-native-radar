@@ -16,6 +16,8 @@ Then, see the Radar React Native module documentation [here](https://radar.com/d
 
 See an example app in `example/`.
 
+Setup Radar public key check pre-commit hook with `cp -r hooks .git` to prevent accidental key leak when working with the Example app.
+
 ## Support
 
 Have questions? We're here to help! Email us at [support@radar.com](mailto:support@radar.com).
