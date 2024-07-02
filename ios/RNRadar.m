@@ -73,7 +73,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"events", @"location", @"clientLocation", @"error", @"log", @"token"];
+    return @[@"events", @"location", @"clientLocation", @"error", @"log", @"token", @"locationPermissionStatus"];
 }
 
 - (void)startObserving {
