@@ -1,0 +1,12 @@
+#!/bin/sh
+
+key_matches=$(grep -Eo "prj_...._pk_.{40}" example/App.*)
+zerokey=".*:?prj_...._pk_0{40}"
+
+for key in $key_matches;
+do
+    if [[ ! $key =~ $zerokey ]]; then
+        echo "Aborted\nDetected Radar API key: $key"
+        exit 1
+    fi
+done
