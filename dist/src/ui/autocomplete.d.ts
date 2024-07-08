@@ -1,4 +1,5 @@
 export default autocompleteUI;
 declare function autocompleteUI({ options }: {
     options?: {} | undefined;
-}): any;
+}): React.JSX.Element;
+import React from 'react';
