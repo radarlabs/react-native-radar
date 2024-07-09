@@ -69,9 +69,10 @@ export interface RadarNativeInterface {
   startTrackingVerified: (options?: RadarVerifiedTrackingOptions) => void;
   mockTracking: (options: RadarMockTrackingOptions) => void;
   stopTracking: () => void;
+  stopTrackingVerified: () => void;
   getTrackingOptions: () => Promise<RadarTrackingOptions>;
   isUsingRemoteTrackingOptions: () => Promise<boolean>;
-  isTracking: () => boolean;
+  isTracking: () => Promise<boolean>;
   setForegroundServiceOptions: (
     options: RadarTrackingOptionsForegroundService
   ) => void;
