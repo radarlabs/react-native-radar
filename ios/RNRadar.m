@@ -223,19 +223,6 @@ RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTProm
     resolve(statusStr);
 }
 
-RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    permissionsRequestResolver = resolve;
-
-    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-    if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        [locationManager requestAlwaysAuthorization];
-    } else if (status == kCLAuthorizationStatusNotDetermined) {
-        [locationManager requestWhenInUseAuthorization];
-    } else {
-        [self getPermissionsStatusWithResolver:resolve rejecter:reject];
-    }
-}
-
 RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;

@@ -85,11 +85,6 @@ const setAnonymousTrackingEnabled = (enabled: boolean): void =>
 const getPermissionsStatus = (): Promise<RadarPermissionsStatus> =>
   NativeModules.RNRadar.getPermissionsStatus();
 
-const requestPermissions = (
-  background: boolean
-): Promise<RadarPermissionsStatus> =>
-  NativeModules.RNRadar.requestPermissions(background);
- 
 const requestForegroundLocationPermission = () => 
   NativeModules.RNRadar.requestForegroundLocationPermission();
 
@@ -254,7 +249,6 @@ const Radar: RadarNativeInterface = {
   setAnonymousTrackingEnabled,
   isUsingRemoteTrackingOptions,
   getPermissionsStatus,
-  requestPermissions,
   requestForegroundLocationPermission,
   requestBackgroundLocationPermission,
   getLocationPermissionStatus,
