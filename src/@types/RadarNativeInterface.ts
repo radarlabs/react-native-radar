@@ -50,7 +50,10 @@ export interface RadarNativeInterface {
   getMetadata: () => Promise<RadarMetadata>;
   setAnonymousTrackingEnabled: (enabled: boolean) => void;
   getPermissionsStatus: () => Promise<RadarPermissionsStatus>;
-  requestPermissions: (background: boolean) => Promise<RadarPermissionsStatus>;
+  requestForegroundLocationPermission: () => void;
+  requestBackgroundLocationPermission: () => void;
+  getLocationPermissionStatus: () => Promise<RadarLocationPermissionStatus>;
+  openAppSettings: () => void;
   getLocation: (
     desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy
   ) => Promise<RadarLocationCallback>;

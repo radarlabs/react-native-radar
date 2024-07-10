@@ -39,6 +39,7 @@ import {
   RadarIPGeocodeCallback,
   RadarTrackVerifiedOptions,
   RadarTrackVerifiedCallback,
+  RadarLocationPermissionStatus,
 } from "./@types/types";
 
 if (
@@ -84,10 +85,16 @@ const setAnonymousTrackingEnabled = (enabled: boolean): void =>
 const getPermissionsStatus = (): Promise<RadarPermissionsStatus> =>
   NativeModules.RNRadar.getPermissionsStatus();
 
-const requestPermissions = (
-  background: boolean
-): Promise<RadarPermissionsStatus> =>
-  NativeModules.RNRadar.requestPermissions(background);
+const requestForegroundLocationPermission = () => 
+  NativeModules.RNRadar.requestForegroundLocationPermission();
+
+const requestBackgroundLocationPermission = () => 
+  NativeModules.RNRadar.requestBackgroundLocationPermission();
+
+const getLocationPermissionStatus = (): Promise<RadarLocationPermissionStatus> => 
+  NativeModules.RNRadar.getLocationPermissionStatus();
+
+const openAppSettings = () => NativeModules.RNRadar.openAppSettings()
 
 const getLocation = (
   desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy
@@ -244,7 +251,10 @@ const Radar: RadarNativeInterface = {
   setAnonymousTrackingEnabled,
   isUsingRemoteTrackingOptions,
   getPermissionsStatus,
-  requestPermissions,
+  requestForegroundLocationPermission,
+  requestBackgroundLocationPermission,
+  getLocationPermissionStatus,
+  openAppSettings,
   getLocation,
   trackOnce,
   trackVerified,

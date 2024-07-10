@@ -64,6 +64,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         verifiedReceiver = new RNRadarVerifiedReceiver();
     }
 
+    public static void onActivityCreate(Activity activity, Context context) {
+        Radar.onActivityCreate(activity, context);
+    }
+
     @ReactMethod
     public void addListener(String eventName) {
         if (listenerCount == 0) {
@@ -97,7 +101,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.12.3");
+        editor.putString("x_platform_sdk_version", "3.13.0");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -246,21 +250,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             mPermissionsRequestPromise = null;
         }
         return true;
-    }
-
-    @ReactMethod
-    public void requestPermissions(boolean background, final Promise promise) {
-        PermissionAwareActivity activity = (PermissionAwareActivity)getCurrentActivity();
-        mPermissionsRequestPromise = promise;
-        if (activity != null) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (background && Build.VERSION.SDK_INT >= 29) {
-                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
-                } else {
-                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
-                }
-            }
-        }
     }
 
     @ReactMethod

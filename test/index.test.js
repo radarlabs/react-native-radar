@@ -15,7 +15,6 @@ jest.mock('NativeModules', () => ({
     setDescription: jest.fn(),
     setMetadata: jest.fn(),
     getPermissionsStatus: jest.fn(),
-    requestPermissions: jest.fn(),
     getLocation: jest.fn(),
     trackOnce: jest.fn(),
     startTracking: jest.fn(),
@@ -99,14 +98,6 @@ describe('calls native implementation', () => {
     Radar.getPermissionsStatus();
 
     expect(mockModule.getPermissionsStatus).toHaveBeenCalledTimes(1);
-  });
-
-  test('requestPermissions', () => {
-    const background = true;
-    Radar.requestPermissions(background);
-
-    expect(mockModule.requestPermissions).toHaveBeenCalledTimes(1);
-    expect(mockModule.requestPermissions).toBeCalledWith(background);
   });
 
   test('getLocation', () => {
