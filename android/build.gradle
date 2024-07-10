@@ -45,6 +45,6 @@ repositories {
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.13.1-beta.2'
+    api 'io.radar:sdk:3.13.3'
 }
 
