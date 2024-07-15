@@ -64,10 +64,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         verifiedReceiver = new RNRadarVerifiedReceiver();
     }
 
-    public static void onActivityCreate(Activity activity, Context context) {
-        Radar.onActivityCreate(activity, context);
-    }
-
     @ReactMethod
     public void addListener(String eventName) {
         if (listenerCount == 0) {
@@ -250,6 +246,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             mPermissionsRequestPromise = null;
         }
         return true;
+    }
+
+
+    @ReactMethod
+    public void requestPermissions(boolean background, final Promise promise) {
+        PermissionAwareActivity activity = (PermissionAwareActivity)getCurrentActivity();
+        mPermissionsRequestPromise = promise;
+        if (activity != null) {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (background && Build.VERSION.SDK_INT >= 29) {
+                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
+                } else {
+                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
+                }
+            }
+        }
     }
 
     @ReactMethod
@@ -1298,34 +1310,5 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         } else {
             Radar.logConversion(name, metadataObj, callback);
         }
-    }
-
-    @ReactMethod
-    public void requestForegroundLocationPermission() {
-        Radar.requestForegroundLocationPermission();
-    }
-
-    @ReactMethod
-    public void requestBackgroundLocationPermission() {
-        Radar.requestBackgroundLocationPermission();
-    }
-
-    @ReactMethod
-    public void getLocationPermissionStatus(final Promise promise) {
-        if (promise == null) {
-            return;
-        }
-        try {
-            RadarLocationPermissionStatus options = Radar.getLocationPermissionStatus();
-            promise.resolve(RNRadarUtils.mapForJson(options.toJson()));
-        } catch(JSONException e) {
-            Log.e(TAG, "JSONException", e);
-            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-        }
-    }
-
-    @ReactMethod
-    public void openAppSettings() {
-        Radar.openAppSettings();
     }
 }
