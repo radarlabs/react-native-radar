@@ -32,7 +32,6 @@ import io.radar.sdk.model.RadarAddress;
 import io.radar.sdk.model.RadarContext;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarGeofence;
-import io.radar.sdk.model.RadarLocationPermissionStatus;
 import io.radar.sdk.model.RadarPlace;
 import io.radar.sdk.model.RadarRouteMatrix;
 import io.radar.sdk.model.RadarRoutes;
