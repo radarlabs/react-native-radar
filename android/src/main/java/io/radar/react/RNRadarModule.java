@@ -32,7 +32,6 @@ import io.radar.sdk.model.RadarAddress;
 import io.radar.sdk.model.RadarContext;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarGeofence;
-import io.radar.sdk.model.RadarLocationPermissionStatus;
 import io.radar.sdk.model.RadarPlace;
 import io.radar.sdk.model.RadarRouteMatrix;
 import io.radar.sdk.model.RadarRoutes;
@@ -62,10 +61,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         super(reactContext);
         receiver = new RNRadarReceiver();
         verifiedReceiver = new RNRadarVerifiedReceiver();
-    }
-
-    public static void onActivityCreate(Activity activity, Context context) {
-        Radar.onActivityCreate(activity, context);
     }
 
     @ReactMethod
@@ -101,7 +96,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.13.0");
+        editor.putString("x_platform_sdk_version", "3.14.0");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -250,6 +245,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             mPermissionsRequestPromise = null;
         }
         return true;
+    }
+
+
+    @ReactMethod
+    public void requestPermissions(boolean background, final Promise promise) {
+        PermissionAwareActivity activity = (PermissionAwareActivity)getCurrentActivity();
+        mPermissionsRequestPromise = promise;
+        if (activity != null) {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (background && Build.VERSION.SDK_INT >= 29) {
+                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
+                } else {
+                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
+                }
+            }
+        }
     }
 
     @ReactMethod
@@ -1298,34 +1309,5 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         } else {
             Radar.logConversion(name, metadataObj, callback);
         }
-    }
-
-    @ReactMethod
-    public void requestForegroundLocationPermission() {
-        Radar.requestForegroundLocationPermission();
-    }
-
-    @ReactMethod
-    public void requestBackgroundLocationPermission() {
-        Radar.requestBackgroundLocationPermission();
-    }
-
-    @ReactMethod
-    public void getLocationPermissionStatus(final Promise promise) {
-        if (promise == null) {
-            return;
-        }
-        try {
-            RadarLocationPermissionStatus options = Radar.getLocationPermissionStatus();
-            promise.resolve(RNRadarUtils.mapForJson(options.toJson()));
-        } catch(JSONException e) {
-            Log.e(TAG, "JSONException", e);
-            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-        }
-    }
-
-    @ReactMethod
-    public void openAppSettings() {
-        Radar.openAppSettings();
     }
 }

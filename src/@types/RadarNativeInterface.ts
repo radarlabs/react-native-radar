@@ -36,7 +36,6 @@ import {
   RadarGetMatrixOptions,
   RadarMetadata,
   RadarIPGeocodeCallback,
-  RadarLocationPermissionStatus,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -50,10 +49,7 @@ export interface RadarNativeInterface {
   getMetadata: () => Promise<RadarMetadata>;
   setAnonymousTrackingEnabled: (enabled: boolean) => void;
   getPermissionsStatus: () => Promise<RadarPermissionsStatus>;
-  requestForegroundLocationPermission: () => void;
-  requestBackgroundLocationPermission: () => void;
-  getLocationPermissionStatus: () => Promise<RadarLocationPermissionStatus>;
-  openAppSettings: () => void;
+  requestPermissions: (background: boolean) => Promise<RadarPermissionsStatus>;
   getLocation: (
     desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy
   ) => Promise<RadarLocationCallback>;
