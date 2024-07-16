@@ -32,7 +32,6 @@ import io.radar.sdk.model.RadarAddress;
 import io.radar.sdk.model.RadarContext;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarGeofence;
-import io.radar.sdk.model.RadarLocationPermissionStatus;
 import io.radar.sdk.model.RadarPlace;
 import io.radar.sdk.model.RadarRouteMatrix;
 import io.radar.sdk.model.RadarRoutes;
@@ -247,6 +246,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
         return true;
     }
+
 
     @ReactMethod
     public void requestPermissions(boolean background, final Promise promise) {
@@ -1309,34 +1309,5 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         } else {
             Radar.logConversion(name, metadataObj, callback);
         }
-    }
-
-    @ReactMethod
-    public void requestForegroundLocationPermission() {
-        Radar.requestForegroundLocationPermission();
-    }
-
-    @ReactMethod
-    public void requestBackgroundLocationPermission() {
-        Radar.requestBackgroundLocationPermission();
-    }
-
-    @ReactMethod
-    public void getLocationPermissionStatus(final Promise promise) {
-        if (promise == null) {
-            return;
-        }
-        try {
-            RadarLocationPermissionStatus options = Radar.getLocationPermissionStatus();
-            promise.resolve(RNRadarUtils.mapForJson(options.toJson()));
-        } catch(JSONException e) {
-            Log.e(TAG, "JSONException", e);
-            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-        }
-    }
-
-    @ReactMethod
-    public void openAppSettings() {
-        Radar.openAppSettings();
     }
 }

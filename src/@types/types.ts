@@ -421,9 +421,6 @@ export interface RadarLogUpdateCallback {
   (status: string): void;
 }
 
-export interface RadarLocationPermissionStatusCallback {
-  (status: RadarLocationPermissionStatus): void;
-}
 
 export type RadarListenerCallback =
   | RadarEventUpdateCallback
@@ -431,7 +428,6 @@ export type RadarListenerCallback =
   | RadarClientLocationUpdateCallback
   | RadarErrorCallback
   | RadarLogUpdateCallback
-  | RadarLocationPermissionStatusCallback;
 
 export type RadarPermissionsStatus =
   | "GRANTED_FOREGROUND"
@@ -454,7 +450,7 @@ export type RadarLocationSource =
   | "BEACON_EXIT"
   | "UNKNOWN";
 
-export type RadarEventChannel = "clientLocation" | "location" | "error" | "events" | "log" | "token" | "locationPermissionStatus";
+export type RadarEventChannel = "clientLocation" | "location" | "error" | "events" | "log" | "token" ;
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
@@ -786,46 +782,3 @@ export type RadarTripStatus =
   | "completed"
   | "canceled";
 
-export interface RadarLocationPermissionStatusAndroid {
-  status: LocationPermissionState;
-  foregroundPermissionResult: boolean;
-  backgroundPermissionResult: boolean;
-  shouldShowRequestPermissionRationaleFG: boolean;
-  shouldShowRequestPermissionRationaleBG: boolean;
-  previouslyDeniedForeground: boolean;
-  inLocationPopup: boolean;
-  approximatePermissionResult: boolean;
-  previouslyDeniedBackground: boolean;
-}
-
-export interface RadarLocationPermissionStatusIOS {
-  status: LocationPermissionState;
-  locationManagerStatus: LocationManagerStatus;
-  backgroundPopupAvailable: boolean;
-  inForegroundPopup: boolean;
-  userRejectedBackgroundPermission: boolean;
-}
-
-export type RadarLocationPermissionStatus = 
-  RadarLocationPermissionStatusAndroid | RadarLocationPermissionStatusIOS
-
-export type LocationPermissionState = 
-  | "NO_PERMISSION_GRANTED"
-  | "FOREGROUND_PERMISSION_GRANTED"
-  | "APPROXIMATE_PERMISSION_GRANTED"
-  | "FOREGROUND_PERMISSION_REJECTED_ONCE"
-  | "FOREGROUND_PERMISSION_REJECTED"
-  | "FOREGROUND_PERMISSION_PENDING"
-  | "BACKGROUND_PERMISSION_GRANTED"
-  | "BACKGROUND_PERMISSION_REJECTED"
-  | "BACKGROUND_PERMISSION_REJECTED_ONCE"
-  | "PERMISSION_RESTRICTED"
-  | "UNKNOWN";
-
-export type LocationManagerStatus = 
-  | "NotDetermined"
-  | "Restricted"
-  | "Denied"
-  | "AuthorizedAlways"
-  | "AuthorizedWhenInUse"
-  | "Unknown";

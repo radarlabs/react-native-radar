@@ -20,7 +20,6 @@ import io.radar.sdk.Radar;
 import io.radar.sdk.RadarReceiver;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarUser;
-import io.radar.sdk.model.RadarLocationPermissionStatus;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RNRadarReceiver extends RadarReceiver {
@@ -107,18 +106,6 @@ public class RNRadarReceiver extends RadarReceiver {
             reactNativeHost = reactApplication.getReactNativeHost();
 
             sendEvent("log", message);
-        } catch (Exception e) {
-            Log.e(TAG, "Exception", e);
-        }
-    }
-
-    @Override
-    public void onLocationPermissionStatusUpdated(@NonNull Context context, @NonNull RadarLocationPermissionStatus status) {
-        try {
-            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
-            reactNativeHost = reactApplication.getReactNativeHost();
-
-            sendEvent("locationPermissionStatus", RNRadarUtils.mapForJson(status.toJson()));
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }

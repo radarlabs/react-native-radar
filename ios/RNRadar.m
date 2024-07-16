@@ -24,38 +24,6 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
-/**
- map iOS status string which is PascalCase into standard UPPER_SNAKE_CASE, which is consistent with android and javascript styling.
- */
-+ (NSDictionary *)mapLocationPermissionStatus:(NSDictionary *)status {
-    NSString *statusString = status[@"locationPermissionState"];
-    NSString *newStatusString;
-
-    if ([statusString isEqualToString:@"NoPermissionGranted"]) {
-        newStatusString = @"NO_PERMISSION_GRANTED";
-    } else if ([statusString isEqualToString:@"ForegroundPermissionGranted"]) {
-        newStatusString = @"FOREGROUND_PERMISSION_GRANTED";
-    } else if ([statusString isEqualToString:@"ForegroundPermissionRejected"]) {
-        newStatusString = @"FOREGROUND_PERMISSION_REJECTED";
-    } else if ([statusString isEqualToString:@"ForegroundPermissionPending"]) {
-        newStatusString = @"FOREGROUND_PERMISSION_PENDING";
-    } else if ([statusString isEqualToString:@"BackgroundPermissionGranted"]) {
-        newStatusString = @"BACKGROUND_PERMISSION_GRANTED";
-    } else if ([statusString isEqualToString:@"BackgroundPermissionRejected"]) {
-        newStatusString = @"BACKGROUND_PERMISSION_REJECTED";
-    } else if ([statusString isEqualToString:@"BackgroundPermissionPending"]) {
-        newStatusString = @"FOREGROUND_PERMISSION_PENDING";
-    } else if ([statusString isEqualToString:@"PermissionRestricted"]) {
-        newStatusString = @"PERMISSION_RESTRICTED";
-    } else {
-        newStatusString = @"UNKNOWN";
-    }
-
-    NSMutableDictionary *newStatus = [status mutableCopy];
-    [newStatus removeObjectForKey:@"locationPermissionState"];
-    [newStatus setValue:newStatusString forKey:@"status"];
-    return newStatus;
-}
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if (permissionsRequestResolver) {
@@ -129,12 +97,6 @@ RCT_EXPORT_MODULE();
 - (void)didUpdateToken:(RadarVerifiedLocationToken *)token  {
     if (hasListeners) {
         [self sendEventWithName:@"token" body:[token dictionaryValue]];
-    }
-}
-
-- (void)didUpdateLocationPermissionStatus:(RadarLocationPermissionStatus *)status {
-    if (hasListeners) {
-        [self sendEventWithName:@"locationPermissionStatus" body:[RNRadar mapLocationPermissionStatus:[status dictionaryValue]]];
     }
 }
 
@@ -1186,23 +1148,6 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     } else {
         [Radar logConversionWithName:name revenue:revenue metadata:metadata completionHandler:completionHandler];
     }
-}
-
-RCT_EXPORT_METHOD(requestForegroundLocationPermission) {
-    [Radar requestForegroundLocationPermission];
-}
-
-RCT_EXPORT_METHOD(requestBackgroundLocationPermission) {
-    [Radar requestBackgroundLocationPermission];
-}
-
-RCT_EXPORT_METHOD(getLocationPermissionStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    RadarLocationPermissionStatus* status = [Radar getLocationPermissionStatus];
-    resolve([RNRadar mapLocationPermissionStatus:[status dictionaryValue]]);
-}
-
-RCT_EXPORT_METHOD(openAppSettings) {
-    [Radar openAppSettings];
 }
 
 @end

@@ -36,7 +36,6 @@ import {
   RadarGetMatrixOptions,
   RadarMetadata,
   RadarIPGeocodeCallback,
-  RadarLocationPermissionStatus,
 } from "./types";
 
 export interface RadarNativeInterface {

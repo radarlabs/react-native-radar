@@ -108,10 +108,12 @@ const trackOnce = (
   return NativeModules.RNRadar.trackOnce(backCompatibleOptions);
 };
 
-const trackVerified = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackVerifiedCallback> =>
+const trackVerified = (
+  options?: RadarTrackVerifiedOptions
+): Promise<RadarTrackVerifiedCallback> =>
   NativeModules.RNRadar.trackVerified(options);
 
-const getVerifiedLocationToken = (): Promise<RadarTrackVerifiedCallback> => 
+const getVerifiedLocationToken = (): Promise<RadarTrackVerifiedCallback> =>
   NativeModules.RNRadar.getVerifiedLocationToken();
 
 const startTrackingEfficient = (): void =>
@@ -134,7 +136,8 @@ const mockTracking = (options: RadarMockTrackingOptions): void =>
 
 const stopTracking = (): void => NativeModules.RNRadar.stopTracking();
 
-const stopTrackingVerified = (): void => NativeModules.RNRadar.stopTrackingVerified();
+const stopTrackingVerified = (): void =>
+  NativeModules.RNRadar.stopTrackingVerified();
 
 const getTrackingOptions = (): Promise<RadarTrackingOptions> =>
   NativeModules.RNRadar.getTrackingOptions();
@@ -194,7 +197,9 @@ const autocomplete = (
 const geocode = (options: RadarGeocodeOptions): Promise<RadarAddressCallback> =>
   NativeModules.RNRadar.geocode(options);
 
-const reverseGeocode = (options?: RadarReverseGeocodeOptions): Promise<RadarAddressCallback> =>
+const reverseGeocode = (
+  options?: RadarReverseGeocodeOptions
+): Promise<RadarAddressCallback> =>
   NativeModules.RNRadar.reverseGeocode(options);
 
 const ipGeocode = (): Promise<RadarIPGeocodeCallback> =>
@@ -215,10 +220,15 @@ const logConversion = (
 const sendEvent = (name: string, metadata: RadarMetadata): void =>
   NativeModules.RNRadar.sendEvent(name, metadata);
 
-const on = (channel: RadarEventChannel, callback: RadarListenerCallback): void =>
-  eventEmitter.addListener(channel, callback);
+const on = (
+  channel: RadarEventChannel,
+  callback: RadarListenerCallback
+): void => eventEmitter.addListener(channel, callback);
 
-const off = (channel: RadarEventChannel, callback?: Function | undefined): void => {
+const off = (
+  channel: RadarEventChannel,
+  callback?: Function | undefined
+): void => {
   if (callback) {
     // @ts-ignore
     eventEmitter.removeListener(channel, callback);
