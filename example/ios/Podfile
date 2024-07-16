@@ -54,6 +54,9 @@ target 'Example' do
   )
 
   post_install do |installer|
+# @generated begin @maplibre/maplibre-react-native-post_installer - expo prebuild (DO NOT MODIFY) sync-72b8976cc2231a4441a5b54389fb6e10bd42a1be
+    $RCTMLN.post_install(installer)
+# @generated end @maplibre/maplibre-react-native-post_installer
     react_native_post_install(
       installer,
       config[:reactNativePath],

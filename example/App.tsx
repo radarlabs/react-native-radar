@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import Radar, { Map, Autocomplete } from "react-native-radar";
-// import MapLibreGL from "@maplibre/maplibre-react-native";
+import MapLibreGL from "@maplibre/maplibre-react-native";
 import ExampleButton from "./components/exampleButton";
-// MapLibreGL.setAccessToken(null);
+
+MapLibreGL.setAccessToken(null);
 
 const stringify = (obj) => JSON.stringify(obj, null, 2);
 
@@ -37,9 +38,9 @@ export default function App() {
 
   const stringify = (obj) => JSON.stringify(obj, null, 2);
 
+  Radar.initialize("prj_test_pk_", true);
+  
   useEffect(() => {
-    Radar.initialize("prj_test_pk_", true);
-
     Radar.setLogLevel("info");
 
     Radar.setUserId("foo");
@@ -56,7 +57,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={{ width: "100%", height: "40%" }}>
-        {/* <Map /> */}
+        <Map />
       </View>
       <View style={{ width: "100%", height: "10%" }}>
         <Autocomplete
