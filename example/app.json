@@ -39,7 +39,8 @@
           "androidBackgroundPermission": true,
           "androidFineLocationPermission": true
         }
-      ]
+      ],
+      ["@maplibre/maplibre-react-native"]
     ]
   }
 }
