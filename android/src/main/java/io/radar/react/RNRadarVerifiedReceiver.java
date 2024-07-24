@@ -16,6 +16,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import io.radar.sdk.Radar;
 import io.radar.sdk.RadarVerifiedReceiver;
+import io.radar.sdk.model.RadarVerifiedLocationToken;
 
 public class RNRadarVerifiedReceiver extends RadarVerifiedReceiver {
 
@@ -32,12 +33,12 @@ public class RNRadarVerifiedReceiver extends RadarVerifiedReceiver {
     }
 
     @Override
-    public void onTokenUpdated(@NonNull Context context, @NonNull String token) {
+    public void onTokenUpdated(@NonNull Context context, @NonNull RadarVerifiedLocationToken token) {
         try {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("token", token);
+            sendEvent("token", RNRadarUtils.mapForJson(token.toJson()));
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }

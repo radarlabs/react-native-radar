@@ -7,6 +7,7 @@ import {
   RadarContextCallback,
   RadarAddressCallback,
   RadarEventChannel,
+  RadarGeocodeOptions,
   RadarGetDistanceOptions,
   RadarLocationCallback,
   RadarLogConversionCallback,
@@ -15,6 +16,7 @@ import {
   RadarMockTrackingOptions,
   RadarNotificationOptions,
   RadarPermissionsStatus,
+  RadarReverseGeocodeOptions,
   RadarRouteCallback,
   RadarRouteMatrix,
   RadarSearchGeofencesCallback,
@@ -24,7 +26,6 @@ import {
   RadarStartTripOptions,
   RadarTrackCallback,
   RadarTrackOnceOptions,
-  RadarTrackTokenCallback,
   RadarTrackingOptions,
   RadarTrackingOptionsDesiredAccuracy,
   RadarTrackingOptionsForegroundService,
@@ -37,6 +38,7 @@ import {
   RadarMetadata,
   RadarIPGeocodeCallback,
   RadarTrackVerifiedOptions,
+  RadarTrackVerifiedCallback,
 } from "./@types/types";
 
 if (
@@ -106,11 +108,13 @@ const trackOnce = (
   return NativeModules.RNRadar.trackOnce(backCompatibleOptions);
 };
 
-const trackVerified = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackCallback> =>
+const trackVerified = (
+  options?: RadarTrackVerifiedOptions
+): Promise<RadarTrackVerifiedCallback> =>
   NativeModules.RNRadar.trackVerified(options);
 
-const trackVerifiedToken = (options?: RadarTrackVerifiedOptions): Promise<RadarTrackTokenCallback> =>
-  NativeModules.RNRadar.trackVerifiedToken(options);
+const getVerifiedLocationToken = (): Promise<RadarTrackVerifiedCallback> =>
+  NativeModules.RNRadar.getVerifiedLocationToken();
 
 const startTrackingEfficient = (): void =>
   NativeModules.RNRadar.startTrackingEfficient();
@@ -132,13 +136,16 @@ const mockTracking = (options: RadarMockTrackingOptions): void =>
 
 const stopTracking = (): void => NativeModules.RNRadar.stopTracking();
 
+const stopTrackingVerified = (): void =>
+  NativeModules.RNRadar.stopTrackingVerified();
+
 const getTrackingOptions = (): Promise<RadarTrackingOptions> =>
   NativeModules.RNRadar.getTrackingOptions();
 
 const isUsingRemoteTrackingOptions = (): Promise<boolean> =>
   NativeModules.RNRadar.isUsingRemoteTrackingOptions();
 
-const isTracking = (): boolean => NativeModules.RNRadar.isTracking();
+const isTracking = (): Promise<boolean> => NativeModules.RNRadar.isTracking();
 
 const setForegroundServiceOptions = (
   options: RadarTrackingOptionsForegroundService
@@ -187,11 +194,13 @@ const autocomplete = (
   options: RadarAutocompleteOptions
 ): Promise<RadarAddressCallback> => NativeModules.RNRadar.autocomplete(options);
 
-const geocode = (address: string): Promise<RadarAddressCallback> =>
-  NativeModules.RNRadar.geocode(address);
+const geocode = (options: RadarGeocodeOptions): Promise<RadarAddressCallback> =>
+  NativeModules.RNRadar.geocode(options);
 
-const reverseGeocode = (location: Location): Promise<RadarAddressCallback> =>
-  NativeModules.RNRadar.reverseGeocode(location);
+const reverseGeocode = (
+  options?: RadarReverseGeocodeOptions
+): Promise<RadarAddressCallback> =>
+  NativeModules.RNRadar.reverseGeocode(options);
 
 const ipGeocode = (): Promise<RadarIPGeocodeCallback> =>
   NativeModules.RNRadar.ipGeocode();
@@ -214,10 +223,15 @@ const logConversion = (
 const sendEvent = (name: string, metadata: RadarMetadata): void =>
   NativeModules.RNRadar.sendEvent(name, metadata);
 
-const on = (channel: RadarEventChannel, callback: RadarListenerCallback): void =>
-  eventEmitter.addListener(channel, callback);
+const on = (
+  channel: RadarEventChannel,
+  callback: RadarListenerCallback
+): void => eventEmitter.addListener(channel, callback);
 
-const off = (channel: RadarEventChannel, callback?: Function | undefined): void => {
+const off = (
+  channel: RadarEventChannel,
+  callback?: Function | undefined
+): void => {
   if (callback) {
     // @ts-ignore
     eventEmitter.removeListener(channel, callback);
@@ -247,7 +261,7 @@ const Radar: RadarNativeInterface = {
   getLocation,
   trackOnce,
   trackVerified,
-  trackVerifiedToken,
+  getVerifiedLocationToken,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,
@@ -255,6 +269,7 @@ const Radar: RadarNativeInterface = {
   startTrackingVerified,
   mockTracking,
   stopTracking,
+  stopTrackingVerified,
   isTracking,
   getTrackingOptions,
   setForegroundServiceOptions,

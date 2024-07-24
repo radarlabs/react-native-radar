@@ -195,9 +195,17 @@ export interface RadarMockTrackingOptions {
 }
 
 export interface RadarVerifiedTrackingOptions {
-  token?: boolean;
   interval?: number;
   beacons?: boolean;
+}
+
+export interface RadarVerifiedLocationToken {
+  user: RadarUser;
+  events: RadarEvent[];
+  token: string;
+  expiresAt: Date;
+  expiresIn: number;
+  passed: boolean;
 }
 
 export interface RadarGetDistanceOptions {
@@ -264,6 +272,17 @@ export interface RadarAutocompleteOptions {
   /** @deprecated this is always true, regardless of the value passed here */
   expandUnits?: boolean;
   mailable?: boolean;
+}
+
+export interface RadarGeocodeOptions {
+  address: string;
+  layers?: string[];
+  countries?: string[];
+}
+
+export interface RadarReverseGeocodeOptions {
+  location?: Location;
+  layers?: string[];
 }
 
 export interface RadarNotificationOptions {
@@ -361,9 +380,9 @@ export interface RadarLogConversionCallback {
   event?: RadarEvent;
 }
 
-export interface RadarTrackTokenCallback {
+export interface RadarTrackVerifiedCallback {
   status: string;
-  token?: string;
+  token?: RadarVerifiedLocationToken;
 }
 
 export interface RadarEventUpdate {
@@ -402,12 +421,13 @@ export interface RadarLogUpdateCallback {
   (status: string): void;
 }
 
+
 export type RadarListenerCallback =
   | RadarEventUpdateCallback
   | RadarLocationUpdateCallback
   | RadarClientLocationUpdateCallback
   | RadarErrorCallback
-  | RadarLogUpdateCallback;
+  | RadarLogUpdateCallback
 
 export type RadarPermissionsStatus =
   | "GRANTED_FOREGROUND"
@@ -430,7 +450,7 @@ export type RadarLocationSource =
   | "BEACON_EXIT"
   | "UNKNOWN";
 
-export type RadarEventChannel = "clientLocation" | "location" | "error" | "events" | "log" | "token";
+export type RadarEventChannel = "clientLocation" | "location" | "error" | "events" | "log" | "token" ;
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
@@ -730,6 +750,8 @@ export interface RadarFraud {
   compromised: boolean;
   jumped: boolean;
   inaccurate: boolean;
+  blocked: boolean;
+  sharing: boolean;
 }
 
 export type RadarTrackingOptionsReplay = "all" | "stops" | "none";
@@ -759,3 +781,4 @@ export type RadarTripStatus =
   | "expired"
   | "completed"
   | "canceled";
+

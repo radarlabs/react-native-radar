@@ -37,6 +37,7 @@ import io.radar.sdk.model.RadarRouteMatrix;
 import io.radar.sdk.model.RadarRoutes;
 import io.radar.sdk.model.RadarTrip;
 import io.radar.sdk.model.RadarUser;
+import io.radar.sdk.model.RadarVerifiedLocationToken;
 import io.radar.sdk.RadarNotificationOptions;
 
 import org.json.JSONException;
@@ -95,7 +96,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.11.0");
+        editor.putString("x_platform_sdk_version", "3.15.0");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -217,7 +218,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             return;
         }
 
-        boolean foreground = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean foreground = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || 
+                             ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean background = foreground;
         boolean denied = ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION);
         
@@ -244,6 +246,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
         return true;
     }
+
 
     @ReactMethod
     public void requestPermissions(boolean background, final Promise promise) {
@@ -387,9 +390,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
         }
 
-        Radar.RadarTrackCallback trackCallback = new Radar.RadarTrackCallback() {
+        Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
                 if (promise == null) {
                     return;
                 }
@@ -398,14 +401,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     if (status == Radar.RadarStatus.SUCCESS) {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                        }
-                        if (user != null) {
-                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                        if (token != null) {
+                            map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
                         }
                         promise.resolve(map);
                     } else {
@@ -422,19 +419,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void trackVerifiedToken(ReadableMap optionsMap, final Promise promise) {
-
-        boolean beaconsTrackingOption = false;
-
-        if (optionsMap != null) {
-            if (optionsMap.hasKey("beacons")) {
-                beaconsTrackingOption = optionsMap.getBoolean("beacons");
-            }
-        }
-
-        Radar.RadarTrackTokenCallback trackTokenCallback = new Radar.RadarTrackTokenCallback() {
+    public void getVerifiedLocationToken(final Promise promise) {
+        Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
             @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable String token) {
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
                 if (promise == null) {
                     return;
                 }
@@ -444,20 +432,20 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (token != null) {
-                            map.putString("token", token);
+                            map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
                         }
                         promise.resolve(map);
                     } else {
                         promise.reject(status.toString(), status.toString());
                     }
-                } catch (Exception e) {
-                    Log.e(TAG, "Exception", e);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
                     promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             }
         };
 
-        Radar.trackVerifiedToken(beaconsTrackingOption, trackTokenCallback);
+        Radar.getVerifiedLocationToken(trackCallback);
     }
 
     @ReactMethod
@@ -488,17 +476,15 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void startTrackingVerified(ReadableMap optionsMap) {
-        boolean token = false;
         boolean beacons = false;
-        int interval = 1;
+        int interval = 1200;
 
         if (optionsMap != null) {
-            token = optionsMap.hasKey("token") ? optionsMap.getBoolean("token") : token;
             beacons = optionsMap.hasKey("beacons") ? optionsMap.getBoolean("beacons") : beacons;
             interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : interval;
         }
 
-        Radar.startTrackingVerified(token, interval, beacons);
+        Radar.startTrackingVerified(interval, beacons);
     }
 
     @ReactMethod
@@ -538,6 +524,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void stopTracking() {
         Radar.stopTracking();
+    }
+
+    @ReactMethod
+    public void stopTrackingVerified() {
+        Radar.stopTrackingVerified();
     }
 
     @ReactMethod
@@ -1022,12 +1013,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void geocode(String query, final Promise promise) {
+    public void geocode(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
         }
 
-        Radar.geocode(query, new Radar.RadarGeocodeCallback() {
+        if (!optionsMap.hasKey("address")) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+
+            return;
+        }
+
+        String address = optionsMap.getString("address");
+        String[] layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
+        String[] countries = optionsMap.hasKey("countries") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("countries")) : null;
+
+        Radar.geocode(address, layers, countries, new Radar.RadarGeocodeCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
@@ -1050,12 +1051,20 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void reverseGeocode(final Promise promise) {
+    public void reverseGeocode(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
         }
 
-        Radar.reverseGeocode(new Radar.RadarGeocodeCallback() {
+        ReadableMap locationMap = null;
+        String[] layers = null;
+
+        if (optionsMap != null) {
+            locationMap = optionsMap.getMap("location");
+            layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
+        }
+
+        Radar.RadarGeocodeCallback callback = new Radar.RadarGeocodeCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
@@ -1074,47 +1083,19 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     promise.reject(status.toString(), status.toString());
                 }
             }
-        });
-    }
+        };
 
-    @ReactMethod
-    public void reverseGeocode(ReadableMap locationMap, final Promise promise) {
-        if (promise == null) {
-            return;
+        if (locationMap != null) {
+            double latitude = locationMap.getDouble("latitude");
+            double longitude = locationMap.getDouble("longitude");
+            Location location = new Location("RNRadarModule");
+            location.setLatitude(latitude);
+            location.setLongitude(longitude);
+
+            Radar.reverseGeocode(location, layers, callback);
+        } else {
+            Radar.reverseGeocode(layers, callback);
         }
-
-        if (locationMap == null) {
-            this.reverseGeocode(promise);
-
-            return;
-        }
-
-        double latitude = locationMap.getDouble("latitude");
-        double longitude = locationMap.getDouble("longitude");
-        Location location = new Location("RNRadarModule");
-        location.setLatitude(latitude);
-        location.setLongitude(longitude);
-
-        Radar.reverseGeocode(location, new Radar.RadarGeocodeCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (addresses != null) {
-                            map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-                    }
-                } else {
-                    promise.reject(status.toString(), status.toString());
-                }
-            }
-        });
     }
 
     @ReactMethod
@@ -1329,5 +1310,4 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             Radar.logConversion(name, metadataObj, callback);
         }
     }
-
 }
