@@ -9,8 +9,6 @@ import android.location.Location;
 import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.facebook.react.bridge.Arguments;
@@ -27,17 +25,11 @@ import io.radar.sdk.Radar;
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.RadarTrackingOptions.RadarTrackingOptionsForegroundService;
 import io.radar.sdk.RadarTripOptions;
-import io.radar.sdk.RadarVerifiedReceiver;
 import io.radar.sdk.model.RadarAddress;
-import io.radar.sdk.model.RadarContext;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarGeofence;
 import io.radar.sdk.model.RadarPlace;
-import io.radar.sdk.model.RadarRouteMatrix;
-import io.radar.sdk.model.RadarRoutes;
 import io.radar.sdk.model.RadarTrip;
-import io.radar.sdk.model.RadarUser;
-import io.radar.sdk.model.RadarVerifiedLocationToken;
 import io.radar.sdk.RadarNotificationOptions;
 
 import org.json.JSONException;
@@ -279,29 +271,26 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
         }
 
-        Radar.getLocation(accuracyLevel, new Radar.RadarLocationCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, boolean stopped) {
-                if (promise == null) {
-                    return;
-                }
+        Radar.getLocation(accuracyLevel, (status, location, stopped) -> {
+            if (promise == null) {
+                return;
+            }
 
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        map.putBoolean("stopped", stopped);
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (location != null) {
+                        map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    map.putBoolean("stopped", stopped);
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         });
     }
@@ -341,34 +330,31 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
         }
 
-        Radar.RadarTrackCallback trackCallback = new Radar.RadarTrackCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
-                if (promise == null) {
-                    return;
-                }
+        Radar.RadarTrackCallback trackCallback = (status, location1, events, user) -> {
+            if (promise == null) {
+                return;
+            }
 
-                try {
-                    if (status == Radar.RadarStatus.SUCCESS) {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                        }
-                        if (user != null) {
-                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
-                        }
-                        promise.resolve(map);
-                    } else {
-                        promise.reject(status.toString(), status.toString());
+            try {
+                if (status == Radar.RadarStatus.SUCCESS) {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (location1 != null) {
+                        map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location1)));
                     }
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSONException", e);
-                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                    if (events != null) {
+                        map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                    }
+                    if (user != null) {
+                        map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                    }
+                    promise.resolve(map);
+                } else {
+                    promise.reject(status.toString(), status.toString());
                 }
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
+                promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
             }
         };
 
@@ -390,62 +376,59 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
         }
 
-        Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
-                if (promise == null) {
-                    return;
-                }
+        Radar.RadarTrackVerifiedCallback trackCallback = (status, token) -> {
+            if (promise == null) {
+                return;
+            }
 
-                try {
-                    if (status == Radar.RadarStatus.SUCCESS) {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (token != null) {
-                            map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
-                        }
-                        promise.resolve(map);
-                    } else {
-                        promise.reject(status.toString(), status.toString());
+            try {
+                if (status == Radar.RadarStatus.SUCCESS) {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (token != null) {
+                        map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
                     }
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSONException", e);
-                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                    promise.resolve(map);
+                } else {
+                    promise.reject(status.toString(), status.toString());
                 }
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
+                promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
             }
         };
 
-        Radar.trackVerified(beaconsTrackingOption, trackCallback);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Radar.trackVerified(beaconsTrackingOption, trackCallback);
+        }
     }
 
     @ReactMethod
     public void getVerifiedLocationToken(final Promise promise) {
-        Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
-                if (promise == null) {
-                    return;
-                }
-
-                try {
-                    if (status == Radar.RadarStatus.SUCCESS) {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (token != null) {
-                            map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
-                        }
-                        promise.resolve(map);
-                    } else {
-                        promise.reject(status.toString(), status.toString());
-                    }
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSONException", e);
-                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-                }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return;
+        }
+        Radar.getVerifiedLocationToken((status, token) ->  {
+            if (promise == null) {
+                return;
             }
-        };
 
-        Radar.getVerifiedLocationToken(trackCallback);
+            try {
+                if (status == Radar.RadarStatus.SUCCESS) {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (token != null) {
+                        map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
+                    }
+                    promise.resolve(map);
+                } else {
+                    promise.reject(status.toString(), status.toString());
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
+                promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+            }
+        });
     }
 
     @ReactMethod
@@ -484,7 +467,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : interval;
         }
 
-        Radar.startTrackingVerified(interval, beacons);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Radar.startTrackingVerified(interval, beacons);
+        }
     }
 
     @ReactMethod
@@ -513,11 +498,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         int steps = optionsMap.hasKey("steps") ? optionsMap.getInt("steps") : 10;
         int interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : 1;
 
-        Radar.mockTracking(origin, destination, mode, steps, interval, new Radar.RadarTrackCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
+        Radar.mockTracking(origin, destination, mode, steps, interval, (status, location, events, user) -> {
 
-            }
         });
     }
 
@@ -528,7 +510,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void stopTrackingVerified() {
-        Radar.stopTrackingVerified();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Radar.stopTrackingVerified();
+        }
     }
 
     @ReactMethod
@@ -626,30 +610,27 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             if (trackingOptionsJson != null) {
                 trackingOptions = RadarTrackingOptions.fromJson(trackingOptionsJson);
             }
-            Radar.startTrip(options, trackingOptions, new Radar.RadarTripCallback() {
-                @Override
-                public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
-                    if (promise == null) {
-                        return;
-                    }
-                    try {
-                        if (status == Radar.RadarStatus.SUCCESS) {
-                            WritableMap map = Arguments.createMap();
-                            map.putString("status", status.toString());
-                            if (trip != null) {
-                                map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
-                            }
-                            if (events != null) {
-                                map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                            }
-                            promise.resolve(map);
-                        } else {
-                            promise.reject(status.toString(), status.toString());
+            Radar.startTrip(options, trackingOptions, (status, trip, events) -> {
+                if (promise == null) {
+                    return;
+                }
+                try {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (trip != null) {
+                            map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
                         }
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                        if (events != null) {
+                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                        }
+                        promise.resolve(map);
+                    } else {
+                        promise.reject(status.toString(), status.toString());
                     }
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             });
         } catch (JSONException e) {
@@ -660,60 +641,54 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void completeTrip(final Promise promise) {
-        Radar.completeTrip(new Radar.RadarTripCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
-                if (promise == null) {
-                    return;
-                }
-                try {
-                    if (status == Radar.RadarStatus.SUCCESS) {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (trip != null) {
-                            map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
-                        }
-                        if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                        }
-                        promise.resolve(map);
-                    } else {
-                        promise.reject(status.toString(), status.toString());
+        Radar.completeTrip((status, trip, events) -> {
+            if (promise == null) {
+                return;
+            }
+            try {
+                if (status == Radar.RadarStatus.SUCCESS) {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (trip != null) {
+                        map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
                     }
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSONException", e);
-                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                    if (events != null) {
+                        map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                    }
+                    promise.resolve(map);
+                } else {
+                    promise.reject(status.toString(), status.toString());
                 }
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
+                promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
             }
         });
     }
 
     @ReactMethod
     public void cancelTrip(final Promise promise) {
-        Radar.cancelTrip(new Radar.RadarTripCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
-                if (promise == null) {
-                    return;
-                }
-                try {
-                    if (status == Radar.RadarStatus.SUCCESS) {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (trip != null) {
-                            map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
-                        }
-                        if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                        }
-                        promise.resolve(map);
-                    } else {
-                        promise.reject(status.toString(), status.toString());
+        Radar.cancelTrip((status, trip, events) -> {
+            if (promise == null) {
+                return;
+            }
+            try {
+                if (status == Radar.RadarStatus.SUCCESS) {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (trip != null) {
+                        map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
                     }
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSONException", e);
-                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                    if (events != null) {
+                        map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                    }
+                    promise.resolve(map);
+                } else {
+                    promise.reject(status.toString(), status.toString());
                 }
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
+                promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
             }
         });
     }
@@ -749,30 +724,27 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                 promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
             }
 
-            Radar.updateTrip(options, status, new Radar.RadarTripCallback() {
-                @Override
-                public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
-                    if (promise == null) {
-                        return;
-                    }
-                    try {
-                        if (status == Radar.RadarStatus.SUCCESS) {
-                            WritableMap map = Arguments.createMap();
-                            map.putString("status", status.toString());
-                            if (trip != null) {
-                                map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
-                            }
-                            if (events != null) {
-                                map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                            }
-                            promise.resolve(map);
-                        } else {
-                            promise.reject(status.toString(), status.toString());
+            Radar.updateTrip(options, status, (status1, trip, events) -> {
+                if (promise == null) {
+                    return;
+                }
+                try {
+                    if (status1 == Radar.RadarStatus.SUCCESS) {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status1.toString());
+                        if (trip != null) {
+                            map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
                         }
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                        if (events != null) {
+                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                        }
+                        promise.resolve(map);
+                    } else {
+                        promise.reject(status1.toString(), status1.toString());
                     }
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             });
         } catch (JSONException e) {
@@ -787,27 +759,24 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             return;
         }
 
-        Radar.getContext(new Radar.RadarContextCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarContext context) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (context != null) {
-                            map.putMap("context", RNRadarUtils.mapForJson(context.toJson()));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        Radar.getContext((status, location, context) -> {
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (location != null) {
+                        map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    if (context != null) {
+                        map.putMap("context", RNRadarUtils.mapForJson(context.toJson()));
+                    }
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         });
     }
@@ -824,27 +793,24 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         location.setLatitude(latitude);
         location.setLongitude(longitude);
 
-        Radar.getContext(location, new Radar.RadarContextCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarContext context) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (context != null) {
-                            map.putMap("context", RNRadarUtils.mapForJson(context.toJson()));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        Radar.getContext(location, (status, location1, context) -> {
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (location1 != null) {
+                        map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location1)));
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    if (context != null) {
+                        map.putMap("context", RNRadarUtils.mapForJson(context.toJson()));
+                    }
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         });
     }
@@ -871,27 +837,24 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         String[] groups = optionsMap.hasKey("groups") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("groups")) : null;
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
-        Radar.RadarSearchPlacesCallback callback = new Radar.RadarSearchPlacesCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarPlace[] places) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (places != null) {
-                            map.putArray("places", RNRadarUtils.arrayForJson(RadarPlace.toJson(places)));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        Radar.RadarSearchPlacesCallback callback = (status, location, places) -> {
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (location != null) {
+                        map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    if (places != null) {
+                        map.putArray("places", RNRadarUtils.arrayForJson(RadarPlace.toJson(places)));
+                    }
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         };
 
@@ -932,29 +895,26 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
 
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 100;
-        boolean includeGeometry = optionsMap.hasKey("includeGeometry") ? optionsMap.getBoolean("includeGeometry") : false; 
+        boolean includeGeometry = optionsMap.hasKey("includeGeometry") && optionsMap.getBoolean("includeGeometry");
 
-        Radar.RadarSearchGeofencesCallback callback = new Radar.RadarSearchGeofencesCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarGeofence[] geofences) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (geofences != null) {
-                            map.putArray("geofences", RNRadarUtils.arrayForJson(RadarGeofence.toJson(geofences)));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        Radar.RadarSearchGeofencesCallback callback = (status, location, geofences) -> {
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (location != null) {
+                        map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    if (geofences != null) {
+                        map.putArray("geofences", RNRadarUtils.arrayForJson(RadarGeofence.toJson(geofences)));
+                    }
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         };
 
@@ -988,26 +948,23 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         String country = optionsMap.hasKey("countryCode") ? optionsMap.getString("countryCode") : optionsMap.hasKey("country") ? optionsMap.getString("country") : null;
         String[] layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
 
-        boolean mailable = optionsMap.hasKey("mailable") ? optionsMap.getBoolean("mailable") : false;
+        boolean mailable = optionsMap.hasKey("mailable") && optionsMap.getBoolean("mailable");
 
-        Radar.autocomplete(query, near, layers, limit, country, true, mailable, new Radar.RadarGeocodeCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (addresses != null) {
-                            map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        Radar.autocomplete(query, near, layers, limit, country, true, mailable, (status, addresses) -> {
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (addresses != null) {
+                        map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         });
     }
@@ -1028,24 +985,21 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         String[] layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
         String[] countries = optionsMap.hasKey("countries") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("countries")) : null;
 
-        Radar.geocode(address, layers, countries, new Radar.RadarGeocodeCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (addresses != null) {
-                            map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        Radar.geocode(address, layers, countries, (status, addresses) -> {
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (addresses != null) {
+                        map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         });
     }
@@ -1064,24 +1018,21 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
         }
 
-        Radar.RadarGeocodeCallback callback = new Radar.RadarGeocodeCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (addresses != null) {
-                            map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        Radar.RadarGeocodeCallback callback = (status, addresses) -> {
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (addresses != null) {
+                        map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         };
 
@@ -1104,25 +1055,22 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             return;
         }
 
-        Radar.ipGeocode(new Radar.RadarIpGeocodeCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, boolean proxy) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (address != null) {
-                            map.putMap("address", RNRadarUtils.mapForJson(address.toJson()));
-                            map.putBoolean("proxy", proxy);
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        Radar.ipGeocode((status, address, proxy) -> {
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (address != null) {
+                        map.putMap("address", RNRadarUtils.mapForJson(address.toJson()));
+                        map.putBoolean("proxy", proxy);
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         });
     }
@@ -1170,24 +1118,21 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         String unitsStr = optionsMap.hasKey("units") ? optionsMap.getString("units") : null;
         Radar.RadarRouteUnits units = unitsStr != null && (unitsStr.equals("METRIC") || unitsStr.equals("metric")) ? Radar.RadarRouteUnits.METRIC : Radar.RadarRouteUnits.IMPERIAL;
 
-        Radar.RadarRouteCallback callback = new Radar.RadarRouteCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarRoutes routes) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (routes != null) {
-                            map.putMap("routes", RNRadarUtils.mapForJson(routes.toJson()));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        Radar.RadarRouteCallback callback = (status, routes) -> {
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (routes != null) {
+                        map.putMap("routes", RNRadarUtils.mapForJson(routes.toJson()));
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         };
 
@@ -1229,39 +1174,29 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         String modeStr = optionsMap.getString("mode");
         Radar.RadarRouteMode mode = Radar.RadarRouteMode.CAR;
         if (modeStr != null) {
-            if (modeStr.equals("FOOT") || modeStr.equals("foot")) {
-                mode = Radar.RadarRouteMode.FOOT;
-            } else if (modeStr.equals("BIKE") || modeStr.equals("bike")) {
-                mode = Radar.RadarRouteMode.BIKE;
-            } else if (modeStr.equals("CAR") || modeStr.equals("car")) {
-                mode = Radar.RadarRouteMode.CAR;
-            } else if (modeStr.equals("TRUCK") || modeStr.equals("truck")) {
-                mode = Radar.RadarRouteMode.TRUCK;
-            } else if (modeStr.equals("MOTORBIKE") || modeStr.equals("motorbike")) {
-                mode = Radar.RadarRouteMode.MOTORBIKE;
+            try {
+                mode = Radar.RadarRouteMode.valueOf(modeStr.toUpperCase());
+            } catch (IllegalArgumentException ignored) {
             }
         }
         String unitsStr = optionsMap.hasKey("units") ? optionsMap.getString("units") : null;
         Radar.RadarRouteUnits units = unitsStr != null && (unitsStr.equals("METRIC") || unitsStr.equals("metric")) ? Radar.RadarRouteUnits.METRIC : Radar.RadarRouteUnits.IMPERIAL;
 
-        Radar.getMatrix(origins, destinations, mode, units, new Radar.RadarMatrixCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarRouteMatrix matrix) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (matrix != null) {
-                            map.putArray("matrix", RNRadarUtils.arrayForJson(matrix.toJson()));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        Radar.getMatrix(origins, destinations, mode, units, (status, matrix) -> {
+            if (status == Radar.RadarStatus.SUCCESS) {
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (matrix != null) {
+                        map.putArray("matrix", RNRadarUtils.arrayForJson(matrix.toJson()));
                     }
-                } else {
-                    promise.reject(status.toString(), status.toString());
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
+            } else {
+                promise.reject(status.toString(), status.toString());
             }
         });
     }
@@ -1279,28 +1214,25 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
 
         String name = optionsMap.getString("name");
-        Double revenue = optionsMap.hasKey("revenue") ? new Double(optionsMap.getDouble("revenue")) : null;
+        Double revenue = optionsMap.hasKey("revenue") ? optionsMap.getDouble("revenue") : null;
         ReadableMap metadata = optionsMap.hasKey("metadata") ? optionsMap.getMap("metadata") : null;
         
         JSONObject metadataObj = RNRadarUtils.jsonForMap(metadata);
-        Radar.RadarLogConversionCallback callback = new Radar.RadarLogConversionCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarEvent event) {
-                try {
-                    if (status == Radar.RadarStatus.SUCCESS) {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (event != null) {
-                            map.putMap("event", RNRadarUtils.mapForJson(event.toJson()));
-                        }
-                        promise.resolve(map);
-                    } else {
-                        promise.reject(status.toString(), status.toString());
+        Radar.RadarLogConversionCallback callback = (status, event) -> {
+            try {
+                if (status == Radar.RadarStatus.SUCCESS) {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (event != null) {
+                        map.putMap("event", RNRadarUtils.mapForJson(event.toJson()));
                     }
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSONException", e);
-                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                    promise.resolve(map);
+                } else {
+                    promise.reject(status.toString(), status.toString());
                 }
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException", e);
+                promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
             }
         };
 
