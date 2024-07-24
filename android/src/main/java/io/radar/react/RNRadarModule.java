@@ -415,7 +415,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
         };
 
-        Radar.trackVerified(beaconsTrackingOption, trackCallback);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Radar.trackVerified(beaconsTrackingOption, trackCallback);
+        }
     }
 
     @ReactMethod
@@ -445,7 +447,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
         };
 
-        Radar.getVerifiedLocationToken(trackCallback);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Radar.getVerifiedLocationToken(trackCallback);
+        }
     }
 
     @ReactMethod
@@ -484,7 +488,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : interval;
         }
 
-        Radar.startTrackingVerified(interval, beacons);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Radar.startTrackingVerified(interval, beacons);
+        }
     }
 
     @ReactMethod
@@ -528,7 +534,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void stopTrackingVerified() {
-        Radar.stopTrackingVerified();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Radar.stopTrackingVerified();
+        }
     }
 
     @ReactMethod
@@ -1264,6 +1272,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                 }
             }
         });
+    }
+
+    @ReactMethod
+    public void doIndoorSurvey(String placeLabel, Integer surveyLength, final Promise promise) {
+        // Radar.doIndoorSurvey
     }
 
     @ReactMethod
