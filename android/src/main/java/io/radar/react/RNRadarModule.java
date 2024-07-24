@@ -9,6 +9,7 @@ import android.location.Location;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.facebook.react.bridge.Arguments;
@@ -44,8 +45,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     private static final int PERMISSIONS_REQUEST_CODE = 20160525; // random request code (Radar's birthday!)
     private Promise mPermissionsRequestPromise;
 
-    private RNRadarReceiver receiver;
-    private RNRadarVerifiedReceiver verifiedReceiver;    
+    private final RNRadarReceiver receiver;
+    private final RNRadarVerifiedReceiver verifiedReceiver;
     private int listenerCount = 0;
     private boolean fraud = false;
 
@@ -78,6 +79,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
+    @NonNull
     @Override
     public String getName() {
         return "RNRadar";
@@ -103,14 +105,23 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     public void setLogLevel(String level) {
         Radar.RadarLogLevel logLevel = Radar.RadarLogLevel.NONE;
         if (level != null) {
-            if (level.equals("error") || level.equals("ERROR")) {
-                logLevel = Radar.RadarLogLevel.ERROR;
-            } else if (level.equals("warning") || level.equals("WARNING")) {
-                logLevel = Radar.RadarLogLevel.WARNING;
-            } else if (level.equals("info") || level.equals("INFO")) {
-                logLevel = Radar.RadarLogLevel.INFO;
-            } else if (level.equals("debug") || level.equals("DEBUG")) {
-                logLevel = Radar.RadarLogLevel.DEBUG;
+            switch (level) {
+                case "error":
+                case "ERROR":
+                    logLevel = Radar.RadarLogLevel.ERROR;
+                    break;
+                case "warning":
+                case "WARNING":
+                    logLevel = Radar.RadarLogLevel.WARNING;
+                    break;
+                case "info":
+                case "INFO":
+                    logLevel = Radar.RadarLogLevel.INFO;
+                    break;
+                case "debug":
+                case "DEBUG":
+                    logLevel = Radar.RadarLogLevel.DEBUG;
+                    break;
             }
         }
         Radar.setLogLevel(logLevel);
@@ -488,12 +499,21 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         destination.setLongitude(destinationLongitude);
         String modeStr = optionsMap.getString("mode");
         Radar.RadarRouteMode mode = Radar.RadarRouteMode.CAR;
-        if (modeStr.equals("FOOT") || modeStr.equals("foot")) {
-            mode = Radar.RadarRouteMode.FOOT;
-        } else if (modeStr.equals("BIKE") || modeStr.equals("bike")) {
-            mode = Radar.RadarRouteMode.BIKE;
-        } else if (modeStr.equals("CAR") || modeStr.equals("car")) {
-            mode = Radar.RadarRouteMode.CAR;
+        if (modeStr != null) {
+            switch (modeStr) {
+                case "FOOT":
+                case "foot":
+                    mode = Radar.RadarRouteMode.FOOT;
+                    break;
+                case "BIKE":
+                case "bike":
+                    mode = Radar.RadarRouteMode.BIKE;
+                    break;
+                case "CAR":
+                case "car":
+                    mode = Radar.RadarRouteMode.CAR;
+                    break;
+            }
         }
         int steps = optionsMap.hasKey("steps") ? optionsMap.getInt("steps") : 10;
         int interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : 1;
@@ -1105,14 +1125,19 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         String[] modesArr = optionsMap.hasKey("modes") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("modes")) : new String[]{};
         EnumSet<Radar.RadarRouteMode> modes = EnumSet.noneOf(Radar.RadarRouteMode.class);
         for (String modeStr : modesArr) {
-            if (modeStr.equals("FOOT") || modeStr.equals("foot")) {
-                modes.add(Radar.RadarRouteMode.FOOT);
-            }
-            if (modeStr.equals("BIKE") || modeStr.equals("bike")) {
-                modes.add(Radar.RadarRouteMode.BIKE);
-            }
-            if (modeStr.equals("CAR") || modeStr.equals("car")) {
-                modes.add(Radar.RadarRouteMode.CAR);
+            switch (modeStr) {
+                case "FOOT":
+                case "foot":
+                    modes.add(Radar.RadarRouteMode.FOOT);
+                    break;
+                case "BIKE":
+                case "bike":
+                    modes.add(Radar.RadarRouteMode.BIKE);
+                    break;
+                case "CAR":
+                case "car":
+                    modes.add(Radar.RadarRouteMode.CAR);
+                    break;
             }
         }
         String unitsStr = optionsMap.hasKey("units") ? optionsMap.getString("units") : null;
@@ -1174,9 +1199,27 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         String modeStr = optionsMap.getString("mode");
         Radar.RadarRouteMode mode = Radar.RadarRouteMode.CAR;
         if (modeStr != null) {
-            try {
-                mode = Radar.RadarRouteMode.valueOf(modeStr.toUpperCase());
-            } catch (IllegalArgumentException ignored) {
+            switch (modeStr) {
+                case "FOOT":
+                case "foot":
+                    mode = Radar.RadarRouteMode.FOOT;
+                    break;
+                case "BIKE":
+                case "bike":
+                    mode = Radar.RadarRouteMode.BIKE;
+                    break;
+                case "CAR":
+                case "car":
+                    mode = Radar.RadarRouteMode.CAR;
+                    break;
+                case "TRUCK":
+                case "truck":
+                    mode = Radar.RadarRouteMode.TRUCK;
+                    break;
+                case "MOTORBIKE":
+                case "motorbike":
+                    mode = Radar.RadarRouteMode.MOTORBIKE;
+                    break;
             }
         }
         String unitsStr = optionsMap.hasKey("units") ? optionsMap.getString("units") : null;
