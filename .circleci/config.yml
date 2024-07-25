@@ -1,4 +1,6 @@
 version: 2
+orbs:
+  macos: circleci/macos@2
 jobs:
   node:
     working_directory: ~/react-native-radar
@@ -7,6 +9,7 @@ jobs:
     steps:
       - checkout
       - run: npm install
+      - run: npm install -g typescript
       - run:
           name: Test
           command: |
@@ -16,11 +19,19 @@ jobs:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
       - run:
           name: Type-check
-          command: npx tsc --noEmit
+          command: npm run build-all
       - persist_to_workspace:
           root: ~/react-native-radar
           paths:
-            - node_modules
+            - android
+            - ios
+            - README.md
+            - react-native-radar.podspec
+            - dist
+            - app.plugin.js
+            - plugin/build
+            - example
+            - package.json
       - store_test_results:
           path: test-results
       - store_artifacts:
@@ -28,25 +39,39 @@ jobs:
   android:
     working_directory: ~/react-native-radar/example
     docker:
-      - image: cimg/android:2023.02.1-browsers
+      - image: cimg/android:2024.01.1-browsers
     steps:
-      - checkout:
-          path: ~/react-native-radar
-      - run: yarn install
+      - attach_workspace:
+          at: ~/react-native-radar
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Install Radar from local path
+          command: npm run install-radar-rebuild
       - run: sudo yarn global add react-native
+      - run:
+          name: Install Ninja
+          command: sudo apt-get update && sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
-      - run: cd android && ./gradlew assembleDebug
+      - run: cd android && ./gradlew 
   ios:
     macos:
-      xcode: "13.4.1"
+      xcode: "15.3.0"
     working_directory: ~/react-native-radar/example
     steps:
-      - checkout:
-          path: ~/react-native-radar
-      - run: yarn install
-      - run: sudo yarn global add react-native-cli @react-native-community/cli@11.3.10
+      - attach_workspace:
+          at: ~/react-native-radar
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Install Radar from local path
+          command: npm run install-radar-rebuild-dirty
       - run: cd ios && pod update RadarSDK && pod install
-      - run: react-native run-ios
+      - run: xcodebuild -workspace ios/Example.xcworkspace -scheme Example -sdk iphonesimulator
+ 
+
 workflows:
   version: 2
   node-android-ios:
