@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+const platform = Platform.OS;
 
 export type RadarMetadata = Record<string, string | number | boolean>;
 
@@ -89,7 +90,7 @@ export const presetContinuousAndroid: RadarTrackingOptions = {
   stopTrackingAfter: undefined,
 };
 
-export const presetContinuous: RadarTrackingOptions = Platform.OS === 'ios' ? presetContinuousIOS : presetContinuousAndroid;
+export const presetContinuous: RadarTrackingOptions = platform === 'ios' ? presetContinuousIOS : presetContinuousAndroid;
 
 export const presetResponsiveIOS: RadarTrackingOptions = {
   desiredStoppedUpdateInterval: 0,
@@ -136,7 +137,7 @@ export const presetResponsiveAndroid: RadarTrackingOptions = {
   stopTrackingAfter: undefined,
 };
 
-export const presetResponsive: RadarTrackingOptions = Platform.OS === 'ios' ? presetResponsiveIOS : presetResponsiveAndroid;
+export const presetResponsive: RadarTrackingOptions = platform === 'ios' ? presetResponsiveIOS : presetResponsiveAndroid;
 
 export const presetEfficientIOS: RadarTrackingOptions = {
   desiredStoppedUpdateInterval: 0,
@@ -183,7 +184,7 @@ export const presetEfficientAndroid: RadarTrackingOptions = {
   stopTrackingAfter: undefined,
 };
 
-export const presetEfficient: RadarTrackingOptions = Platform.OS === 'ios' ? presetEfficientIOS : presetEfficientAndroid;
+export const presetEfficient: RadarTrackingOptions = platform === 'ios' ? presetEfficientIOS : presetEfficientAndroid;
 
 
 export interface RadarMockTrackingOptions {

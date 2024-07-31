@@ -1,15 +1,20 @@
 import {
   Location,
+  RadarAddress,
+  RadarAddressCallback,
   RadarAutocompleteOptions,
   RadarContextCallback,
-  RadarAddressCallback,
   RadarEventChannel,
   RadarGeocodeOptions,
   RadarGetDistanceOptions,
+  RadarGetMatrixOptions,
+  RadarIPGeocodeCallback,
+  RadarListenerCallback,
   RadarLocationCallback,
   RadarLogConversionCallback,
   RadarLogConversionOptions,
   RadarLogLevel,
+  RadarMetadata,
   RadarMockTrackingOptions,
   RadarNotificationOptions,
   RadarPermissionsStatus,
@@ -22,20 +27,17 @@ import {
   RadarSearchPlacesOptions,
   RadarStartTripOptions,
   RadarTrackCallback,
-  RadarTrackOnceOptions,
-  RadarTrackVerifiedCallback,
   RadarTrackingOptions,
   RadarTrackingOptionsDesiredAccuracy,
   RadarTrackingOptionsForegroundService,
+  RadarTrackOnceOptions,
+  RadarTrackVerifiedCallback,
   RadarTrackVerifiedOptions,
   RadarTripCallback,
   RadarTripOptions,
   RadarUpdateTripOptions,
+  RadarValidateAddressCallback,
   RadarVerifiedTrackingOptions,
-  RadarListenerCallback,
-  RadarGetMatrixOptions,
-  RadarMetadata,
-  RadarIPGeocodeCallback,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -93,11 +95,13 @@ export interface RadarNativeInterface {
   geocode: (options: RadarGeocodeOptions) => Promise<RadarAddressCallback>;
   reverseGeocode: (options?: RadarReverseGeocodeOptions) => Promise<RadarAddressCallback>;
   ipGeocode: () => Promise<RadarIPGeocodeCallback>;
+  validateAddress: (address: RadarAddress) => Promise<RadarValidateAddressCallback>; // TODO: implement
   getDistance: (option: RadarGetDistanceOptions) => Promise<RadarRouteCallback>;
   getMatrix: (option: RadarGetMatrixOptions) => Promise<RadarRouteMatrix>;
   logConversion: (
     options: RadarLogConversionOptions
   ) => Promise<RadarLogConversionCallback>;
+  
   sendEvent: (name: string, metadata: RadarMetadata) => void;
   on: (channel: RadarEventChannel, callback: RadarListenerCallback) => void;
   off: (channel: RadarEventChannel, callback?: Function | undefined) => void;
