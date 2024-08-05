@@ -37,8 +37,7 @@ export default function App() {
   };
 
   const stringify = (obj) => JSON.stringify(obj, null, 2);
-
-  Radar.initialize("prj_test_pk_", true);
+  Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
   
   useEffect(() => {
     Radar.setLogLevel("info");
@@ -262,6 +261,7 @@ export default function App() {
                 radius: 1000,
                 tags: ["venue"],
                 limit: 10,
+                includeGeometry: false,
               })
                 .then((result) => {
                   handlePopulateText("searchGeofences:" + stringify(result));
@@ -295,7 +295,9 @@ export default function App() {
           <ExampleButton
             title="geocode"
             onPress={() => {
-              Radar.geocode("20 jay st brooklyn")
+              Radar.geocode({
+                address: "20 jay st brooklyn"
+              })
                 .then((result) => {
                   handlePopulateText("geocode:" + stringify(result));
                 })
@@ -309,8 +311,10 @@ export default function App() {
             title="reverseGeocode"
             onPress={() => {
               Radar.reverseGeocode({
-                latitude: 40.783826,
-                longitude: -73.975363,
+                location: {
+                  latitude: 40.783826,
+                  longitude: -73.975363,
+                }
               })
                 .then((result) => {
                   handlePopulateText("reverseGeocode:" + stringify(result));
@@ -330,6 +334,28 @@ export default function App() {
                 })
                 .catch((err) => {
                   handlePopulateText("ipGeocode:" + err);
+                });
+            }}
+          />
+
+          <ExampleButton
+            title="validateAddress"
+            onPress={() => {
+              Radar.validateAddress({
+                latitude: 0,
+                longitude: 0,
+                city: "New York",
+                stateCode: "NY",
+                postalCode: "10003",
+                countryCode: "US",
+                street: "Broadway",
+                number: "841",
+              })
+                .then((result) => {
+                  handlePopulateText("validateAddress:" + stringify(result));
+                })
+                .catch((err) => {
+                  handlePopulateText("validateAddress:" + err);
                 });
             }}
           />
@@ -403,7 +429,10 @@ export default function App() {
                   destinationGeofenceTag: "store",
                   destinationGeofenceExternalId: "123",
                   mode: "car",
-                  scheduledArrivalAt: new Date("2023-10-10T12:20:30Z"),
+                  scheduledArrivalAt: new Date("2023-10-10T12:20:30Z").toISOString(),
+                  metadata: {
+                    "test-trip-meta": "test-trip-data"
+                  }
                 },
               })
                 .then((result) => {
@@ -416,7 +445,7 @@ export default function App() {
           />
 
           <ExampleButton
-            title="startTrip"
+            title="startTrip with TrackingOptions"
             onPress={() => {
               Radar.startTrip({
                 tripOptions: {
@@ -424,7 +453,7 @@ export default function App() {
                   destinationGeofenceTag: "store",
                   destinationGeofenceExternalId: "123",
                   mode: "car",
-                  scheduledArrivalAt: new Date("2023-10-10T12:20:30Z"),
+                  scheduledArrivalAt: new Date("2023-10-10T12:20:30Z").toISOString(),
                 },
                 trackingOptions: {
                   desiredStoppedUpdateInterval: 30,
@@ -503,14 +532,14 @@ export default function App() {
           />
 
           <ExampleButton
-            title="trackVerifiedToken"
+            title="getVerifiedLocationToken"
             onPress={() => {
-              Radar.trackVerifiedToken()
+              Radar.getVerifiedLocationToken()
                 .then((result) => {
-                  handlePopulateText("trackVerifiedToken:" + stringify(result));
+                  handlePopulateText("getVerifiedLocationToken:" + stringify(result));
                 })
                 .catch((err) => {
-                  handlePopulateText("trackVerifiedToken:" + err);
+                  handlePopulateText("getVerifiedLocationToken:" + err);
                 });
             }}
           />

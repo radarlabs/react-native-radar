@@ -95,7 +95,7 @@ export interface RadarNativeInterface {
   geocode: (options: RadarGeocodeOptions) => Promise<RadarAddressCallback>;
   reverseGeocode: (options?: RadarReverseGeocodeOptions) => Promise<RadarAddressCallback>;
   ipGeocode: () => Promise<RadarIPGeocodeCallback>;
-  validateAddress: (address: RadarAddress) => Promise<RadarValidateAddressCallback>; // TODO: implement
+  validateAddress: (address: RadarAddress) => Promise<RadarValidateAddressCallback>;
   getDistance: (option: RadarGetDistanceOptions) => Promise<RadarRouteCallback>;
   getMatrix: (option: RadarGetMatrixOptions) => Promise<RadarRouteMatrix>;
   logConversion: (

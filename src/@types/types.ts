@@ -307,7 +307,7 @@ export interface RadarTripOptions {
   destinationGeofenceTag?: string;
   destinationGeofenceExternalId?: string;
   mode?: RadarRouteMode;
-  scheduledArrivalAt?: number;
+  scheduledArrivalAt?: string;
   approachingThreshold?: number;
 }
 
