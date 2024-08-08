@@ -262,6 +262,7 @@ export default function App() {
                 radius: 1000,
                 tags: ["venue"],
                 limit: 10,
+                includeGeometry: false,
               })
                 .then((result) => {
                   handlePopulateText("searchGeofences:" + stringify(result));
