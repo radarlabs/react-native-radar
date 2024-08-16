@@ -4,22 +4,25 @@
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
   "version": "3.16.0",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "files": [
-    "android",
-    "ios",
-    "src",
+    "/android",
+    "/ios",
     "README.md",
     "react-native-radar.podspec",
-    "/dist"
+    "/dist",
+    "app.plugin.js",
+    "/plugin/build"
   ],
-  "types":"dist/src/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest ./test/*.test.js",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
     "build": "tsc",
-    "copy-assets": "./copyAssets.sh"
+    "copy-assets": "./copyAssets.sh",
+    "build-plugin": "tsc --build plugin/",
+    "build-all": "npm run build && npm run build-plugin && npm run copy-assets"
   },
   "jest": {
     "preset": "react-native",
@@ -34,12 +37,16 @@
     ]
   },
   "peerDependencies": {
-    "@maplibre/maplibre-react-native": "^9.0.1",
+    "@maplibre/maplibre-react-native": ">=9.0.1 || >=10.0.0-alpha",
+    "expo": ">=43.0.5",
     "react": ">= 16.8.6",
     "react-native": ">= 0.60.0"
   },
   "peerDependenciesMeta": {
     "@maplibre/maplibre-react-native": {
+      "optional": true
+    },
+    "expo": {
       "optional": true
     }
   },
@@ -48,8 +55,6 @@
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
-    "@types/node": "^20.11.7",
-    "@types/react-native": "^0.73.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.4.2",
@@ -60,6 +65,8 @@
     "eslint-plugin-jest": "^22.1.2",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
+    "expo": "^47.0.0",
+    "expo-module-scripts": "^3.4.1",
     "jest": "^23.6.0",
     "jest-junit": "^5.2.0",
     "logkitty": ">=0.7.1",

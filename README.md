@@ -18,6 +18,16 @@ See an example app in `example/`.
 
 Setup Radar public key check pre-commit hook with `cp -r hooks .git` to prevent accidental key leak when working with the Example app.
 
+To run example app with local `react-native-radar` dependency:
+
+- install node dependencies with `npm ci` and typescript if needed with `npm install -g typescript`.
+- build local `react-native-radar` with `npm run build-all`.
+- navigate to the example dir with `cd example`.
+- install node dependency of example with `npm ci`.
+- build native app using expo pre-build and `react-native-plugin` with `npm run install-radar-rebuild`. 
+- run iOS and android example app with `npx expo run:ios` or `npx expo run:android`.
+
+
 ## Support
 
 Have questions? We're here to help! Email us at [support@radar.com](mailto:support@radar.com).
