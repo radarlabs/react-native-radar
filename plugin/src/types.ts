@@ -7,4 +7,5 @@ export interface RadarPluginProps {
     androidBackgroundPermission?: boolean;
     androidFineLocationPermission?: boolean;
     addRadarSDKMotion?: boolean;
+    iosNSMotionUsageDescription?: string;
   }

@@ -35,6 +35,11 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
         },
       };
     }
+    if (args.addRadarSDKMotion) {
+      config.modResults.NSMotionUsageDescription =
+        args.iosNSMotionUsageDescription ??
+        "This app uses the motion service to provide motion-based services.";
+    }
 
     return config;
   });
