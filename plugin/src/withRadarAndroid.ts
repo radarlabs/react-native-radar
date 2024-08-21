@@ -139,6 +139,13 @@ async function setCustomConfigAsync(
   ) {
     addPermission(androidManifest, "android.permission.FOREGROUND_SERVICE");
   }
+  if (
+    !androidManifest.manifest["uses-permission"].some(
+      (e) => e["$"]["android:name"] === "android.permission.ACTIVITY_RECOGNITION"
+    )
+  ) {
+    addPermission(androidManifest, "android.permission.ACTIVITY_RECOGNITION");
+  }
 
   return androidManifest;
 }

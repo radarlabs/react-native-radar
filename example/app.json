@@ -37,7 +37,8 @@
           "iosBackgroundMode": true,
           "androidFraud": true,
           "androidBackgroundPermission": true,
-          "androidFineLocationPermission": true
+          "androidFineLocationPermission": true,
+          "addRadarSDKMotion":true
         }
       ],
       ["@maplibre/maplibre-react-native"]
