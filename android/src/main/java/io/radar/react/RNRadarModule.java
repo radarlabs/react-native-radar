@@ -981,17 +981,18 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Location near = null;
 
         if (optionsMap.hasKey("near")) {
-        ReadableMap nearMap = optionsMap.getMap("near");
-        if (nearMap != null && nearMap.hasKey("latitude") && nearMap.hasKey("longitude")) {
-            try {
-                double latitude = nearMap.getDouble("latitude");
-                double longitude = nearMap.getDouble("longitude");
-                near = new Location("RNRadarModule");
-                near.setLatitude(latitude);
-                near.setLongitude(longitude);
-            } catch (Exception e) {
-                promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), "Invalid near coordinates");
-                return;
+            ReadableMap nearMap = optionsMap.getMap("near");
+            if (nearMap != null && nearMap.hasKey("latitude") && nearMap.hasKey("longitude")) {
+                try {
+                    double latitude = nearMap.getDouble("latitude");
+                    double longitude = nearMap.getDouble("longitude");
+                    near = new Location("RNRadarModule");
+                    near.setLatitude(latitude);
+                    near.setLongitude(longitude);
+                } catch (Exception e) {
+                    promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), "Invalid near coordinates");
+                    return;
+                }
             }
         }
 
