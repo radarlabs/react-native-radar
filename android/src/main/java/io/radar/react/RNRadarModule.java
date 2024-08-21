@@ -971,19 +971,31 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             return;
         }
 
-        if (!optionsMap.hasKey("query") || !optionsMap.hasKey("near")) {
+        if (!optionsMap.hasKey("query")) {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
 
             return;
         }
 
         String query = optionsMap.getString("query");
-        ReadableMap nearMap = optionsMap.getMap("near");
-        double latitude = nearMap.getDouble("latitude");
-        double longitude = nearMap.getDouble("longitude");
-        Location near = new Location("RNRadarModule");
-        near.setLatitude(latitude);
-        near.setLongitude(longitude);
+        Location near = null;
+
+        if (optionsMap.hasKey("near")) {
+            ReadableMap nearMap = optionsMap.getMap("near");
+            if (nearMap != null && nearMap.hasKey("latitude") && nearMap.hasKey("longitude")) {
+                try {
+                    double latitude = nearMap.getDouble("latitude");
+                    double longitude = nearMap.getDouble("longitude");
+                    near = new Location("RNRadarModule");
+                    near.setLatitude(latitude);
+                    near.setLongitude(longitude);
+                } catch (Exception e) {
+                    promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), "Invalid near coordinates");
+                    return;
+                }
+            }
+        }
+
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
         String country = optionsMap.hasKey("countryCode") ? optionsMap.getString("countryCode") : optionsMap.hasKey("country") ? optionsMap.getString("country") : null;
         String[] layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;

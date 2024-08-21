@@ -277,10 +277,6 @@ export default function App() {
             onPress={() => {
               Radar.autocomplete({
                 query: "brooklyn roasting",
-                near: {
-                  latitude: 40.783826,
-                  longitude: -73.975363,
-                },
                 limit: 10,
               })
                 .then((result) => {
