@@ -55,8 +55,6 @@ jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter', () => {
       getTrackingOptions: jest.fn(),
       getTripOptions: jest.fn(),
       logConversion: jest.fn(),
-      requestForegroundLocationPermission: jest.fn(),
-      requestBackgroundLocationPermission: jest.fn(),
       getLocationPermissionStatus: jest.fn(),
       openAppSettings: jest.fn(),
     },
