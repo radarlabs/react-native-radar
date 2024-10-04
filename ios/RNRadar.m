@@ -102,7 +102,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.18.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.18.1" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -1152,9 +1152,9 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     };
     
     if (revenue) {
-        [Radar logConversionWithName:name metadata:metadata completionHandler:completionHandler];
-    } else {
         [Radar logConversionWithName:name revenue:revenue metadata:metadata completionHandler:completionHandler];
+    } else {
+        [Radar logConversionWithName:name metadata:metadata completionHandler:completionHandler];
     }
 }
 
