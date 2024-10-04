@@ -1,4 +1,4 @@
-import { NativeEventEmitter, NativeModules, Platform } from "react-native";
+import { EmitterSubscription, NativeEventEmitter, NativeModules, Platform } from "react-native";
 import { version } from "../package.json";
 import { RadarNativeInterface } from "./@types/RadarNativeInterface";
 import {
@@ -223,7 +223,7 @@ const sendEvent = (name: string, metadata: RadarMetadata): void =>
 const on = (
   channel: RadarEventChannel,
   callback: RadarListenerCallback
-): void => eventEmitter.addListener(channel, callback);
+): EmitterSubscription => eventEmitter.addListener(channel, callback);
 
 const off = (
   channel: RadarEventChannel,
