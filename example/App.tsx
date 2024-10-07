@@ -476,11 +476,29 @@ export default function App() {
           />
 
           <ExampleButton
-            title="logConversion"
+            title="logConversion with revenue"
             onPress={() => {
               Radar.logConversion({
                 name: "in_app_purchase",
                 revenue: 150,
+                metadata: {
+                  sku: "123456789",
+                },
+              })
+                .then((result) => {
+                  handlePopulateText("logConversion:" + stringify(result));
+                })
+                .catch((err) => {
+                  handlePopulateText("logConversion:" + err);
+                });
+            }}
+          />
+
+          <ExampleButton
+            title="logConversion"
+            onPress={() => {
+              Radar.logConversion({
+                name: "in_app_purchase",
                 metadata: {
                   sku: "123456789",
                 },

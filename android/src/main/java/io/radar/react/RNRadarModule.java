@@ -96,7 +96,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.18.0");
+        editor.putString("x_platform_sdk_version", "3.18.1");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
