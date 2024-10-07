@@ -627,6 +627,11 @@ export interface RadarGeofence {
   geometryCenter?: RadarCoordinate;
   // only available for geofences of type "Polygon"
   coordinates?: number[][];
+  operatingHours?: RadarOperatingHours;
+}
+
+export  interface RadarOperatingHours {
+  [day: string]: string[][];
 }
 
 export interface RadarBeacon {
