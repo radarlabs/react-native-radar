@@ -95,6 +95,7 @@ export interface RadarNativeInterface {
   ipGeocode: () => Promise<RadarIPGeocodeCallback>;
   getDistance: (option: RadarGetDistanceOptions) => Promise<RadarRouteCallback>;
   getMatrix: (option: RadarGetMatrixOptions) => Promise<RadarRouteMatrix>;
+  doIndoorSurvey: (placeLabel: string, lengthSeconds: number) => Promise<Record<string, any>>;
   logConversion: (
     options: RadarLogConversionOptions
   ) => Promise<RadarLogConversionCallback>;
