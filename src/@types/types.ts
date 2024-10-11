@@ -703,6 +703,16 @@ export interface RadarAddress {
   stateCode?: string;
   street?: string;
   unit?: string;
+  timeZone?: RadarTimeZone;
+}
+
+export interface RadarTimeZone {
+  id: string;
+  name: string;
+  code: string;
+  currentTime: string;
+  utcOffset: number;
+  dstOffset: number;
 }
 
 export type RadarVerificationStatus =
