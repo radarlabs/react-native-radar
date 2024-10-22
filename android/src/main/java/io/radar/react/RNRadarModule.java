@@ -96,7 +96,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.15.0");
+        editor.putString("x_platform_sdk_version", "3.18.2");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -782,12 +782,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void getContext(final Promise promise) {
+    public void getContext(@Nullable ReadableMap locationMap, final Promise promise) {
         if (promise == null) {
             return;
         }
 
-        Radar.getContext(new Radar.RadarContextCallback() {
+        Radar.RadarContextCallback callback = new Radar.RadarContextCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarContext context) {
                 if (status == Radar.RadarStatus.SUCCESS) {
@@ -809,44 +809,18 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     promise.reject(status.toString(), status.toString());
                 }
             }
-        });
-    }
+        };
 
-    @ReactMethod
-    public void getContext(ReadableMap locationMap, final Promise promise) {
-        if (promise == null) {
-            return;
+        if (locationMap == null) {
+            Radar.getContext(callback);
+        } else {
+            double latitude = locationMap.getDouble("latitude");
+            double longitude = locationMap.getDouble("longitude");
+            Location location = new Location("RNRadarModule");
+            location.setLatitude(latitude);
+            location.setLongitude(longitude);
+            Radar.getContext(location, callback);
         }
-
-        double latitude = locationMap.getDouble("latitude");
-        double longitude = locationMap.getDouble("longitude");
-        Location location = new Location("RNRadarModule");
-        location.setLatitude(latitude);
-        location.setLongitude(longitude);
-
-        Radar.getContext(location, new Radar.RadarContextCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarContext context) {
-                if (status == Radar.RadarStatus.SUCCESS) {
-                    try {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (context != null) {
-                            map.putMap("context", RNRadarUtils.mapForJson(context.toJson()));
-                        }
-                        promise.resolve(map);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException", e);
-                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-                    }
-                } else {
-                    promise.reject(status.toString(), status.toString());
-                }
-            }
-        });
     }
 
     @ReactMethod
@@ -971,19 +945,31 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             return;
         }
 
-        if (!optionsMap.hasKey("query") || !optionsMap.hasKey("near")) {
+        if (!optionsMap.hasKey("query")) {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
 
             return;
         }
 
         String query = optionsMap.getString("query");
-        ReadableMap nearMap = optionsMap.getMap("near");
-        double latitude = nearMap.getDouble("latitude");
-        double longitude = nearMap.getDouble("longitude");
-        Location near = new Location("RNRadarModule");
-        near.setLatitude(latitude);
-        near.setLongitude(longitude);
+        Location near = null;
+
+        if (optionsMap.hasKey("near")) {
+            ReadableMap nearMap = optionsMap.getMap("near");
+            if (nearMap != null && nearMap.hasKey("latitude") && nearMap.hasKey("longitude")) {
+                try {
+                    double latitude = nearMap.getDouble("latitude");
+                    double longitude = nearMap.getDouble("longitude");
+                    near = new Location("RNRadarModule");
+                    near.setLatitude(latitude);
+                    near.setLongitude(longitude);
+                } catch (Exception e) {
+                    promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), "Invalid near coordinates");
+                    return;
+                }
+            }
+        }
+
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
         String country = optionsMap.hasKey("countryCode") ? optionsMap.getString("countryCode") : optionsMap.hasKey("country") ? optionsMap.getString("country") : null;
         String[] layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;

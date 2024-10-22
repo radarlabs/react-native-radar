@@ -1,59 +1,12 @@
-import { NativeEventEmitter, NativeModules } from 'react-native';
+// import { NativeEventEmitter, NativeModules } from 'react-native';
+
+// import Radar from '../src/index.native.ts';
+
+const NativeEventEmitter = require('react-native').NativeEventEmitter;
+
+const NativeModules = require('react-native').NativeModules;
 
 import Radar from '../src/index.native.ts';
-
-jest.mock('NativeEventEmitter', () => jest.fn(() => ({
-  addListener: jest.fn(),
-  removeListener: jest.fn(),
-  removeAllListeners: jest.fn(),
-})));
-
-jest.mock('NativeModules', () => ({
-  RNRadar: {
-    setLogLevel: jest.fn(),
-    setUserId: jest.fn(),
-    setDescription: jest.fn(),
-    setMetadata: jest.fn(),
-    getPermissionsStatus: jest.fn(),
-    requestPermissions: jest.fn(),
-    getLocation: jest.fn(),
-    trackOnce: jest.fn(),
-    startTracking: jest.fn(),
-    startTrackingEfficient: jest.fn(),
-    startTrackingResponsive: jest.fn(),
-    startTrackingContinuous: jest.fn(),
-    startTrackingCustom: jest.fn(),
-    mockTracking: jest.fn(),
-    stopTracking: jest.fn(),
-    acceptEvent: jest.fn(),
-    rejectEvent: jest.fn(),
-    startTrip: jest.fn(),
-    completeTrip: jest.fn(),
-    cancelTrip: jest.fn(),
-    getContext: jest.fn(),
-    searchPlaces: jest.fn(),
-    searchGeofences: jest.fn(),
-    autocomplete: jest.fn(),
-    geocode: jest.fn(),
-    reverseGeocode: jest.fn(),
-    ipGeocode: jest.fn(),
-    getDistance: jest.fn(),
-    getMatrix: jest.fn(),
-    sendEvent: jest.fn(),
-    getUserId: jest.fn(),
-    getDescription: jest.fn(),
-    getMetadata: jest.fn(),
-    setAnonymousTrackingEnabled: jest.fn(),
-    isTracking: jest.fn(),
-    getTrackingOptions: jest.fn(),
-    getTripOptions: jest.fn(),
-    logConversion: jest.fn(),
-    requestForegroundLocationPermission: jest.fn(),
-    requestBackgroundLocationPermission: jest.fn(),
-    getLocationPermissionStatus: jest.fn(),
-    openAppSettings: jest.fn(),
-  },
-}));
 
 const mockModule = NativeModules.RNRadar;
 const mockEmitter = NativeEventEmitter.mock.results[0].value;

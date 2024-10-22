@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.radar.example"
+      "bundleIdentifier": "com.radar.example",
     },
     "android": {
       "adaptiveIcon": {
@@ -37,10 +37,24 @@
           "iosBackgroundMode": true,
           "androidFraud": true,
           "androidBackgroundPermission": true,
-          "androidFineLocationPermission": true
+          "androidFineLocationPermission": true,
+          "addRadarSDKMotion": true
         }
       ],
-      ["@maplibre/maplibre-react-native"]
+      [
+        "@maplibre/maplibre-react-native"
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "newArchEnabled": true
+          },
+          "android": {
+            "newArchEnabled": true
+          }
+        }
+      ]
     ]
   }
 }

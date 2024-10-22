@@ -102,7 +102,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.15.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.18.2" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -818,10 +818,18 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     NSDictionary *nearDict = optionsDict[@"near"];
     CLLocation *near = nil;
     if (nearDict && [nearDict isKindOfClass:[NSDictionary class]]) {
-        double latitude = [RCTConvert double:nearDict[@"latitude"]];
-        double longitude = [RCTConvert double:nearDict[@"longitude"]];
-        NSDate *timestamp = [NSDate new];
-        near = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
+        id latitudeObj = nearDict[@"latitude"];
+        id longitudeObj = nearDict[@"longitude"];
+        
+        if (latitudeObj && longitudeObj && 
+            [latitudeObj isKindOfClass:[NSNumber class]] && 
+            [longitudeObj isKindOfClass:[NSNumber class]]) {
+            
+            double latitude = [RCTConvert double:latitudeObj];
+            double longitude = [RCTConvert double:longitudeObj];
+            NSDate *timestamp = [NSDate new];
+            near = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
+        }       
     }
 
 
@@ -1171,9 +1179,9 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     };
     
     if (revenue) {
-        [Radar logConversionWithName:name metadata:metadata completionHandler:completionHandler];
-    } else {
         [Radar logConversionWithName:name revenue:revenue metadata:metadata completionHandler:completionHandler];
+    } else {
+        [Radar logConversionWithName:name metadata:metadata completionHandler:completionHandler];
     }
 }
 
