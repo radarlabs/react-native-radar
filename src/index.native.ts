@@ -39,6 +39,8 @@ import {
   RadarIPGeocodeCallback,
   RadarTrackVerifiedOptions,
   RadarTrackVerifiedCallback,
+  RadarValidateAddressCallback,
+  RadarAddress,
 } from "./@types/types";
 
 if (
@@ -205,6 +207,9 @@ const reverseGeocode = (
 const ipGeocode = (): Promise<RadarIPGeocodeCallback> =>
   NativeModules.RNRadar.ipGeocode();
 
+const validateAddress = (address: RadarAddress): Promise<RadarValidateAddressCallback> =>
+  NativeModules.RNRadar.validateAddress(address);
+
 const getDistance = (
   options: RadarGetDistanceOptions
 ): Promise<RadarRouteCallback> => NativeModules.RNRadar.getDistance(options);
@@ -285,6 +290,7 @@ const Radar: RadarNativeInterface = {
   geocode,
   reverseGeocode,
   ipGeocode,
+  validateAddress,
   getDistance,
   getMatrix,
   logConversion,
