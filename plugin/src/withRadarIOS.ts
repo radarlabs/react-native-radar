@@ -52,7 +52,8 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
         const contents = await fs.readFile(filePath, 'utf-8');
 
         // Check if the pod declaration already exists
-        if (contents.indexOf("pod 'RadarSDKMotion', '3.18.3'") === -1) {
+        const RadarSDKMotionVersion = '3.18.3'
+        if (contents.indexOf(`pod 'RadarSDKMotion', ${RadarSDKMotionVersion}`) === -1) {
           // Find the target block
           const targetRegex = /target '(\w+)' do/g;
           const match = targetRegex.exec(contents);
