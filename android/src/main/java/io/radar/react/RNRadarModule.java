@@ -96,7 +96,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.18.2");
+        editor.putString("x_platform_sdk_version", "3.18.3");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -250,14 +250,14 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void requestPermissions(boolean background, final Promise promise) {
-        PermissionAwareActivity activity = (PermissionAwareActivity)getCurrentActivity();
+        Activity activity =getCurrentActivity();
         mPermissionsRequestPromise = promise;
         if (activity != null) {
             if (Build.VERSION.SDK_INT >= 23) {
                 if (background && Build.VERSION.SDK_INT >= 29) {
-                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
+                    ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSIONS_REQUEST_CODE);
                 } else {
-                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
+                    ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_CODE);
                 }
             }
         }
@@ -1108,6 +1108,28 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                     }
                 } else {
                     promise.reject(status.toString(), status.toString());
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void validateAddress(ReadableMap addressMap, final Promise promise) {
+        RadarAddress address = RadarAddress.fromJson(RNRadarUtils.jsonForMap(addressMap));
+        Radar.validateAddress(address, new RadarValidateAddressCallback {
+            @Override
+            onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, @Nullable RadarAddressVerificationStatus verificationStatus) {
+                if (status == Radar.RadarStatus.SUCCESS && ) {
+                    map.putString("status", status.toString());
+                    if (address != null) {
+                        map.putMap("address", RNRadarUtils.mapForJson(address.toJson()));
+                    }
+                    if (verificationStatus != null) {
+                        map.putString("verificationStatus", verificationStatus.toString());
+                    }
+                    promise.resolve(map);
+                } else {
+                    promise.reject(status.toString, status.toString());
                 }
             }
         });

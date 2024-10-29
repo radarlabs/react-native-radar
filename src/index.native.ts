@@ -39,6 +39,8 @@ import {
   RadarIPGeocodeCallback,
   RadarTrackVerifiedOptions,
   RadarTrackVerifiedCallback,
+  RadarValidateAddressCallback,
+  RadarAddress,
 } from "./@types/types";
 
 if (
@@ -139,13 +141,13 @@ const stopTracking = (): void => NativeModules.RNRadar.stopTracking();
 const stopTrackingVerified = (): void =>
   NativeModules.RNRadar.stopTrackingVerified();
 
+const isTracking = (): Promise<boolean> => NativeModules.RNRadar.isTracking();
+
 const getTrackingOptions = (): Promise<RadarTrackingOptions> =>
   NativeModules.RNRadar.getTrackingOptions();
 
 const isUsingRemoteTrackingOptions = (): Promise<boolean> =>
   NativeModules.RNRadar.isUsingRemoteTrackingOptions();
-
-const isTracking = (): Promise<boolean> => NativeModules.RNRadar.isTracking();
 
 const setForegroundServiceOptions = (
   options: RadarTrackingOptionsForegroundService
@@ -205,6 +207,9 @@ const reverseGeocode = (
 const ipGeocode = (): Promise<RadarIPGeocodeCallback> =>
   NativeModules.RNRadar.ipGeocode();
 
+const validateAddress = (address: RadarAddress): Promise<RadarValidateAddressCallback> =>
+  NativeModules.RNRadar.validateAddress(address);
+
 const getDistance = (
   options: RadarGetDistanceOptions
 ): Promise<RadarRouteCallback> => NativeModules.RNRadar.getDistance(options);
@@ -252,7 +257,6 @@ const Radar: RadarNativeInterface = {
   setMetadata,
   getMetadata,
   setAnonymousTrackingEnabled,
-  isUsingRemoteTrackingOptions,
   getPermissionsStatus,
   requestPermissions,
   getLocation,
@@ -269,15 +273,16 @@ const Radar: RadarNativeInterface = {
   stopTrackingVerified,
   isTracking,
   getTrackingOptions,
+  isUsingRemoteTrackingOptions,
   setForegroundServiceOptions,
   setNotificationOptions,
-  acceptEvent,
-  rejectEvent,
   getTripOptions,
   startTrip,
-  updateTrip,
   completeTrip,
   cancelTrip,
+  updateTrip,
+  acceptEvent,
+  rejectEvent,
   getContext,
   searchPlaces,
   searchGeofences,
@@ -285,6 +290,7 @@ const Radar: RadarNativeInterface = {
   geocode,
   reverseGeocode,
   ipGeocode,
+  validateAddress,
   getDistance,
   getMatrix,
   logConversion,
