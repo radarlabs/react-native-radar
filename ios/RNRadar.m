@@ -102,7 +102,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.18.2" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.18.3" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -959,6 +959,33 @@ RCT_EXPORT_METHOD(ipGeocode:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRe
                 [dict setObject:[address dictionaryValue] forKey:@"address"];
                 [dict setValue:@(proxy) forKey:@"proxy"];
             }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    }];
+}
+
+RCT_EXPORT_METHOD(validateAddress:(NSDictionary *)addressDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    RadarAddress *address = [RadarAddress addressFromObject:addressDict];
+
+    if (address == nil) {
+        reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+    }
+    
+    [Radar validateAddress:address completionHandler:^(RadarStatus status, RadarAddress * _Nullable address, RadarAddressVerificationStatus verificationStatus) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (address) {
+                [dict setObject:[address dictionaryValue] forKey:@"address"];
+            }
+            dict[@"verificationStatus"] = [Radar stringForVerificationStatus: verificationStatus];
             resolver(dict);
         } else if (rejecter) {
             rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
