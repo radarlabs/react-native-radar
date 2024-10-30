@@ -1116,20 +1116,26 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void validateAddress(ReadableMap addressMap, final Promise promise) {
         RadarAddress address = RadarAddress.fromJson(RNRadarUtils.jsonForMap(addressMap));
-        Radar.validateAddress(address, new RadarValidateAddressCallback {
+        Radar.validateAddress(address, new Radar.RadarValidateAddressCallback() {
             @Override
-            onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, @Nullable RadarAddressVerificationStatus verificationStatus) {
-                if (status == Radar.RadarStatus.SUCCESS && ) {
-                    map.putString("status", status.toString());
-                    if (address != null) {
-                        map.putMap("address", RNRadarUtils.mapForJson(address.toJson()));
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, @Nullable Radar.RadarAddressVerificationStatus verificationStatus) {
+                if (status == Radar.RadarStatus.SUCCESS) {
+                    try {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (address != null) {
+                            map.putMap("address", RNRadarUtils.mapForJson(address.toJson()));
+                        }
+                        if (verificationStatus != null) {
+                            map.putString("verificationStatus", verificationStatus.toString());
+                        }
+                        promise.resolve(map);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "JSONException", e);
+                        promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                     }
-                    if (verificationStatus != null) {
-                        map.putString("verificationStatus", verificationStatus.toString());
-                    }
-                    promise.resolve(map);
                 } else {
-                    promise.reject(status.toString, status.toString());
+                    promise.reject(status.toString(), status.toString());
                 }
             }
         });
