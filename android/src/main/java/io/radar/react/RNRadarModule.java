@@ -1115,7 +1115,17 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void validateAddress(ReadableMap addressMap, final Promise promise) {
-        RadarAddress address = RadarAddress.fromJson(RNRadarUtils.jsonForMap(addressMap));
+        if (promise == null) {
+            return;
+        }
+
+        RadarAddress address;
+        try {
+            address = RadarAddress.fromJson(RNRadarUtils.jsonForMap(addressMap));
+        } catch (JSONException e) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+            return;
+        }
         Radar.validateAddress(address, new Radar.RadarValidateAddressCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, @Nullable Radar.RadarAddressVerificationStatus verificationStatus) {
