@@ -1,11 +1,11 @@
 import { RadarNativeInterface } from "./@types/RadarNativeInterface";
 import { Platform } from "react-native";
 
-let module: RadarNativeInterface;
+let nativeModule: RadarNativeInterface;
 
-module = require("./index.native").default;
+nativeModule = Platform.OS === "web" ? require("./index.web").default : require("./index.native").default;
 
-export default module;
+export default nativeModule;
 
 let RadarRNWeb = Platform.OS === "web" ? require("./index.web").default : {};
 

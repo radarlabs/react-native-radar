@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
-import Radar, { Map, Autocomplete } from "react-native-radar";
+import { StyleSheet, Text, View, ScrollView, Platform } from "react-native";
+import Radar, { Map, Autocomplete, RadarClientLocationUpdate, RadarLocationUpdate, RadarEventUpdate } from "react-native-radar";
 import MapLibreGL from "@maplibre/maplibre-react-native";
 import ExampleButton from "./components/exampleButton";
 
 // The current version of MapLibre does not support the new react native architecture
 // MapLibreGL.setAccessToken(null);
 
-const stringify = (obj) => JSON.stringify(obj, null, 2);
+const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 
-Radar.on("events", (result) => {
+Radar.on("events", (result: RadarEventUpdate) => {
   console.log("events:", stringify(result));
 });
 
-Radar.on("location", (result) => {
+Radar.on("location", (result: RadarLocationUpdate) => {
   console.log("location:", stringify(result));
 });
 
-Radar.on("clientLocation", (result) => {
+Radar.on("clientLocation", (result: RadarClientLocationUpdate) => {
   console.log("clientLocation:", stringify(result));
 });
 
@@ -25,7 +25,7 @@ Radar.on("error", (err) => {
   console.log("error:", stringify(err));
 });
 
-Radar.on("log", (result) => {
+Radar.on("log", (result: string) => {
   console.log("log:", stringify(result));
 });
 
@@ -33,15 +33,13 @@ export default function App() {
   // add in your test code here!
   const [displayText, setDisplayText] = useState("");
 
-  const handlePopulateText = (displayText) => {
+  const handlePopulateText = (displayText: string) => {
     setDisplayText(displayText);
   };
-
-  const stringify = (obj) => JSON.stringify(obj, null, 2);
   Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
-  
+
   useEffect(() => {
-    Radar.setLogLevel("info");
+    Radar.setLogLevel("debug");
 
     Radar.setUserId("foo");
 
@@ -57,24 +55,28 @@ export default function App() {
   return (
     <View style={styles.container}>
       {/* The current version of MapLibre does not support the new react native architecture  */}
-      {/* <View style={{ width: "100%", height: "40%" }}>
-       <Map />
-      </View> */}
-      <View style={{ width: "100%", height: "10%" }}>
-        <Autocomplete
-          options={{
-            near: {
-              latitude: 40.7342,
-              longitude: -73.9911,
-            },
-          }}
-        />
-      </View>
-      <View style={{ width: "100%", height: "50%" }}>
-        <ScrollView>
+      {Platform.OS !== "web" &&
+        <>
+          <View style={{ width: "100%", height: "40%" }}>
+            <Map />
+          </View>
+          <View style={{ width: "100%", height: "10%" }}>
+            <Autocomplete
+              options={{
+                near: {
+                  latitude: 40.7342,
+                  longitude: -73.9911,
+                },
+              }}
+            />
+          </View>
+        </>
+      }
+      <View style={{ width: "100%", height: Platform.OS !== "web" ? "50%" : "100%" }}>
+        <ScrollView style={{ height: "25%" }}>
           <Text style={styles.displayText}>{displayText}</Text>
         </ScrollView>
-        <ScrollView>
+        <ScrollView style={{ height: "75%" }}>
           <ExampleButton
             title="getUser"
             onPress={() => {
@@ -186,7 +188,7 @@ export default function App() {
                 .then((result) => {
                   handlePopulateText(
                     "trackOnce manual with location accuracy::" +
-                      stringify(result)
+                    stringify(result)
                   );
                 })
                 .catch((err) => {
@@ -197,7 +199,7 @@ export default function App() {
             }}
           />
           <ExampleButton
-            title="trackOnce manual with beacons:"
+            title="trackOnce manual with beacons"
             onPress={() => {
               Radar.trackOnce({
                 desiredAccuracy: "medium",
@@ -561,6 +563,15 @@ export default function App() {
                 });
             }}
           />
+
+          <ExampleButton
+            title="version"
+            onPress={() => {
+              Radar.nativeSdkVersion().then((nativeVersion) => {
+                handlePopulateText(`sdk: ${Radar.rnSdkVersion()}, native: ${nativeVersion}`);
+              })
+            }}
+          />
         </ScrollView>
       </View>
     </View>
@@ -574,4 +585,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  displayText: {
+    flex: 1
+  }
 });

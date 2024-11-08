@@ -141,13 +141,13 @@ const stopTracking = (): void => NativeModules.RNRadar.stopTracking();
 const stopTrackingVerified = (): void =>
   NativeModules.RNRadar.stopTrackingVerified();
 
+const isTracking = (): Promise<boolean> => NativeModules.RNRadar.isTracking();
+
 const getTrackingOptions = (): Promise<RadarTrackingOptions> =>
   NativeModules.RNRadar.getTrackingOptions();
 
 const isUsingRemoteTrackingOptions = (): Promise<boolean> =>
   NativeModules.RNRadar.isUsingRemoteTrackingOptions();
-
-const isTracking = (): Promise<boolean> => NativeModules.RNRadar.isTracking();
 
 const setForegroundServiceOptions = (
   options: RadarTrackingOptionsForegroundService
@@ -257,7 +257,6 @@ const Radar: RadarNativeInterface = {
   setMetadata,
   getMetadata,
   setAnonymousTrackingEnabled,
-  isUsingRemoteTrackingOptions,
   getPermissionsStatus,
   requestPermissions,
   getLocation,
@@ -274,15 +273,16 @@ const Radar: RadarNativeInterface = {
   stopTrackingVerified,
   isTracking,
   getTrackingOptions,
+  isUsingRemoteTrackingOptions,
   setForegroundServiceOptions,
   setNotificationOptions,
-  acceptEvent,
-  rejectEvent,
   getTripOptions,
   startTrip,
-  updateTrip,
   completeTrip,
   cancelTrip,
+  updateTrip,
+  acceptEvent,
+  rejectEvent,
   getContext,
   searchPlaces,
   searchGeofences,
