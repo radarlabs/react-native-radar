@@ -309,6 +309,7 @@ export interface RadarTripOptions {
   mode?: RadarRouteMode;
   scheduledArrivalAt?: number;
   approachingThreshold?: number;
+  startTracking?: boolean; // defaults to true
 }
 
 export interface RadarTrackCallback {
