@@ -57,6 +57,11 @@ jobs:
           name: Set Java Version
           command: |
             sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+      - run:
+          name: Set Gradle properties
+          command: |
+            mkdir -p ~/.gradle
+            echo "org.gradle.jvmargs=-Xmx4g -XX:+HeapDumpOnOutOfMemoryError" > ~/.gradle/gradle.properties
       - run: chown -R $USER:$USER android
       - run: cd android && ./gradlew assembleDebug
 
