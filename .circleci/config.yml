@@ -54,7 +54,8 @@ jobs:
           name: Install Ninja
           command: sudo apt-get update && sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
-      - run: cd android && ./gradlew 
+      - run: cd android && ./gradlew assembleDebug
+
   ios:
     macos:
       xcode: "15.3.0"
@@ -70,7 +71,7 @@ jobs:
           command: npm run install-radar-rebuild-dirty
       - run: cd ios && pod update RadarSDK && pod install
       - run: xcodebuild -workspace ios/Example.xcworkspace -scheme Example -sdk iphonesimulator
- 
+
 
 workflows:
   version: 2
