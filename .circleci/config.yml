@@ -53,6 +53,11 @@ jobs:
       - run:
           name: Install Ninja
           command: sudo apt-get update && sudo apt-get install -y ninja-build
+      - run:
+          name: Set Gradle properties
+          command: |
+            mkdir -p ~/.gradle
+            echo "org.gradle.jvmargs=-Xmx4g -XX:MaxPermSize=2048m" > ~/.gradle/gradle.properties
       - run: chown -R $USER:$USER android
       - run: cd android && ./gradlew assembleDebug
 
