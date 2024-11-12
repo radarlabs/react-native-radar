@@ -59,10 +59,10 @@ jobs:
             sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
       - run: chown -R $USER:$USER android
       - run:
-        name: Build Android 
-        command: cd android && ./gradlew assembleDebug
-        environment:
-          GRADLE_OPTS: "-Xmx3g"
+          name: Build Android 
+          command: cd android && ./gradlew assembleDebug
+          environment:
+            GRADLE_OPTS: "-Xmx3g"
       
 
   ios:
