@@ -60,7 +60,7 @@ jobs:
       - run: chown -R $USER:$USER android
       - run:
           name: Build Android 
-          command: cd android && ./gradlew assembleDebug
+          command: cd android && ./gradlew assembleDebug --no-daemon
           environment:
             GRADLE_OPTS: "-Xmx3g"
       
