@@ -45,7 +45,7 @@ public class RNRadarReceiver extends RadarReceiver {
             WritableMap map = Arguments.createMap();
             map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
             if (user != null) {
-                map.putMap("user", RNRadarUtils.mapForoJson()));
+                map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
             }
 
             sendEvent("events", map);
