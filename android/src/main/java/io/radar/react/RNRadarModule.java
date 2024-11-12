@@ -1123,7 +1123,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         try {
             address = RadarAddress.fromJson(RNRadarUtils.jsonForMap(addressMap));
         } catch (JSONException e) {
-            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), );
             return;
         }
         Radar.validateAddress(address, new Radar.RadarValidateAddressCallback() {
