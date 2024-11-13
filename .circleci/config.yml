@@ -54,6 +54,7 @@ jobs:
           name: Install Ninja
           command: sudo apt-get update && sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
+      - run: echo "\norg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=512m" >> android/gradle.properties 
       - run: cd android && ./gradlew assemble
 
   ios:
