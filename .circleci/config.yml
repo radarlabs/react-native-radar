@@ -54,9 +54,7 @@ jobs:
           name: Install Ninja
           command: sudo apt-get update && sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
-      - run: cd android && ls
-      - run: echo "org.gradle.jvmargs=-XX:MaxHeapSize=256m -Xmx256m" > gradle.properties
-      - run: ls && ./gradlew assemble
+      - run: cd android && ./gradlew assemble
 
   ios:
     macos:
