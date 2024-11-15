@@ -39,7 +39,8 @@ jobs:
   android:
     working_directory: ~/react-native-radar/example
     docker:
-      - image: cimg/android:2024.01.1-browsers
+      - image: cimg/android:2024.11.1-browsers
+    resource_class: large
     steps:
       - attach_workspace:
           at: ~/react-native-radar
@@ -49,12 +50,14 @@ jobs:
       - run:
           name: Install Radar from local path
           command: npm run install-radar-rebuild
-      - run: sudo yarn global add react-native
       - run:
           name: Install Ninja
           command: sudo apt-get update && sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
-      - run: cd android && ./gradlew 
+      - run: echo "\norg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=512\ndistributionUrl=https://services.gradle.org/distributions/gradle-8.5-bin.zip" >> android/gradle.properties 
+      - run: npx react-native info
+      - run: cd android && ./gradlew --version && ./gradlew assemble
+
   ios:
     macos:
       xcode: "15.3.0"
@@ -70,7 +73,7 @@ jobs:
           command: npm run install-radar-rebuild-dirty
       - run: cd ios && pod update RadarSDK && pod install
       - run: xcodebuild -workspace ios/Example.xcworkspace -scheme Example -sdk iphonesimulator
- 
+
 
 workflows:
   version: 2
