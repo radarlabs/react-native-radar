@@ -15,6 +15,7 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
     if (args.iosBackgroundMode) {
       config.modResults.UIBackgroundModes = ["location", "fetch"];
     }
+    /*
     if (args.iosFraud) {
       config.modResults.NSAppTransportSecurity = {
         NSAllowsArbitraryLoads: false,
@@ -35,6 +36,7 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
         },
       };
     }
+      */
     if (args.addRadarSDKMotion) {
       config.modResults.NSMotionUsageDescription =
         args.iosNSMotionUsageDescription ??

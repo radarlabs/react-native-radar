@@ -489,6 +489,8 @@ const Radar = {
   trackOnce,
   trackVerified,
   getVerifiedLocationToken,
+  startVerifyServer,
+  stopVerifyServer,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,

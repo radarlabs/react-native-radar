@@ -38,7 +38,7 @@
           "androidFraud": true,
           "androidBackgroundPermission": true,
           "androidFineLocationPermission": true,
-          "addRadarSDKMotion": true,
+          "addRadarSDKMotion": false,
           "addRadarSDKVerify": true
         }
       ],
