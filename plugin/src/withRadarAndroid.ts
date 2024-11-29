@@ -59,6 +59,7 @@ export const withRadarAndroid = (
           <!-- for React Native -->
           <domain-config cleartextTrafficPermitted="true">
               <domain includeSubdomains="true">localhost</domain>
+              <domain includeSubdomains="true">10.0.2.2</domain>
           </domain-config>
       
           <!-- for SSL pinning -->
