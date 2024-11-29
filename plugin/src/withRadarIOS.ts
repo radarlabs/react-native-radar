@@ -82,7 +82,7 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
         const contents = await fs.readFile(filePath, 'utf-8');
 
         // Check if the pod declaration already exists
-        if (contents.indexOf("pod 'Telegraph', '0.40.0'") === -1) {
+        if (contents.indexOf("pod 'Telegraph', '0.30.0'") === -1) {
           // Find the target block
           const targetRegex = /target '(\w+)' do/g;
           const match = targetRegex.exec(contents);
@@ -92,7 +92,7 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
 
             // Insert the pod declaration within the target block
             const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
-            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'Telegraph', '0.30.0'`);
+            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'Telegraph', '0.30.0', :modular_headers => true\n  pod 'CocoaAsyncSocket', :modular_headers => true\n  pod 'HTTPParserC', :modular_headers => true`);
             const newContents = contents.replace(targetBlock, updatedTargetBlock);
 
             // Write the updated contents back to the Podfile
