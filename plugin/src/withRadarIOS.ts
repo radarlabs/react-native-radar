@@ -92,7 +92,7 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
 
             // Insert the pod declaration within the target block
             const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
-            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'Telegraph', '0.40.0'`);
+            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'Telegraph', '0.30.0'`);
             const newContents = contents.replace(targetBlock, updatedTargetBlock);
 
             // Write the updated contents back to the Podfile
