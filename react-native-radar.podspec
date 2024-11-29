@@ -12,8 +12,8 @@ Pod::Spec.new do |s|
   s.summary = package[:description]
   s.source = { git: package[:repository][:url] }
   s.source_files = "ios/*.{h,m}"
-  s.platform = :ios, "10.0"
+  s.platform = :ios, "12.0"
 
   s.dependency "React"
-  s.dependency "RadarSDK", "~> 3.19.2-beta.1"
+  s.dependency "RadarSDK", "~> 3.19.2-beta.4"
 end
