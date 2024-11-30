@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.radar.example",
+      "bundleIdentifier": "com.radar.example"
     },
     "android": {
       "adaptiveIcon": {
@@ -38,7 +38,8 @@
           "androidFraud": true,
           "androidBackgroundPermission": true,
           "androidFineLocationPermission": true,
-          "addRadarSDKMotion": true
+          "addRadarSDKMotion": false,
+          "addRadarSDKVerify": true
         }
       ],
       [

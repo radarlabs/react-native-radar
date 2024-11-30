@@ -8,4 +8,5 @@ export interface RadarPluginProps {
     androidFineLocationPermission?: boolean;
     addRadarSDKMotion?: boolean;
     iosNSMotionUsageDescription?: string;
+    addRadarSDKVerify?: boolean;
   }

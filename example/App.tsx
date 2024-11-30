@@ -565,6 +565,20 @@ export default function App() {
           />
 
           <ExampleButton
+            title="startVerifyServer"
+            onPress={() => {
+              Radar.startVerifyServer();
+            }}
+          />
+
+          <ExampleButton
+            title="stopVerifyServer"
+            onPress={() => {
+              Radar.stopVerifyServer();
+            }}
+          />
+
+          <ExampleButton
             title="version"
             onPress={() => {
               Radar.nativeSdkVersion().then((nativeVersion) => {

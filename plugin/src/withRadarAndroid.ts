@@ -59,6 +59,7 @@ export const withRadarAndroid = (
           <!-- for React Native -->
           <domain-config cleartextTrafficPermitted="true">
               <domain includeSubdomains="true">localhost</domain>
+              <domain includeSubdomains="true">10.0.2.2</domain>
           </domain-config>
       
           <!-- for SSL pinning -->
@@ -82,7 +83,8 @@ export const withRadarAndroid = (
     if (config.modResults.language === "groovy") {
       config.modResults.contents = modifyAppBuildGradle(
         config.modResults.contents,
-        args.androidFraud ?? false
+        args.androidFraud ?? false,
+        args.addRadarSDKVerify ?? false
       );
     } else {
       throw new Error(
@@ -150,9 +152,10 @@ async function setCustomConfigAsync(
   return androidManifest;
 }
 
-function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
+function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean, addRadarSDKVerify: boolean) {
   let hasLocationService = false;
   let hasPlayIntegrity = false;
+  let hasNanoHTTPD = false;
   if (
     buildGradle.includes(
       'com.google.android.gms:play-services-location:21.0.1"'
@@ -163,6 +166,10 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
 
   if (buildGradle.includes('com.google.android.play:integrity:1.2.0"')) {
     hasPlayIntegrity = true;
+  }
+
+  if (buildGradle.includes('org.nanohttpd:nanohttpd:2.3.1"')) {
+    hasNanoHTTPD = true;
   }
 
   const pattern = /^dependencies {/m;
@@ -183,6 +190,10 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
   if (androidFraud && !hasPlayIntegrity) {
     replacementString +=
       "\n\n" + '    implementation "com.google.android.play:integrity:1.2.0"';
+  }
+  if (addRadarSDKVerify && !hasNanoHTTPD) {
+    replacementString +=
+      "\n\n" + '    implementation "org.nanohttpd:nanohttpd:2.3.1"';
   }
 
   return buildGradle.replace(

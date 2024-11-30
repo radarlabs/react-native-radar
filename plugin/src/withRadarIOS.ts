@@ -74,6 +74,36 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
       },
     ]);
   }
+  if (args.addRadarSDKVerify) {
+    config = withDangerousMod(config, [
+      'ios',
+      async config => {
+        const filePath = path.join(config.modRequest.platformProjectRoot, 'Podfile');
+        const contents = await fs.readFile(filePath, 'utf-8');
+
+        // Check if the pod declaration already exists
+        if (contents.indexOf("pod 'RadarSDK/Verify', '3.19.2-beta.9'") === -1) {
+          // Find the target block
+          const targetRegex = /target '(\w+)' do/g;
+          const match = targetRegex.exec(contents);
+          if (match) {
+            const targetStartIndex = match.index;
+            const targetEndIndex = contents.indexOf('end', targetStartIndex) + 3;
+
+            // Insert the pod declaration within the target block
+            const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
+            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'RadarSDK/Verify', '3.19.2-beta.9'\n    pod 'CocoaAsyncSocket', :modular_headers => true\n  pod 'HTTPParserC', :modular_headers => true`);
+            const newContents = contents.replace(targetBlock, updatedTargetBlock);
+
+            // Write the updated contents back to the Podfile
+            await fs.writeFile(filePath, newContents);
+          }
+        }
+
+        return config;
+      },
+    ]);
+  }
 
   return config;
 };

@@ -357,6 +357,14 @@ RCT_EXPORT_METHOD(getVerifiedLocationToken:(RCTPromiseResolveBlock)resolve rejec
     [Radar getVerifiedLocationToken:completionHandler];
 }
 
+RCT_EXPORT_METHOD(startVerifyServer) {
+    [Radar startVerifyServer];
+}
+
+RCT_EXPORT_METHOD(stopVerifyServer) {
+    [Radar stopVerifyServer];
+}
+
 RCT_EXPORT_METHOD(startTrackingEfficient) {
     [Radar startTrackingWithOptions:RadarTrackingOptions.presetEfficient];
 }

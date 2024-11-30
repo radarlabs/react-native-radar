@@ -123,6 +123,14 @@ const getVerifiedLocationToken = () => {
   return new Promise((resolve, reject) => { reject("getVerifiedLocationToken() is not implemented on web") });
 };
 
+const startVerifyServer = () => {  
+  if (throws) throw new Error("startVerifyServer() is not implemented on web");
+};
+
+const stopVerifyServer = () => {  
+  if (throws) throw new Error("stopVerifyServer() is not implemented on web");
+};
+
 const startTrackingEfficient = () => {  
   if (throws) throw new Error("startTrackingEfficient() is not implemented on web");
 };
@@ -481,6 +489,8 @@ const Radar = {
   trackOnce,
   trackVerified,
   getVerifiedLocationToken,
+  startVerifyServer,
+  stopVerifyServer,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,

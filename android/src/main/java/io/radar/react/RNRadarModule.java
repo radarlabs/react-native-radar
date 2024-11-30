@@ -449,6 +449,16 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void startVerifyServer() {
+        Radar.startVerifyServer();
+    }
+
+    @ReactMethod
+    public void stopVerifyServer() {
+        Radar.stopVerifyServer();
+    }
+
+    @ReactMethod
     public void startTrackingEfficient() {
         Radar.startTracking(RadarTrackingOptions.EFFICIENT);
     }
