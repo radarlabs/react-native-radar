@@ -1,0 +1,19 @@
+appId: com.radar.rnexample
+---
+- launchApp
+- assertVisible: 'getUser'
+- tapOn: "Enter publishable key"
+- inputText:
+    text: '${MAESTRO_RADAR_PUBLISHABLE_KEY}'
+- hideKeyboard
+- tapOn:
+    text: 'Initialize'
+- setLocation:
+    latitude: 52.3599976
+    longitude: 4.8830301
+- tapOn:
+    text: 'trackOnce'
+- extendedWaitUntil:
+    visible: '.*SUCCESS.*'
+    timeout: 10000      # Timeout in milliseconds
+

@@ -27,6 +27,18 @@ To run example app with local `react-native-radar` dependency:
 - build native app using expo pre-build and `react-native-plugin` with `npm run install-radar-rebuild`. 
 - run iOS and android example app with `npx expo run:ios` or `npx expo run:android`.
 
+### Example app tests
+
+If needed, install `maestro` with 
+```
+    brew tap mobile-dev-inc/tap
+    brew install maestro
+```
+
+Then, run tests with `maestro test example_tests.yaml`. from `/example/maestro` dir.
+
+
+
 
 ## Support
 
