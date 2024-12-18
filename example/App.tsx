@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, Platform } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Platform, TextInput } from "react-native";
 import Radar, { Map, Autocomplete, RadarClientLocationUpdate, RadarLocationUpdate, RadarEventUpdate } from "react-native-radar";
 import MapLibreGL from "@maplibre/maplibre-react-native";
 import ExampleButton from "./components/exampleButton";
@@ -32,11 +32,12 @@ Radar.on("log", (result: string) => {
 export default function App() {
   // add in your test code here!
   const [displayText, setDisplayText] = useState("");
+  const [publishableKey, setPublishableKey] = useState("");
 
   const handlePopulateText = (displayText: string) => {
     setDisplayText(displayText);
   };
-  Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
+  //Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
 
   useEffect(() => {
     Radar.setLogLevel("debug");
@@ -77,6 +78,32 @@ export default function App() {
           <Text style={styles.displayText}>{displayText}</Text>
         </ScrollView>
         <ScrollView style={{ height: "75%" }}>
+          <TextInput
+          id="publishableKeyInput"
+          value={publishableKey}
+          onChangeText={(text) => setPublishableKey(text)}
+          placeholder="Enter publishable key"
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, margin: 10, padding: 5 }}
+          />
+          <ExampleButton
+            title="initialize"
+            onPress={() => {
+              Radar.initialize(publishableKey, true);
+                
+            }}
+          />
+          <ExampleButton
+            title="trackOnce"
+            onPress={() => {
+              Radar.trackOnce()
+                .then((result) => {
+                  handlePopulateText("trackOnce:" + stringify(result));
+                })
+                .catch((err) => {
+                  handlePopulateText("trackOnce:" + err);
+                });
+            }}
+          />
           <ExampleButton
             title="getUser"
             onPress={() => {
