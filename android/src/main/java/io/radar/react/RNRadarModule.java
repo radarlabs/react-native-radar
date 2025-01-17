@@ -462,8 +462,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
-    public void getVerifiedLocationToken() {
-        Radar.getVerifiedLocationToken();
+    public void clearVerifiedLocationToken() {
+        Radar.clearVerifiedLocationToken();
     }
 
     @ReactMethod
