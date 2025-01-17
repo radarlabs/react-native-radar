@@ -96,7 +96,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.18.8");
+        editor.putString("x_platform_sdk_version", "3.19.0");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -383,10 +383,23 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     public void trackVerified(ReadableMap optionsMap, final Promise promise) {
 
         boolean beaconsTrackingOption = false;
+        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
 
         if (optionsMap != null) {
             if (optionsMap.hasKey("beacons")) {
                 beaconsTrackingOption = optionsMap.getBoolean("beacons");
+            }
+            if (optionsMap.hasKey("desiredAccuracy")) {
+                String desiredAccuracy = optionsMap.getString("desiredAccuracy").toLowerCase();
+                if (desiredAccuracy.equals("none")) {
+                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.NONE;
+                } else if (desiredAccuracy.equals("low")) {
+                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
+                } else if (desiredAccuracy.equals("medium")) {
+                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+                } else if (desiredAccuracy.equals("high")) {
+                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
+                }
             }
         }
 
@@ -415,7 +428,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
         };
 
-        Radar.trackVerified(beaconsTrackingOption, trackCallback);
+        Radar.trackVerified(beaconsTrackingOption, accuracyLevel, trackCallback);
     }
 
     @ReactMethod
@@ -446,6 +459,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         };
 
         Radar.getVerifiedLocationToken(trackCallback);
+    }
+
+    @ReactMethod
+    public void getVerifiedLocationToken() {
+        Radar.getVerifiedLocationToken();
     }
 
     @ReactMethod
