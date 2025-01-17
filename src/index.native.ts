@@ -118,6 +118,9 @@ const trackVerified = (
 const getVerifiedLocationToken = (): Promise<RadarTrackVerifiedCallback> =>
   NativeModules.RNRadar.getVerifiedLocationToken();
 
+const clearVerifiedLocationToken = (): void =>
+  NativeModules.RNRadar.clearVerifiedLocationToken();
+
 const startTrackingEfficient = (): void =>
   NativeModules.RNRadar.startTrackingEfficient();
 
@@ -263,6 +266,7 @@ const Radar: RadarNativeInterface = {
   trackOnce,
   trackVerified,
   getVerifiedLocationToken,
+  clearVerifiedLocationToken,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,
