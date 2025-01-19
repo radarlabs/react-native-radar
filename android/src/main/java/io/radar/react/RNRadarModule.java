@@ -96,7 +96,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.19.1");
+        editor.putString("x_platform_sdk_version", "3.20.0");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -861,6 +861,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Map<String, String> chainMetadata = RNRadarUtils.stringStringMap(optionsMap.getMap("chainMetadata"));
         String[] categories = optionsMap.hasKey("categories") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("categories")) : null;
         String[] groups = optionsMap.hasKey("groups") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("groups")) : null;
+        String[] countryCodes = optionsMap.hasKey("countryCodes") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("countryCodes")) : null;
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
         Radar.RadarSearchPlacesCallback callback = new Radar.RadarSearchPlacesCallback() {
@@ -888,9 +889,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         };
 
         if (near != null) {
-            Radar.searchPlaces(near, radius, chains, chainMetadata, categories, groups, limit, callback);
+            Radar.searchPlaces(near, radius, chains, chainMetadata, categories, groups, countryCodes, limit, callback);
         } else {
-            Radar.searchPlaces(radius, chains, chainMetadata, categories, groups, limit, callback);
+            Radar.searchPlaces(radius, chains, chainMetadata, categories, groups, countryCodes, limit, callback);
         }
     }
 
