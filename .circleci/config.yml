@@ -53,8 +53,18 @@ jobs:
       - run:
           name: Install Ninja
           command: sudo apt-get update && sudo apt-get install -y ninja-build
+      - run:
+          name: Set Java Version
+          command: |
+            sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
       - run: chown -R $USER:$USER android
-      - run: cd android && ./gradlew 
+      - run:
+          name: Build Android 
+          command: cd android && ./gradlew assembleDebug --no-daemon
+          environment:
+            GRADLE_OPTS: "-Xmx3g"
+      
+
   ios:
     macos:
       xcode: "15.3.0"
@@ -70,7 +80,7 @@ jobs:
           command: npm run install-radar-rebuild
       - run: cd ios 
       - run: xcodebuild -workspace ios/Example.xcworkspace -scheme Example -sdk iphonesimulator
- 
+
 
 workflows:
   version: 2
