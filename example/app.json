@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.radar.example",
+      "bundleIdentifier": "com.radar.rnexample"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.radar.example"
+      "package": "com.radar.rnexample"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -55,6 +55,12 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "caf6acc9-b3c5-4d95-af29-fd017a05abb8"
+      }
+    },
+    "owner": "radarlabs"
   }
 }
