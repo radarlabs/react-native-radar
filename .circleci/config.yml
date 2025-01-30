@@ -52,7 +52,9 @@ jobs:
       - run: sudo yarn global add react-native
       - run:
           name: Install Ninja
-          command: sudo apt-get update && sudo apt-get install -y ninja-build
+          command: |
+            sudo apt-get update -o Acquire::AllowInsecureRepositories=true
+            sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
       - run: cd android && ./gradlew 
   ios:
