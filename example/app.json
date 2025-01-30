@@ -51,7 +51,7 @@
             "newArchEnabled": true
           },
           "android": {
-            "newArchEnabled": true
+            "newArchEnabled": false
           }
         }
       ]
