@@ -720,7 +720,7 @@ RCT_EXPORT_METHOD(searchPlaces:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     NSDictionary *chainMetadata = optionsDict[@"chainMetadata"];
     NSArray *categories = optionsDict[@"categories"];
     NSArray *groups = optionsDict[@"groups"];
-    NSString *countryCodes = optionsDict[@"countryCodes"];
+    NSArray *countryCodes = optionsDict[@"countryCodes"];
     NSNumber *limitNumber = optionsDict[@"limit"];
     int limit;
     if (limitNumber != nil && [limitNumber isKindOfClass:[NSNumber class]]) {

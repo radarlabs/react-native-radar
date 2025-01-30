@@ -262,7 +262,7 @@ export interface RadarSearchPlacesOptions {
   chainMetadata?: RadarMetadata;
   categories?: string[];
   groups?: string[];
-  countryCodes?: string;
+  countryCodes?: string[];
   limit?: number;
 }
 
