@@ -5,7 +5,7 @@ import MapLibreGL from "@maplibre/maplibre-react-native";
 import ExampleButton from "./components/exampleButton";
 
 // The current version of MapLibre does not support the new react native architecture
-// MapLibreGL.setAccessToken(null);
+MapLibreGL.setAccessToken(null);
 
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 
@@ -247,6 +247,7 @@ export default function App() {
                 chainMetadata: {
                   customFlag: "true",
                 },
+                countryCodes:["CA","US"],
                 limit: 10,
               })
                 .then((result) => {
