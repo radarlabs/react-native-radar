@@ -146,6 +146,12 @@ const stopTrackingVerified = (): void =>
 
 const isTracking = (): Promise<boolean> => NativeModules.RNRadar.isTracking();
 
+const isTrackingVerified = (): Promise<boolean> =>
+  NativeModules.RNRadar.isTrackingVerified();
+
+const setProduct = (product: string): void =>
+  NativeModules.RNRadar.setProduct(product);
+
 const getTrackingOptions = (): Promise<RadarTrackingOptions> =>
   NativeModules.RNRadar.getTrackingOptions();
 
@@ -265,6 +271,8 @@ const Radar: RadarNativeInterface = {
   getLocation,
   trackOnce,
   trackVerified,
+  isTrackingVerified,
+  setProduct,
   getVerifiedLocationToken,
   clearVerifiedLocationToken,
   startTrackingEfficient,

@@ -432,6 +432,16 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void isTrackingVerified(final Promise promise) {
+        promise.resolve(Radar.isTrackingVerified());
+    }
+
+    @ReactMethod
+    public void setProduct(String product) {
+        Radar.setProduct(product);
+    }
+
+    @ReactMethod
     public void getVerifiedLocationToken(final Promise promise) {
         Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
             @Override

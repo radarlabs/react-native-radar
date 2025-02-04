@@ -349,6 +349,15 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     [Radar trackVerifiedWithBeacons:beacons desiredAccuracy:desiredAccuracy completionHandler:completionHandler];
 }
 
+RCT_EXPORT_METHOD(isTrackingVerified:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    BOOL res = [Radar isTrackingVerified];
+    resolve(@(res));ß
+}
+
+RCT_EXPORT_METHOD(setProduct:(NSString *)product) {
+    [Radar setProduct:product];
+}
+
 RCT_EXPORT_METHOD(getVerifiedLocationToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
