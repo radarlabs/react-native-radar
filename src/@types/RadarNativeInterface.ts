@@ -66,6 +66,8 @@ export interface RadarNativeInterface {
   startTrackingContinuous: () => void;
   startTrackingCustom: (options: RadarTrackingOptions) => void;
   startTrackingVerified: (options?: RadarVerifiedTrackingOptions) => void;
+  isTrackingVerified: () => Promise<boolean>;
+  setProduct(product: string): void;
   mockTracking: (options: RadarMockTrackingOptions) => void;
   stopTracking: () => void;
   stopTrackingVerified: () => void;
@@ -101,8 +103,7 @@ export interface RadarNativeInterface {
   getMatrix: (option: RadarGetMatrixOptions) => Promise<RadarRouteMatrix>;
   logConversion: (
     options: RadarLogConversionOptions
-  ) => Promise<RadarLogConversionCallback>;
-  
+  ) => Promise<RadarLogConversionCallback>; 
   sendEvent: (name: string, metadata: RadarMetadata) => void;
   on: (channel: RadarEventChannel, callback: RadarListenerCallback) => void;
   off: (channel: RadarEventChannel, callback?: Function | undefined) => void;
