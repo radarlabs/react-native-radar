@@ -226,6 +226,9 @@ const getDistance = (
 const getMatrix = (options: RadarGetMatrixOptions): Promise<RadarRouteMatrix> =>
   NativeModules.RNRadar.getMatrix(options);
 
+const doIndoorSurvey = (placeLabel: string, lengthSeconds: number): Promise<Record<string, any>> =>
+  NativeModules.RNRadar.doIndoorSurvey(placeLabel, lengthSeconds);
+
 const logConversion = (
   options: RadarLogConversionOptions
 ): Promise<RadarLogConversionCallback> =>
@@ -305,6 +308,7 @@ const Radar: RadarNativeInterface = {
   validateAddress,
   getDistance,
   getMatrix,
+  doIndoorSurvey,
   logConversion,
   sendEvent,
   on,

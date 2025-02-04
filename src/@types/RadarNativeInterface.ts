@@ -101,6 +101,7 @@ export interface RadarNativeInterface {
   validateAddress: (address: RadarAddress) => Promise<RadarValidateAddressCallback>;
   getDistance: (option: RadarGetDistanceOptions) => Promise<RadarRouteCallback>;
   getMatrix: (option: RadarGetMatrixOptions) => Promise<RadarRouteMatrix>;
+  doIndoorSurvey: (placeLabel: string, lengthSeconds: number) => Promise<Record<string, any>>;
   logConversion: (
     options: RadarLogConversionOptions
   ) => Promise<RadarLogConversionCallback>; 
