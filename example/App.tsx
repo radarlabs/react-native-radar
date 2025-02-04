@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView, Platform } from "react-native";
-import Radar, { Map, Autocomplete, RadarClientLocationUpdate, RadarLocationUpdate, RadarEventUpdate } from "react-native-radar";
+import Radar, {
+  Map,
+  Autocomplete,
+  RadarClientLocationUpdate,
+  RadarLocationUpdate,
+  RadarEventUpdate,
+} from "react-native-radar";
 import MapLibreGL from "@maplibre/maplibre-react-native";
 import ExampleButton from "./components/exampleButton";
 
@@ -21,7 +27,7 @@ Radar.on("clientLocation", (result: RadarClientLocationUpdate) => {
   console.log("clientLocation:", stringify(result));
 });
 
-Radar.on("error", (err) => {
+Radar.on("error", (err: any) => {
   console.log("error:", stringify(err));
 });
 
@@ -36,7 +42,10 @@ export default function App() {
   const handlePopulateText = (displayText: string) => {
     setDisplayText(displayText);
   };
-  Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
+  Radar.initialize(
+    "prj_test_pk_0000000000000000000000000000000000000000",
+    true
+  );
 
   useEffect(() => {
     Radar.setLogLevel("debug");
@@ -55,7 +64,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       {/* The current version of MapLibre does not support the new react native architecture  */}
-      {Platform.OS !== "web" &&
+      {Platform.OS !== "web" && (
         <>
           <View style={{ width: "100%", height: "40%" }}>
             <Map />
@@ -71,8 +80,13 @@ export default function App() {
             />
           </View>
         </>
-      }
-      <View style={{ width: "100%", height: Platform.OS !== "web" ? "50%" : "100%" }}>
+      )}
+      <View
+        style={{
+          width: "100%",
+          height: Platform.OS !== "web" ? "50%" : "100%",
+        }}
+      >
         <ScrollView style={{ height: "25%" }}>
           <Text style={styles.displayText}>{displayText}</Text>
         </ScrollView>
@@ -188,7 +202,7 @@ export default function App() {
                 .then((result) => {
                   handlePopulateText(
                     "trackOnce manual with location accuracy::" +
-                    stringify(result)
+                      stringify(result)
                   );
                 })
                 .catch((err) => {
@@ -247,7 +261,7 @@ export default function App() {
                 chainMetadata: {
                   customFlag: "true",
                 },
-                countryCodes:["CA","US"],
+                countryCodes: ["CA", "US"],
                 limit: 10,
               })
                 .then((result) => {
@@ -313,7 +327,7 @@ export default function App() {
                 location: {
                   latitude: 40.783826,
                   longitude: -73.975363,
-                }
+                },
               })
                 .then((result) => {
                   handlePopulateText("reverseGeocode:" + stringify(result));
@@ -432,8 +446,8 @@ export default function App() {
                     "2023-10-10T12:20:30Z"
                   ).getTime(),
                   metadata: {
-                    "test-trip-meta": "test-trip-data"
-                  }
+                    "test-trip-meta": "test-trip-data",
+                  },
                 },
               })
                 .then((result) => {
@@ -553,11 +567,47 @@ export default function App() {
           />
 
           <ExampleButton
+            title="startTrackingVerified"
+            onPress={() => {
+              Radar.startTrackingVerified();
+            }}
+          />
+
+          <ExampleButton
+            title="isTrackingVerified"
+            onPress={() => {
+              Radar.isTrackingVerified()
+                .then((result) => {
+                  handlePopulateText("isTrackingVerified:" + stringify(result));
+                })
+                .catch((err) => {
+                  handlePopulateText("isTrackingVerified:" + err);
+                });
+            }}
+          />
+
+          <ExampleButton
+            title="stopTrackingVerified"
+            onPress={() => {
+              Radar.stopTrackingVerified();
+            }}
+          />
+
+          <ExampleButton
+            title="setProduct"
+            onPress={() => {
+              Radar.setProduct("test");
+            }}
+          />
+
+          <ExampleButton
             title="getVerifiedLocationToken"
             onPress={() => {
               Radar.getVerifiedLocationToken()
                 .then((result) => {
-                  handlePopulateText("getVerifiedLocationToken:" + stringify(result));
+                  handlePopulateText(
+                    "getVerifiedLocationToken:" + stringify(result)
+                  );
                 })
                 .catch((err) => {
                   handlePopulateText("getVerifiedLocationToken:" + err);
@@ -569,8 +619,10 @@ export default function App() {
             title="version"
             onPress={() => {
               Radar.nativeSdkVersion().then((nativeVersion) => {
-                handlePopulateText(`sdk: ${Radar.rnSdkVersion()}, native: ${nativeVersion}`);
-              })
+                handlePopulateText(
+                  `sdk: ${Radar.rnSdkVersion()}, native: ${nativeVersion}`
+                );
+              });
             }}
           />
         </ScrollView>
@@ -587,6 +639,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   displayText: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

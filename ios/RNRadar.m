@@ -351,7 +351,7 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
 
 RCT_EXPORT_METHOD(isTrackingVerified:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     BOOL res = [Radar isTrackingVerified];
-    resolve(@(res));ß
+    resolve(@(res));
 }
 
 RCT_EXPORT_METHOD(setProduct:(NSString *)product) {
