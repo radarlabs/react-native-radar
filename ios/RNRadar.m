@@ -194,10 +194,23 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         [locationManager requestAlwaysAuthorization];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAppBecomingActive)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         [locationManager requestWhenInUseAuthorization];
     } else {
         [self getPermissionsStatusWithResolver:resolve rejecter:reject];
+    }
+}
+
+- (void)handleAppBecomingActive
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+     if (permissionsRequestResolver) {
+        [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+        permissionsRequestResolver = nil;
     }
 }
 

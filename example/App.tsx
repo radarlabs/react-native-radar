@@ -9,6 +9,8 @@ import Radar, {
 } from "react-native-radar";
 import MapLibreGL from "@maplibre/maplibre-react-native";
 import ExampleButton from "./components/exampleButton";
+import * as Location from 'expo-location';
+import PermissionsComponent from "./components/PermissionsComponent";
 
 // The current version of MapLibre does not support the new react native architecture
 MapLibreGL.setAccessToken(null);
@@ -38,6 +40,7 @@ Radar.on("log", (result: string) => {
 export default function App() {
   // add in your test code here!
   const [displayText, setDisplayText] = useState("");
+  const [showPermissionsComponent, setShowPermissionsComponent] = useState(false);
 
   const handlePopulateText = (displayText: string) => {
     setDisplayText(displayText);
@@ -59,9 +62,15 @@ export default function App() {
       baz: true,
       qux: 1,
     });
+    Location.getForegroundPermissionsAsync().then((status)=> {
+      if(!status.granted) {
+        setShowPermissionsComponent(true)
+      }
+    })
   }, []);
 
-  return (
+  return <>
+   {showPermissionsComponent ? <PermissionsComponent setShowPermissionsComponent={setShowPermissionsComponent} /> :
     <View style={styles.container}>
       {/* The current version of MapLibre does not support the new react native architecture  */}
       {Platform.OS !== "web" && (
@@ -627,8 +636,10 @@ export default function App() {
           />
         </ScrollView>
       </View>
-    </View>
-  );
+    </View>}
+  </>
+   
+  ;
 }
 
 const styles = StyleSheet.create({

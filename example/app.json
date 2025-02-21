@@ -37,8 +37,9 @@
           "iosBackgroundMode": true,
           "androidFraud": true,
           "androidBackgroundPermission": true,
-          "androidFineLocationPermission": true,
-          "addRadarSDKMotion": true
+          "addRadarSDKMotion": true,
+          "androidActivityRecognition": true,
+          "androidForegroundService": true
         }
       ],
       [
