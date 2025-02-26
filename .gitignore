@@ -1,5 +1,5 @@
 .DS_Store
-build/
+
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -27,7 +27,7 @@ android/.project
 ios/Carthage/Checkouts
 ios/Carthage/Build
 junit.xml
-dist/
+
 
 example2
 react-native-radar-*.tgz
