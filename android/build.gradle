@@ -19,6 +19,7 @@ android {
         targetSdkVersion 31
         versionCode 1
         versionName '3.20.0'
+        consumerProguardFiles 'proguard-rules.pro'
     }
     lintOptions {
         abortOnError false
