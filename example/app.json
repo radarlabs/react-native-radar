@@ -14,16 +14,24 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "owner": "radarlabs",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.radar.example",
+      "bundleIdentifier": "com.radar.reactnative.example"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.radar.example"
+      "package": "com.radar.reactnative.example",
+      "permissions": [
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_LOCATION",
+        "android.permission.ACTIVITY_RECOGNITION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -35,10 +43,11 @@
           "iosFraud": true,
           "iosNSLocationAlwaysAndWhenInUseUsageDescription": "test value",
           "iosBackgroundMode": true,
-          "androidFraud": true,
+          "androidFraud": false,
           "androidBackgroundPermission": true,
-          "androidFineLocationPermission": true,
-          "addRadarSDKMotion": true
+          "addRadarSDKMotion": true,
+          "androidActivityRecognition": true,
+          "androidForegroundService": true
         }
       ],
       [
@@ -51,10 +60,17 @@
             "newArchEnabled": false
           },
           "android": {
-            "newArchEnabled": false
+            "newArchEnabled": false,
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "caf6acc9-b3c5-4d95-af29-fd017a05abb8"
+      }
+    }
   }
 }
