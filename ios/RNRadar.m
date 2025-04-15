@@ -102,7 +102,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.20.1-beta.6" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.20.3" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -189,15 +189,30 @@ RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTProm
 }
 
 RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    permissionsRequestResolver = resolve;
-
+    
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        permissionsRequestResolver = resolve;
         [locationManager requestAlwaysAuthorization];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAppBecomingActive)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
     } else if (status == kCLAuthorizationStatusNotDetermined) {
+        permissionsRequestResolver = resolve;
         [locationManager requestWhenInUseAuthorization];
     } else {
         [self getPermissionsStatusWithResolver:resolve rejecter:reject];
+        permissionsRequestResolver = nil;
+    }
+}
+
+- (void)handleAppBecomingActive
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+     if (permissionsRequestResolver) {
+        [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+        permissionsRequestResolver = nil;
     }
 }
 

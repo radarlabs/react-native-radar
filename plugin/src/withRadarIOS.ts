@@ -52,7 +52,7 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
         const contents = await fs.readFile(filePath, 'utf-8');
 
         // Check if the pod declaration already exists
-        if (contents.indexOf("pod 'RadarSDKMotion', '3.21.1'") === -1) {
+        if (contents.indexOf("pod 'RadarSDKMotion', '3.20.1'") === -1) {
           // Find the target block
           const targetRegex = /target '(\w+)' do/g;
           const match = targetRegex.exec(contents);
@@ -62,7 +62,8 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
 
             // Insert the pod declaration within the target block
             const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
-            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'RadarSDKMotion', '3.21.1'`);
+            // Just for this version of the SDK, we will be using 3.21.1 of the SDKMotion pod. There is no difference between the source code of 3.21.2 and 3.21.1 for RadarSDKMotion.
+            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'RadarSDKMotion', '3.20.1'`);
             const newContents = contents.replace(targetBlock, updatedTargetBlock);
 
             // Write the updated contents back to the Podfile

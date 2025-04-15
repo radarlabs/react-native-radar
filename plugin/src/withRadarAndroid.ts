@@ -1,16 +1,12 @@
 import { ExpoConfig } from "expo/config";
 
 import {
-  withAndroidManifest,
   withAppBuildGradle,
   AndroidConfig,
-  WarningAggregator,
   withDangerousMod,
 } from "expo/config-plugins";
 import fs from "fs";
 import path from "path";
-
-const { addPermission } = AndroidConfig.Permissions;
 
 import { RadarPluginProps } from "./types";
 
@@ -18,14 +14,7 @@ export const withRadarAndroid = (
   config: ExpoConfig,
   args: RadarPluginProps
 ) => {
-  config = withAndroidManifest(config, async (config) => {
-    config.modResults = await setCustomConfigAsync(
-      config,
-      config.modResults,
-      args
-    );
-    return config;
-  });
+  config = withAndroidPermissions(config, args);
 
   config = withDangerousMod(config, [
     "android",
@@ -93,61 +82,25 @@ export const withRadarAndroid = (
   });
 };
 
-async function setCustomConfigAsync(
+function withAndroidPermissions(
   config: any,
-  androidManifest: AndroidConfig.Manifest.AndroidManifest,
   args: RadarPluginProps
-): Promise<AndroidConfig.Manifest.AndroidManifest> {
-  if (!androidManifest.manifest["uses-permission"]) {
-    androidManifest.manifest["uses-permission"] = [];
-  }
-  // Add permissions
-  if (
-    args.androidFineLocationPermission &&
-    !androidManifest.manifest["uses-permission"].some(
-      (e) =>
-        e["$"]["android:name"] === "android.permission.ACCESS_FINE_LOCATION"
-    )
-  ) {
-    addPermission(androidManifest, "android.permission.ACCESS_FINE_LOCATION");
-  }
-  if (
-    args.androidBackgroundPermission &&
-    !androidManifest.manifest["uses-permission"].some(
-      (e) =>
-        e["$"]["android:name"] ===
-        "android.permission.ACCESS_BACKGROUND_LOCATION"
-    )
-  ) {
-    addPermission(
-      androidManifest,
-      "android.permission.ACCESS_BACKGROUND_LOCATION"
-    );
-  }
-  if (
-    !androidManifest.manifest["uses-permission"].some(
-      (e) =>
-        e["$"]["android:name"] === "android.permission.ACCESS_COARSE_LOCATION"
-    )
-  ) {
-    addPermission(androidManifest, "android.permission.ACCESS_COARSE_LOCATION");
-  }
-  if (
-    !androidManifest.manifest["uses-permission"].some(
-      (e) => e["$"]["android:name"] === "android.permission.FOREGROUND_SERVICE"
-    )
-  ) {
-    addPermission(androidManifest, "android.permission.FOREGROUND_SERVICE");
-  }
-  if (
-    !androidManifest.manifest["uses-permission"].some(
-      (e) => e["$"]["android:name"] === "android.permission.ACTIVITY_RECOGNITION"
-    )
-  ) {
-    addPermission(androidManifest, "android.permission.ACTIVITY_RECOGNITION");
-  }
-
-  return androidManifest;
+): ExpoConfig {
+  const isAndroidBackgroundLocationEnabled = !!args.androidBackgroundPermission;
+  const enableAndroidForegroundService = !!args.androidForegroundService;
+  const enableAndroidActivityRecognition = !!args.androidActivityRecognition;
+  return AndroidConfig.Permissions.withPermissions(
+    config,
+    [
+      isAndroidBackgroundLocationEnabled &&
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+      enableAndroidForegroundService && "android.permission.FOREGROUND_SERVICE",
+      enableAndroidForegroundService &&
+        "android.permission.FOREGROUND_SERVICE_LOCATION",
+      enableAndroidActivityRecognition &&
+        "android.permission.ACTIVITY_RECOGNITION",
+    ].filter(Boolean) as string[]
+  );
 }
 
 function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
@@ -168,9 +121,11 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
   const pattern = /^dependencies {/m;
 
   if (!buildGradle.match(pattern)) {
-    WarningAggregator.addWarningAndroid(
-      "react-native-radar",
-      "Could not find react.gradle script in android/app/build.gradle."
+    throw new Error(
+      `Failed to find react.gradle script in android/app/build.gradle.
+      This is required for react-native-radar to function properly.
+      Please ensure your android/app/build.gradle includes the react.gradle script.
+      Current build.gradle content: ${buildGradle}`
     );
   }
 
