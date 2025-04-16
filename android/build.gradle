@@ -18,7 +18,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 31
         versionCode 1
-        versionName '3.20.4-beta.1'
+        versionName '3.20.4-beta.2'
         consumerProguardFiles 'proguard-rules.pro'
     }
     lintOptions {
@@ -46,6 +46,6 @@ repositories {
 
 dependencies {
     api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.21.3-beta.8'
+    api 'io.radar:sdk:3.21.3-beta.9'
 }
 
