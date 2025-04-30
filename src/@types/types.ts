@@ -790,6 +790,7 @@ export interface RadarTrackingOptionsForegroundService {
   channelName?: string;
   iconString?: string;
   iconColor?: string;
+  deepLink?: string;
 }
 
 export type RadarTripStatus =
