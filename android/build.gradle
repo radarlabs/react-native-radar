@@ -11,6 +11,11 @@ buildscript {
 
 apply plugin: 'com.android.library'
 
+// Function to determine if new architecture is enabled
+def isNewArchitectureEnabled() {
+    return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
+}
+
 android {
     compileSdkVersion 31
 
@@ -20,7 +25,28 @@ android {
         versionCode 1
         versionName '3.20.3'
         consumerProguardFiles 'proguard-rules.pro'
+        
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
     }
+    
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    
+    sourceSets {
+        main {
+            java {
+                if (isNewArchitectureEnabled()) {
+                    srcDirs += ['src/newarch/java']
+                } else {
+                    srcDirs += ['src/oldarch/java']
+                }
+            }
+        }
+    }
+    
     lintOptions {
         abortOnError false
     }
@@ -45,7 +71,12 @@ repositories {
 }
 
 dependencies {
-    api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.21.3'
+    implementation 'com.facebook.react:react-native:+'
+    implementation 'io.radar:sdk:3.21.3'
+    
+    if (isNewArchitectureEnabled()) {
+        implementation "com.facebook.react:react-android"
+        implementation "com.facebook.react:turbomodule-core"
+    }
 }
 

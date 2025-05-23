@@ -52,6 +52,18 @@ RCT_EXPORT_MODULE();
     hasListeners = NO;
 }
 
+// Event listener methods for new architecture compatibility
+RCT_EXPORT_METHOD(addListener:(NSString *)eventName) {
+    // Call the existing startObserving logic
+    [self startObserving];
+}
+
+RCT_EXPORT_METHOD(removeListeners:(double)count) {
+    // For simplicity, always stop observing when any listeners are removed
+    // In a production implementation, you might want to track the count more precisely
+    [self stopObserving];
+}
+
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser * _Nullable )user {
     if (hasListeners) {
         NSMutableDictionary *body = [NSMutableDictionary new];

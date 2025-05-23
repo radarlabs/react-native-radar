@@ -10,8 +10,14 @@ import Radar, {
 import MapLibreGL from "@maplibre/maplibre-react-native";
 import ExampleButton from "./components/exampleButton";
 
+// Check if we're using the new architecture
+const isTurboModuleEnabled = (global as any).__turboModuleProxy != null;
+
 // The current version of MapLibre does not support the new react native architecture
-MapLibreGL.setAccessToken(null);
+// Only call setAccessToken if the method exists (legacy architecture)
+if (MapLibreGL.setAccessToken && typeof MapLibreGL.setAccessToken === 'function') {
+  MapLibreGL.setAccessToken(null);
+}
 
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 
@@ -64,7 +70,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       {/* The current version of MapLibre does not support the new react native architecture  */}
-      {Platform.OS !== "web" && (
+      {Platform.OS !== "web" && !isTurboModuleEnabled && (
         <>
           <View style={{ width: "100%", height: "40%" }}>
             <Map />
@@ -80,6 +86,15 @@ export default function App() {
             />
           </View>
         </>
+      )}
+      {Platform.OS !== "web" && isTurboModuleEnabled && (
+        <View style={{ width: "100%", height: "50%", justifyContent: "center", alignItems: "center", backgroundColor: "#f0f0f0" }}>
+          <Text style={{ fontSize: 16, color: "#666", textAlign: "center", padding: 20 }}>
+            🎉 New Architecture Enabled!{"\n\n"}
+            MapLibre components temporarily disabled{"\n"}
+            (Not yet compatible with TurboModules)
+          </Text>
+        </View>
       )}
       <View
         style={{
@@ -202,7 +217,7 @@ export default function App() {
                 .then((result) => {
                   handlePopulateText(
                     "trackOnce manual with location accuracy::" +
-                      stringify(result)
+                    stringify(result)
                   );
                 })
                 .catch((err) => {
