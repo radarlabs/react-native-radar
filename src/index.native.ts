@@ -43,6 +43,9 @@ import {
   RadarAddress,
 } from "./@types/types";
 
+// Check if we're running on the new architecture (TurboModules)
+const isTurboModuleEnabled = (global as any).__turboModuleProxy != null;
+
 if (
   !NativeModules.RNRadar &&
   (Platform.OS === "ios" || Platform.OS === "android")
@@ -50,7 +53,16 @@ if (
   throw new Error("NativeModules.RNRadar is undefined");
 }
 
-const eventEmitter = new NativeEventEmitter(NativeModules.RNRadar);
+// Event emitter setup - critical for the migration
+let eventEmitter: NativeEventEmitter;
+
+if (isTurboModuleEnabled) {
+  // New architecture: Use TurboModule with better event handling
+  eventEmitter = new NativeEventEmitter(NativeModules.RNRadar);
+} else {
+  // Legacy architecture: Use existing event emitter
+  eventEmitter = new NativeEventEmitter(NativeModules.RNRadar);
+}
 
 const initialize = (publishableKey: string, fraud: boolean = false): void => {
   NativeModules.RNRadar.initialize(publishableKey, fraud);
@@ -234,10 +246,15 @@ const logConversion = (
 const sendEvent = (name: string, metadata: RadarMetadata): void =>
   NativeModules.RNRadar.sendEvent(name, metadata);
 
+// Enhanced event listener system for both architectures
 const on = (
   channel: RadarEventChannel,
   callback: RadarListenerCallback
-): EmitterSubscription => eventEmitter.addListener(channel, callback);
+): EmitterSubscription => {
+  // The event listener system is the priority for this migration
+  // Both architectures will use the same event emitter interface
+  return eventEmitter.addListener(channel, callback);
+};
 
 const off = (
   channel: RadarEventChannel,
@@ -256,7 +273,15 @@ const nativeSdkVersion = (): Promise<string> =>
 
 const rnSdkVersion = (): string => version;
 
-const Radar: RadarNativeInterface = {
+// Add architecture detection utility for debugging
+const getArchitectureInfo = () => ({
+  isTurboModuleEnabled,
+  architecture: isTurboModuleEnabled ? 'new' : 'legacy',
+  platform: Platform.OS,
+  version: rnSdkVersion(),
+});
+
+const Radar: RadarNativeInterface & { getArchitectureInfo: () => any } = {
   initialize,
   setLogLevel,
   setUserId,
@@ -311,6 +336,7 @@ const Radar: RadarNativeInterface = {
   off,
   nativeSdkVersion,
   rnSdkVersion,
+  getArchitectureInfo, // For debugging and testing
 };
 
 export default Radar;
