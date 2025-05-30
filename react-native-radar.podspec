@@ -11,9 +11,23 @@ Pod::Spec.new do |s|
   s.authors = package[:author] || "radarlabs"
   s.summary = package[:description]
   s.source = { git: package[:repository][:url] }
-  s.source_files = "ios/*.{h,m}"
+  s.source_files = "ios/*.{h,m,mm}"
   s.platform = :ios, "10.0"
 
-  s.dependency "React"
+  s.dependency "React-Core"
   s.dependency "RadarSDK", "~> 3.21.3"
+
+  if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
+    s.compiler_flags = folly_compiler_flags + " -DRCT_NEW_ARCH_ENABLED=1"
+    s.pod_target_xcconfig = {
+      "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\"",
+      "OTHER_CPLUSPLUSFLAGS" => "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
+      "CLANG_CXX_LANGUAGE_STANDARD" => "c++17"
+    }
+    s.dependency "React-Codegen"
+    s.dependency "RCT-Folly"
+    s.dependency "RCTRequired"
+    s.dependency "RCTTypeSafety"
+    s.dependency "ReactCommon/turbomodule/core"
+  end
 end
