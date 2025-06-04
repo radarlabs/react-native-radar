@@ -46,7 +46,10 @@ import org.json.JSONObject;
 import java.util.EnumSet;
 import java.util.Map;
 
-public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener {
+// New Architecture imports
+import com.facebook.react.turbomodule.core.interfaces.TurboModule;
+
+public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener, TurboModule {
 
     private static final String TAG = "RNRadarModule";
     private static final int PERMISSIONS_REQUEST_CODE = 20160525; // random request code (Radar's birthday!)

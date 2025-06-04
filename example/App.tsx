@@ -1,631 +1,163 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, Platform } from "react-native";
-import Radar, {
-  Map,
-  Autocomplete,
-  RadarClientLocationUpdate,
-  RadarLocationUpdate,
-  RadarEventUpdate,
-} from "react-native-radar";
-import MapLibreGL from "@maplibre/maplibre-react-native";
-import ExampleButton from "./components/exampleButton";
-
-// The current version of MapLibre does not support the new react native architecture
-MapLibreGL.setAccessToken(null);
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
+import Radar from "react-native-radar";
+import * as Location from 'expo-location';
 
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 
-Radar.on("events", (result: RadarEventUpdate) => {
-  console.log("events:", stringify(result));
-});
-
-Radar.on("location", (result: RadarLocationUpdate) => {
-  console.log("location:", stringify(result));
-});
-
-Radar.on("clientLocation", (result: RadarClientLocationUpdate) => {
-  console.log("clientLocation:", stringify(result));
-});
-
-Radar.on("error", (err: any) => {
-  console.log("error:", stringify(err));
-});
-
-Radar.on("log", (result: string) => {
-  console.log("log:", stringify(result));
-});
-
 export default function App() {
-  // add in your test code here!
-  const [displayText, setDisplayText] = useState("");
+  const [displayText, setDisplayText] = useState("Radar SDK Test App\n\nTesting New Architecture Migration");
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [hasLocationPermission, setHasLocationPermission] = useState(false);
 
-  const handlePopulateText = (displayText: string) => {
-    setDisplayText(displayText);
+  const handlePopulateText = (text: string) => {
+    setDisplayText(prev => prev + "\n\n" + text);
   };
-  Radar.initialize(
-    "prj_test_pk_0000000000000000000000000000000000000000",
-    true
-  );
 
-  useEffect(() => {
-    Radar.setLogLevel("debug");
+  const requestLocationPermissions = async () => {
+    try {
+      handlePopulateText("🔄 Requesting location permissions...");
 
-    Radar.setUserId("foo");
+      const { status } = await Location.requestForegroundPermissionsAsync();
 
-    Radar.setDescription("description");
+      if (status !== 'granted') {
+        handlePopulateText("❌ Location permission denied");
+        return;
+      }
 
-    Radar.setMetadata({
-      foo: "bar",
-      baz: true,
-      qux: 1,
-    });
-  }, []);
+      setHasLocationPermission(true);
+      handlePopulateText("✅ Location permissions granted");
+    } catch (error) {
+      handlePopulateText("❌ Permission request failed: " + error);
+    }
+  };
+
+  const initializeRadar = () => {
+    try {
+      Radar.initialize(
+        "prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46",
+        true
+      );
+      setIsInitialized(true);
+      handlePopulateText("✅ Radar initialized successfully");
+    } catch (error) {
+      handlePopulateText("❌ Radar initialization failed: " + error);
+    }
+  };
+
+  const testTrackOnce = () => {
+    if (!isInitialized) {
+      handlePopulateText("❌ Please initialize Radar first");
+      return;
+    }
+
+    if (!hasLocationPermission) {
+      handlePopulateText("❌ Please grant location permissions first");
+      return;
+    }
+
+    handlePopulateText("🔄 Testing trackOnce...");
+    Radar.trackOnce()
+      .then((result: any) => {
+        handlePopulateText("✅ trackOnce success: " + stringify(result));
+      })
+      .catch((err: any) => {
+        handlePopulateText("❌ trackOnce error: " + stringify(err));
+      });
+  };
+
+  const testTrackOnceWithLocation = () => {
+    if (!isInitialized) {
+      handlePopulateText("❌ Please initialize Radar first");
+      return;
+    }
+
+    handlePopulateText("🔄 Testing trackOnce with manual location...");
+    Radar.trackOnce({
+      location: {
+        latitude: 40.7342,
+        longitude: -73.9911,
+        accuracy: 60,
+      },
+    })
+      .then((result: any) => {
+        handlePopulateText("✅ trackOnce with location success: " + stringify(result));
+      })
+      .catch((err: any) => {
+        handlePopulateText("❌ trackOnce with location error: " + stringify(err));
+      });
+  };
+
+  const setupEventListeners = () => {
+    if (!isInitialized) {
+      handlePopulateText("❌ Please initialize Radar first");
+      return;
+    }
+
+    try {
+      // Set up event listeners
+      Radar.on("events", (result: any) => {
+        handlePopulateText("📡 Events received: " + stringify(result));
+      });
+
+      Radar.on("location", (result: any) => {
+        handlePopulateText("📍 Location update: " + stringify(result));
+      });
+
+      Radar.on("clientLocation", (result: any) => {
+        handlePopulateText("📱 Client location: " + stringify(result));
+      });
+
+      Radar.on("error", (err: any) => {
+        handlePopulateText("❌ Radar error: " + stringify(err));
+      });
+
+      Radar.on("log", (result: string) => {
+        handlePopulateText("📝 Radar log: " + stringify(result));
+      });
+
+      handlePopulateText("✅ Event listeners set up successfully");
+    } catch (error) {
+      handlePopulateText("❌ Failed to set up event listeners: " + error);
+    }
+  };
+
+  const clearDisplay = () => {
+    setDisplayText("Radar SDK Test App\n\nTesting New Architecture Migration");
+  };
 
   return (
     <View style={styles.container}>
-      {/* The current version of MapLibre does not support the new react native architecture  */}
-      {Platform.OS !== "web" && (
-        <>
-          <View style={{ width: "100%", height: "40%" }}>
-            <Map />
-          </View>
-          <View style={{ width: "100%", height: "10%" }}>
-            <Autocomplete
-              options={{
-                near: {
-                  latitude: 40.7342,
-                  longitude: -73.9911,
-                },
-              }}
-            />
-          </View>
-        </>
-      )}
-      <View
-        style={{
-          width: "100%",
-          height: Platform.OS !== "web" ? "50%" : "100%",
-        }}
-      >
-        <ScrollView style={{ height: "25%" }}>
-          <Text style={styles.displayText}>{displayText}</Text>
-        </ScrollView>
-        <ScrollView style={{ height: "75%" }}>
-          <ExampleButton
-            title="getUser"
-            onPress={() => {
-              Radar.getUserId()
-                .then((result) => {
-                  handlePopulateText("getUserId:" + result);
-                })
-                .catch((err) => {
-                  handlePopulateText("getUserId:" + err);
-                });
-            }}
-          />
-          <ExampleButton
-            title="getDescription"
-            onPress={() => {
-              Radar.getDescription()
-                .then((result) => {
-                  handlePopulateText("getDescription:" + result);
-                })
-                .catch((err) => {
-                  handlePopulateText("getDescription:" + err);
-                });
-            }}
-          />
-          <ExampleButton
-            title="getMetadata"
-            onPress={() => {
-              Radar.getMetadata()
-                .then((result) => {
-                  handlePopulateText("getMetadata:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("getMetadata:" + err);
-                });
-            }}
-          />
-          <ExampleButton
-            title="requestPermissionsForeground"
-            onPress={() => {
-              Radar.requestPermissions(false)
-                .then((result) => {
-                  handlePopulateText("requestPermissions:" + result);
-                })
-                .catch((err) => {
-                  handlePopulateText("requestPermissions:" + err);
-                });
-            }}
-          />
+      <ScrollView style={styles.displayContainer}>
+        <Text style={styles.displayText}>{displayText}</Text>
+      </ScrollView>
 
-          <ExampleButton
-            title="requestPermissionsBackground"
-            onPress={() => {
-              Radar.requestPermissions(true)
-                .then((result) => {
-                  handlePopulateText("requestPermissions:" + result);
-                })
-                .catch((err) => {
-                  handlePopulateText("requestPermissions:" + err);
-                });
-            }}
-          />
-          <ExampleButton
-            title="getPermissionsStatus"
-            onPress={() => {
-              Radar.getPermissionsStatus()
-                .then((result) => {
-                  handlePopulateText("getPermissionsStatus:" + result);
-                })
-                .catch((err) => {
-                  handlePopulateText("getPermissionsStatus:" + err);
-                });
-            }}
-          />
-          <ExampleButton
-            title="getLocation"
-            onPress={() => {
-              Radar.getLocation()
-                .then((result) => {
-                  handlePopulateText("getLocation:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("getLocation:" + err);
-                });
-            }}
-          />
-          <ExampleButton
-            title="trackOnce"
-            onPress={() => {
-              Radar.trackOnce()
-                .then((result) => {
-                  handlePopulateText("trackOnce:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("trackOnce:" + err);
-                });
-            }}
-          />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={requestLocationPermissions}>
+          <Text style={styles.buttonText}>
+            {hasLocationPermission ? "✅ Permissions Granted" : "📍 Request Permissions"}
+          </Text>
+        </TouchableOpacity>
 
-          <ExampleButton
-            title="trackOnce manual"
-            onPress={() => {
-              Radar.trackOnce({
-                location: {
-                  latitude: 39.2904,
-                  longitude: -76.6122,
-                  accuracy: 60,
-                },
-              })
-                .then((result) => {
-                  handlePopulateText(
-                    "trackOnce manual with location accuracy::" +
-                      stringify(result)
-                  );
-                })
-                .catch((err) => {
-                  handlePopulateText(
-                    "trackOnce manual with location accuracy::" + err
-                  );
-                });
-            }}
-          />
-          <ExampleButton
-            title="trackOnce manual with beacons"
-            onPress={() => {
-              Radar.trackOnce({
-                desiredAccuracy: "medium",
-                beacons: true,
-              })
-                .then((result) => {
-                  handlePopulateText(
-                    "trackOnce manual with beacons:" + stringify(result)
-                  );
-                })
-                .catch((err) => {
-                  handlePopulateText("trackOnce manual with beacons:" + err);
-                });
-            }}
-          />
-          <ExampleButton
-            title="trackOnce for back compatible"
-            onPress={() => {
-              Radar.trackOnce({
-                latitude: 39.2904,
-                longitude: -76.6122,
-                accuracy: 65,
-              })
-                .then((result) => {
-                  handlePopulateText(
-                    "trackOnce for back compatible:" + stringify(result)
-                  );
-                })
-                .catch((err) => {
-                  handlePopulateText("trackOnce for back compatible:" + err);
-                });
-            }}
-          />
+        <TouchableOpacity style={styles.button} onPress={initializeRadar}>
+          <Text style={styles.buttonText}>Initialize Radar</Text>
+        </TouchableOpacity>
 
-          <ExampleButton
-            title="searchPlaces"
-            onPress={() => {
-              Radar.searchPlaces({
-                near: {
-                  latitude: 40.783826,
-                  longitude: -73.975363,
-                },
-                radius: 1000,
-                chains: ["starbucks"],
-                chainMetadata: {
-                  customFlag: "true",
-                },
-                countryCodes: ["CA", "US"],
-                limit: 10,
-              })
-                .then((result) => {
-                  handlePopulateText("searchPlaces:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("searchPlaces:" + err);
-                });
-            }}
-          />
+        <TouchableOpacity style={styles.button} onPress={setupEventListeners}>
+          <Text style={styles.buttonText}>Setup Event Listeners</Text>
+        </TouchableOpacity>
 
-          <ExampleButton
-            title="searchGeofences"
-            onPress={() => {
-              Radar.searchGeofences({
-                radius: 1000,
-                tags: ["venue"],
-                limit: 10,
-                includeGeometry: true,
-              })
-                .then((result) => {
-                  handlePopulateText("searchGeofences:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("searchGeofences:" + err);
-                });
-            }}
-          />
+        <TouchableOpacity style={styles.button} onPress={testTrackOnce}>
+          <Text style={styles.buttonText}>Test trackOnce</Text>
+        </TouchableOpacity>
 
-          <ExampleButton
-            title="autocomplete"
-            onPress={() => {
-              Radar.autocomplete({
-                query: "brooklyn roasting",
-                limit: 10,
-              })
-                .then((result) => {
-                  handlePopulateText("autocomplete:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("autocomplete:" + err);
-                });
-            }}
-          />
+        <TouchableOpacity style={styles.button} onPress={testTrackOnceWithLocation}>
+          <Text style={styles.buttonText}>Test trackOnce (Manual Location)</Text>
+        </TouchableOpacity>
 
-          <ExampleButton
-            title="geocode"
-            onPress={() => {
-              Radar.geocode({ address: "20 jay st brooklyn" })
-                .then((result) => {
-                  handlePopulateText("geocode:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("geocode:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="reverseGeocode"
-            onPress={() => {
-              Radar.reverseGeocode({
-                location: {
-                  latitude: 40.783826,
-                  longitude: -73.975363,
-                },
-              })
-                .then((result) => {
-                  handlePopulateText("reverseGeocode:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("reverseGeocode:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="ipGeocode"
-            onPress={() => {
-              Radar.ipGeocode()
-                .then((result) => {
-                  handlePopulateText("ipGeocode:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("ipGeocode:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="validateAddress"
-            onPress={() => {
-              Radar.validateAddress({
-                latitude: 0,
-                longitude: 0,
-                city: "New York",
-                stateCode: "NY",
-                postalCode: "10003",
-                countryCode: "US",
-                street: "Broadway",
-                number: "841",
-              })
-                .then((result) => {
-                  handlePopulateText("validateAddress:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("validateAddress:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="getDistance"
-            onPress={() => {
-              Radar.getDistance({
-                origin: {
-                  latitude: 40.78382,
-                  longitude: -73.97536,
-                },
-                destination: {
-                  latitude: 40.7039,
-                  longitude: -73.9867,
-                },
-                modes: ["foot", "car"],
-                units: "imperial",
-              })
-                .then((result) => {
-                  handlePopulateText("getDistance:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("getDistance:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="getMatrix"
-            onPress={() => {
-              Radar.getMatrix({
-                origins: [
-                  {
-                    latitude: 40.78382,
-                    longitude: -73.97536,
-                  },
-                  {
-                    latitude: 40.7039,
-                    longitude: -73.9867,
-                  },
-                ],
-                destinations: [
-                  {
-                    latitude: 40.64189,
-                    longitude: -73.78779,
-                  },
-                  {
-                    latitude: 35.99801,
-                    longitude: -78.94294,
-                  },
-                ],
-                mode: "car",
-                units: "imperial",
-              })
-                .then((result) => {
-                  handlePopulateText("getMatrix:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("getMatrix:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="startTrip"
-            onPress={() => {
-              Radar.startTrip({
-                tripOptions: {
-                  externalId: "300",
-                  destinationGeofenceTag: "store",
-                  destinationGeofenceExternalId: "123",
-                  mode: "car",
-                  scheduledArrivalAt: new Date(
-                    "2023-10-10T12:20:30Z"
-                  ).getTime(),
-                  metadata: {
-                    "test-trip-meta": "test-trip-data",
-                  },
-                },
-              })
-                .then((result) => {
-                  handlePopulateText("startTrip:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("startTrip:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="startTrip with TrackingOptions"
-            onPress={() => {
-              Radar.startTrip({
-                tripOptions: {
-                  externalId: "302",
-                  destinationGeofenceTag: "store",
-                  destinationGeofenceExternalId: "123",
-                  mode: "car",
-                  scheduledArrivalAt: new Date(
-                    "2023-10-10T12:20:30Z"
-                  ).getTime(),
-                },
-                trackingOptions: {
-                  desiredStoppedUpdateInterval: 30,
-                  fastestStoppedUpdateInterval: 30,
-                  desiredMovingUpdateInterval: 30,
-                  fastestMovingUpdateInterval: 30,
-                  desiredSyncInterval: 20,
-                  desiredAccuracy: "high",
-                  stopDuration: 0,
-                  stopDistance: 0,
-                  replay: "none",
-                  sync: "all",
-                  showBlueBar: true,
-                  useStoppedGeofence: false,
-                  stoppedGeofenceRadius: 0,
-                  useMovingGeofence: false,
-                  movingGeofenceRadius: 0,
-                  syncGeofences: false,
-                  syncGeofencesLimit: 0,
-                  beacons: false,
-                  foregroundServiceEnabled: false,
-                },
-              })
-                .then((result) => {
-                  handlePopulateText("startTrip:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("startTrip:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="completeTrip"
-            onPress={() => {
-              Radar.completeTrip()
-                .then((result) => {
-                  handlePopulateText("completeTrip:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("completeTrip:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="logConversion with revenue"
-            onPress={() => {
-              Radar.logConversion({
-                name: "in_app_purchase",
-                revenue: 150,
-                metadata: {
-                  sku: "123456789",
-                },
-              })
-                .then((result) => {
-                  handlePopulateText("logConversion:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("logConversion:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="logConversion"
-            onPress={() => {
-              Radar.logConversion({
-                name: "in_app_purchase",
-                metadata: {
-                  sku: "123456789",
-                },
-              })
-                .then((result) => {
-                  handlePopulateText("logConversion:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("logConversion:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="trackVerified"
-            onPress={() => {
-              Radar.trackVerified()
-                .then((result) => {
-                  handlePopulateText("trackVerified:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("trackVerified:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="startTrackingVerified"
-            onPress={() => {
-              Radar.startTrackingVerified();
-            }}
-          />
-
-          <ExampleButton
-            title="isTrackingVerified"
-            onPress={() => {
-              Radar.isTrackingVerified()
-                .then((result) => {
-                  handlePopulateText("isTrackingVerified:" + stringify(result));
-                })
-                .catch((err) => {
-                  handlePopulateText("isTrackingVerified:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="stopTrackingVerified"
-            onPress={() => {
-              Radar.stopTrackingVerified();
-            }}
-          />
-
-          <ExampleButton
-            title="setProduct"
-            onPress={() => {
-              Radar.setProduct("test");
-            }}
-          />
-
-          <ExampleButton
-            title="getVerifiedLocationToken"
-            onPress={() => {
-              Radar.getVerifiedLocationToken()
-                .then((result) => {
-                  handlePopulateText(
-                    "getVerifiedLocationToken:" + stringify(result)
-                  );
-                })
-                .catch((err) => {
-                  handlePopulateText("getVerifiedLocationToken:" + err);
-                });
-            }}
-          />
-
-          <ExampleButton
-            title="version"
-            onPress={() => {
-              Radar.nativeSdkVersion().then((nativeVersion) => {
-                handlePopulateText(
-                  `sdk: ${Radar.rnSdkVersion()}, native: ${nativeVersion}`
-                );
-              });
-            }}
-          />
-        </ScrollView>
+        <TouchableOpacity style={[styles.button, styles.clearButton]} onPress={clearDisplay}>
+          <Text style={styles.buttonText}>Clear Display</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -634,11 +166,37 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#f5f5f5',
+    paddingTop: 50,
+  },
+  displayContainer: {
+    flex: 1,
+    margin: 10,
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 8,
   },
   displayText: {
-    flex: 1,
+    fontSize: 12,
+    fontFamily: 'monospace',
+    color: '#333',
+  },
+  buttonContainer: {
+    padding: 10,
+  },
+  button: {
+    backgroundColor: '#007AFF',
+    padding: 15,
+    borderRadius: 8,
+    marginVertical: 5,
+    alignItems: 'center',
+  },
+  clearButton: {
+    backgroundColor: '#FF3B30',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

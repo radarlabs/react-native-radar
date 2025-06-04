@@ -11,6 +11,7 @@
     "README.md",
     "react-native-radar.podspec",
     "/dist",
+    "/src",
     "app.plugin.js",
     "/plugin/build"
   ],
@@ -23,6 +24,15 @@
     "copy-assets": "./copyAssets.sh",
     "build-plugin": "tsc --build plugin/",
     "build-all": "npm run build && npm run build-plugin && npm run copy-assets"
+  },
+  "codegenConfig": {
+    "name": "RNRadarSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "io.radar.react"
+    },
+    "ios": {}
   },
   "jest": {
     "preset": "react-native",
