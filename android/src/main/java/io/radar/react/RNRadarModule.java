@@ -23,6 +23,10 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
+
+// TurboModule imports
+import com.facebook.react.module.annotations.ReactModule;
+
 import io.radar.sdk.Radar;
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.RadarTrackingOptions.RadarTrackingOptionsForegroundService;
@@ -46,11 +50,10 @@ import org.json.JSONObject;
 import java.util.EnumSet;
 import java.util.Map;
 
-// New Architecture imports
-import com.facebook.react.turbomodule.core.interfaces.TurboModule;
+@ReactModule(name = RNRadarModule.NAME)
+public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener {
 
-public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener, TurboModule {
-
+    public static final String NAME = "RNRadar";
     private static final String TAG = "RNRadarModule";
     private static final int PERMISSIONS_REQUEST_CODE = 20160525; // random request code (Radar's birthday!)
     private Promise mPermissionsRequestPromise;
@@ -64,6 +67,14 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         super(reactContext);
         receiver = new RNRadarReceiver();
         verifiedReceiver = new RNRadarVerifiedReceiver();
+        
+        // Set static reference for event sending
+        RNRadarReceiver.setRadarModule(this);
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @ReactMethod
@@ -87,11 +98,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
             receiver.hasListeners = false;
         }
-    }
-
-    @Override
-    public String getName() {
-        return "RNRadar";
     }
 
     @ReactMethod

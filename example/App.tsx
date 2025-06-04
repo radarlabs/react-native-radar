@@ -6,9 +6,10 @@ import * as Location from 'expo-location';
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 
 export default function App() {
-  const [displayText, setDisplayText] = useState("Radar SDK Test App\n\nTesting New Architecture Migration");
+  const [displayText, setDisplayText] = useState("🎯 Radar TurboModule Test App\n\nTesting ALL Event Listeners - Complete Coverage");
   const [isInitialized, setIsInitialized] = useState(false);
   const [hasLocationPermission, setHasLocationPermission] = useState(false);
+  const [listenersSetup, setListenersSetup] = useState(false);
 
   const handlePopulateText = (text: string) => {
     setDisplayText(prev => prev + "\n\n" + text);
@@ -35,17 +36,61 @@ export default function App() {
   const initializeRadar = () => {
     try {
       Radar.initialize(
-        "prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46",
+        "prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", // ✅ Replace with your real key
         true
       );
       setIsInitialized(true);
-      handlePopulateText("✅ Radar initialized successfully");
+      handlePopulateText("✅ Radar initialized successfully with TurboModule");
     } catch (error) {
       handlePopulateText("❌ Radar initialization failed: " + error);
     }
   };
 
-  const testTrackOnce = () => {
+  const setupEventListeners = () => {
+    if (!isInitialized) {
+      handlePopulateText("❌ Please initialize Radar first");
+      return;
+    }
+
+    try {
+      handlePopulateText("🔄 Setting up ALL event listeners...");
+
+      // ALL available event channels: "clientLocation" | "location" | "error" | "events" | "log" | "token"
+
+      const eventsListener = Radar.on("events", (result: any) => {
+        handlePopulateText("🎯 EVENTS: " + stringify(result));
+      });
+
+      const locationListener = Radar.on("location", (result: any) => {
+        handlePopulateText("📍 LOCATION: " + stringify(result));
+      });
+
+      const clientLocationListener = Radar.on("clientLocation", (result: any) => {
+        handlePopulateText("📱 CLIENT LOCATION: " + stringify(result));
+      });
+
+      const errorListener = Radar.on("error", (err: any) => {
+        handlePopulateText("⚠️ ERROR: " + stringify(err));
+      });
+
+      const logListener = Radar.on("log", (result: string) => {
+        handlePopulateText("📝 LOG: " + stringify(result));
+      });
+
+      const tokenListener = Radar.on("token", (result: any) => {
+        handlePopulateText("🔑 TOKEN: " + stringify(result));
+      });
+
+      setListenersSetup(true);
+      handlePopulateText("✅ ALL event listeners active!");
+      handlePopulateText("👁️ Listening for: events, location, clientLocation, error, log, token");
+
+    } catch (error) {
+      handlePopulateText("❌ Failed to set up event listeners: " + error);
+    }
+  };
+
+  const triggerTrackOnce = () => {
     if (!isInitialized) {
       handlePopulateText("❌ Please initialize Radar first");
       return;
@@ -56,74 +101,76 @@ export default function App() {
       return;
     }
 
-    handlePopulateText("🔄 Testing trackOnce...");
+    handlePopulateText("🔄 Triggering trackOnce via TurboModule...");
     Radar.trackOnce()
       .then((result: any) => {
-        handlePopulateText("✅ trackOnce success: " + stringify(result));
+        handlePopulateText("✅ trackOnce completed: " + stringify(result));
       })
       .catch((err: any) => {
         handlePopulateText("❌ trackOnce error: " + stringify(err));
       });
   };
 
-  const testTrackOnceWithLocation = () => {
+  const testManualLocation = () => {
     if (!isInitialized) {
       handlePopulateText("❌ Please initialize Radar first");
       return;
     }
 
-    handlePopulateText("🔄 Testing trackOnce with manual location...");
+    handlePopulateText("🔄 Testing with manual location (NYC) via TurboModule...");
     Radar.trackOnce({
       location: {
-        latitude: 40.7342,
-        longitude: -73.9911,
-        accuracy: 60,
+        latitude: 40.7589,
+        longitude: -73.9851,
+        accuracy: 10,
       },
     })
       .then((result: any) => {
-        handlePopulateText("✅ trackOnce with location success: " + stringify(result));
+        handlePopulateText("✅ Manual location test completed: " + stringify(result));
       })
       .catch((err: any) => {
-        handlePopulateText("❌ trackOnce with location error: " + stringify(err));
+        handlePopulateText("❌ Manual location test error: " + stringify(err));
       });
   };
 
-  const setupEventListeners = () => {
+  const testAdditionalMethods = () => {
     if (!isInitialized) {
       handlePopulateText("❌ Please initialize Radar first");
       return;
     }
 
-    try {
-      // Set up event listeners
-      Radar.on("events", (result: any) => {
-        handlePopulateText("📡 Events received: " + stringify(result));
+    handlePopulateText("🔄 Testing additional TurboModule methods...");
+
+    // Test getUserId
+    Radar.getUserId()
+      .then((userId) => {
+        handlePopulateText("👤 User ID: " + (userId || "not set"));
+      })
+      .catch((err) => {
+        handlePopulateText("❌ getUserId error: " + stringify(err));
       });
 
-      Radar.on("location", (result: any) => {
-        handlePopulateText("📍 Location update: " + stringify(result));
+    // Test getPermissionsStatus
+    Radar.getPermissionsStatus()
+      .then((status) => {
+        handlePopulateText("🔐 Permissions Status: " + status);
+      })
+      .catch((err) => {
+        handlePopulateText("❌ getPermissionsStatus error: " + stringify(err));
       });
 
-      Radar.on("clientLocation", (result: any) => {
-        handlePopulateText("📱 Client location: " + stringify(result));
+    // Test nativeSdkVersion
+    Radar.nativeSdkVersion()
+      .then((version) => {
+        handlePopulateText("📦 Native SDK Version: " + version);
+      })
+      .catch((err) => {
+        handlePopulateText("❌ nativeSdkVersion error: " + stringify(err));
       });
-
-      Radar.on("error", (err: any) => {
-        handlePopulateText("❌ Radar error: " + stringify(err));
-      });
-
-      Radar.on("log", (result: string) => {
-        handlePopulateText("📝 Radar log: " + stringify(result));
-      });
-
-      handlePopulateText("✅ Event listeners set up successfully");
-    } catch (error) {
-      handlePopulateText("❌ Failed to set up event listeners: " + error);
-    }
   };
 
   const clearDisplay = () => {
-    setDisplayText("Radar SDK Test App\n\nTesting New Architecture Migration");
+    setDisplayText("🎯 Radar TurboModule Test App\n\nTesting ALL Event Listeners - Complete Coverage");
   };
 
   return (
@@ -135,28 +182,39 @@ export default function App() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={requestLocationPermissions}>
           <Text style={styles.buttonText}>
-            {hasLocationPermission ? "✅ Permissions Granted" : "📍 Request Permissions"}
+            {hasLocationPermission ? "✅ Permissions Granted" : "📍 1. Request Permissions"}
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={initializeRadar}>
-          <Text style={styles.buttonText}>Initialize Radar</Text>
+          <Text style={styles.buttonText}>
+            {isInitialized ? "✅ TurboModule Initialized" : "🔧 2. Initialize TurboModule"}
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={setupEventListeners}>
-          <Text style={styles.buttonText}>Setup Event Listeners</Text>
+        <TouchableOpacity
+          style={[styles.button, styles.priorityButton]}
+          onPress={setupEventListeners}
+        >
+          <Text style={styles.buttonText}>
+            {listenersSetup ? "✅ ALL Listeners Active" : "🎯 3. Setup ALL Listeners"}
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={testTrackOnce}>
-          <Text style={styles.buttonText}>Test trackOnce</Text>
+        <TouchableOpacity style={styles.button} onPress={triggerTrackOnce}>
+          <Text style={styles.buttonText}>🔄 4. Test TrackOnce</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={testTrackOnceWithLocation}>
-          <Text style={styles.buttonText}>Test trackOnce (Manual Location)</Text>
+        <TouchableOpacity style={styles.button} onPress={testManualLocation}>
+          <Text style={styles.buttonText}>🗺️ 5. Test Manual Location</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={testAdditionalMethods}>
+          <Text style={styles.buttonText}>🧪 6. Test Additional Methods</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.button, styles.clearButton]} onPress={clearDisplay}>
-          <Text style={styles.buttonText}>Clear Display</Text>
+          <Text style={styles.buttonText}>🗑️ Clear Display</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -191,12 +249,15 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     alignItems: 'center',
   },
+  priorityButton: {
+    backgroundColor: '#FF6B35', // Orange for priority
+  },
   clearButton: {
     backgroundColor: '#FF3B30',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });

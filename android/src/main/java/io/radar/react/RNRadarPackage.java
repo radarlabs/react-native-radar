@@ -1,26 +1,32 @@
 package io.radar.react;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.facebook.react.TurboReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.module.model.ReactModuleInfo;
 import com.facebook.react.module.model.ReactModuleInfoProvider;
-import com.facebook.react.turbomodule.core.interfaces.TurboModule;
+import com.facebook.react.uimanager.ViewManager;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 public class RNRadarPackage extends TurboReactPackage {
 
-    @Nullable
     @Override
-    public NativeModule getModule(String name, ReactApplicationContext reactContext) {
-        if (name.equals("RNRadar")) {
+    @NonNull
+    public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    @Nullable
+    public NativeModule getModule(@NonNull String name, @NonNull ReactApplicationContext reactContext) {
+        if (name.equals(RNRadarModule.NAME)) {
             return new RNRadarModule(reactContext);
         } else {
             return null;
@@ -28,15 +34,16 @@ public class RNRadarPackage extends TurboReactPackage {
     }
 
     @Override
+    @NonNull
     public ReactModuleInfoProvider getReactModuleInfoProvider() {
         return () -> {
             final Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
-            boolean isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+            boolean isTurboModule = true; // Always enable TurboModule for new architecture
             moduleInfos.put(
-                    "RNRadar",
+                    RNRadarModule.NAME,
                     new ReactModuleInfo(
-                            "RNRadar",
-                            "RNRadar",
+                            RNRadarModule.NAME,
+                            RNRadarModule.NAME,
                             false, // canOverrideExistingModule
                             false, // needsEagerInit
                             true, // hasConstants
