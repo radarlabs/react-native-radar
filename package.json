@@ -13,7 +13,8 @@
     "/dist",
     "/src",
     "app.plugin.js",
-    "/plugin/build"
+    "/plugin/build",
+    "/scripts"
   ],
   "types": "dist/index.d.ts",
   "scripts": {
@@ -23,7 +24,8 @@
     "build": "tsc",
     "copy-assets": "./copyAssets.sh",
     "build-plugin": "tsc --build plugin/",
-    "build-all": "npm run build && npm run build-plugin && npm run copy-assets"
+    "build-all": "npm run build && npm run build-plugin && npm run copy-assets",
+    "postinstall": "node scripts/setup-codegen.js"
   },
   "codegenConfig": {
     "name": "RNRadarSpec",
