@@ -38,29 +38,16 @@
     },
     "plugins": [
       [
-        "react-native-radar",
-        {
-          "iosFraud": true,
-          "iosNSLocationAlwaysAndWhenInUseUsageDescription": "test value",
-          "iosBackgroundMode": true,
-          "androidFraud": false,
-          "androidBackgroundPermission": true,
-          "addRadarSDKMotion": true,
-          "androidActivityRecognition": true,
-          "androidForegroundService": true
-        }
-      ],
-      [
         "@maplibre/maplibre-react-native"
       ],
       [
         "expo-build-properties",
         {
           "ios": {
-            "newArchEnabled": false
+            "newArchEnabled": true
           },
           "android": {
-            "newArchEnabled": false,
+            "newArchEnabled": true,
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true
           }

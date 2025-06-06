@@ -3,7 +3,8 @@ import { Platform } from "react-native";
 
 let nativeModule: RadarNativeInterface;
 
-nativeModule = Platform.OS === "web" ? require("./index.web").default : require("./index.native").default;
+// Use the new TurboModule architecture implementation
+nativeModule = Platform.OS === "web" ? require("./index.web").default : require("./index.turbo").default;
 
 export default nativeModule;
 

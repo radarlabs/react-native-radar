@@ -1229,3 +1229,10 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
 }
 
 @end
+
+#ifdef RCT_NEW_ARCH_ENABLED
+// TurboModule support
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params {
+    return std::make_shared<facebook::react::NativeRNRadarSpecJSI>(params);
+}
+#endif

@@ -27,6 +27,11 @@ public class RNRadarReceiver extends RadarReceiver {
     private ReactNativeHost reactNativeHost;
     private static final String TAG = "RNRadarReceiver";
     protected boolean hasListeners = false;
+    private static RNRadarModule radarModule;
+
+    public static void setRadarModule(RNRadarModule module) {
+        radarModule = module;
+    }
 
     private void sendEvent(final String eventName, final Object data) {
         final ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
@@ -39,7 +44,7 @@ public class RNRadarReceiver extends RadarReceiver {
     @Override
     public void onEventsReceived(@NonNull Context context, @NonNull RadarEvent[] events, @Nullable RadarUser user) {
         try {
-            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            ReactApplication reactApplication = ((ReactApplication) context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
@@ -57,7 +62,7 @@ public class RNRadarReceiver extends RadarReceiver {
     @Override
     public void onLocationUpdated(@NonNull Context context, @NonNull Location location, @NonNull RadarUser user) {
         try {
-            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            ReactApplication reactApplication = ((ReactApplication) context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
@@ -71,9 +76,10 @@ public class RNRadarReceiver extends RadarReceiver {
     }
 
     @Override
-    public void onClientLocationUpdated(@NonNull Context context, @NonNull Location location, boolean stopped, @NonNull Radar.RadarLocationSource source) {
+    public void onClientLocationUpdated(@NonNull Context context, @NonNull Location location, boolean stopped,
+            @NonNull Radar.RadarLocationSource source) {
         try {
-            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            ReactApplication reactApplication = ((ReactApplication) context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
@@ -90,7 +96,7 @@ public class RNRadarReceiver extends RadarReceiver {
     @Override
     public void onError(@NonNull Context context, @NonNull Radar.RadarStatus status) {
         try {
-            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            ReactApplication reactApplication = ((ReactApplication) context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
             sendEvent("error", status.toString());
@@ -102,7 +108,7 @@ public class RNRadarReceiver extends RadarReceiver {
     @Override
     public void onLog(@NonNull Context context, @NonNull String message) {
         try {
-            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            ReactApplication reactApplication = ((ReactApplication) context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
             sendEvent("log", message);
