@@ -1,161 +1,226 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
-const codegenDir = path.join(__dirname, '..', 'android', 'build', 'generated', 'source', 'codegen', 'jni');
+console.log(`Platform: ${os.platform()}`);
+console.log(`Architecture: ${os.arch()}`);
+console.log(`Node version: ${process.version}`);
 
-// Create directory if it doesn't exist
-if (!fs.existsSync(codegenDir)) {
-    fs.mkdirSync(codegenDir, { recursive: true });
+function findProjectRoot() {
+    // Try to find package.json in parent directories
+    let currentDir = __dirname;
+    console.log(`Starting search from: ${currentDir}`);
+
+    while (currentDir !== path.parse(currentDir).root) {
+        const packageJsonPath = path.join(currentDir, 'package.json');
+        console.log(`Checking: ${packageJsonPath}`);
+
+        if (fs.existsSync(packageJsonPath)) {
+            try {
+                const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+                console.log(`Found package: ${pkg.name}`);
+                if (pkg.name === 'react-native-radar') {
+                    console.log(`Found project root: ${currentDir}`);
+                    return currentDir;
+                }
+            } catch (e) {
+                console.log(`Invalid package.json: ${e.message}`);
+                // Continue searching if package.json is invalid
+            }
+        }
+        currentDir = path.dirname(currentDir);
+    }
+    return null;
 }
 
-// Create CMakeLists.txt
-const cmakeContent = `cmake_minimum_required(VERSION 3.13)
+function ensureDirectoryExists(dir) {
+    console.log(`Ensuring directory exists: ${dir}`);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+        console.log(`Created directory: ${dir}`);
+    } else {
+        console.log(`Directory already exists: ${dir}`);
+    }
+}
+
+try {
+    const projectRoot = findProjectRoot();
+    if (!projectRoot) {
+        throw new Error('Could not find project root directory');
+    }
+
+    // Define paths for both library and example app
+    const paths = [
+        // Library path
+        path.join(projectRoot, 'android', 'build', 'generated', 'source', 'codegen', 'jni'),
+        // Example app path (relative to node_modules)
+        path.join(projectRoot, 'example', 'node_modules', 'react-native-radar', 'android', 'build', 'generated', 'source', 'codegen', 'jni')
+    ];
+
+    console.log(`Target paths:`);
+    paths.forEach((p, i) => console.log(`  ${i + 1}. ${p}`));
+
+    // Create CMakeLists.txt content
+    const cmakeContent = `cmake_minimum_required(VERSION 3.13)
 set(CMAKE_VERBOSE_MAKEFILE on)
 
+string(APPEND CMAKE_CXX_FLAGS " -std=c++17")
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 add_compile_options(
-        -fexceptions
-        -frtti
-        -std=c++17
-        -Wall
+  -fexceptions
+  -frtti
+  -std=c++17
+  -Wall
+  -Wpedantic
+  -Wno-gnu-zero-variadic-macro-arguments
 )
 
-file(GLOB LIBRN_DIR "\${CMAKE_SOURCE_DIR}/../../../../../react-native")
+# Export a native module library for the Radar module
+set(PACKAGE_NAME "react_codegen_RNRadarSpec")
+set(BUILD_DIR \${CMAKE_SOURCE_DIR}/build)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
-# Generated from codegen
-file(GLOB CODEGEN_DIR "\${CMAKE_SOURCE_DIR}")
-
-# find sources
-file(GLOB_RECURSE SOURCES_FILES \${CODEGEN_DIR}/*.cpp)
-
-# Create the library (with or without actual sources)
 add_library(
-        react_codegen_RNRadarSpec
-        SHARED
-        \${CMAKE_CURRENT_SOURCE_DIR}/dummy.cpp
+  \${PACKAGE_NAME}
+  SHARED
+  \${CMAKE_CURRENT_SOURCE_DIR}/dummy.cpp
 )
 
-# Set up include directories - this is the key fix
-target_include_directories(react_codegen_RNRadarSpec PUBLIC
-    \${CODEGEN_DIR}
-    \${CMAKE_CURRENT_SOURCE_DIR}
-    "\${LIBRN_DIR}/ReactCommon"
-    "\${LIBRN_DIR}/ReactAndroid/src/main/jni/react/turbomodule"
-    "\${LIBRN_DIR}/ReactAndroid/src/main/java/com/facebook/react/turbomodule/core/jni"
-)
-
-# includes for React Native - use proper paths
 target_include_directories(
-        react_codegen_RNRadarSpec
-        PRIVATE
-        "\${LIBRN_DIR}/ReactCommon"
-        "\${LIBRN_DIR}/ReactCommon/callinvoker"
-        "\${LIBRN_DIR}/ReactCommon/jsi"
-        "\${LIBRN_DIR}/ReactCommon/react/nativemodule/core" 
-        "\${LIBRN_DIR}/ReactCommon/react/bridging"
-        "\${LIBRN_DIR}/ReactCommon/turbomodule/core"
-        "\${LIBRN_DIR}/ReactAndroid/src/main/java/com/facebook/react/turbomodule/core/jni"
-        "\${LIBRN_DIR}/ReactAndroid/src/main/jni"
-        "\${LIBRN_DIR}/ReactAndroid/src/main/jni/react/turbomodule"
+  \${PACKAGE_NAME}
+  PUBLIC
+  "\${NODE_MODULES_DIR}/react-native/ReactAndroid/src/main/jni/react/turbomodule"
+  "\${NODE_MODULES_DIR}/react-native/ReactCommon"
+  "\${NODE_MODULES_DIR}/react-native/ReactCommon/callinvoker"
+  "\${NODE_MODULES_DIR}/react-native/ReactCommon/jsi"
+  "\${NODE_MODULES_DIR}/react-native/ReactCommon/react/nativemodule/core"
+  "\${NODE_MODULES_DIR}/react-native/ReactCommon/react/bridging"
+  "\${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
-# find libraries
-find_library(
-        LOG_LIB
-        log
-)
-
-# link libraries
 target_link_libraries(
-        react_codegen_RNRadarSpec
-        \${LOG_LIB}
-)
-
-# Export the include directory for other targets to use
-target_include_directories(react_codegen_RNRadarSpec 
-    INTERFACE 
-    \${CMAKE_CURRENT_SOURCE_DIR}
+  \${PACKAGE_NAME}
+  android
+  fbjni
+  jsi
+  react_nativemodule_core
+  ReactAndroid::turbomodulejsijni
 )`;
 
-// Create dummy.cpp
-const dummyContent = `#include "RNRadarSpec.h"
+    // Create RNRadarSpec.h content
+    const radarSpecHeader = `#pragma once
 
-// Use relative paths for React Native includes
-#include "react/bridging/Bridging.h"
-#include "turbomodule/core/TurboModule.h"
+#include <ReactCommon/TurboModule.h>
+#include <jsi/jsi.h>
 
 namespace facebook::react {
 
-RNRadarSpec::RNRadarSpec(const std::string &name, std::shared_ptr<CallInvoker> jsInvoker)
-    : TurboModule(name, jsInvoker) {}
+class RNRadarSpec : public TurboModule {
+public:
+    RNRadarSpec(std::shared_ptr<CallInvoker> jsInvoker);
 
-std::shared_ptr<TurboModule> RNRadarSpec_ModuleProvider(const std::string &moduleName, const void* params) {
-    // Return null to let the actual module registration system handle this
-    // This is just to satisfy the build system's symbol requirements
+    virtual ~RNRadarSpec() = default;
+};
+
+std::shared_ptr<TurboModule> RNRadarSpec_ModuleProvider(const std::string &moduleName, const std::shared_ptr<CallInvoker> &jsInvoker);
+
+} // namespace facebook::react`;
+
+    // Create dummy.cpp content
+    const dummyContent = `#include "RNRadarSpec.h"
+
+namespace facebook::react {
+
+RNRadarSpec::RNRadarSpec(std::shared_ptr<CallInvoker> jsInvoker)
+    : TurboModule("RNRadar", jsInvoker) {}
+
+std::shared_ptr<TurboModule> RNRadarSpec_ModuleProvider(const std::string &moduleName, const std::shared_ptr<CallInvoker> &jsInvoker) {
+    if (moduleName == "RNRadar") {
+        return std::make_shared<RNRadarSpec>(jsInvoker);
+    }
     return nullptr;
 }
 
 } // namespace facebook::react`;
 
-// Create RNRadarSpec.h (simplified dummy header file)
-const radarSpecHeader = `#pragma once
+    // Create DefaultComponentsRegistry.h content
+    const defaultComponentsHeader = `#pragma once
 
-#include <memory>
-#include <string>
+#include <ComponentFactory.h>
+#include <fbjni/fbjni.h>
+#include <react/renderer/componentregistry/ComponentDescriptorProviderRegistry.h>
+#include <react/renderer/componentregistry/ComponentDescriptorRegistry.h>
 
-// Use relative paths for React Native includes
-#include "react/bridging/Bridging.h"
-#include "turbomodule/core/TurboModule.h"
+namespace facebook {
+namespace react {
 
-namespace facebook::react {
-    class RNRadarSpec : public TurboModule {
-    protected:
-        RNRadarSpec(const std::string &name, std::shared_ptr<CallInvoker> jsInvoker);
-    public:
-        virtual ~RNRadarSpec() = default;
-    };
-
-    // Provide function overloads to handle any parameter type the autolinking system passes
-    std::shared_ptr<TurboModule> RNRadarSpec_ModuleProvider(const std::string &moduleName, const void* params);
-    
-    template<typename T>
-    std::shared_ptr<TurboModule> RNRadarSpec_ModuleProvider(const std::string &moduleName, const T& params) {
-        return RNRadarSpec_ModuleProvider(moduleName, static_cast<const void*>(&params));
-    }
-}`;
-
-// Create DefaultComponentsRegistry.h (simplified dummy header file)
-const defaultComponentsHeader = `#pragma once
-
-#include <memory>
-
-namespace facebook::react {
-
-// Forward declaration
-class ComponentDescriptorProviderRegistry;
-
-// Dummy registry - will be replaced by actual codegen
-class DefaultComponentsRegistry {
+class DefaultComponentsRegistry : public facebook::jni::HybridClass<DefaultComponentsRegistry> {
 public:
-    static void registerComponents() {}
-    
-    // Function pointer type that matches exactly what OnLoad.cpp expects
-    // From the error: 'void (*)(std::shared_ptr<const ComponentDescriptorProviderRegistry>)'
-    static void (*registerComponentDescriptorsFromEntryPoint)(std::shared_ptr<const ComponentDescriptorProviderRegistry>);
+    constexpr static auto kJavaDescriptor = "Lcom/facebook/react/defaults/DefaultComponentsRegistry;";
+
+    static void registerNatives();
+
+    DefaultComponentsRegistry(ComponentFactory *delegate);
+
+    static std::shared_ptr<ComponentDescriptorProviderRegistry const> sharedProviderRegistry();
+
+    static jni::local_ref<jhybriddata> initHybrid(jni::alias_ref<jclass>);
 };
 
-// Initialize the static function pointer to null
-void (*DefaultComponentsRegistry::registerComponentDescriptorsFromEntryPoint)(std::shared_ptr<const ComponentDescriptorProviderRegistry>) = nullptr;
+} // namespace react
+} // namespace facebook`;
 
-} // namespace facebook::react`;
+    // Write files to both locations
+    let successCount = 0;
+    for (const codegenDir of paths) {
+        try {
+            console.log(`\nProcessing: ${codegenDir}`);
+            ensureDirectoryExists(codegenDir);
 
-// Write the files
-fs.writeFileSync(path.join(codegenDir, 'CMakeLists.txt'), cmakeContent);
-fs.writeFileSync(path.join(codegenDir, 'dummy.cpp'), dummyContent);
-fs.writeFileSync(path.join(codegenDir, 'RNRadarSpec.h'), radarSpecHeader);
-fs.writeFileSync(path.join(codegenDir, 'DefaultComponentsRegistry.h'), defaultComponentsHeader);
+            const filesToCreate = [
+                { name: 'CMakeLists.txt', content: cmakeContent },
+                { name: 'dummy.cpp', content: dummyContent },
+                { name: 'RNRadarSpec.h', content: radarSpecHeader },
+                { name: 'DefaultComponentsRegistry.h', content: defaultComponentsHeader }
+            ];
 
-console.log('React Native Radar: Codegen setup completed successfully');
-console.log('Created:', path.join(codegenDir, 'CMakeLists.txt'));
-console.log('Created:', path.join(codegenDir, 'dummy.cpp'));
-console.log('Created:', path.join(codegenDir, 'RNRadarSpec.h'));
-console.log('Created:', path.join(codegenDir, 'DefaultComponentsRegistry.h')); 
+            for (const file of filesToCreate) {
+                const filePath = path.join(codegenDir, file.name);
+                fs.writeFileSync(filePath, file.content);
+                console.log(`✓ Created: ${file.name}`);
+
+                // Verify file was created
+                if (fs.existsSync(filePath)) {
+                    const stats = fs.statSync(filePath);
+                    console.log(`  Size: ${stats.size} bytes`);
+                } else {
+                    console.error(`✗ Failed to create: ${file.name}`);
+                }
+            }
+
+            successCount++;
+            console.log(`✓ Successfully created files in: ${codegenDir}`);
+
+        } catch (err) {
+            console.error(`✗ Error creating files in ${codegenDir}:`);
+            console.error(`  ${err.message}`);
+            console.error(`  Stack: ${err.stack}`);
+        }
+    }
+
+    if (successCount > 0) {
+        console.log(`\n🎉 React Native Radar: Codegen setup completed successfully!`);
+        console.log(`📁 Created files in ${successCount} out of ${paths.length} locations`);
+    } else {
+        throw new Error('Failed to create files in any location');
+    }
+
+} catch (error) {
+    console.error('\n❌ Error during codegen setup:');
+    console.error(`Message: ${error.message}`);
+    console.error(`Stack: ${error.stack}`);
+    process.exit(1);
+} 

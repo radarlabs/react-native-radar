@@ -25,16 +25,20 @@
     "copy-assets": "./copyAssets.sh",
     "build-plugin": "tsc --build plugin/",
     "build-all": "npm run build && npm run build-plugin && npm run copy-assets",
-    "postinstall": "node scripts/setup-codegen.js"
+    "postinstall": "node scripts/setup-codegen.js",
+    "prepare": "yarn build"
   },
   "codegenConfig": {
     "name": "RNRadarSpec",
     "type": "modules",
     "jsSrcsDir": "src",
     "android": {
-      "javaPackageName": "io.radar.react"
+      "javaPackageName": "io.radar.react",
+      "moduleName": "RNRadar"
     },
-    "ios": {}
+    "ios": {
+      "moduleName": "RNRadar"
+    }
   },
   "jest": {
     "preset": "react-native",

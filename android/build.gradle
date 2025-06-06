@@ -15,11 +15,30 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
         versionName '3.20.3'
         consumerProguardFiles 'proguard-rules.pro'
+
+        // Enable the New Architecture
+        buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true")
+
+        externalNativeBuild {
+            cmake {
+                arguments "-DPROJECT_BUILD_DIR=$buildDir",
+                        "-DREACT_ANDROID_DIR=$rootDir/../node_modules/react-native/ReactAndroid",
+                        "-DANDROID_STL=c++_shared"
+                cppFlags "-std=c++17"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/jni/CMakeLists.txt"
+            version "3.22.1"
+        }
     }
 
     lintOptions {
