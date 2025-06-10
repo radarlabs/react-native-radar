@@ -23,22 +23,6 @@ android {
 
         // Enable the New Architecture
         buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true")
-
-        externalNativeBuild {
-            cmake {
-                arguments "-DPROJECT_BUILD_DIR=$buildDir",
-                        "-DREACT_ANDROID_DIR=$rootDir/../node_modules/react-native/ReactAndroid",
-                        "-DANDROID_STL=c++_shared"
-                cppFlags "-std=c++17"
-            }
-        }
-    }
-
-    externalNativeBuild {
-        cmake {
-            path "src/main/jni/CMakeLists.txt"
-            version "3.22.1"
-        }
     }
 
     lintOptions {

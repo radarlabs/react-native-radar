@@ -6,7 +6,7 @@ import * as Location from 'expo-location';
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 
 export default function App() {
-  const [displayText, setDisplayText] = useState("🎯 Radar TurboModule Test App\n\nTesting ALL Event Listeners - Complete Coverage");
+  const [displayText, setDisplayText] = useState("🎯 Radar TurboModule Test App\n\nTesting New Architecture - Simplified");
   const [isInitialized, setIsInitialized] = useState(false);
   const [hasLocationPermission, setHasLocationPermission] = useState(false);
   const [listenersSetup, setListenersSetup] = useState(false);
@@ -14,6 +14,35 @@ export default function App() {
   const handlePopulateText = (text: string) => {
     setDisplayText(prev => prev + "\n\n" + text);
   };
+
+  // Test TurboModule availability immediately when component mounts
+  useEffect(() => {
+    try {
+      // Test if we can access the TurboModule without errors
+      if (typeof Radar.initialize === 'function') {
+        handlePopulateText("✅ TurboModule loaded successfully - initialize() available");
+      } else {
+        handlePopulateText("❌ TurboModule initialize function not available");
+      }
+
+      if (typeof Radar.trackOnce === 'function') {
+        handlePopulateText("✅ TurboModule trackOnce() available");
+      } else {
+        handlePopulateText("❌ TurboModule trackOnce function not available");
+      }
+
+      if (typeof Radar.on === 'function') {
+        handlePopulateText("✅ TurboModule on() available for event listeners");
+      } else {
+        handlePopulateText("❌ TurboModule on function not available");
+      }
+
+      handlePopulateText("🎉 No 'NativeModules.RNRadar is undefined' error!");
+
+    } catch (error) {
+      handlePopulateText("❌ TurboModule access error: " + error);
+    }
+  }, []);
 
   const requestLocationPermissions = async () => {
     try {
@@ -36,8 +65,8 @@ export default function App() {
   const initializeRadar = () => {
     try {
       Radar.initialize(
-        "prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", // ✅ Replace with your real key
-        true
+        "prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", // Test key
+        false // No fraud detection for simplicity
       );
       setIsInitialized(true);
       handlePopulateText("✅ Radar initialized successfully with TurboModule");
@@ -53,10 +82,9 @@ export default function App() {
     }
 
     try {
-      handlePopulateText("🔄 Setting up ALL event listeners...");
+      handlePopulateText("🔄 Setting up event listeners...");
 
-      // ALL available event channels: "clientLocation" | "location" | "error" | "events" | "log" | "token"
-
+      // Test basic event listeners
       const eventsListener = Radar.on("events", (result: any) => {
         handlePopulateText("🎯 EVENTS: " + stringify(result));
       });
@@ -65,25 +93,12 @@ export default function App() {
         handlePopulateText("📍 LOCATION: " + stringify(result));
       });
 
-      const clientLocationListener = Radar.on("clientLocation", (result: any) => {
-        handlePopulateText("📱 CLIENT LOCATION: " + stringify(result));
-      });
-
       const errorListener = Radar.on("error", (err: any) => {
         handlePopulateText("⚠️ ERROR: " + stringify(err));
       });
 
-      const logListener = Radar.on("log", (result: string) => {
-        handlePopulateText("📝 LOG: " + stringify(result));
-      });
-
-      const tokenListener = Radar.on("token", (result: any) => {
-        handlePopulateText("🔑 TOKEN: " + stringify(result));
-      });
-
       setListenersSetup(true);
-      handlePopulateText("✅ ALL event listeners active!");
-      handlePopulateText("👁️ Listening for: events, location, clientLocation, error, log, token");
+      handlePopulateText("✅ Event listeners active!");
 
     } catch (error) {
       handlePopulateText("❌ Failed to set up event listeners: " + error);
@@ -133,44 +148,8 @@ export default function App() {
       });
   };
 
-  const testAdditionalMethods = () => {
-    if (!isInitialized) {
-      handlePopulateText("❌ Please initialize Radar first");
-      return;
-    }
-
-    handlePopulateText("🔄 Testing additional TurboModule methods...");
-
-    // Test getUserId
-    Radar.getUserId()
-      .then((userId) => {
-        handlePopulateText("👤 User ID: " + (userId || "not set"));
-      })
-      .catch((err) => {
-        handlePopulateText("❌ getUserId error: " + stringify(err));
-      });
-
-    // Test getPermissionsStatus
-    Radar.getPermissionsStatus()
-      .then((status) => {
-        handlePopulateText("🔐 Permissions Status: " + status);
-      })
-      .catch((err) => {
-        handlePopulateText("❌ getPermissionsStatus error: " + stringify(err));
-      });
-
-    // Test nativeSdkVersion
-    Radar.nativeSdkVersion()
-      .then((version) => {
-        handlePopulateText("📦 Native SDK Version: " + version);
-      })
-      .catch((err) => {
-        handlePopulateText("❌ nativeSdkVersion error: " + stringify(err));
-      });
-  };
-
   const clearDisplay = () => {
-    setDisplayText("🎯 Radar TurboModule Test App\n\nTesting ALL Event Listeners - Complete Coverage");
+    setDisplayText("🎯 Radar TurboModule Test App\n\nTesting New Architecture - Simplified");
   };
 
   return (
@@ -197,24 +176,20 @@ export default function App() {
           onPress={setupEventListeners}
         >
           <Text style={styles.buttonText}>
-            {listenersSetup ? "✅ ALL Listeners Active" : "🎯 3. Setup ALL Listeners"}
+            {listenersSetup ? "✅ Listeners Active" : "🎯 3. Setup Listeners"}
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={triggerTrackOnce}>
-          <Text style={styles.buttonText}>🔄 4. Test TrackOnce</Text>
+          <Text style={styles.buttonText}>🚀 4. Test trackOnce</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={testManualLocation}>
-          <Text style={styles.buttonText}>🗺️ 5. Test Manual Location</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={testAdditionalMethods}>
-          <Text style={styles.buttonText}>🧪 6. Test Additional Methods</Text>
+          <Text style={styles.buttonText}>📍 5. Test Manual Location</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.button, styles.clearButton]} onPress={clearDisplay}>
-          <Text style={styles.buttonText}>🗑️ Clear Display</Text>
+          <Text style={styles.buttonText}>🧹 Clear Display</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -224,40 +199,41 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    paddingTop: 50,
+    backgroundColor: "#f5f5f5",
   },
   displayContainer: {
     flex: 1,
-    margin: 10,
-    padding: 10,
-    backgroundColor: '#fff',
+    padding: 16,
+    backgroundColor: "#000",
+    margin: 16,
     borderRadius: 8,
   },
   displayText: {
+    color: "#00ff00",
+    fontFamily: "monospace",
     fontSize: 12,
-    fontFamily: 'monospace',
-    color: '#333',
+    lineHeight: 16,
   },
   buttonContainer: {
-    padding: 10,
+    padding: 16,
+    paddingTop: 8,
   },
   button: {
-    backgroundColor: '#007AFF',
-    padding: 15,
+    backgroundColor: "#007AFF",
+    padding: 12,
     borderRadius: 8,
-    marginVertical: 5,
-    alignItems: 'center',
+    marginBottom: 8,
+    alignItems: "center",
   },
   priorityButton: {
-    backgroundColor: '#FF6B35', // Orange for priority
+    backgroundColor: "#FF6B35",
   },
   clearButton: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: "#666",
   },
   buttonText: {
-    color: '#fff',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 14,
-    fontWeight: 'bold',
   },
 });

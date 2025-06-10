@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image } from 'react-native';
-import Radar from '../index.native';
+import Radar from '../index.turbo';
 import { getHost, getPublishableKey } from '../helpers';
 import styles from './styles';
 

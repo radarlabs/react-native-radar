@@ -84,4 +84,98 @@ export interface Spec extends TurboModule {
     removeListeners(count: number): void;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('RNRadar'); 
+// Lazy initialization to avoid accessing TurboModuleRegistry during import
+let _nativeModule: Spec | null = null;
+
+const getNativeModule = (): Spec => {
+    if (_nativeModule === null) {
+        _nativeModule = TurboModuleRegistry.getEnforcing<Spec>('RNRadar');
+    }
+    return _nativeModule;
+};
+
+// Create a proxy object that lazily accesses the TurboModule
+const LazyNativeRadar: Spec = {
+    // Core initialization and setup
+    initialize: (publishableKey, fraud) => getNativeModule().initialize(publishableKey, fraud),
+    setLogLevel: (level) => getNativeModule().setLogLevel(level),
+
+    // User management
+    setUserId: (userId) => getNativeModule().setUserId(userId),
+    getUserId: () => getNativeModule().getUserId(),
+    setDescription: (description) => getNativeModule().setDescription(description),
+    getDescription: () => getNativeModule().getDescription(),
+    setMetadata: (metadata) => getNativeModule().setMetadata(metadata),
+    getMetadata: () => getNativeModule().getMetadata(),
+    setAnonymousTrackingEnabled: (enabled) => getNativeModule().setAnonymousTrackingEnabled(enabled),
+
+    // Permissions
+    getPermissionsStatus: () => getNativeModule().getPermissionsStatus(),
+    requestPermissions: (background) => getNativeModule().requestPermissions(background),
+
+    // Location and tracking
+    getLocation: (desiredAccuracy) => getNativeModule().getLocation(desiredAccuracy),
+    trackOnce: (options) => getNativeModule().trackOnce(options),
+    trackVerified: (options) => getNativeModule().trackVerified(options),
+    getVerifiedLocationToken: () => getNativeModule().getVerifiedLocationToken(),
+    clearVerifiedLocationToken: () => getNativeModule().clearVerifiedLocationToken(),
+
+    // Tracking control
+    startTrackingEfficient: () => getNativeModule().startTrackingEfficient(),
+    startTrackingResponsive: () => getNativeModule().startTrackingResponsive(),
+    startTrackingContinuous: () => getNativeModule().startTrackingContinuous(),
+    startTrackingCustom: (options) => getNativeModule().startTrackingCustom(options),
+    startTrackingVerified: (options) => getNativeModule().startTrackingVerified(options),
+    mockTracking: (options) => getNativeModule().mockTracking(options),
+    stopTracking: () => getNativeModule().stopTracking(),
+    stopTrackingVerified: () => getNativeModule().stopTrackingVerified(),
+    isTracking: () => getNativeModule().isTracking(),
+    isTrackingVerified: () => getNativeModule().isTrackingVerified(),
+
+    // Product and configuration
+    setProduct: (product) => getNativeModule().setProduct(product),
+    getTrackingOptions: () => getNativeModule().getTrackingOptions(),
+    isUsingRemoteTrackingOptions: () => getNativeModule().isUsingRemoteTrackingOptions(),
+    setForegroundServiceOptions: (options) => getNativeModule().setForegroundServiceOptions(options),
+    setNotificationOptions: (options) => getNativeModule().setNotificationOptions(options),
+
+    // Trip management
+    getTripOptions: () => getNativeModule().getTripOptions(),
+    startTrip: (options) => getNativeModule().startTrip(options),
+    completeTrip: () => getNativeModule().completeTrip(),
+    cancelTrip: () => getNativeModule().cancelTrip(),
+    updateTrip: (options) => getNativeModule().updateTrip(options),
+
+    // Event handling
+    acceptEvent: (eventId, verifiedPlaceId) => getNativeModule().acceptEvent(eventId, verifiedPlaceId),
+    rejectEvent: (eventId) => getNativeModule().rejectEvent(eventId),
+
+    // Context and search
+    getContext: (location) => getNativeModule().getContext(location),
+    searchPlaces: (options) => getNativeModule().searchPlaces(options),
+    searchGeofences: (options) => getNativeModule().searchGeofences(options),
+
+    // Geocoding
+    autocomplete: (options) => getNativeModule().autocomplete(options),
+    geocode: (options) => getNativeModule().geocode(options),
+    reverseGeocode: (options) => getNativeModule().reverseGeocode(options),
+    ipGeocode: () => getNativeModule().ipGeocode(),
+    validateAddress: (address) => getNativeModule().validateAddress(address),
+
+    // Routing
+    getDistance: (options) => getNativeModule().getDistance(options),
+    getMatrix: (options) => getNativeModule().getMatrix(options),
+
+    // Analytics
+    logConversion: (options) => getNativeModule().logConversion(options),
+    sendEvent: (name, metadata) => getNativeModule().sendEvent(name, metadata),
+
+    // SDK info
+    nativeSdkVersion: () => getNativeModule().nativeSdkVersion(),
+
+    // Event listener support - using standard TurboModule pattern
+    addListener: (eventName) => getNativeModule().addListener(eventName),
+    removeListeners: (count) => getNativeModule().removeListeners(count),
+};
+
+export default LazyNativeRadar;

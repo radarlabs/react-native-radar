@@ -18,7 +18,7 @@ import {
   Pressable,
   Platform,
 } from 'react-native';
-import Radar from '../index.native';
+import Radar from '../index.turbo';
 import {
   BACK_ICON,
   SEARCH_ICON,
