@@ -182,6 +182,21 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     }
 
     @ReactMethod
+    public void setProduct(String product) throws JSONException {
+        Radar.setProduct(product);
+    }
+
+    @ReactMethod
+    public void getProduct(final Promise promise) throws JSONException {        
+        if (promise == null) {
+            return;
+        }
+
+        String product =  Radar.getProduct();        
+        promise.resolve(product);
+    }
+
+    @ReactMethod
     public void setAnonymousTrackingEnabled(boolean enabled) {
         Radar.setAnonymousTrackingEnabled(enabled);
     }
@@ -382,24 +397,32 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void trackVerified(ReadableMap optionsMap, final Promise promise) {
 
-        boolean beaconsTrackingOption = false;
-        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+        boolean beacons = false;
+        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+        String reason = null;
+        String transactionId = null;
 
         if (optionsMap != null) {
             if (optionsMap.hasKey("beacons")) {
                 beaconsTrackingOption = optionsMap.getBoolean("beacons");
             }
             if (optionsMap.hasKey("desiredAccuracy")) {
-                String desiredAccuracy = optionsMap.getString("desiredAccuracy").toLowerCase();
-                if (desiredAccuracy.equals("none")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.NONE;
-                } else if (desiredAccuracy.equals("low")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
-                } else if (desiredAccuracy.equals("medium")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
-                } else if (desiredAccuracy.equals("high")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
+                String desiredAccuracyStr = optionsMap.getString("desiredAccuracy").toLowerCase();
+                if (desiredAccuracyStr.equals("none")) {
+                    desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.NONE;
+                } else if (desiredAccuracyStr.equals("low")) {
+                    desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
+                } else if (desiredAccuracyStr.equals("medium")) {
+                    desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+                } else if (desiredAccuracyStr.equals("high")) {
+                    desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
                 }
+            }
+            if (optionsMap.hasKey("reason")) {
+                reason = optionsMap.getString("reason");
+            }
+            if (optionsMap.hasKey("transactionId")) {
+                transactionId = optionsMap.getString("transactionId");
             }
         }
 
@@ -428,17 +451,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
         };
 
-        Radar.trackVerified(beaconsTrackingOption, accuracyLevel, trackCallback);
+        Radar.trackVerified(beacons, desiredAccuracy, reason, transactionId, trackCallback);
     }
 
     @ReactMethod
     public void isTrackingVerified(final Promise promise) {
         promise.resolve(Radar.isTrackingVerified());
-    }
-
-    @ReactMethod
-    public void setProduct(String product) {
-        Radar.setProduct(product);
     }
 
     @ReactMethod

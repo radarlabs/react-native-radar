@@ -150,6 +150,14 @@ RCT_EXPORT_METHOD(getMetadata:(RCTPromiseResolveBlock)resolve reject:(RCTPromise
     resolve([Radar getMetadata]);
 }
 
+RCT_EXPORT_METHOD(setProduct:(NSString *)product) {
+    [Radar setProduct:product];
+}
+
+RCT_EXPORT_METHOD(getProduct:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getProduct]);
+}
+
 RCT_EXPORT_METHOD(setAnonymousTrackingEnabled:(BOOL)enabled) {
     [Radar setAnonymousTrackingEnabled:enabled];
 }
@@ -323,24 +331,27 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
 RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     BOOL beacons = NO;
     RadarTrackingOptionsDesiredAccuracy desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+    NSString *reason = nil;
+    NSString *transactionId = nil;
 
     if (optionsDict != nil) {
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
             beacons = [beaconsNumber boolValue]; 
         }
-
-        NSString *accuracy = optionsDict[@"desiredAccuracy"];
-        if (accuracy != nil && [accuracy isKindOfClass:[NSString class]]) {
-            NSString *lowerAccuracy = [accuracy lowercaseString];
-            if ([lowerAccuracy isEqualToString:@"high"]) {
+        NSString *desiredAccuracyStr = optionsDict[@"desiredAccuracy"];
+        if (desiredAccuracyStr != nil && [desiredAccuracyStr isKindOfClass:[NSString class]]) {
+            desiredAccuracyStr = [desiredAccuracyStr lowercaseString];
+            if ([desiredAccuracyStr isEqualToString:@"high"]) {
                 desiredAccuracy = RadarTrackingOptionsDesiredAccuracyHigh;
-            } else if ([lowerAccuracy isEqualToString:@"medium"]) {
+            } else if ([desiredAccuracyStr isEqualToString:@"medium"]) {
                 desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
-            } else if ([lowerAccuracy isEqualToString:@"low"]) {
+            } else if ([desiredAccuracyStr isEqualToString:@"low"]) {
                 desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
             }
         }
+        reason = optionsDict[@"reason"];
+        transactionId = optionsDict[@"transactionId"];
     }
 
     __block RCTPromiseResolveBlock resolver = resolve;
@@ -361,16 +372,12 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         rejecter = nil;
     };
 
-    [Radar trackVerifiedWithBeacons:beacons desiredAccuracy:desiredAccuracy completionHandler:completionHandler];
+    [Radar trackVerifiedWithBeacons:beacons desiredAccuracy:desiredAccuracy reason:reason transactionId:transactionId completionHandler:completionHandler];
 }
 
 RCT_EXPORT_METHOD(isTrackingVerified:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     BOOL res = [Radar isTrackingVerified];
     resolve(@(res));
-}
-
-RCT_EXPORT_METHOD(setProduct:(NSString *)product) {
-    [Radar setProduct:product];
 }
 
 RCT_EXPORT_METHOD(getVerifiedLocationToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
