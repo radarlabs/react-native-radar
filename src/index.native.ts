@@ -80,6 +80,13 @@ const setMetadata = (metadata: RadarMetadata): void => {
 const getMetadata = (): Promise<RadarMetadata> =>
   NativeModules.RNRadar.getMetadata();
 
+const setProduct = (product: string): void => {
+  NativeModules.RNRadar.setProduct(product);
+};
+
+const getProduct = (): Promise<string> =>
+  NativeModules.RNRadar.getProduct();
+
 const setAnonymousTrackingEnabled = (enabled: boolean): void =>
   NativeModules.RNRadar.setAnonymousTrackingEnabled(enabled);
 
@@ -148,9 +155,6 @@ const isTracking = (): Promise<boolean> => NativeModules.RNRadar.isTracking();
 
 const isTrackingVerified = (): Promise<boolean> =>
   NativeModules.RNRadar.isTrackingVerified();
-
-const setProduct = (product: string): void =>
-  NativeModules.RNRadar.setProduct(product);
 
 const getTrackingOptions = (): Promise<RadarTrackingOptions> =>
   NativeModules.RNRadar.getTrackingOptions();
@@ -265,6 +269,8 @@ const Radar: RadarNativeInterface = {
   getDescription,
   setMetadata,
   getMetadata,
+  setProduct,
+  getProduct,
   setAnonymousTrackingEnabled,
   getPermissionsStatus,
   requestPermissions,
@@ -272,7 +278,6 @@ const Radar: RadarNativeInterface = {
   trackOnce,
   trackVerified,
   isTrackingVerified,
-  setProduct,
   getVerifiedLocationToken,
   clearVerifiedLocationToken,
   startTrackingEfficient,
