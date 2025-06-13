@@ -1,5 +1,13 @@
 import Radar from './NativeRadar';
 
+export function initialize(publishableKey: string, fraud?: boolean): void {
+  return Radar.initialize(publishableKey, fraud);
+}
+
+export function trackOnce(options?: Object): Promise<Object> {
+  return Radar.trackOnce(options) as Promise<Object>;
+}
+
 export function getItem(key: string): string | null {
   return Radar.getItem(key);
 }

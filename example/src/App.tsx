@@ -1,16 +1,82 @@
 import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
-import { getItem, setItem, removeItem, clear } from 'react-native-radar';
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView, PermissionsAndroid, Platform } from 'react-native';
+import { initialize, trackOnce, getItem, setItem, removeItem, clear } from 'react-native-radar';
 
 export default function App() {
+  const [isInitialized, setIsInitialized] = useState(false);
   const [key, setKey] = useState('test-key');
   const [value, setValue] = useState('test-value');
   const [storedValue, setStoredValue] = useState<string | null>(null);
   const [allItems, setAllItems] = useState<{ [key: string]: string }>({});
+  const [hasLocationPermission, setHasLocationPermission] = useState(false);
 
   const loadStoredValue = () => {
     const result = getItem(key);
     setStoredValue(result);
+  };
+
+  const requestLocationPermissions = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Location Permission',
+            message: 'This app needs access to location for tracking.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          setHasLocationPermission(true);
+          Alert.alert('Success', '✅ Location permissions granted.');
+        } else {
+          Alert.alert('Error', '❌ Location permission denied.');
+        }
+      } else {
+        // For iOS, we'll assume permission is handled by the native module
+        setHasLocationPermission(true);
+        Alert.alert('Success', '✅ Location permissions granted.');
+      }
+    } catch (error) {
+      Alert.alert('Error', `❌ Permission request failed: ${error}`);
+    }
+  };
+
+  const initializeRadar = () => {
+    try {
+      initialize(
+        "prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", // Test key
+        false // No fraud detection for simplicity
+      );
+      setIsInitialized(true);
+      Alert.alert('Success', `✅ Radar initialized successfully with TurboModule`);
+    } catch (error) {
+      Alert.alert('Error', `❌ Radar initialization failed: ${error}`);
+    }
+  };
+
+  const triggerTrackOnce = () => {
+    if (!isInitialized) {
+      Alert.alert('Error', `❌ Please initialize Radar first`);
+      return;
+    }
+
+    if (!hasLocationPermission) {
+      Alert.alert('Error', `❌ Please grant location permissions first`);
+      return;
+    }
+
+    trackOnce()
+      .then((result: any) => {
+        console.log('trackOnce result:', result);
+        Alert.alert('Success', `✅ trackOnce completed: \n${JSON.stringify(result)}`);
+      })
+      .catch((err: any) => {
+        Alert.alert('Error', `❌ trackOnce error: ${JSON.stringify(err)}`);
+      });
   };
 
   const handleSetItem = () => {
@@ -90,6 +156,22 @@ export default function App() {
       </View>
 
       <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.button} onPress={initializeRadar}>
+          <Text style={styles.buttonText}>
+            {isInitialized ? "✅ TurboModule Initialized" : "🔧 Initialize TurboModule"}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={requestLocationPermissions}>
+          <Text style={styles.buttonText}>
+            {hasLocationPermission ? "✅ Permissions Granted" : "📍 Request Permissions"}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={triggerTrackOnce}>
+          <Text style={styles.buttonText}>🚀 Test trackOnce</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.button} onPress={handleSetItem}>
           <Text style={styles.buttonText}>Set Item</Text>
         </TouchableOpacity>
