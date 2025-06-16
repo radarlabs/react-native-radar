@@ -1,6 +1,23 @@
 import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView, PermissionsAndroid, Platform } from 'react-native';
-import { initialize, trackOnce, getItem, setItem, removeItem, clear } from 'react-native-radar';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  ScrollView,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
+import {
+  initialize,
+  trackOnce,
+  getItem,
+  setItem,
+  removeItem,
+  clear,
+} from 'react-native-radar';
 
 export default function App() {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -48,11 +65,14 @@ export default function App() {
   const initializeRadar = () => {
     try {
       initialize(
-        "prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", // Test key
+        'prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46', // Test key
         false // No fraud detection for simplicity
       );
       setIsInitialized(true);
-      Alert.alert('Success', `✅ Radar initialized successfully with TurboModule`);
+      Alert.alert(
+        'Success',
+        '✅ Radar initialized successfully with TurboModule'
+      );
     } catch (error) {
       Alert.alert('Error', `❌ Radar initialization failed: ${error}`);
     }
@@ -60,19 +80,22 @@ export default function App() {
 
   const triggerTrackOnce = () => {
     if (!isInitialized) {
-      Alert.alert('Error', `❌ Please initialize Radar first`);
+      Alert.alert('Error', '❌ Please initialize Radar first');
       return;
     }
 
     if (!hasLocationPermission) {
-      Alert.alert('Error', `❌ Please grant location permissions first`);
+      Alert.alert('Error', '❌ Please grant location permissions first');
       return;
     }
 
     trackOnce()
       .then((result: any) => {
         console.log('trackOnce result:', result);
-        Alert.alert('Success', `✅ trackOnce completed: \n${JSON.stringify(result)}`);
+        Alert.alert(
+          'Success',
+          `✅ trackOnce completed: \n${JSON.stringify(result)}`
+        );
       })
       .catch((err: any) => {
         Alert.alert('Error', `❌ trackOnce error: ${JSON.stringify(err)}`);
@@ -111,10 +134,10 @@ export default function App() {
     const testKeys = ['test-key', 'name', 'email', 'settings', 'theme'];
     const items: { [key: string]: string } = {};
 
-    testKeys.forEach(testKey => {
-      const value = getItem(testKey);
-      if (value !== null) {
-        items[testKey] = value;
+    testKeys.forEach((testKey) => {
+      const itemValue = getItem(testKey);
+      if (itemValue !== null) {
+        items[testKey] = itemValue;
       }
     });
 
@@ -124,10 +147,13 @@ export default function App() {
   useEffect(() => {
     loadStoredValue();
     loadAllItems();
-  }, [key]);
+  }, [key, loadStoredValue]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+    >
       <Text style={styles.title}>Native Radar Demo</Text>
 
       <View style={styles.inputContainer}>
@@ -158,13 +184,20 @@ export default function App() {
       <View style={styles.buttonsContainer}>
         <TouchableOpacity style={styles.button} onPress={initializeRadar}>
           <Text style={styles.buttonText}>
-            {isInitialized ? "✅ TurboModule Initialized" : "🔧 Initialize TurboModule"}
+            {isInitialized
+              ? '✅ TurboModule Initialized'
+              : '🔧 Initialize TurboModule'}
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={requestLocationPermissions}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={requestLocationPermissions}
+        >
           <Text style={styles.buttonText}>
-            {hasLocationPermission ? "✅ Permissions Granted" : "📍 Request Permissions"}
+            {hasLocationPermission
+              ? '✅ Permissions Granted'
+              : '📍 Request Permissions'}
           </Text>
         </TouchableOpacity>
 
@@ -180,11 +213,17 @@ export default function App() {
           <Text style={styles.buttonText}>Get Item</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.button, styles.removeButton]} onPress={handleRemoveItem}>
+        <TouchableOpacity
+          style={[styles.button, styles.removeButton]}
+          onPress={handleRemoveItem}
+        >
           <Text style={styles.buttonText}>Remove Item</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.button, styles.clearButton]} onPress={handleClear}>
+        <TouchableOpacity
+          style={[styles.button, styles.clearButton]}
+          onPress={handleClear}
+        >
           <Text style={styles.buttonText}>Clear All</Text>
         </TouchableOpacity>
       </View>

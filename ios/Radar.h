@@ -1,5 +1,5 @@
 #import <RadarSpec/RadarSpec.h>
 
-@interface Radar : NSObject <NativeRadarSpec>
+@interface Radar : NativeRadarSpecBase <NativeRadarSpec>
 
 @end
