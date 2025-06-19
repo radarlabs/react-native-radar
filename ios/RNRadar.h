@@ -1,8 +1,6 @@
+#import <RadarSpec/RadarSpec.h>
 #import <RadarSDK/RadarSDK.h>
-#import <RadarSDK/RadarSettings.h>
-#import <React/RCTBridgeModule.h>
-#import <React/RCTEventEmitter.h>
 
-@interface RNRadar : RCTEventEmitter <RadarDelegate, RadarVerifiedDelegate, RCTBridgeModule, CLLocationManagerDelegate>
+@interface RNRadar : NativeRadarSpecBase <NativeRadarSpec, RadarDelegate, CLLocationManagerDelegate>
 
 @end
