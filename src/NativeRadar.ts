@@ -12,7 +12,8 @@ export interface Spec extends TurboModule {
   multiply(a: number, b: number): number;
   initialize(publishableKey: string, fraud: boolean): void;
   requestPermissions(background: boolean): void;
-  trackOnce(): void;
+  trackOnce(trackOnceOptions: Object | null): Promise<Object>;
+  isEven(number: number): Promise<number>;
 
   readonly locationEmitter: EventEmitter<LocationEmitter>;
 }

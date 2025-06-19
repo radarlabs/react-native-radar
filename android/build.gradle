@@ -78,7 +78,6 @@ dependencies {
   // Keep Kotlin stdlib internal to this module
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   
-  // Example of adding Radar SDK as an API dependency
   api 'io.radar:sdk:3.21.3'
 }
 

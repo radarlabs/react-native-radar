@@ -1,6 +1,8 @@
 #import "RNRadar.h"
 #include <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <React/RCTConvert.h>
+
 @implementation RNRadar {
     CLLocationManager *locationManager;
     //RCTPromiseResolveBlock permissionsRequestResolver;
@@ -108,8 +110,81 @@ RCT_EXPORT_MODULE()
 //     }
 }
 
-- (void)trackOnce {
-    [Radar trackOnceWithCompletionHandler:nil];
+- (void)trackOnce:(NSDictionary *)optionsDict
+         resolve:(RCTPromiseResolveBlock)resolve
+          reject:(RCTPromiseRejectBlock)reject {
+    RadarTrackingOptionsDesiredAccuracy desiredAccuracy;
+    BOOL beacons = NO;
+    desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    NSDictionary *locationDict = optionsDict[@"location"];
+
+    CLLocation *location;
+    if (locationDict != nil && [locationDict isKindOfClass:[NSDictionary class]]) {
+        double latitude = [RCTConvert double:locationDict[@"latitude"]];
+        double longitude = [RCTConvert double:locationDict[@"longitude"]];
+        double accuracy = [RCTConvert double:locationDict[@"accuracy"]];
+        NSDate *timestamp = [NSDate new];
+        location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:accuracy verticalAccuracy:-1 timestamp:timestamp];
+    }
+
+    RadarTrackCompletionHandler completionHandler = ^(RadarStatus status, CLLocation * _Nullable location, NSArray<RadarEvent *> * _Nullable events, RadarUser * _Nullable user) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (location) {
+                [dict setObject:[Radar dictionaryForLocation:location] forKey:@"location"];
+            }
+            if (events) {
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
+            }
+            if (user) {
+                [dict setObject:[user dictionaryValue] forKey:@"user"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    };
+
+    if (location) {
+        [Radar trackOnceWithLocation:location completionHandler:completionHandler];
+    } else {
+        NSString *accuracy = optionsDict[@"desiredAccuracy"];
+
+        if (accuracy != nil && [accuracy isKindOfClass:[NSString class]]) {
+            NSString *lowerAccuracy = [accuracy lowercaseString];
+            if ([lowerAccuracy isEqualToString:@"high"]) {
+                desiredAccuracy = RadarTrackingOptionsDesiredAccuracyHigh;
+            } else if ([lowerAccuracy isEqualToString:@"medium"]) {
+                desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+            } else if ([lowerAccuracy isEqualToString:@"low"]) {
+                desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
+            }
+        }
+        
+        NSNumber *beaconsNumber = optionsDict[@"beacons"];
+        if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
+            beacons = [beaconsNumber boolValue]; 
+        }
+        
+        [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons:beacons completionHandler:completionHandler];
+    }
+}
+
+- (void)isEven:(double)number
+       resolve:(RCTPromiseResolveBlock)resolve
+        reject:(RCTPromiseRejectBlock)reject {
+    if ((int)number % 2 == 0) {
+        resolve(@(number));
+    } else {
+        reject(@"ODD_NUMBER", @"Number is odd", nil);
+    }
 }
 
 @end

@@ -1,9 +1,10 @@
 import { Alert, type EventSubscription, Text, View, StyleSheet, Button } from 'react-native';
-import { multiply, initialize, requestPermissions, trackOnce, locationEmitter } from 'react-native-radar';
+import { multiply, requestPermissions, locationEmitter, Radar } from 'react-native-radar';
 import React from 'react';
 
 const result = multiply(3, 7);
-initialize("prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", false);
+Radar.initialize("prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", false);
+
 requestPermissions(false);
 export default function App() {
 
@@ -11,8 +12,8 @@ export default function App() {
   
   React.useEffect(() => {
     listenerSubscription.current = locationEmitter((location:any) => {
-      console.log(location);
-      Alert.alert(`New location: ${location}`);
+      console.log("from callback", location);
+      //Alert.alert(`New location: ${location}`);
     });
     
     return  () => {
@@ -24,7 +25,11 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Result: {result}</Text>
-      <Button title="Track Once" onPress={() => trackOnce()} />
+      <Button title="Track Once" onPress={() => Radar.trackOnce().then((result) => {
+        console.log("from promise", result);
+      }).catch((error) => {
+        console.log("from promise error", error);
+      })} />
     </View>
   );
 }
