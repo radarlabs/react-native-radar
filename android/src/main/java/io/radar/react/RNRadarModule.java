@@ -281,20 +281,20 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     @ReactMethod
     public void getLocation(String desiredAccuracy, final Promise promise) {
         
-        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;        
-        String accuracy = desiredAccuracy != null ? desiredAccuracy.toLowerCase()  : "medium";
+        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;        
+        String desiredAccuracyStr = desiredAccuracy != null ? desiredAccuracy.toLowerCase()  : "medium";
         
-        if (accuracy.equals("low")) {
-            accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
-        } else if (accuracy.equals("medium")) {
-            accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
-        } else if (accuracy.equals("high")) {
-            accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
+        if (desiredAccuracyStr.equals("low")) {
+            desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
+        } else if (desiredAccuracyStr.equals("medium")) {
+            desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+        } else if (desiredAccuracyStr.equals("high")) {
+            desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
         } else {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
         }
 
-        Radar.getLocation(accuracyLevel, new Radar.RadarLocationCallback() {
+        Radar.getLocation(desiredAccuracy, new Radar.RadarLocationCallback() {
             @Override
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, boolean stopped) {
                 if (promise == null) {
@@ -325,8 +325,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
     public void trackOnce(ReadableMap optionsMap, final Promise promise) {
         
         Location location = null;
-        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
-        boolean beaconsTrackingOption = false;
+        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+        boolean beacons = false;
 
         if (optionsMap != null) {
             if (optionsMap.hasKey("location")) {
@@ -340,19 +340,19 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                 location.setAccuracy(accuracy);
             }
             if (optionsMap.hasKey("desiredAccuracy")) {
-                String desiredAccuracy = optionsMap.getString("desiredAccuracy").toLowerCase();
-                if (desiredAccuracy.equals("none")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.NONE;
-                } else if (desiredAccuracy.equals("low")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
-                } else if (desiredAccuracy.equals("medium")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
-                } else if (desiredAccuracy.equals("high")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
+                String desiredAccuracyStr = optionsMap.getString("desiredAccuracy").toLowerCase();
+                if (desiredAccuracyStr.equals("none")) {
+                    desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.NONE;
+                } else if (desiredAccuracyStr.equals("low")) {
+                    desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
+                } else if (desiredAccuracyStr.equals("medium")) {
+                    desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+                } else if (desiredAccuracyStr.equals("high")) {
+                    desiredAccuracy = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
                 }
             }
             if (optionsMap.hasKey("beacons")) {
-                beaconsTrackingOption = optionsMap.getBoolean("beacons");
+                beacons = optionsMap.getBoolean("beacons");
             }
         }
 
@@ -390,7 +390,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         if (location != null) {
             Radar.trackOnce(location, trackCallback);
         } else {
-            Radar.trackOnce(accuracyLevel, beaconsTrackingOption, trackCallback);
+            Radar.trackOnce(desiredAccuracy, beacons, trackCallback);
         }
     }
 
@@ -404,7 +404,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
         if (optionsMap != null) {
             if (optionsMap.hasKey("beacons")) {
-                beaconsTrackingOption = optionsMap.getBoolean("beacons");
+                beacons = optionsMap.getBoolean("beacons");
             }
             if (optionsMap.hasKey("desiredAccuracy")) {
                 String desiredAccuracyStr = optionsMap.getString("desiredAccuracy").toLowerCase();
