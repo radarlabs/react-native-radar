@@ -20,7 +20,7 @@
       "bundleIdentifier": "com.radar.reactnative.example",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app needs location.",
-        "NSLocationAlwaysUsageDescription": "This app needs location."
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs location."
       }
     },
     "android": {
@@ -41,6 +41,19 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [        
+      [
+        "react-native-radar",
+        {
+          "iosFraud": true,
+          "iosNSLocationAlwaysAndWhenInUseUsageDescription": "test value",
+          "iosBackgroundMode": true,
+          "androidFraud": false,
+          "androidBackgroundPermission": true,
+          "addRadarSDKMotion": true,
+          "androidActivityRecognition": true,
+          "androidForegroundService": true
+        }
+      ],
       [
         "@maplibre/maplibre-react-native"
       ],

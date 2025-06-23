@@ -3,6 +3,8 @@ package com.radar
 import android.Manifest
 import android.os.Build
 import android.util.Log
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.modules.core.PermissionAwareActivity
@@ -62,6 +64,8 @@ class RadarModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  private var mPermissionsRequestPromise: Promise? = null
+
   override fun getName(): String {
     return NAME
   }
@@ -77,7 +81,8 @@ class RadarModule(reactContext: ReactApplicationContext) :
     Radar.setReceiver(radarReceiver)
   }
 
-  override fun requestPermissions(background: Boolean): Unit {
+  override fun requestPermissions(background: Boolean, promise: Promise): Unit {
+    mPermissionsRequestPromise = promise
     val activity = currentActivity as? PermissionAwareActivity
     if (activity != null && Build.VERSION.SDK_INT >= 23) {
       if (background && Build.VERSION.SDK_INT >= 29) {
@@ -96,9 +101,41 @@ class RadarModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  override fun getPermissionsStatus(promise: Promise): Unit {
+    if (promise == null) {
+      return
+    }
+
+    val activity = currentActivity
+
+    if (activity == null) {
+      promise.resolve("UNKNOWN")
+      return
+    }
+
+    val foreground = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                     ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    var background = foreground
+    val denied = ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+    
+    if (Build.VERSION.SDK_INT >= 29) {
+      background = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    when {
+      background -> promise.resolve("GRANTED_BACKGROUND")
+      foreground -> promise.resolve("GRANTED_FOREGROUND")
+      denied -> promise.resolve("DENIED")
+      else -> promise.resolve("NOT_DETERMINED")
+    }
+  }
+
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray): Boolean {
-    if (requestCode == PERMISSIONS_REQUEST_CODE) {
+    if (requestCode == PERMISSIONS_REQUEST_CODE && mPermissionsRequestPromise != null) {
       // Handle permission result here
+      val promise = mPermissionsRequestPromise
+      mPermissionsRequestPromise = null
+      getPermissionsStatus(promise!!)
       return true
     }
     return false
@@ -196,6 +233,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
       promise.reject("ODD_NUMBER", "Number is odd")
     }
   }
+
 
   companion object {
     const val NAME = "RNRadar"

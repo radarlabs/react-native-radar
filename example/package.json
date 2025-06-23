@@ -20,7 +20,6 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.76.9",
-    "react-native-radar": "file:..",
     "react-native-web": "~0.19.10"
   },
   "devDependencies": {

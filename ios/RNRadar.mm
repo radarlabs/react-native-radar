@@ -5,7 +5,7 @@
 
 @implementation RNRadar {
     CLLocationManager *locationManager;
-    //RCTPromiseResolveBlock permissionsRequestResolver;
+    RCTPromiseResolveBlock permissionsRequestResolver;
 }
 RCT_EXPORT_MODULE()
 
@@ -16,6 +16,13 @@ RCT_EXPORT_MODULE()
         [Radar setDelegate:self];
     }
     return self;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    if (permissionsRequestResolver) {
+        [self getPermissionsStatus:permissionsRequestResolver reject:nil];
+        permissionsRequestResolver = nil;
+    }
 }
 
 - (NSNumber *)multiply:(double)a b:(double)b {
@@ -83,31 +90,57 @@ RCT_EXPORT_MODULE()
     return std::make_shared<facebook::react::NativeRadarSpecJSI>(params);
 }
 
-- (void)requestPermissions:(BOOL)background {
+- (void)getPermissionsStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    NSString *statusStr;
+    switch (status) {
+        case kCLAuthorizationStatusDenied:
+            statusStr = @"DENIED";
+            break;
+        case kCLAuthorizationStatusRestricted:
+            statusStr = @"DENIED";
+            break;
+        case kCLAuthorizationStatusAuthorizedAlways:
+            statusStr = @"GRANTED_BACKGROUND";
+            break;
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            statusStr = @"GRANTED_FOREGROUND";
+            break;
+        case kCLAuthorizationStatusNotDetermined:
+            statusStr = @"NOT_DETERMINED";
+            break;
+        default:
+            statusStr = @"DENIED";
+            break;
+    }
+    resolve(statusStr);
+}
+
+- (void)requestPermissions:(BOOL)background resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        //permissionsRequestResolver = resolve;
+        permissionsRequestResolver = resolve;
         [locationManager requestAlwaysAuthorization];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleAppBecomingActive)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     } else if (status == kCLAuthorizationStatusNotDetermined) {
-        //permissionsRequestResolver = resolve;
+        permissionsRequestResolver = resolve;
         [locationManager requestWhenInUseAuthorization];
     } else {
-        //[self getPermissionsStatusWithResolver:resolve rejecter:reject];
-        // permissionsRequestResolver = nil;
+        [self getPermissionsStatus:resolve reject:reject];
+        permissionsRequestResolver = nil;
     }
 }
 
 - (void)handleAppBecomingActive
 {
-//   [[NSNotificationCenter defaultCenter] removeObserver:self];
-//      if (permissionsRequestResolver) {
-//         [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
-//         permissionsRequestResolver = nil;
-//     }
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+     if (permissionsRequestResolver) {
+        [self getPermissionsStatus:permissionsRequestResolver reject:nil];
+        permissionsRequestResolver = nil;
+    }
 }
 
 - (void)trackOnce:(NSDictionary *)optionsDict

@@ -11,7 +11,8 @@ export type LocationEmitter = {
 export interface Spec extends TurboModule {
   multiply(a: number, b: number): number;
   initialize(publishableKey: string, fraud: boolean): void;
-  requestPermissions(background: boolean): void;
+  requestPermissions(background: boolean): Promise<string>;
+  getPermissionsStatus(): Promise<string>;
   trackOnce(trackOnceOptions: Object | null): Promise<Object>;
   isEven(number: number): Promise<number>;
 

@@ -17,7 +17,7 @@ import type {
   // RadarMetadata,
   // RadarMockTrackingOptions,
   // RadarNotificationOptions,
-  // RadarPermissionsStatus,
+  RadarPermissionsStatus,
   // RadarReverseGeocodeOptions,
   // RadarRouteCallback,
   // RadarRouteMatrix,
@@ -38,6 +38,7 @@ import type {
   // RadarUpdateTripOptions,
   // RadarValidateAddressCallback,
   // RadarVerifiedTrackingOptions,
+  RadarLocationUpdateCallback,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -51,7 +52,7 @@ export interface RadarNativeInterface {
   // getMetadata: () => Promise<RadarMetadata>;
   // setAnonymousTrackingEnabled: (enabled: boolean) => void;
   // getPermissionsStatus: () => Promise<RadarPermissionsStatus>;
-  // requestPermissions: (background: boolean) => Promise<RadarPermissionsStatus>;
+  requestPermissions: (background: boolean) => Promise<RadarPermissionsStatus>;
   // getLocation: (
   //   desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy
   // ) => Promise<RadarLocationCallback>;
@@ -109,4 +110,15 @@ export interface RadarNativeInterface {
   // off: (channel: RadarEventChannel, callback?: Function | undefined) => void;
   // nativeSdkVersion: () => Promise<string>;
   // rnSdkVersion: () => string;
+  
+  /**
+   * Set up a listener for location updates from the native layer
+   * @param callback - The completion handler to call when location updates are received
+   */
+  onLocationUpdate: (callback: RadarLocationUpdateCallback) => void;
+  
+  /**
+   * Clear the current location update listener
+   */
+  clearLocationUpdate: () => void;
 }
