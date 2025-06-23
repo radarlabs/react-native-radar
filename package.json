@@ -10,6 +10,8 @@
     ".": {
       "source": "./src/index.tsx",
       "types": "./lib/typescript/src/index.d.ts",
+      "import": "./lib/module/index.js",
+      "require": "./lib/module/index.js",
       "default": "./lib/module/index.js"
     },
     "./package.json": "./package.json"
@@ -22,6 +24,8 @@
     "cpp",
     "*.podspec",
     "react-native.config.js",
+    "app.plugin.js",
+    "plugin/build",
     "!ios/build",
     "!android/build",
     "!android/gradle",
@@ -39,7 +43,8 @@
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build"
+    "prepare": "bob build && npm run build-plugin",
+    "build-plugin": "tsc --build plugin/"
   },
   "jest": {
     "preset": "react-native",
@@ -71,12 +76,6 @@
     }
   },
   "devDependencies": {
-    "expo": "^51.0.0",
-    "expo-module-scripts": "^3.5.2",
-    "jest-junit": "^16.0.0",
-    "logkitty": ">=0.7.1",
-    "metro-react-native-babel-preset": "^0.51.1",
-    "npm-run-all": "^4.1.5",
     "@commitlint/config-conventional": "^19.6.0",
     "@eslint/compat": "^1.2.7",
     "@eslint/eslintrc": "^3.3.0",
@@ -93,7 +92,13 @@
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
+    "expo": "^51.0.0",
+    "expo-module-scripts": "^3.5.4",
     "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
+    "logkitty": ">=0.7.1",
+    "metro-react-native-babel-preset": "^0.51.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.0.3",
     "react": "19.0.0",
     "react-native": "0.79.2",
@@ -120,6 +125,12 @@
         "module",
         {
           "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": false
         }
       ],
       [
