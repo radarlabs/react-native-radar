@@ -4,18 +4,9 @@
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
   "version": "3.20.3",
-  "main": "./lib/module/index.js",
+  "main": "./lib/commonjs/index.js",
+  "module": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
-  "exports": {
-    ".": {
-      "source": "./src/index.tsx",
-      "types": "./lib/typescript/src/index.d.ts",
-      "import": "./lib/module/index.js",
-      "require": "./lib/module/index.js",
-      "default": "./lib/module/index.js"
-    },
-    "./package.json": "./package.json"
-  },
   "files": [
     "src",
     "lib",
@@ -43,7 +34,7 @@
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build && npm run build-plugin",
+    "prepare": "bob build",
     "build-plugin": "tsc --build plugin/"
   },
   "jest": {
@@ -122,15 +113,9 @@
     "output": "lib",
     "targets": [
       [
-        "module",
+        "commonjs",
         {
-          "esm": true
-        }
-      ],
-      [
-        "module",
-        {
-          "esm": false
+          "configFile": true
         }
       ],
       [

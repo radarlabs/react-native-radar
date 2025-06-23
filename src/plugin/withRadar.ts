@@ -7,7 +7,7 @@ import {
 
 import { withRadarAndroid } from "./withRadarAndroid";
 import { withRadarIOS } from "./withRadarIOS";
-const pkg = require("../../package.json");
+const pkg = require("../../../package.json");
 
 import type { RadarPluginProps } from "./types";
 
@@ -36,4 +36,4 @@ const withRadarPlugin: ConfigPlugin<RadarPluginProps> = (config, args = {}) => {
 
 const withRadar = createRunOncePlugin(withRadarPlugin, pkg.name, pkg.version);
 
-export { withRadar };
+export default withRadar;
