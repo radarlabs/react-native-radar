@@ -3,21 +3,13 @@ import type { RadarNativeInterface } from './@types/RadarNativeInterface';
 import type { RadarTrackCallback, RadarTrackOnceOptions, RadarLocationUpdateCallback, RadarPermissionsStatus } from './@types/types';
 import NativeRadar from './NativeRadar';
 
-export function multiply(a: number, b: number): number {
-  return NativeRadar.multiply(a, b);
-}
+// export function initialize(publishableKey: string, fraud: boolean): void {
+//   return NativeRadar.initialize(publishableKey, fraud);
+// }
 
-export function initialize(publishableKey: string, fraud: boolean): void {
-  return NativeRadar.initialize(publishableKey, fraud);
-}
-
-export function requestPermissions(background: boolean): void {
-  NativeRadar.requestPermissions(background);
-}
-
-export function isEven(number: number): Promise<number> {
-  return NativeRadar.isEven(number);
-}
+// export function requestPermissions(background: boolean): void {
+//   NativeRadar.requestPermissions(background);
+// }
 
 const locationEmitter = NativeRadar.locationEmitter;
 

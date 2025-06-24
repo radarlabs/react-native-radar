@@ -70,12 +70,6 @@ class RadarModule(reactContext: ReactApplicationContext) :
     return NAME
   }
 
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  override fun multiply(a: Double, b: Double): Double {
-    return a * b
-  }
-
   override fun initialize(publishableKey: String, fraud: Boolean): Unit {
     Radar.initialize(reactApplicationContext, publishableKey)
     Radar.setReceiver(radarReceiver)
@@ -225,15 +219,6 @@ class RadarModule(reactContext: ReactApplicationContext) :
       Radar.trackOnce(accuracyLevel, beaconsTrackingOption, trackCallback)
     }
   }
-
-  override fun isEven(number: Double, promise: Promise): Unit {
-    if (number.toInt() % 2 == 0) {
-      promise.resolve(number)
-    } else {
-      promise.reject("ODD_NUMBER", "Number is odd")
-    }
-  }
-
 
   companion object {
     const val NAME = "RNRadar"

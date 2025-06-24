@@ -26,12 +26,6 @@ RCT_EXPORT_MODULE()
     }
 }
 
-- (NSNumber *)multiply:(double)a b:(double)b {
-    NSNumber *result = @(a * b);
-
-    return result;
-}
-
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser * _Nullable )user {
     // if (hasListeners) {
     //     NSMutableDictionary *body = [NSMutableDictionary new];
@@ -208,16 +202,6 @@ RCT_EXPORT_MODULE()
         }
         
         [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons:beacons completionHandler:completionHandler];
-    }
-}
-
-- (void)isEven:(double)number
-       resolve:(RCTPromiseResolveBlock)resolve
-        reject:(RCTPromiseRejectBlock)reject {
-    if ((int)number % 2 == 0) {
-        resolve(@(number));
-    } else {
-        reject(@"ODD_NUMBER", @"Number is odd", nil);
     }
 }
 

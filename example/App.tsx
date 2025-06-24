@@ -1,8 +1,7 @@
 import { Text, View, StyleSheet, Button } from 'react-native';
-import { multiply, requestPermissions, Radar } from 'react-native-radar';
+import { Radar } from 'react-native-radar';
 import React from 'react';
 
-const result = multiply(3, 7);
 Radar.initialize("prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", false);
 
 
@@ -33,7 +32,6 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
       <Button title="Track Once" onPress={() => Radar.trackOnce().then((result) => {
         console.log("from promise", result);
       }).catch((error) => {
