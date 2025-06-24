@@ -4,8 +4,8 @@ import type { EventEmitter } from 'react-native/Libraries/Types/CodegenTypes';
 
 export type LocationEmitter = {
   type: string;
-  location: string;
-  user: string;
+  location: Object;
+  user: Object;
 };
 
 export interface Spec extends TurboModule {

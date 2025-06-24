@@ -6,7 +6,9 @@
 @implementation RNRadar {
     CLLocationManager *locationManager;
     RCTPromiseResolveBlock permissionsRequestResolver;
+    bool hasListeners;
 }
+
 RCT_EXPORT_MODULE()
 
 - (instancetype)init {
@@ -26,6 +28,26 @@ RCT_EXPORT_MODULE()
     }
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return YES;
+}
+
+- (dispatch_queue_t)methodQueue {
+    return dispatch_get_main_queue();
+}
+
+- (NSArray<NSString *> *)supportedEvents {
+    return @[@"events", @"location", @"clientLocation", @"error", @"log", @"token"];
+}
+
+- (void)startObserving {
+    hasListeners = YES;
+}
+
+- (void)stopObserving {
+    hasListeners = NO;
+}
+
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser * _Nullable )user {
     // if (hasListeners) {
     //     NSMutableDictionary *body = [NSMutableDictionary new];
@@ -38,16 +60,20 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)didUpdateLocation:(CLLocation *)location user:(RadarUser *)user {
+    #ifdef RCT_NEW_ARCH_ENABLED
     [self emitLocationEmitter:@{
-        @"location": [[Radar dictionaryForLocation:location] description],
-        @"user": [[user dictionaryValue] description]
+        @"type": @"location",
+        @"location": [Radar dictionaryForLocation:location],
+        @"user": [user dictionaryValue]
     }];
-    // if (hasListeners) {
-    //     [self sendEventWithName:@"location" body:@{
-    //         @"location": [Radar dictionaryForLocation:location],
-    //         @"user": [user dictionaryValue]
-    //     }];
-    // }
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"location" body:@{
+            @"location": [Radar dictionaryForLocation:location],
+            @"user": [user dictionaryValue]
+        }];
+    }
+    #endif
 }
 
 - (void)didUpdateClientLocation:(CLLocation *)location stopped:(BOOL)stopped source:(RadarLocationSource)source {
@@ -72,20 +98,13 @@ RCT_EXPORT_MODULE()
     // }
 }
 
-
-
-
-- (void)initialize:(NSString *)publishableKey fraud:(BOOL)fraud {
+RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
+    [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.20.3" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-    return std::make_shared<facebook::react::NativeRadarSpecJSI>(params);
-}
-
-- (void)getPermissionsStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+RCT_EXPORT_METHOD(getPermissionsStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     NSString *statusStr;
     switch (status) {
@@ -111,7 +130,7 @@ RCT_EXPORT_MODULE()
     resolve(statusStr);
 }
 
-- (void)requestPermissions:(BOOL)background resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         permissionsRequestResolver = resolve;
@@ -138,9 +157,7 @@ RCT_EXPORT_MODULE()
     }
 }
 
-- (void)trackOnce:(NSDictionary *)optionsDict
-         resolve:(RCTPromiseResolveBlock)resolve
-          reject:(RCTPromiseRejectBlock)reject {
+RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     RadarTrackingOptionsDesiredAccuracy desiredAccuracy;
     BOOL beacons = NO;
     desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
@@ -204,5 +221,14 @@ RCT_EXPORT_MODULE()
         [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons:beacons completionHandler:completionHandler];
     }
 }
+
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeRadarSpecJSI>(params);
+}
+#endif
 
 @end
