@@ -64,6 +64,12 @@ class RadarModule(reactContext: ReactApplicationContext) :
         }
     }
 
+    private val radarVerifiedReceiver = object : RadarVerifiedReceiver() {
+        override fun onTokenUpdated(context: Context, token: RadarVerifiedLocationToken) {
+            // Handle verified location token received
+        }
+    }
+
     private val radarModuleImpl = RadarModuleImpl()
 
     private var mPermissionsRequestPromise: Promise? = null
@@ -73,9 +79,21 @@ class RadarModule(reactContext: ReactApplicationContext) :
     }
 
     override fun initialize(publishableKey: String, fraud: Boolean): Unit {
-        //Radar.initialize(reactApplicationContext, publishableKey)
-        radarModuleImpl.initialize(reactApplicationContext, publishableKey, fraud)
-        Radar.setReceiver(radarReceiver)
+        val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
+        editor.putString("x_platform_sdk_type", "ReactNative")
+        editor.putString("x_platform_sdk_version", "3.20.4-beta.4")
+        editor.apply()
+        
+        if (fraud) {
+            Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud)
+            Radar.setVerifiedReceiver(radarVerifiedReceiver)
+        } else {
+            Radar.initialize(reactApplicationContext, publishableKey)
+            Radar.setReceiver(radarReceiver)
+        }
+        
+        //radarModuleImpl.initialize(reactApplicationContext, publishableKey, fraud)
+        //Radar.setReceiver(radarReceiver)
     }
 
     override fun requestPermissions(background: Boolean, promise: Promise): Unit {

@@ -49,32 +49,13 @@ import java.util.Map;
 public class RadarModuleImpl {
 
     private static final String TAG = "RNRadarModule";
-    private static final int PERMISSIONS_REQUEST_CODE = 20160525; // random request code (Radar's birthday!)
-    private Promise mPermissionsRequestPromise;
+
 
     private boolean fraud = false;
     
     public String getName() {
         return "RNRadar";
     }
-
-    
-    public void initialize(ReactApplicationContext reactApplicationContext, String publishableKey, boolean fraud) {
-        this.fraud = fraud;
-        SharedPreferences.Editor editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
-        editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.20.4-beta.4");
-        editor.apply();
-        if (fraud) {
-            // Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
-            // Radar.setVerifiedReceiver(verifiedReceiver);
-        } else {
-            Radar.initialize(reactApplicationContext, publishableKey);
-            // setting receiver is to be done by the platform specific code
-            //Radar.setReceiver(receiver);
-        }
-    }
-
     
     public void setLogLevel(String level) {
         Radar.RadarLogLevel logLevel = Radar.RadarLogLevel.NONE;

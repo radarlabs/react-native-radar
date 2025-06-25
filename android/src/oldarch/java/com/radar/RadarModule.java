@@ -56,11 +56,13 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     private RadarOldArchVerifiedReceiver verifiedReceiver;    
     private int listenerCount = 0;
     private boolean fraud = false;
+    private RadarModuleImpl radarModuleImpl;
 
     public RadarModule(ReactApplicationContext reactContext) {
         super(reactContext);
         receiver = new RadarOldArchReceiver();
         verifiedReceiver = new RadarOldArchVerifiedReceiver();
+        radarModuleImpl = new RadarModuleImpl();
     }
 
     @ReactMethod
@@ -308,75 +310,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
 
     @ReactMethod
     public void trackOnce(ReadableMap optionsMap, final Promise promise) {
-        
-        Location location = null;
-        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
-        boolean beaconsTrackingOption = false;
-
-        if (optionsMap != null) {
-            if (optionsMap.hasKey("location")) {
-                ReadableMap locationMap = optionsMap.getMap("location");
-                location = new Location("RNRadarModule");
-                double latitude = locationMap.getDouble("latitude");
-                double longitude = locationMap.getDouble("longitude");
-                float accuracy = (float)locationMap.getDouble("accuracy");
-                location.setLatitude(latitude);
-                location.setLongitude(longitude);
-                location.setAccuracy(accuracy);
-            }
-            if (optionsMap.hasKey("desiredAccuracy")) {
-                String desiredAccuracy = optionsMap.getString("desiredAccuracy").toLowerCase();
-                if (desiredAccuracy.equals("none")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.NONE;
-                } else if (desiredAccuracy.equals("low")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
-                } else if (desiredAccuracy.equals("medium")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
-                } else if (desiredAccuracy.equals("high")) {
-                    accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
-                }
-            }
-            if (optionsMap.hasKey("beacons")) {
-                beaconsTrackingOption = optionsMap.getBoolean("beacons");
-            }
-        }
-
-        Radar.RadarTrackCallback trackCallback = new Radar.RadarTrackCallback() {
-            @Override
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
-                if (promise == null) {
-                    return;
-                }
-
-                try {
-                    if (status == Radar.RadarStatus.SUCCESS) {
-                        WritableMap map = Arguments.createMap();
-                        map.putString("status", status.toString());
-                        if (location != null) {
-                            map.putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)));
-                        }
-                        if (events != null) {
-                            map.putArray("events", RadarUtils.arrayForJson(RadarEvent.toJson(events)));
-                        }
-                        if (user != null) {
-                            map.putMap("user", RadarUtils.mapForJson(user.toJson()));
-                        }
-                        promise.resolve(map);
-                    } else {
-                        promise.reject(status.toString(), status.toString());
-                    }
-                } catch (JSONException e) {
-                    Log.e(TAG, "JSONException", e);
-                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
-                }
-            }
-        };
-
-        if (location != null) {
-            Radar.trackOnce(location, trackCallback);
-        } else {
-            Radar.trackOnce(accuracyLevel, beaconsTrackingOption, trackCallback);
-        }
+        radarModuleImpl.trackOnce(optionsMap, promise);
     }
 
     // @ReactMethod
