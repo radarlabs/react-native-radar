@@ -19,13 +19,15 @@ class RadarPackage : BaseReactPackage() {
   override fun getReactModuleInfoProvider(): ReactModuleInfoProvider {
     return ReactModuleInfoProvider {
       val moduleInfos: MutableMap<String, ReactModuleInfo> = HashMap()
+      val isNewArchitectureEnabled = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
       moduleInfos[RadarModule.NAME] = ReactModuleInfo(
         RadarModule.NAME,
         RadarModule.NAME,
         false,  // canOverrideExistingModule
         false,  // needsEagerInit
+        true, // hasConstants
         false,  // isCxxModule
-        true // isTurboModule
+        isNewArchitectureEnabled // isTurboModule
       )
       moduleInfos
     }
