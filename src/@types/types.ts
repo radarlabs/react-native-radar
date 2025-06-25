@@ -425,6 +425,10 @@ export interface RadarLogUpdateCallback {
   (status: string): void;
 }
 
+export interface RadarTokenUpdateCallback {
+  (token: Object): void;
+}
+
 
 export type RadarListenerCallback =
   | RadarEventUpdateCallback
@@ -432,7 +436,8 @@ export type RadarListenerCallback =
   | RadarClientLocationUpdateCallback
   | RadarErrorCallback
   | RadarLogUpdateCallback
-
+  | RadarTokenUpdateCallback;
+  
 export type RadarPermissionsStatus =
   | "GRANTED_FOREGROUND"
   | "GRANTED_BACKGROUND"

@@ -49,20 +49,23 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser * _Nullable )user {
-    // if (hasListeners) {
-    //     NSMutableDictionary *body = [NSMutableDictionary new];
-    //     [body setValue:[RadarEvent arrayForEvents:events] forKey:@"events"];
-    //     if (user) {
-    //         [body setValue:[user dictionaryValue] forKey:@"user"];
-    //     }
-    //     [self sendEventWithName:@"events" body:body];
-    // }
+    NSMutableDictionary *body = [NSMutableDictionary new];
+    [body setValue:[RadarEvent arrayForEvents:events] forKey:@"events"];
+    if (user) {
+        [body setValue:[user dictionaryValue] forKey:@"user"];
+    }
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitEventsEmitter:body];
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"events" body:body];
+    }
+    #endif
 }
 
 - (void)didUpdateLocation:(CLLocation *)location user:(RadarUser *)user {
     #ifdef RCT_NEW_ARCH_ENABLED
     [self emitLocationEmitter:@{
-        @"type": @"location",
         @"location": [Radar dictionaryForLocation:location],
         @"user": [user dictionaryValue]
     }];
@@ -77,25 +80,60 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)didUpdateClientLocation:(CLLocation *)location stopped:(BOOL)stopped source:(RadarLocationSource)source {
-    // if (hasListeners) {
-    //     [self sendEventWithName:@"clientLocation" body:@{
-    //         @"location": [Radar dictionaryForLocation:location],
-    //         @"stopped": @(stopped),
-    //         @"source": [Radar stringForLocationSource:source]
-    //     }];
-    // }
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitClientLocationEmitter:@{
+        @"location": [Radar dictionaryForLocation:location],
+        @"stopped": @(stopped),
+        @"source": [Radar stringForLocationSource:source]
+    }];
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"clientLocation" body:@{
+            @"location": [Radar dictionaryForLocation:location],
+            @"stopped": @(stopped),
+            @"source": [Radar stringForLocationSource:source]
+        }];
+    }
+    #endif
 }
 
 - (void)didFailWithStatus:(RadarStatus)status {
-    // if (hasListeners) {
-    //     [self sendEventWithName:@"error" body:[Radar stringForStatus:status]];
-    // }
+    NSDictionary *body = @{
+        @"status": [Radar stringForStatus:status]
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitErrorEmitter:body];
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"error" body:body];
+    }
+    #endif
 }
 
 - (void)didLogMessage:(NSString *)message {
-    // if (hasListeners) {
-    //     [self sendEventWithName:@"log" body:message];
-    // }
+    NSDictionary *body = @{
+        @"message": message
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitLogEmitter:body];
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"log" body:body];
+    }
+    #endif
+}
+
+- (void)didUpdateToken:(RadarVerifiedLocationToken *)token {
+    NSDictionary *body = @{
+        @"token": [token dictionaryValue]
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitTokenEmitter:body];
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"token" body:body];
+    }
+    #endif
 }
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {

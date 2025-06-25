@@ -39,12 +39,21 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     private val radarReceiver = object : RadarReceiver() {
         override fun onEventsReceived(context: Context, events: Array<RadarEvent>, user: RadarUser?) {
-            // Handle events received
+            val eventBlob = Arguments.createMap().apply {
+                var eventsArray = Arguments.createArray()
+                for (event in events) {
+                    eventsArray.pushMap(RadarUtils.mapForJson(event.toJson()))
+                }
+                putArray("events", eventsArray)
+                if (user != null) {
+                    putMap("user", RadarUtils.mapForJson(user.toJson()))
+                }
+            }
+            emitEventsEmitter(eventBlob)
         }
 
         override fun onLocationUpdated(context: Context, location: Location, user: RadarUser) {
             val eventBlob = Arguments.createMap().apply {
-                putString("type", "locationUpdated")
                 putString("location", Radar.jsonForLocation(location).toString())
                 putString("user", user.toJson().toString())
             }
@@ -52,21 +61,35 @@ class RadarModule(reactContext: ReactApplicationContext) :
         }
 
         override fun onClientLocationUpdated(context: Context, location: Location, stopped: Boolean, source: Radar.RadarLocationSource) {
-            // Handle client location updates
+            val eventBlob = Arguments.createMap().apply {
+                putString("location", Radar.jsonForLocation(location).toString())
+                putBoolean("stopped", stopped)
+                putString("source", source.toString())
+            }
+            emitClientLocationEmitter(eventBlob)
         }
 
         override fun onError(context: Context, status: Radar.RadarStatus) {
-            // Handle errors
+            val eventBlob = Arguments.createMap().apply {
+                putString("status", status.toString())
+            }
+            emitErrorEmitter(eventBlob)
         }
 
         override fun onLog(context: Context, message: String) {
-            // Handle log messages
+            val eventBlob = Arguments.createMap().apply {
+                putString("message", message)
+            }
+            emitLogEmitter(eventBlob)
         }
     }
 
     private val radarVerifiedReceiver = object : RadarVerifiedReceiver() {
         override fun onTokenUpdated(context: Context, token: RadarVerifiedLocationToken) {
-            // Handle verified location token received
+            val eventBlob = Arguments.createMap().apply {
+                putString("token", token.toJson().toString())
+            }
+            emitTokenEmitter(eventBlob)
         }
     }
 

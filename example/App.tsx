@@ -12,8 +12,24 @@ export default function App() {
   
   React.useEffect(() => {
     Radar.onLocationUpdate((location) => {
-      console.log("from callback", location);
+      console.log("location update from callback", location);
     });
+    Radar.onTokenUpdate((token) => {
+      console.log("token update from callback", token);
+    });
+    // Radar.onLog((message) => {
+    //   console.log("log update from callback", message);
+    // });
+    Radar.onError((error) => {
+      console.log("error update from callback", error);
+    });
+    Radar.onEventUpdate((events) => {
+      console.log("events update from callback", events);
+    });
+    Radar.onClientLocationUpdate((location) => {
+      console.log("client location update from callback", location);
+    });
+
     Radar.requestPermissions(false).then((status) => {
       console.log("from promise", status);
       if (status === "GRANTED_FOREGROUND") {

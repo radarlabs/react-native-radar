@@ -39,6 +39,15 @@ import type {
   // RadarValidateAddressCallback,
   // RadarVerifiedTrackingOptions,
   RadarLocationUpdateCallback,
+  RadarClientLocationUpdateCallback,
+  RadarErrorCallback,
+  RadarLogUpdateCallback,
+  RadarEventUpdateCallback,
+  RadarTokenUpdateCallback,
+  // RadarErrorCallback,
+  // RadarLogUpdateCallback,
+  // RadarEventUpdateCallback,
+  // RadarTokenUpdateCallback,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -111,14 +120,16 @@ export interface RadarNativeInterface {
   // nativeSdkVersion: () => Promise<string>;
   // rnSdkVersion: () => string;
   
-  /**
-   * Set up a listener for location updates from the native layer
-   * @param callback - The completion handler to call when location updates are received
-   */
   onLocationUpdate: (callback: RadarLocationUpdateCallback) => void;
-  
-  /**
-   * Clear the current location update listener
-   */
   clearLocationUpdate: () => void;
+  onClientLocationUpdate: (callback: RadarClientLocationUpdateCallback) => void;
+  clearClientLocationUpdate: () => void;
+  onError: (callback: RadarErrorCallback) => void;
+  clearError: () => void;
+  onLog: (callback: RadarLogUpdateCallback) => void;
+  clearLog: () => void;
+  onEventUpdate: (callback: RadarEventUpdateCallback) => void;
+  clearEventUpdate: () => void;
+  onTokenUpdate: (callback: RadarTokenUpdateCallback) => void;
+  clearTokenUpdate: () => void;
 }
