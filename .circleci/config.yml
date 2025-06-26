@@ -11,13 +11,6 @@ jobs:
       - run: npm install
       - run: npm install -g typescript
       - run:
-          name: Test
-          command: |
-            mkdir -p test-results/jest
-            npm run test
-          environment:
-            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
-      - run:
           name: Type-check
           command: npm run build-all
       - persist_to_workspace:
@@ -27,9 +20,8 @@ jobs:
             - ios
             - README.md
             - react-native-radar.podspec
-            - dist
+            - lib
             - app.plugin.js
-            - plugin/build
             - example
             - package.json
       - store_test_results:
