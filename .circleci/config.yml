@@ -21,6 +21,7 @@ jobs:
             - README.md
             - react-native-radar.podspec
             - lib
+            - src
             - app.plugin.js
             - example
             - package.json
