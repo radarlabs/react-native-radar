@@ -1,11 +1,11 @@
-version: 2
+version: 2.1
 orbs:
   macos: circleci/macos@2
 jobs:
   node:
     working_directory: ~/react-native-radar
     docker:
-      - image: cimg/node:18.0
+      - image: cimg/node:22.16.0
     steps:
       - checkout
       - run: npm install
