@@ -36,7 +36,9 @@
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "copy-assets": "./copyAssets.sh",
     "update-version": "node scripts/update-version.js",
-    "build-all": "npm run update-version && bob build && npm run copy-assets"
+    "build-all": "npm run update-version && bob build && npm run copy-assets",
+    "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
+    "check-beta-tag": "node ./scripts/check-beta-tag.cjs"
   },
   "jest": {
     "preset": "react-native",
