@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the leading geofencing and location tracking platform",
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
-  "version": "3.20.3",
+  "version": "3.21.0-alpha.1",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
@@ -34,9 +34,9 @@
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
+    "copy-assets": "./copyAssets.sh",
     "update-version": "node scripts/update-version.js",
-    "prepare": "npm run update-version && bob build",
-    "build-plugin": "tsc --build plugin/"
+    "build-all": "npm run update-version && bob build && npm run copy-assets"
   },
   "jest": {
     "preset": "react-native",
@@ -54,7 +54,7 @@
     ]
   },
   "peerDependencies": {
-    "@maplibre/maplibre-react-native": ">=9.0.1 || >=10.0.0-alpha",
+    "@maplibre/maplibre-react-native": ">=10.0.1",
     "expo": ">=43.0.5",
     "react": ">= 16.8.6",
     "react-native": ">= 0.60.0"

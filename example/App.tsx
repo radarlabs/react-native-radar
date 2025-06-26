@@ -1,12 +1,16 @@
-import { Text, View, StyleSheet, Button, Platform, ScrollView } from 'react-native';
-import { Radar } from 'react-native-radar';
+import { Text, View, StyleSheet, Button, Platform, ScrollView, SafeAreaView } from 'react-native';
+import Radar, {  Map, Autocomplete } from 'react-native-radar';
 import React, { useEffect, useState } from 'react';
 import ExampleButton from "./components/exampleButton";
+import MapLibreGL from "@maplibre/maplibre-react-native";
 
-Radar.initialize("prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", false);
+MapLibreGL.setAccessToken(null);
+
+Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
-
-// Check if we're using the new architecture
+declare global {
+  var __turboModuleProxy: any;
+}
 const isNewArchitecture = global.__turboModuleProxy != null;
 
 export default function App() {
@@ -70,7 +74,7 @@ export default function App() {
   }, [])
 
   return (
-
+    <SafeAreaView style={styles.safeArea}>
      <View style={styles.container}>
       <View style={styles.architectureIndicator}>
         <Text style={styles.architectureText}>
@@ -81,9 +85,9 @@ export default function App() {
         </Text>
       </View>
      {/* The current version of MapLibre does not support the new react native architecture  */}
-     {/* {Platform.OS !== "web" && (
+     {Platform.OS !== "web" && (
        <>
-         <View style={{ width: "100%", height: "40%" }}>
+         <View style={{ width: "100%", height: "25%" }}>
            <Map />
          </View>
          <View style={{ width: "100%", height: "10%" }}>
@@ -97,7 +101,7 @@ export default function App() {
            />
          </View>
        </>
-     )} */}
+     )}
      <View
        style={{
          width: "100%",
@@ -107,7 +111,7 @@ export default function App() {
        <ScrollView style={{ height: "25%" }}>
          <Text style={styles.displayText}>{displayText}</Text>
        </ScrollView>
-       <ScrollView style={{ height: "75%" }}>
+       <ScrollView style={{ height: "55%" }}>
          <ExampleButton
            title="getUser"
            onPress={() => {
@@ -655,6 +659,7 @@ export default function App() {
        </ScrollView>
      </View>
    </View>
+   </SafeAreaView>
   );
 }
 
@@ -685,5 +690,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flex: 1,
     textAlign: 'left',
+  },
+  safeArea: {
+    flex: 1,
   },
 });

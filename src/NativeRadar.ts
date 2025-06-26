@@ -82,6 +82,8 @@ export interface Spec extends TurboModule {
   getMatrix(options: Object): Promise<Object>;
   logConversion(options: Object): Promise<Object>;
   nativeSdkVersion(): Promise<string>;
+  getHost(): Promise<string>;
+  getPublishableKey(): Promise<string>;
   readonly locationEmitter: EventEmitter<LocationEmitter>;
   readonly clientLocationEmitter: EventEmitter<ClientLocationEmitter>;
   readonly errorEmitter: EventEmitter<ErrorEmitter>;

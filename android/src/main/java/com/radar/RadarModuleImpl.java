@@ -152,62 +152,6 @@ public class RadarModuleImpl {
 
         promise.resolve(Radar.getPublishableKey());
     }
-
-    
-    // public void getPermissionsStatus(PermissionAwareActivity activity, final Promise promise) {
-    //     if (promise == null) {
-    //         return;
-    //     }
-
-    //     if (activity == null) {
-    //         promise.resolve("UNKNOWN");
-    //         return;
-    //     }
-
-    //     boolean foreground = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || 
-    //                          ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    //     boolean background = foreground;
-    //     boolean denied = ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION);
-        
-    //     if (Build.VERSION.SDK_INT >= 29) {
-    //         background = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    //     }
-
-    //     if (background) {
-    //         promise.resolve("GRANTED_BACKGROUND");
-    //     } else if (foreground) {
-    //         promise.resolve("GRANTED_FOREGROUND");
-    //     } else if (denied) {
-    //         promise.resolve("DENIED");
-    //     } else {
-    //         promise.resolve("NOT_DETERMINED");
-    //     }
-    // }
-
-    // @Override
-    // public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    //     if (requestCode == PERMISSIONS_REQUEST_CODE && mPermissionsRequestPromise != null) {
-    //         getPermissionsStatus(mPermissionsRequestPromise);
-    //         mPermissionsRequestPromise = null;
-    //     }
-    //     return true;
-    // }
-
-
-    
-    // public void requestPermissions(PermissionAwareActivity activity, boolean background, final Promise promise) {
-    //     mPermissionsRequestPromise = promise;
-    //     if (activity != null) {
-    //         if (Build.VERSION.SDK_INT >= 23) {
-    //             if (background && Build.VERSION.SDK_INT >= 29) {
-    //                 activity.requestPermissions(new String[] { Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
-    //             } else {
-    //                 activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
-    //             }
-    //         }
-    //     }
-    // }
-
     
     public void getLocation(String desiredAccuracy, final Promise promise) {
         

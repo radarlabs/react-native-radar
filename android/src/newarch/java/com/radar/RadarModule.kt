@@ -104,7 +104,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun initialize(publishableKey: String, fraud: Boolean): Unit {
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "3.20.4-beta.4")
+        editor.putString("x_platform_sdk_version", "3.21.0-alpha.1")
         editor.apply()
         
         if (fraud) {
@@ -363,6 +363,15 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun nativeSdkVersion(promise: Promise): Unit {
         radarModuleImpl.nativeSdkVersion(promise)
     }
+
+    override fun getHost(promise: Promise): Unit {
+        radarModuleImpl.getHost(promise)
+    }
+
+    override fun getPublishableKey(promise: Promise): Unit {
+        radarModuleImpl.getPublishableKey(promise)
+    }
+    
     
     companion object {
         const val NAME = "RNRadar"

@@ -122,4 +122,6 @@ export interface RadarNativeInterface {
   clearEventUpdate: () => void;
   onTokenUpdate: (callback: RadarTokenUpdateCallback) => void;
   clearTokenUpdate: () => void;
+  getHost: () => Promise<string>;
+  getPublishableKey: () => Promise<string>;
 }
