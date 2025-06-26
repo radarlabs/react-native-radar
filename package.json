@@ -34,7 +34,8 @@
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build",
+    "update-version": "node scripts/update-version.js",
+    "prepare": "npm run update-version && bob build",
     "build-plugin": "tsc --build plugin/"
   },
   "jest": {

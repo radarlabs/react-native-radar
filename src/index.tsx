@@ -1,9 +1,10 @@
 import type { EventSubscription } from 'react-native';
 import type { RadarNativeInterface } from './@types/RadarNativeInterface';
-import type { RadarTrackCallback, RadarTrackOnceOptions, RadarLocationUpdateCallback, RadarPermissionsStatus, RadarClientLocationUpdateCallback, RadarLocationSource, RadarErrorCallback, RadarLogUpdateCallback, RadarTokenUpdateCallback, RadarEventUpdateCallback,
+import type { RadarTrackCallback, RadarTrackOnceOptions, RadarLocationUpdateCallback, RadarPermissionsStatus, RadarClientLocationUpdateCallback, RadarLocationSource, RadarErrorCallback, RadarLogUpdateCallback, RadarTokenUpdateCallback, RadarEventUpdateCallback, RadarLogLevel, RadarMetadata, RadarLocationCallback, RadarTrackingOptionsDesiredAccuracy, RadarTrackVerifiedCallback, RadarTrackVerifiedOptions, RadarMockTrackingOptions, RadarTrackingOptions, RadarVerifiedTrackingOptions, RadarContextCallback, RadarNotificationOptions, RadarStartTripOptions, RadarTrackingOptionsForegroundService, RadarTripCallback, RadarTripOptions, RadarUpdateTripOptions, RadarAddress, RadarAddressCallback, RadarAutocompleteOptions, RadarGeocodeOptions, RadarGetDistanceOptions, RadarGetMatrixOptions, RadarIPGeocodeCallback, RadarLogConversionCallback, RadarLogConversionOptions, RadarReverseGeocodeOptions, RadarRouteCallback, RadarRouteMatrix, RadarSearchGeofencesCallback, RadarSearchGeofencesOptions, RadarSearchPlacesCallback, RadarSearchPlacesOptions, RadarValidateAddressCallback,
   //  RadarErrorCallback, RadarLogUpdateCallback, RadarEventUpdateCallback, RadarTokenUpdateCallback 
   } from './@types/types';
 import { NativeEventEmitter, NativeModules } from 'react-native';
+import { VERSION } from './version';
 
 declare global {
   var __turboModuleProxy: any;
@@ -43,11 +44,10 @@ let eventsUpdateSubscription: EventSubscription | null = null;
 let tokenUpdateSubscription: EventSubscription | null = null;
 
 export const Radar: RadarNativeInterface = {
-  
-  initialize: (publishableKey: string, fraud?: boolean) => {   
+  initialize: (publishableKey: string, fraud?: boolean) => {
     return NativeRadar.initialize(publishableKey, !!fraud);
   },
-  
+
   trackOnce: async (options?: RadarTrackOnceOptions) => {
     return NativeRadar.trackOnce(options || null) as Promise<RadarTrackCallback>;
   },
@@ -58,28 +58,28 @@ export const Radar: RadarNativeInterface = {
       locationUpdateSubscription.remove();
       locationUpdateSubscription = null;
     }
-  
+
     if (isNewArchitecture && locationEmitter) {
-      locationUpdateSubscription = locationEmitter((event: { type: string; location: any; user: any }) => {
+      locationUpdateSubscription = locationEmitter((event: { type: string; location: any; user: any; }) => {
         try {
           const locationUpdate = {
             location: event.location,
             user: event.user
           };
-          
+
           callback(locationUpdate);
         } catch (error) {
           console.error('[Radar] Error in location update callback:', error);
         }
       });
     } else if (!isNewArchitecture && eventEmitter) {
-      locationUpdateSubscription = eventEmitter.addListener('location', (event: { location: any; user: any }) => {
+      locationUpdateSubscription = eventEmitter.addListener('location', (event: { location: any; user: any; }) => {
         try {
           const locationUpdate = {
             location: event.location,
             user: event.user
           };
-          
+
           callback(locationUpdate);
         } catch (error) {
           console.error('[Radar] Error in location update callback:', error);
@@ -104,7 +104,7 @@ export const Radar: RadarNativeInterface = {
     }
 
     if (isNewArchitecture && clientLocationEmitter) {
-      clientLocationUpdateSubscription = clientLocationEmitter((event: { location: any; stopped: boolean; source: string }) => {
+      clientLocationUpdateSubscription = clientLocationEmitter((event: { location: any; stopped: boolean; source: string; }) => {
         try {
           const clientLocationUpdate = {
             location: event.location,
@@ -117,7 +117,7 @@ export const Radar: RadarNativeInterface = {
         }
       });
     } else if (!isNewArchitecture && eventEmitter) {
-      clientLocationUpdateSubscription = eventEmitter.addListener('clientLocation', (event: { location: any; stopped: boolean; source: string }) => {
+      clientLocationUpdateSubscription = eventEmitter.addListener('clientLocation', (event: { location: any; stopped: boolean; source: string; }) => {
         try {
           const clientLocationUpdate = {
             location: event.location,
@@ -148,11 +148,11 @@ export const Radar: RadarNativeInterface = {
     }
 
     if (isNewArchitecture && errorEmitter) {
-      errorUpdateSubscription = errorEmitter((event: { status: string }) => {
+      errorUpdateSubscription = errorEmitter((event: { status: string; }) => {
         callback(event.status);
       });
     } else if (!isNewArchitecture && eventEmitter) {
-      errorUpdateSubscription = eventEmitter.addListener('error', (event: { status: string }) => {
+      errorUpdateSubscription = eventEmitter.addListener('error', (event: { status: string; }) => {
         callback(event.status);
       });
     } else {
@@ -174,11 +174,11 @@ export const Radar: RadarNativeInterface = {
     }
 
     if (isNewArchitecture && logEmitter) {
-      logUpdateSubscription = logEmitter((event: { message: string }) => {
+      logUpdateSubscription = logEmitter((event: { message: string; }) => {
         callback(event.message);
       });
     } else if (!isNewArchitecture && eventEmitter) {
-      logUpdateSubscription = eventEmitter.addListener('log', (event: { message: string }) => {
+      logUpdateSubscription = eventEmitter.addListener('log', (event: { message: string; }) => {
         callback(event.message);
       });
     } else {
@@ -200,7 +200,7 @@ export const Radar: RadarNativeInterface = {
     }
 
     if (isNewArchitecture && eventsEmitter) {
-      eventsUpdateSubscription = eventsEmitter((event: { events: any[]; user: any }) => {
+      eventsUpdateSubscription = eventsEmitter((event: { events: any[]; user: any; }) => {
         try {
           const eventUpdate = {
             user: event.user,
@@ -212,7 +212,7 @@ export const Radar: RadarNativeInterface = {
         }
       });
     } else if (!isNewArchitecture && eventEmitter) {
-      eventsUpdateSubscription = eventEmitter.addListener('events', (event: { events: any[]; user: any }) => {
+      eventsUpdateSubscription = eventEmitter.addListener('events', (event: { events: any[]; user: any; }) => {
         try {
           const eventUpdate = {
             user: event.user,
@@ -240,13 +240,13 @@ export const Radar: RadarNativeInterface = {
       tokenUpdateSubscription.remove();
       tokenUpdateSubscription = null;
     }
-    
+
     if (isNewArchitecture && tokenEmitter) {
-      tokenUpdateSubscription = tokenEmitter((event: { token: any }) => {
+      tokenUpdateSubscription = tokenEmitter((event: { token: any; }) => {
         callback(event.token);
       });
     } else if (!isNewArchitecture && eventEmitter) {
-      tokenUpdateSubscription = eventEmitter.addListener('token', (event: { token: any }) => {
+      tokenUpdateSubscription = eventEmitter.addListener('token', (event: { token: any; }) => {
         callback(event.token);
       });
     } else {
@@ -263,5 +263,150 @@ export const Radar: RadarNativeInterface = {
 
   requestPermissions: (background: boolean) => {
     return NativeRadar.requestPermissions(background) as Promise<RadarPermissionsStatus>;
+  },
+  setLogLevel: function (level: RadarLogLevel): void {
+    return NativeRadar.setLogLevel(level);
+  },
+  setUserId: function (userId: string): void {
+    return NativeRadar.setUserId(userId);
+  },
+  getUserId: function (): Promise<string> {
+    return NativeRadar.getUserId();
+  },
+  setDescription: function (description: string): void {
+    return NativeRadar.setDescription(description);
+  },
+  getDescription: function (): Promise<string> {
+    return NativeRadar.getDescription();
+  },
+  setMetadata: function (metadata: RadarMetadata): void {
+    return NativeRadar.setMetadata(metadata);
+  },
+  getMetadata: function (): Promise<RadarMetadata> {
+    return NativeRadar.getMetadata();
+  },
+  setAnonymousTrackingEnabled: function (enabled: boolean): void {
+    return NativeRadar.setAnonymousTrackingEnabled(enabled);
+  },
+  getPermissionsStatus: function (): Promise<RadarPermissionsStatus> {
+    return NativeRadar.getPermissionsStatus();
+  },
+  getLocation: function (desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy): Promise<RadarLocationCallback> {
+    return NativeRadar.getLocation(desiredAccuracy);
+  },
+  trackVerified: function (options?: RadarTrackVerifiedOptions): Promise<RadarTrackVerifiedCallback> {
+    return NativeRadar.trackVerified(options);
+  },
+  getVerifiedLocationToken: function (): Promise<RadarTrackVerifiedCallback> {
+    return NativeRadar.getVerifiedLocationToken();
+  },
+  clearVerifiedLocationToken: function (): void {
+    return NativeRadar.clearVerifiedLocationToken();
+  },
+  startTrackingEfficient: function (): void {
+    return NativeRadar.startTrackingEfficient();
+  },
+  startTrackingResponsive: function (): void {
+    return NativeRadar.startTrackingResponsive();
+  },
+  startTrackingContinuous: function (): void {
+    return NativeRadar.startTrackingContinuous();
+  },
+  startTrackingCustom: function (options: RadarTrackingOptions): void {
+    return NativeRadar.startTrackingCustom(options);
+  },
+  startTrackingVerified: function (options?: RadarVerifiedTrackingOptions): void {
+    return NativeRadar.startTrackingVerified(options);
+  },
+  isTrackingVerified: function (): Promise<boolean> {
+    return NativeRadar.isTrackingVerified();
+  },
+  setProduct: function (product: string): void {
+    return NativeRadar.setProduct(product);
+  },
+  mockTracking: function (options: RadarMockTrackingOptions): void {
+    return NativeRadar.mockTracking(options);
+  },
+  stopTracking: function (): void {
+    return NativeRadar.stopTracking();
+  },
+  stopTrackingVerified: function (): void {
+    return NativeRadar.stopTrackingVerified();
+  },
+  getTrackingOptions: function (): Promise<RadarTrackingOptions> {
+    return NativeRadar.getTrackingOptions();
+  },
+  isUsingRemoteTrackingOptions: function (): Promise<boolean> {
+    return NativeRadar.isUsingRemoteTrackingOptions();
+  },
+  isTracking: function (): Promise<boolean> {
+    return NativeRadar.isTracking();
+  },
+  setForegroundServiceOptions: function (options: RadarTrackingOptionsForegroundService): void {
+    return NativeRadar.setForegroundServiceOptions(options);
+  },
+  setNotificationOptions: function (options: RadarNotificationOptions): void {
+    return NativeRadar.setNotificationOptions(options);
+  },
+  getTripOptions: function (): Promise<RadarTripOptions> {
+    return NativeRadar.getTripOptions();
+  },
+  startTrip: function (options: RadarStartTripOptions): Promise<RadarTripCallback> {
+    return NativeRadar.startTrip(options);
+  },
+  completeTrip: function (): Promise<RadarTripCallback> {
+    return NativeRadar.completeTrip();
+  },
+  cancelTrip: function (): Promise<RadarTripCallback> {
+    return NativeRadar.cancelTrip();
+  },
+  updateTrip: function (options: RadarUpdateTripOptions): Promise<RadarTripCallback> {
+    return NativeRadar.updateTrip(options);
+  },
+  acceptEvent: function (eventId: string, verifiedPlaceId: string): void {
+    return NativeRadar.acceptEvent(eventId, verifiedPlaceId);
+  },
+  rejectEvent: function (eventId: string): void {
+    return NativeRadar.rejectEvent(eventId);
+  },
+  getContext: function (location?: Location): Promise<RadarContextCallback> {
+    return NativeRadar.getContext(location);
+  },
+  searchPlaces: function (options: RadarSearchPlacesOptions): Promise<RadarSearchPlacesCallback> {
+    return NativeRadar.searchPlaces(options);
+  },
+  searchGeofences: function (options: RadarSearchGeofencesOptions): Promise<RadarSearchGeofencesCallback> {
+    return NativeRadar.searchGeofences(options);
+  },
+  autocomplete: function (options: RadarAutocompleteOptions): Promise<RadarAddressCallback> {
+    return NativeRadar.autocomplete(options);
+  },
+  geocode: function (options: RadarGeocodeOptions): Promise<RadarAddressCallback> {
+    return NativeRadar.geocode(options);
+  },
+  reverseGeocode: function (options?: RadarReverseGeocodeOptions): Promise<RadarAddressCallback> {
+    return NativeRadar.reverseGeocode(options);
+  },
+  ipGeocode: function (): Promise<RadarIPGeocodeCallback> {
+    return NativeRadar.ipGeocode();
+  },
+  validateAddress: function (address: RadarAddress): Promise<RadarValidateAddressCallback> {
+    return NativeRadar.validateAddress(address);
+  },
+  getDistance: function (option: RadarGetDistanceOptions): Promise<RadarRouteCallback> {
+    return NativeRadar.getDistance(option);
+  },
+  getMatrix: function (option: RadarGetMatrixOptions): Promise<RadarRouteMatrix> {
+    return NativeRadar.getMatrix(option);
+  },
+  logConversion: function (options: RadarLogConversionOptions): Promise<RadarLogConversionCallback> {
+    return NativeRadar.logConversion(options);
+  },
+
+  nativeSdkVersion: function (): Promise<string> {
+    return NativeRadar.nativeSdkVersion();
+  },
+  rnSdkVersion: function (): string {
+    return VERSION;
   }
 }

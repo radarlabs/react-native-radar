@@ -114,11 +114,40 @@ class RadarModule(reactContext: ReactApplicationContext) :
             Radar.initialize(reactApplicationContext, publishableKey)
             Radar.setReceiver(radarReceiver)
         }
-        
-        //radarModuleImpl.initialize(reactApplicationContext, publishableKey, fraud)
-        //Radar.setReceiver(radarReceiver)
     }
 
+    override fun setLogLevel(level: String): Unit {
+        radarModuleImpl.setLogLevel(level)
+    }
+
+    override fun setUserId(userId: String): Unit {
+        radarModuleImpl.setUserId(userId)
+    }
+
+    override fun getUserId(promise: Promise): Unit {
+        radarModuleImpl.getUserId(promise)
+    }
+
+    override fun setDescription(description: String): Unit {
+        radarModuleImpl.setDescription(description)
+    }
+
+    override fun getDescription(promise: Promise): Unit {
+        radarModuleImpl.getDescription(promise)
+    }
+
+    override fun setMetadata(metadata: ReadableMap): Unit {
+        radarModuleImpl.setMetadata(metadata)
+    }
+
+    override fun getMetadata(promise: Promise): Unit {
+        radarModuleImpl.getMetadata(promise)
+    }
+
+    override fun setAnonymousTrackingEnabled(enabled: Boolean): Unit {
+        radarModuleImpl.setAnonymousTrackingEnabled(enabled)
+    }
+    
     override fun requestPermissions(background: Boolean, promise: Promise): Unit {
         mPermissionsRequestPromise = promise
         val activity = currentActivity as? PermissionAwareActivity
@@ -181,90 +210,160 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun trackOnce(trackOnceOptions: ReadableMap?, promise: Promise): Unit {
         radarModuleImpl.trackOnce(trackOnceOptions, promise)
-        // var location: Location? = null
-        // var accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM
-        // var beaconsTrackingOption = false
-
-        // if (trackOnceOptions != null) {
-        //     if (trackOnceOptions.hasKey("location")) {
-        //         val locationMap = trackOnceOptions.getMap("location")
-        //         if (locationMap != null) {
-        //             location = Location("RNRadarModule").apply {
-        //                 latitude = locationMap.getDouble("latitude")
-        //                 longitude = locationMap.getDouble("longitude")
-        //                 accuracy = locationMap.getDouble("accuracy").toFloat()
-        //             }
-        //         }
-        //     }
-
-        //     if (trackOnceOptions.hasKey("desiredAccuracy")) {
-        //         val desiredAccuracy = trackOnceOptions.getString("desiredAccuracy")?.lowercase()
-        //         accuracyLevel = when (desiredAccuracy) {
-        //             "none" -> RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.NONE
-        //             "low" -> RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW
-        //             "medium" -> RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM
-        //             "high" -> RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH
-        //             else -> RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM
-        //         }
-        //     }
-
-        //     if (trackOnceOptions.hasKey("beacons")) {
-        //         beaconsTrackingOption = trackOnceOptions.getBoolean("beacons")
-        //     }
-        // }
-
-        // val trackCallback = object : Radar.RadarTrackCallback {
-        //     override fun onComplete(status: Radar.RadarStatus, location: Location?, events: Array<RadarEvent>?, user: RadarUser?) {
-        //         if (promise == null) {
-        //             return
-        //         }
-
-        //         try {
-        //             if (status == Radar.RadarStatus.SUCCESS) {
-        //                 val map = Arguments.createMap().apply {
-        //                     putString("status", status.toString())
-        //                     if (location != null) {
-        //                         putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)))
-        //                     }
-        //                     if (events != null) {
-        //                         // TODO: Check if RadarEvent.toJson(events) visibility can be made public in the SDK
-        //                         // Currently using instance method due to internal companion object access restriction
-        //                         val eventsArray = Arguments.createArray()
-        //                         for (event in events) {
-        //                             try {
-        //                                 val eventJson = event.toJson()
-        //                                 val eventMap = RadarUtils.mapForJson(eventJson)
-        //                                 if (eventMap != null) {
-        //                                     eventsArray.pushMap(eventMap)
-        //                                 }
-        //                             } catch (e: Exception) {
-        //                                 Log.e(TAG, "Error converting event to JSON", e)
-        //                             }
-        //                         }
-        //                         putArray("events", eventsArray)
-        //                     }
-        //                     if (user != null) {
-        //                         putMap("user", RadarUtils.mapForJson(user.toJson()))
-        //                     }
-        //                 }
-        //                 promise.resolve(map)
-        //             } else {
-        //                 promise.reject(status.toString(), status.toString())
-        //             }
-        //         } catch (e: JSONException) {
-        //             Log.e(TAG, "JSONException", e)
-        //             promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString())
-        //         }
-        //     }
-        // }
-
-        // if (location != null) {
-        //     Radar.trackOnce(location, trackCallback)
-        // } else {
-        //     Radar.trackOnce(accuracyLevel, beaconsTrackingOption, trackCallback)
-        // }
     }
 
+    override fun getLocation(desiredAccuracy: String?, promise: Promise): Unit {
+        radarModuleImpl.getLocation(desiredAccuracy, promise)
+    }
+
+    override fun trackVerified(trackVerifiedOptions: ReadableMap?, promise: Promise): Unit {
+        radarModuleImpl.trackVerified(trackVerifiedOptions, promise)
+    }
+
+    override fun getVerifiedLocationToken(promise: Promise): Unit {
+        radarModuleImpl.getVerifiedLocationToken(promise)
+    }
+
+    override fun clearVerifiedLocationToken(): Unit {
+        radarModuleImpl.clearVerifiedLocationToken()
+    }
+
+    override fun startTrackingEfficient(): Unit {
+        radarModuleImpl.startTrackingEfficient()
+    }
+
+    override fun startTrackingResponsive(): Unit {
+        radarModuleImpl.startTrackingResponsive()
+    }
+
+    override fun startTrackingContinuous(): Unit {
+        radarModuleImpl.startTrackingContinuous()
+    }
+
+    override fun startTrackingCustom(options: ReadableMap): Unit {
+        radarModuleImpl.startTrackingCustom(options)
+    }
+
+    override fun startTrackingVerified(options: ReadableMap?): Unit {
+        radarModuleImpl.startTrackingVerified(options)
+    }
+
+    override fun isTrackingVerified(promise: Promise): Unit {
+        radarModuleImpl.isTrackingVerified(promise)
+    }
+
+    override fun setProduct(product: String): Unit {
+        radarModuleImpl.setProduct(product)
+    }
+
+    override fun mockTracking(options: ReadableMap): Unit {
+        radarModuleImpl.mockTracking(options)
+    }
+
+    override fun stopTracking(): Unit {
+        radarModuleImpl.stopTracking()
+    }
+
+    override fun stopTrackingVerified(): Unit {
+        radarModuleImpl.stopTrackingVerified()
+    }
+
+    override fun getTrackingOptions(promise: Promise): Unit {
+        radarModuleImpl.getTrackingOptions(promise)
+    }
+
+    override fun isUsingRemoteTrackingOptions(promise: Promise): Unit {
+        radarModuleImpl.isUsingRemoteTrackingOptions(promise)
+    }
+
+    override fun isTracking(promise: Promise): Unit {
+        radarModuleImpl.isTracking(promise)
+    }
+
+    override fun setForegroundServiceOptions(options: ReadableMap): Unit {
+        radarModuleImpl.setForegroundServiceOptions(options)
+    }
+
+    override fun setNotificationOptions(options: ReadableMap): Unit {
+        radarModuleImpl.setNotificationOptions(options)
+    }
+
+    override fun getTripOptions(promise: Promise): Unit {
+        radarModuleImpl.getTripOptions(promise)
+    }
+
+    override fun startTrip(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.startTrip(options, promise)
+    }
+
+    override fun completeTrip(promise: Promise): Unit {
+        radarModuleImpl.completeTrip(promise)
+    }
+
+    override fun cancelTrip(promise: Promise): Unit {
+        radarModuleImpl.cancelTrip(promise)
+    }
+
+    override fun updateTrip(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.updateTrip(options, promise)
+    }
+
+    override fun acceptEvent(eventId: String, verifiedPlaceId: String): Unit {
+        radarModuleImpl.acceptEvent(eventId, verifiedPlaceId)
+    }
+
+    override fun rejectEvent(eventId: String): Unit {
+        radarModuleImpl.rejectEvent(eventId)
+    }
+
+    override fun getContext(location: ReadableMap?, promise: Promise): Unit {
+        radarModuleImpl.getContext(location, promise)
+    }
+
+    override fun searchPlaces(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.searchPlaces(options, promise)
+    }
+    
+    override fun searchGeofences(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.searchGeofences(options, promise)
+    }
+
+    override fun autocomplete(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.autocomplete(options, promise)
+    }
+
+    override fun geocode(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.geocode(options, promise)
+    }
+
+    override fun reverseGeocode(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.reverseGeocode(options, promise)
+    }
+
+    override fun ipGeocode(promise: Promise): Unit {
+        radarModuleImpl.ipGeocode(promise)
+    }
+
+    override fun validateAddress(address: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.validateAddress(address, promise)
+    }
+
+    override fun getDistance(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.getDistance(options, promise)
+    }
+
+    override fun getMatrix(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.getMatrix(options, promise)
+    }
+
+    override fun logConversion(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.logConversion(options, promise)
+    }
+
+    override fun nativeSdkVersion(promise: Promise): Unit {
+        radarModuleImpl.nativeSdkVersion(promise)
+    }
+    
     companion object {
         const val NAME = "RNRadar"
         private const val PERMISSIONS_REQUEST_CODE = 1
