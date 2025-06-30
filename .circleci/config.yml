@@ -25,6 +25,7 @@ jobs:
             - app.plugin.js
             - example
             - package.json
+            - plugin/build
       - store_test_results:
           path: test-results
       - store_artifacts:
