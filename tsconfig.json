@@ -1,29 +1,39 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "React Native",
+  "_version": "3.0.2",
   "compilerOptions": {
-    "rootDir": ".",
-    "paths": {
-      "react-native-radar": ["./src/index"]
-    },
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react-jsx",
-    "lib": ["ESNext"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "noEmit": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noImplicitUseStrict": false,
-    "noStrictGenericChecks": false,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
+    "target": "es2015",
+    "module": "commonjs",
+    "types": ["node"],
+    "typeRoots": [ "./node_modules/@types", "./src/@types"],
+    "allowJs": true,
+    "declaration": true,
+    "jsx": "react-native",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "isolatedModules": true,
     "strict": true,
-    "target": "ESNext",
-    "verbatimModuleSyntax": false
-  }
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+  },
+  "include": [
+    "src/index.tsx",
+    "src/index.web.js",
+    "src/ui",
+    "src/NativeRadar.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js",
+    "example",
+    "dist"
+  ]
 }

@@ -4,15 +4,14 @@
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
   "version": "3.21.0-beta.1",
-  "main": "./lib/commonjs/index.js",
-  "module": "./lib/module/index.js",
-  "types": "./lib/typescript/src/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
+    "dist",
     "src",
-    "lib",
     "android",
     "ios",
-    "cpp",
+    "plugin/build",
     "*.podspec",
     "react-native.config.js",
     "app.plugin.js",
@@ -36,9 +35,11 @@
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "copy-assets": "./copyAssets.sh",
     "update-version": "node scripts/update-version.js",
-    "build-all": "npm run update-version && bob build && npm run copy-assets",
+    "build-all": "npm run update-version && npm run build && npm run copy-assets && npm run build-plugin",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
-    "check-beta-tag": "node ./scripts/check-beta-tag.cjs"
+    "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
+    "build-plugin": "tsc --build plugin/",
+    "build": "tsc"
   },
   "jest": {
     "preset": "react-native",
@@ -96,7 +97,6 @@
     "prettier": "^3.0.3",
     "react": "19.0.0",
     "react-native": "0.79.2",
-    "react-native-builder-bob": "^0.40.12",
     "typescript": "^5.8.3"
   },
   "bugs": {
@@ -110,24 +110,6 @@
     "@babel/runtime": "^7.21.0",
     "@react-native-community/netinfo": "^7.1.3",
     "radar-sdk-js": "^3.7.1"
-  },
-  "react-native-builder-bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      [
-        "commonjs",
-        {
-          "configFile": true
-        }
-      ],
-      [
-        "typescript",
-        {
-          "project": "tsconfig.build.json"
-        }
-      ]
-    ]
   },
   "codegenConfig": {
     "name": "RadarSpec",

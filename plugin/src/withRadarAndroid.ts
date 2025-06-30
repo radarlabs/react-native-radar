@@ -1,24 +1,23 @@
-import { ExpoConfig } from "expo/config";
 
-import {
+const {
   withAppBuildGradle,
   AndroidConfig,
   withDangerousMod,
-} from "expo/config-plugins";
-import fs from "fs";
-import path from "path";
+} = require("expo/config-plugins");
+const fs = require("fs");
+const path = require("path");
 
-import { RadarPluginProps } from "./types";
+import type { RadarPluginProps } from "./types";
 
 export const withRadarAndroid = (
-  config: ExpoConfig,
+  config: any,
   args: RadarPluginProps
 ) => {
   config = withAndroidPermissions(config, args);
 
   config = withDangerousMod(config, [
     "android",
-    async (config) => {
+    async (config: { modRequest: { projectRoot: any; }; }) => {
       if (!args.androidFraud) {
         return config;
       }
@@ -67,7 +66,7 @@ export const withRadarAndroid = (
     },
   ]);
 
-  return withAppBuildGradle(config, (config) => {
+  return withAppBuildGradle(config, (config: { modResults: { language: string; contents: string; }; }) => {
     if (config.modResults.language === "groovy") {
       config.modResults.contents = modifyAppBuildGradle(
         config.modResults.contents,
@@ -85,7 +84,7 @@ export const withRadarAndroid = (
 function withAndroidPermissions(
   config: any,
   args: RadarPluginProps
-): ExpoConfig {
+): any {
   const isAndroidBackgroundLocationEnabled = !!args.androidBackgroundPermission;
   const enableAndroidForegroundService = !!args.androidForegroundService;
   const enableAndroidActivityRecognition = !!args.androidActivityRecognition;

@@ -45,7 +45,7 @@
         "react-native-radar",
         {
           "iosFraud": true,
-          "iosNSLocationAlwaysAndWhenInUseUsageDescription": "test value",
+          "iosNSLocationAlwaysAndWhenInUseUsageDescription": "please allow location for background tracking",
           "iosBackgroundMode": true,
           "androidFraud": false,
           "androidBackgroundPermission": true,
@@ -61,10 +61,10 @@
         "expo-build-properties",
         {
           "ios": {
-            "newArchEnabled": false
+            "newArchEnabled": true
           },
           "android": {
-            "newArchEnabled": false,
+            "newArchEnabled": true,
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true
           }

@@ -20,7 +20,7 @@ jobs:
             - ios
             - README.md
             - react-native-radar.podspec
-            - lib
+            - dist
             - src
             - app.plugin.js
             - example

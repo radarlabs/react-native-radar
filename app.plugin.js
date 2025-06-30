@@ -1,1 +1,1 @@
-module.exports = require('./lib/commonjs/plugin/withRadar');
+module.exports = require('./plugin/build/withRadar');
