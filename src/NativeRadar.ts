@@ -1,6 +1,6 @@
-import type { TurboModule } from 'react-native';
-import { TurboModuleRegistry } from 'react-native';
-import type { EventEmitter } from 'react-native/Libraries/Types/CodegenTypes';
+import type { TurboModule } from "react-native";
+import { TurboModuleRegistry } from "react-native";
+import type { EventEmitter } from "react-native/Libraries/Types/CodegenTypes";
 
 export type LocationEmitter = {
   location: Object;
@@ -29,7 +29,6 @@ export type EventsEmitter = {
 export type TokenEmitter = {
   token: Object;
 };
-
 
 export interface Spec extends TurboModule {
   initialize(publishableKey: string, fraud: boolean): void;
@@ -92,4 +91,4 @@ export interface Spec extends TurboModule {
   readonly tokenEmitter: EventEmitter<TokenEmitter>;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('RNRadar');
+export default TurboModuleRegistry.getEnforcing<Spec>("RNRadar");

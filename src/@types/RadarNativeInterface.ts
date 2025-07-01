@@ -41,7 +41,7 @@ import type {
   RadarGetMatrixOptions,
   RadarLogConversionCallback,
   RadarRouteMatrix,
-  Location
+  Location,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -59,10 +59,10 @@ export interface RadarNativeInterface {
   getLocation: (
     desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy
   ) => Promise<RadarLocationCallback>;
-  trackOnce: (
-    options?: RadarTrackOnceOptions
-  ) => Promise<RadarTrackCallback>;
-  trackVerified: (options?: RadarTrackVerifiedOptions) => Promise<RadarTrackVerifiedCallback>;
+  trackOnce: (options?: RadarTrackOnceOptions) => Promise<RadarTrackCallback>;
+  trackVerified: (
+    options?: RadarTrackVerifiedOptions
+  ) => Promise<RadarTrackVerifiedCallback>;
   getVerifiedLocationToken: () => Promise<RadarTrackVerifiedCallback>;
   clearVerifiedLocationToken: () => void;
   startTrackingEfficient: () => void;
@@ -100,29 +100,29 @@ export interface RadarNativeInterface {
     options: RadarAutocompleteOptions
   ) => Promise<RadarAddressCallback>;
   geocode: (options: RadarGeocodeOptions) => Promise<RadarAddressCallback>;
-  reverseGeocode: (options?: RadarReverseGeocodeOptions) => Promise<RadarAddressCallback>;
+  reverseGeocode: (
+    options?: RadarReverseGeocodeOptions
+  ) => Promise<RadarAddressCallback>;
   ipGeocode: () => Promise<RadarIPGeocodeCallback>;
-  validateAddress: (address: RadarAddress) => Promise<RadarValidateAddressCallback>;
+  validateAddress: (
+    address: RadarAddress
+  ) => Promise<RadarValidateAddressCallback>;
   getDistance: (option: RadarGetDistanceOptions) => Promise<RadarRouteCallback>;
   getMatrix: (option: RadarGetMatrixOptions) => Promise<RadarRouteMatrix>;
   logConversion: (
     options: RadarLogConversionOptions
-  ) => Promise<RadarLogConversionCallback>; 
+  ) => Promise<RadarLogConversionCallback>;
   nativeSdkVersion: () => Promise<string>;
   rnSdkVersion: () => string;
-  
+
   onLocationUpdated: (callback: RadarLocationUpdateCallback | null) => void;
-  //clearLocationUpdate: () => void;
-  onClientLocationUpdated: (callback: RadarClientLocationUpdateCallback | null) => void;
-  //clearClientLocationUpdate: () => void;
+  onClientLocationUpdated: (
+    callback: RadarClientLocationUpdateCallback | null
+  ) => void;
   onError: (callback: RadarErrorCallback | null) => void;
-  //clearError: () => void;
   onLog: (callback: RadarLogUpdateCallback | null) => void;
-  //clearLog: () => void;
   onEventsReceived: (callback: RadarEventUpdateCallback | null) => void;
-  //clearEventUpdate: () => void;
   onTokenUpdated: (callback: RadarTokenUpdateCallback | null) => void;
-  //clearTokenUpdate: () => void;
   getHost: () => Promise<string>;
   getPublishableKey: () => Promise<string>;
 }

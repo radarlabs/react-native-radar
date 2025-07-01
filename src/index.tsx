@@ -3,7 +3,10 @@ import { Platform } from "react-native";
 
 let nativeModule: RadarNativeInterface;
 
-nativeModule = Platform.OS === "web" ? require("./index.web").default : require("./index.native").default;
+nativeModule =
+  Platform.OS === "web"
+    ? require("./index.web").default
+    : require("./index.native").default;
 
 export default nativeModule;
 

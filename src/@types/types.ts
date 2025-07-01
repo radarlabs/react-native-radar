@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 const platform = Platform.OS;
 
 export type RadarMetadata = Record<string, string | number | boolean>;
@@ -44,16 +44,14 @@ export interface RadarTrackingOptions {
   foregroundServiceEnabled?: boolean;
 }
 
-
-
 export const presetContinuousIOS: RadarTrackingOptions = {
   desiredStoppedUpdateInterval: 30,
   desiredMovingUpdateInterval: 30,
   desiredSyncInterval: 20,
-  desiredAccuracy:'high',
+  desiredAccuracy: "high",
   stopDuration: 140,
   stopDistance: 70,
-  replay: 'none',
+  replay: "none",
   useStoppedGeofence: false,
   showBlueBar: true,
   startTrackingAfter: undefined,
@@ -65,7 +63,7 @@ export const presetContinuousIOS: RadarTrackingOptions = {
   useVisits: false,
   useSignificantLocationChanges: false,
   beacons: false,
-  sync: 'all',
+  sync: "all",
 };
 
 export const presetContinuousAndroid: RadarTrackingOptions = {
@@ -74,11 +72,11 @@ export const presetContinuousAndroid: RadarTrackingOptions = {
   desiredMovingUpdateInterval: 30,
   fastestMovingUpdateInterval: 30,
   desiredSyncInterval: 20,
-  desiredAccuracy: 'high',
+  desiredAccuracy: "high",
   stopDuration: 140,
   stopDistance: 70,
-  replay: 'none',
-  sync: 'all',
+  replay: "none",
+  sync: "all",
   useStoppedGeofence: false,
   stoppedGeofenceRadius: 0,
   useMovingGeofence: false,
@@ -91,16 +89,17 @@ export const presetContinuousAndroid: RadarTrackingOptions = {
   stopTrackingAfter: undefined,
 };
 
-export const presetContinuous: RadarTrackingOptions = platform === 'ios' ? presetContinuousIOS : presetContinuousAndroid;
+export const presetContinuous: RadarTrackingOptions =
+  platform === "ios" ? presetContinuousIOS : presetContinuousAndroid;
 
 export const presetResponsiveIOS: RadarTrackingOptions = {
   desiredStoppedUpdateInterval: 0,
   desiredMovingUpdateInterval: 150,
   desiredSyncInterval: 20,
-  desiredAccuracy:'medium',
+  desiredAccuracy: "medium",
   stopDuration: 140,
   stopDistance: 70,
-  replay: 'stops',
+  replay: "stops",
   useStoppedGeofence: true,
   showBlueBar: false,
   startTrackingAfter: undefined,
@@ -112,7 +111,7 @@ export const presetResponsiveIOS: RadarTrackingOptions = {
   useVisits: true,
   useSignificantLocationChanges: true,
   beacons: false,
-  sync: 'all',
+  sync: "all",
 };
 
 export const presetResponsiveAndroid: RadarTrackingOptions = {
@@ -121,11 +120,11 @@ export const presetResponsiveAndroid: RadarTrackingOptions = {
   desiredMovingUpdateInterval: 150,
   fastestMovingUpdateInterval: 30,
   desiredSyncInterval: 20,
-  desiredAccuracy:"medium",
+  desiredAccuracy: "medium",
   stopDuration: 140,
   stopDistance: 70,
-  replay: 'stops',
-  sync: 'all',
+  replay: "stops",
+  sync: "all",
   useStoppedGeofence: true,
   stoppedGeofenceRadius: 100,
   useMovingGeofence: true,
@@ -138,7 +137,8 @@ export const presetResponsiveAndroid: RadarTrackingOptions = {
   stopTrackingAfter: undefined,
 };
 
-export const presetResponsive: RadarTrackingOptions = platform === 'ios' ? presetResponsiveIOS : presetResponsiveAndroid;
+export const presetResponsive: RadarTrackingOptions =
+  platform === "ios" ? presetResponsiveIOS : presetResponsiveAndroid;
 
 export const presetEfficientIOS: RadarTrackingOptions = {
   desiredStoppedUpdateInterval: 0,
@@ -147,7 +147,7 @@ export const presetEfficientIOS: RadarTrackingOptions = {
   desiredAccuracy: "medium",
   stopDuration: 0,
   stopDistance: 0,
-  replay: 'stops',
+  replay: "stops",
   useStoppedGeofence: false,
   showBlueBar: false,
   startTrackingAfter: undefined,
@@ -159,7 +159,7 @@ export const presetEfficientIOS: RadarTrackingOptions = {
   useVisits: true,
   useSignificantLocationChanges: false,
   beacons: false,
-  sync: 'all',
+  sync: "all",
 };
 
 export const presetEfficientAndroid: RadarTrackingOptions = {
@@ -168,11 +168,11 @@ export const presetEfficientAndroid: RadarTrackingOptions = {
   desiredMovingUpdateInterval: 1200,
   fastestMovingUpdateInterval: 360,
   desiredSyncInterval: 140,
-  desiredAccuracy: 'medium',
+  desiredAccuracy: "medium",
   stopDuration: 140,
   stopDistance: 70,
-  replay: 'stops',
-  sync: 'all',
+  replay: "stops",
+  sync: "all",
   useStoppedGeofence: false,
   stoppedGeofenceRadius: 0,
   useMovingGeofence: false,
@@ -185,8 +185,8 @@ export const presetEfficientAndroid: RadarTrackingOptions = {
   stopTrackingAfter: undefined,
 };
 
-export const presetEfficient: RadarTrackingOptions = platform === 'ios' ? presetEfficientIOS : presetEfficientAndroid;
-
+export const presetEfficient: RadarTrackingOptions =
+  platform === "ios" ? presetEfficientIOS : presetEfficientAndroid;
 
 export interface RadarMockTrackingOptions {
   origin: Location;
@@ -429,7 +429,6 @@ export interface RadarTokenUpdateCallback {
   (token: Object): void;
 }
 
-
 export type RadarListenerCallback =
   | RadarEventUpdateCallback
   | RadarLocationUpdateCallback
@@ -437,7 +436,7 @@ export type RadarListenerCallback =
   | RadarErrorCallback
   | RadarLogUpdateCallback
   | RadarTokenUpdateCallback;
-  
+
 export type RadarPermissionsStatus =
   | "GRANTED_FOREGROUND"
   | "GRANTED_BACKGROUND"
@@ -459,7 +458,13 @@ export type RadarLocationSource =
   | "BEACON_EXIT"
   | "UNKNOWN";
 
-export type RadarEventChannel = "clientLocation" | "location" | "error" | "events" | "log" | "token" ;
+export type RadarEventChannel =
+  | "clientLocation"
+  | "location"
+  | "error"
+  | "events"
+  | "log"
+  | "token";
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 
@@ -535,12 +540,12 @@ export interface RadarTrip {
   status: RadarTripStatus;
   scheduledArrivalAt?: Date;
   destinationLocation: Location;
-  delay:RadarDelay;
+  delay: RadarDelay;
 }
 
 export interface RadarDelay {
-  delayed:boolean;
-  scheduledArrivalTimeDelay:number;
+  delayed: boolean;
+  scheduledArrivalTimeDelay: number;
 }
 
 export interface RadarSegment {
@@ -639,7 +644,7 @@ export interface RadarGeofence {
   operatingHours?: RadarOperatingHours;
 }
 
-export  interface RadarOperatingHours {
+export interface RadarOperatingHours {
   [day: string]: string[][];
 }
 
@@ -805,4 +810,3 @@ export type RadarTripStatus =
   | "expired"
   | "completed"
   | "canceled";
-
