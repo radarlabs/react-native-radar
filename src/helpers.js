@@ -1,15 +1,11 @@
-import { NativeModules, Platform } from 'react-native';
-
-if (!NativeModules.RNRadar && (Platform.OS === 'ios' || Platform.OS === 'android')) {
-  throw new Error('NativeModules.RNRadar is undefined');
-}
+import Radar from './index.native';
 
 const getHost = () => (
-  NativeModules.RNRadar.getHost()
+  Radar.getHost()
 );
 
 const getPublishableKey = () => (
-  NativeModules.RNRadar.getPublishableKey()
+  Radar.getPublishableKey()
 );
 
 export { getHost, getPublishableKey };

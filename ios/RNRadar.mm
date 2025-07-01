@@ -1,33 +1,30 @@
 #import "RNRadar.h"
 #include <Foundation/Foundation.h>
-
 #import <CoreLocation/CoreLocation.h>
 #import <React/RCTConvert.h>
-#import <React/RCTUtils.h>
 
 @implementation RNRadar {
-    BOOL hasListeners;
     CLLocationManager *locationManager;
     RCTPromiseResolveBlock permissionsRequestResolver;
+    bool hasListeners;
 }
 
-RCT_EXPORT_MODULE();
+RCT_EXPORT_MODULE()
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [Radar setDelegate:self];
-        [Radar setVerifiedDelegate:self];
         locationManager = [CLLocationManager new];
         locationManager.delegate = self;
+        [Radar setDelegate:self];
+        [Radar setVerifiedDelegate:self];    
     }
     return self;
 }
 
-
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if (permissionsRequestResolver) {
-        [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+        [self getPermissionsStatus:permissionsRequestResolver reject:nil];
         permissionsRequestResolver = nil;
     }
 }
@@ -41,7 +38,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"events", @"location", @"clientLocation", @"error", @"log", @"token"];
+    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter"];
 }
 
 - (void)startObserving {
@@ -53,56 +50,96 @@ RCT_EXPORT_MODULE();
 }
 
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser * _Nullable )user {
-    if (hasListeners) {
-        NSMutableDictionary *body = [NSMutableDictionary new];
-        [body setValue:[RadarEvent arrayForEvents:events] forKey:@"events"];
-        if (user) {
-            [body setValue:[user dictionaryValue] forKey:@"user"];
-        }
-        [self sendEventWithName:@"events" body:body];
+    NSMutableDictionary *body = [NSMutableDictionary new];
+    [body setValue:[RadarEvent arrayForEvents:events] forKey:@"events"];
+    if (user) {
+        [body setValue:[user dictionaryValue] forKey:@"user"];
     }
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitEventsEmitter:body];
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"eventsEmitter" body:body];
+    }
+    #endif
 }
 
 - (void)didUpdateLocation:(CLLocation *)location user:(RadarUser *)user {
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitLocationEmitter:@{
+        @"location": [Radar dictionaryForLocation:location],
+        @"user": [user dictionaryValue]
+    }];
+    #else
     if (hasListeners) {
-        [self sendEventWithName:@"location" body:@{
+        [self sendEventWithName:@"locationEmitter" body:@{
             @"location": [Radar dictionaryForLocation:location],
             @"user": [user dictionaryValue]
         }];
     }
+    #endif
 }
 
 - (void)didUpdateClientLocation:(CLLocation *)location stopped:(BOOL)stopped source:(RadarLocationSource)source {
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitClientLocationEmitter:@{
+        @"location": [Radar dictionaryForLocation:location],
+        @"stopped": @(stopped),
+        @"source": [Radar stringForLocationSource:source]
+    }];
+    #else
     if (hasListeners) {
-        [self sendEventWithName:@"clientLocation" body:@{
+        [self sendEventWithName:@"clientLocationEmitter" body:@{
             @"location": [Radar dictionaryForLocation:location],
             @"stopped": @(stopped),
             @"source": [Radar stringForLocationSource:source]
         }];
     }
+    #endif
 }
 
 - (void)didFailWithStatus:(RadarStatus)status {
+    NSDictionary *body = @{
+        @"status": [Radar stringForStatus:status]
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitErrorEmitter:body];
+    #else
     if (hasListeners) {
-        [self sendEventWithName:@"error" body:[Radar stringForStatus:status]];
+        [self sendEventWithName:@"errorEmitter" body:body];
     }
+    #endif
 }
 
 - (void)didLogMessage:(NSString *)message {
+    NSDictionary *body = @{
+        @"message": message
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitLogEmitter:body];
+    #else
     if (hasListeners) {
-        [self sendEventWithName:@"log" body:message];
+        [self sendEventWithName:@"logEmitter" body:body];
     }
+    #endif
 }
 
-- (void)didUpdateToken:(RadarVerifiedLocationToken *)token  {
+- (void)didUpdateToken:(RadarVerifiedLocationToken *)token {
+    NSDictionary *body = @{
+        @"token": [token dictionaryValue]
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitTokenEmitter:body];
+    #else
     if (hasListeners) {
-        [self sendEventWithName:@"token" body:[token dictionaryValue]];
+        [self sendEventWithName:@"tokenEmitter" body:body];
     }
+    #endif
 }
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.20.3" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.21.0-beta.3" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -128,10 +165,6 @@ RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {
 
 RCT_EXPORT_METHOD(getUserId:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     resolve([Radar getUserId]);
-}
-
-RCT_EXPORT_METHOD(nativeSdkVersion:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
-    resolve([Radar sdkVersion]);
 }
 
 RCT_EXPORT_METHOD(setDescription:(NSString *)description) {
@@ -162,7 +195,7 @@ RCT_EXPORT_METHOD(getPublishableKey:(RCTPromiseResolveBlock)resolve reject:(RCTP
     resolve([RadarSettings publishableKey]);
 }
 
-RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getPermissionsStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     NSString *statusStr;
     switch (status) {
@@ -189,7 +222,6 @@ RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTProm
 }
 
 RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         permissionsRequestResolver = resolve;
@@ -202,7 +234,7 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
         permissionsRequestResolver = resolve;
         [locationManager requestWhenInUseAuthorization];
     } else {
-        [self getPermissionsStatusWithResolver:resolve rejecter:reject];
+        [self getPermissionsStatus:resolve reject:reject];
         permissionsRequestResolver = nil;
     }
 }
@@ -211,7 +243,7 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
      if (permissionsRequestResolver) {
-        [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+        [self getPermissionsStatus:permissionsRequestResolver reject:nil];
         permissionsRequestResolver = nil;
     }
 }
@@ -319,6 +351,7 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
         [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons:beacons completionHandler:completionHandler];
     }
 }
+
 
 RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     BOOL beacons = NO;
@@ -1227,5 +1260,18 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         [Radar logConversionWithName:name metadata:metadata completionHandler:completionHandler];
     }
 }
+
+RCT_EXPORT_METHOD(nativeSdkVersion:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
+    resolve([Radar sdkVersion]);
+}
+
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeRadarSpecJSI>(params);
+}
+#endif
 
 @end

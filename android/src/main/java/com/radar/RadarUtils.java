@@ -1,4 +1,4 @@
-package io.radar.react;
+package com.radar;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
@@ -16,7 +16,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 
-class RNRadarUtils {
+public class RadarUtils {
 
     static WritableMap mapForJson(JSONObject obj) throws JSONException {
         if (obj == null) {
@@ -165,3 +165,4 @@ class RNRadarUtils {
     }
 
 }
+

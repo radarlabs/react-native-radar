@@ -1,5 +1,5 @@
 import RadarJS from 'radar-sdk-js';
-import { version } from "../package.json";
+import { VERSION } from './version';
 
 let throws = false;
 const throwOnUnimplemented = (value) => {
@@ -463,7 +463,7 @@ const nativeSdkVersion = () => {
   return new Promise((resolve, reject) => { resolve(RadarJS.VERSION) });
 }
 
-const rnSdkVersion = () => version;
+const rnSdkVersion = () => VERSION;
 
 const Radar = {
   initialize,
