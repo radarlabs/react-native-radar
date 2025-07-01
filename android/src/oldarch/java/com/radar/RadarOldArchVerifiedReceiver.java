@@ -38,7 +38,7 @@ public class RadarOldArchVerifiedReceiver extends RadarVerifiedReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("token", RadarUtils.mapForJson(token.toJson()));
+            sendEvent("tokenEmitter", RadarUtils.mapForJson(token.toJson()));
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }

@@ -41,6 +41,7 @@ import type {
   RadarGetMatrixOptions,
   RadarLogConversionCallback,
   RadarRouteMatrix,
+  Location
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -110,18 +111,18 @@ export interface RadarNativeInterface {
   nativeSdkVersion: () => Promise<string>;
   rnSdkVersion: () => string;
   
-  onLocationUpdate: (callback: RadarLocationUpdateCallback) => void;
-  clearLocationUpdate: () => void;
-  onClientLocationUpdate: (callback: RadarClientLocationUpdateCallback) => void;
-  clearClientLocationUpdate: () => void;
-  onError: (callback: RadarErrorCallback) => void;
-  clearError: () => void;
-  onLog: (callback: RadarLogUpdateCallback) => void;
-  clearLog: () => void;
-  onEventUpdate: (callback: RadarEventUpdateCallback) => void;
-  clearEventUpdate: () => void;
-  onTokenUpdate: (callback: RadarTokenUpdateCallback) => void;
-  clearTokenUpdate: () => void;
+  onLocationUpdated: (callback: RadarLocationUpdateCallback | null) => void;
+  //clearLocationUpdate: () => void;
+  onClientLocationUpdated: (callback: RadarClientLocationUpdateCallback | null) => void;
+  //clearClientLocationUpdate: () => void;
+  onError: (callback: RadarErrorCallback | null) => void;
+  //clearError: () => void;
+  onLog: (callback: RadarLogUpdateCallback | null) => void;
+  //clearLog: () => void;
+  onEventsReceived: (callback: RadarEventUpdateCallback | null) => void;
+  //clearEventUpdate: () => void;
+  onTokenUpdated: (callback: RadarTokenUpdateCallback | null) => void;
+  //clearTokenUpdate: () => void;
   getHost: () => Promise<string>;
   getPublishableKey: () => Promise<string>;
 }

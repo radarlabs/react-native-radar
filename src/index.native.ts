@@ -1,39 +1,64 @@
 import type { EventSubscription } from 'react-native';
 import type { RadarNativeInterface } from './@types/RadarNativeInterface';
-import type { RadarTrackCallback, RadarTrackOnceOptions, RadarLocationUpdateCallback, RadarPermissionsStatus, RadarClientLocationUpdateCallback, RadarLocationSource, RadarErrorCallback, RadarLogUpdateCallback, RadarTokenUpdateCallback, RadarEventUpdateCallback, RadarLogLevel, RadarMetadata, RadarLocationCallback, RadarTrackingOptionsDesiredAccuracy, RadarTrackVerifiedCallback, RadarTrackVerifiedOptions, RadarMockTrackingOptions, RadarTrackingOptions, RadarVerifiedTrackingOptions, RadarContextCallback, RadarNotificationOptions, RadarStartTripOptions, RadarTrackingOptionsForegroundService, RadarTripCallback, RadarTripOptions, RadarUpdateTripOptions, RadarAddress, RadarAddressCallback, RadarAutocompleteOptions, RadarGeocodeOptions, RadarGetDistanceOptions, RadarGetMatrixOptions, RadarIPGeocodeCallback, RadarLogConversionCallback, RadarLogConversionOptions, RadarReverseGeocodeOptions, RadarRouteCallback, RadarRouteMatrix, RadarSearchGeofencesCallback, RadarSearchGeofencesOptions, RadarSearchPlacesCallback, RadarSearchPlacesOptions, RadarValidateAddressCallback,
-  } from './@types/types';
-import { NativeEventEmitter, NativeModules } from 'react-native';
+import type { RadarTrackCallback, RadarTrackOnceOptions, RadarLocationUpdateCallback, RadarPermissionsStatus, RadarClientLocationUpdateCallback, RadarLocationSource, RadarErrorCallback, RadarLogUpdateCallback, RadarTokenUpdateCallback, RadarEventUpdateCallback, RadarLogLevel, RadarMetadata, RadarLocationCallback, RadarTrackingOptionsDesiredAccuracy, RadarTrackVerifiedCallback, RadarTrackVerifiedOptions, RadarMockTrackingOptions, RadarTrackingOptions, RadarVerifiedTrackingOptions, RadarContextCallback, RadarNotificationOptions, RadarStartTripOptions, RadarTrackingOptionsForegroundService, RadarTripCallback, RadarTripOptions, RadarUpdateTripOptions, RadarAddress, RadarAddressCallback, RadarAutocompleteOptions, RadarGeocodeOptions, RadarGetDistanceOptions, RadarGetMatrixOptions, RadarIPGeocodeCallback, RadarLogConversionCallback, RadarLogConversionOptions, RadarReverseGeocodeOptions, RadarRouteCallback, RadarRouteMatrix, RadarSearchGeofencesCallback, RadarSearchGeofencesOptions, RadarSearchPlacesCallback, RadarSearchPlacesOptions, RadarValidateAddressCallback, RadarUser,
+  Location,
+  RadarEvent} from './@types/types';
+import { DeviceEventEmitter, NativeEventEmitter, NativeModules, Platform } from 'react-native';
 import { VERSION } from './version';
+import NativeRadar, { ClientLocationEmitter, ErrorEmitter, EventsEmitter, LocationEmitter, LogEmitter, TokenEmitter } from './NativeRadar';
 
-declare global {
-  var __turboModuleProxy: any;
-}
 
-const isNewArchitecture = global.__turboModuleProxy != null;
+// declare global {
+//   var __turboModuleProxy: any;
+// }
 
-let NativeRadar: any;
+// const isNewArchitecture = global.__turboModuleProxy != null;
 
-try {
-  if (isNewArchitecture) {
-    const NativeRadarModule = require('./NativeRadar');
-    NativeRadar = NativeRadarModule.default;
-  } else {
-    NativeRadar = NativeModules.RNRadar;
+
+
+const compatEventEmitter = NativeRadar.locationEmitter == null 
+  ? new NativeEventEmitter(NativeModules.RNRadar)
+  : null;
+
+type Events =
+  | 'locationEmitter'
+  | 'clientLocationEmitter'
+  | 'errorEmitter'
+  | 'logEmitter'
+  | 'eventsEmitter'
+  | 'tokenEmitter';
+
+export function addListener<EventT extends Events>(
+  event: EventT,
+  handler: Parameters<(typeof NativeRadar)[EventT]>[0]
+): EventSubscription {
+  if (compatEventEmitter != null) {
+    return compatEventEmitter.addListener(event, handler);
   }
-} catch (error) {
-  console.error('[Radar] Error loading NativeRadar module:', error);
-  throw error;
+  return NativeRadar[event](handler as any);
 }
+
+// try {
+//   if (isNewArchitecture) {
+//     const NativeRadarModule = require('./NativeRadar');
+//     NativeRadar = NativeRadarModule.default;
+//   } else {
+//     NativeRadar = NativeModules.RNRadar;
+//   }
+// } catch (error) {
+//   console.error('[Radar] Error loading NativeRadar module:', error);
+//   throw error;
+// }
 
 // For old architecture, create a NativeEventEmitter
-const eventEmitter = isNewArchitecture ? null : new NativeEventEmitter(NativeModules.RNRadar);
+// const eventEmitter = isNewArchitecture ? null : new NativeEventEmitter(NativeModules.RNRadar);
 
-const locationEmitter = isNewArchitecture ? NativeRadar?.locationEmitter : null;
-const clientLocationEmitter = isNewArchitecture ? NativeRadar?.clientLocationEmitter : null;
-const errorEmitter = isNewArchitecture ? NativeRadar?.errorEmitter : null;
-const logEmitter = isNewArchitecture ? NativeRadar?.logEmitter : null;
-const eventsEmitter = isNewArchitecture ? NativeRadar?.eventsEmitter : null;
-const tokenEmitter = isNewArchitecture ? NativeRadar?.tokenEmitter : null;
+// const locationEmitter = isNewArchitecture ? NativeRadar?.locationEmitter : null;
+// const clientLocationEmitter = isNewArchitecture ? NativeRadar?.clientLocationEmitter : null;
+// const errorEmitter = isNewArchitecture ? NativeRadar?.errorEmitter : null;
+// const logEmitter = isNewArchitecture ? NativeRadar?.logEmitter : null;
+// const eventsEmitter = isNewArchitecture ? NativeRadar?.eventsEmitter : null;
+// const tokenEmitter = isNewArchitecture ? NativeRadar?.tokenEmitter : null;
 
 let locationUpdateSubscription: EventSubscription | null = null;
 let clientLocationUpdateSubscription: EventSubscription | null = null;
@@ -51,214 +76,281 @@ const Radar: RadarNativeInterface = {
     return NativeRadar.trackOnce(options || null) as Promise<RadarTrackCallback>;
   },
 
-  onLocationUpdate: (callback: RadarLocationUpdateCallback) => {
+  onLocationUpdated: (callback: RadarLocationUpdateCallback | null) => {
     // Clear any existing subscription
     if (locationUpdateSubscription) {
       locationUpdateSubscription.remove();
-      locationUpdateSubscription = null;
     }
 
-    if (isNewArchitecture && locationEmitter) {
-      locationUpdateSubscription = locationEmitter((event: { type: string; location: any; user: any; }) => {
-        try {
-          const locationUpdate = {
-            location: event.location,
-            user: event.user
-          };
-
-          callback(locationUpdate);
-        } catch (error) {
-          console.error('[Radar] Error in location update callback:', error);
-        }
-      });
-    } else if (!isNewArchitecture && eventEmitter) {
-      locationUpdateSubscription = eventEmitter.addListener('location', (event: { location: any; user: any; }) => {
-        try {
-          const locationUpdate = {
-            location: event.location,
-            user: event.user
-          };
-
-          callback(locationUpdate);
-        } catch (error) {
-          console.error('[Radar] Error in location update callback:', error);
-        }
-      });
-    } else {
-      console.warn('[Radar] No event emitter available for location updates');
+    if (!callback) {
+      return;
     }
+
+    locationUpdateSubscription = addListener('locationEmitter', (event: LocationEmitter) => {
+      try {
+        const locationUpdate = {
+          location: event.location as Location,
+          user: event.user as RadarUser
+        };
+        callback(locationUpdate);
+      } catch (error) {
+        console.error('[Radar] Error in location update callback:', error);
+      }
+    });
+
+    // if (isNewArchitecture && locationEmitter) {
+    //   locationUpdateSubscription = locationEmitter((event: { type: string; location: any; user: any; }) => {
+    //     try {
+    //       const locationUpdate = {
+    //         location: event.location,
+    //         user: event.user
+    //       };
+
+    //       callback(locationUpdate);
+    //     } catch (error) {
+    //       console.error('[Radar] Error in location update callback:', error);
+    //     }
+    //   });
+    // } else if (!isNewArchitecture && eventEmitter) {
+    //   locationUpdateSubscription = eventEmitter.addListener('location', (event: { location: any; user: any; }) => {
+    //     try {
+    //       const locationUpdate = {
+    //         location: event.location,
+    //         user: event.user
+    //       };
+
+    //       callback(locationUpdate);
+    //     } catch (error) {
+    //       console.error('[Radar] Error in location update callback:', error);
+    //     }
+    //   });
+    // } else {
+    //   console.warn('[Radar] No event emitter available for location updates');
+    // }
   },
 
-  clearLocationUpdate: () => {
-    if (locationUpdateSubscription) {
-      locationUpdateSubscription.remove();
-      locationUpdateSubscription = null;
-    }
-  },
+  // clearLocationUpdate: () => {
+  //   if (locationUpdateSubscription) {
+  //     locationUpdateSubscription.remove();
+  //     locationUpdateSubscription = null;
+  //   }
+  // },
 
-  onClientLocationUpdate: (callback: RadarClientLocationUpdateCallback) => {
+  onClientLocationUpdated: (callback: RadarClientLocationUpdateCallback | null) => {
     if (clientLocationUpdateSubscription) {
       clientLocationUpdateSubscription.remove();
       clientLocationUpdateSubscription = null;
     }
 
-    if (isNewArchitecture && clientLocationEmitter) {
-      clientLocationUpdateSubscription = clientLocationEmitter((event: { location: any; stopped: boolean; source: string; }) => {
-        try {
-          const clientLocationUpdate = {
-            location: event.location,
-            stopped: event.stopped,
-            source: event.source as RadarLocationSource
-          };
-          callback(clientLocationUpdate);
-        } catch (error) {
-          console.error('[Radar] Error in client location update callback:', error);
-        }
-      });
-    } else if (!isNewArchitecture && eventEmitter) {
-      clientLocationUpdateSubscription = eventEmitter.addListener('clientLocation', (event: { location: any; stopped: boolean; source: string; }) => {
-        try {
-          const clientLocationUpdate = {
-            location: event.location,
-            stopped: event.stopped,
-            source: event.source as RadarLocationSource
-          };
-          callback(clientLocationUpdate);
-        } catch (error) {
-          console.error('[Radar] Error in client location update callback:', error);
-        }
-      });
-    } else {
-      console.warn('[Radar] No event emitter available for client location updates');
+    if (!callback) {
+      return;
     }
+
+    clientLocationUpdateSubscription = addListener('clientLocationEmitter', (event: ClientLocationEmitter) => {
+      const clientLocationUpdate = {
+        location: event.location as Location,
+        stopped: event.stopped,
+        source: event.source as RadarLocationSource
+      };
+      callback(clientLocationUpdate);
+    });
+
+    // if (isNewArchitecture && clientLocationEmitter) {
+    //   clientLocationUpdateSubscription = clientLocationEmitter((event: { location: any; stopped: boolean; source: string; }) => {
+    //     try {
+    //       const clientLocationUpdate = {
+    //         location: event.location,
+    //         stopped: event.stopped,
+    //         source: event.source as RadarLocationSource
+    //       };
+    //       callback(clientLocationUpdate);
+    //     } catch (error) {
+    //       console.error('[Radar] Error in client location update callback:', error);
+    //     }
+    //   });
+    // } else if (!isNewArchitecture && eventEmitter) {
+    //   clientLocationUpdateSubscription = eventEmitter.addListener('clientLocation', (event: { location: any; stopped: boolean; source: string; }) => {
+    //     try {
+    //       const clientLocationUpdate = {
+    //         location: event.location,
+    //         stopped: event.stopped,
+    //         source: event.source as RadarLocationSource
+    //       };
+    //       callback(clientLocationUpdate);
+    //     } catch (error) {
+    //       console.error('[Radar] Error in client location update callback:', error);
+    //     }
+    //   });
+    // } else {
+    //   console.warn('[Radar] No event emitter available for client location updates');
+    // }
   },
 
-  clearClientLocationUpdate: () => {
-    if (clientLocationUpdateSubscription) {
-      clientLocationUpdateSubscription.remove();
-      clientLocationUpdateSubscription = null;
-    }
-  },
+  // clearClientLocationUpdate: () => {
+  //   if (clientLocationUpdateSubscription) {
+  //     clientLocationUpdateSubscription.remove();
+  //     clientLocationUpdateSubscription = null;
+  //   }
+  // },
 
-  onError: (callback: RadarErrorCallback) => {
+  onError: (callback: RadarErrorCallback | null) => {
     if (errorUpdateSubscription) {
       errorUpdateSubscription.remove();
       errorUpdateSubscription = null;
     }
 
-    if (isNewArchitecture && errorEmitter) {
-      errorUpdateSubscription = errorEmitter((event: { status: string; }) => {
-        callback(event.status);
-      });
-    } else if (!isNewArchitecture && eventEmitter) {
-      errorUpdateSubscription = eventEmitter.addListener('error', (event: { status: string; }) => {
-        callback(event.status);
-      });
-    } else {
-      console.warn('[Radar] No event emitter available for error updates');
+    if (!callback) {
+      return;
     }
+
+    errorUpdateSubscription = addListener('errorEmitter', (event: ErrorEmitter) => {
+      const errorUpdate = {
+        status: event.status,
+      };
+      callback(errorUpdate.status);
+    });
+
+    // if (isNewArchitecture && errorEmitter) {
+    //   errorUpdateSubscription = errorEmitter((event: { status: string; }) => {
+    //     callback(event.status);
+    //   });
+    // } else if (!isNewArchitecture && eventEmitter) {
+    //   errorUpdateSubscription = eventEmitter.addListener('error', (event: { status: string; }) => {
+    //     callback(event.status);
+    //   });
+    // } else {
+    //   console.warn('[Radar] No event emitter available for error updates');
+    // }
   },
 
-  clearError: () => {
-    if (errorUpdateSubscription) {
-      errorUpdateSubscription.remove();
-      errorUpdateSubscription = null;
-    }
-  },
+  // clearError: () => {
+  //   if (errorUpdateSubscription) {
+  //     errorUpdateSubscription.remove();
+  //     errorUpdateSubscription = null;
+  //   }
+  // },
 
-  onLog: (callback: RadarLogUpdateCallback) => {
+  onLog: (callback: RadarLogUpdateCallback | null) => {
     if (logUpdateSubscription) {
       logUpdateSubscription.remove();
       logUpdateSubscription = null;
     }
 
-    if (isNewArchitecture && logEmitter) {
-      logUpdateSubscription = logEmitter((event: { message: string; }) => {
-        callback(event.message);
-      });
-    } else if (!isNewArchitecture && eventEmitter) {
-      logUpdateSubscription = eventEmitter.addListener('log', (event: { message: string; }) => {
-        callback(event.message);
-      });
-    } else {
-      console.warn('[Radar] No event emitter available for log updates');
+    if (!callback) {
+      return;
     }
+
+    logUpdateSubscription = addListener('logEmitter', (event: LogEmitter) => {
+      callback(event.message);
+    });
+
+    // if (isNewArchitecture && logEmitter) {
+    //   logUpdateSubscription = logEmitter((event: { message: string; }) => {
+    //     callback(event.message);
+    //   });
+    // } else if (!isNewArchitecture && eventEmitter) {
+    //   logUpdateSubscription = eventEmitter.addListener('log', (event: { message: string; }) => {
+    //     callback(event.message);
+    //   });
+    // } else {
+    //   console.warn('[Radar] No event emitter available for log updates');
+    // }
   },
 
-  clearLog: () => {
-    if (logUpdateSubscription) {
-      logUpdateSubscription.remove();
-      logUpdateSubscription = null;
-    }
-  },
+  // clearLog: () => {
+  //   if (logUpdateSubscription) {
+  //     logUpdateSubscription.remove();
+  //     logUpdateSubscription = null;
+  //   }
+  // },
 
-  onEventUpdate: (callback: RadarEventUpdateCallback) => {
+  onEventsReceived: (callback: RadarEventUpdateCallback | null) => {
     if (eventsUpdateSubscription) {
       eventsUpdateSubscription.remove();
       eventsUpdateSubscription = null;
     }
 
-    if (isNewArchitecture && eventsEmitter) {
-      eventsUpdateSubscription = eventsEmitter((event: { events: any[]; user: any; }) => {
-        try {
-          const eventUpdate = {
-            user: event.user,
-            events: event.events
-          };
-          callback(eventUpdate);
-        } catch (error) {
-          console.error('[Radar] Error in event update callback:', error);
-        }
-      });
-    } else if (!isNewArchitecture && eventEmitter) {
-      eventsUpdateSubscription = eventEmitter.addListener('events', (event: { events: any[]; user: any; }) => {
-        try {
-          const eventUpdate = {
-            user: event.user,
-            events: event.events
-          };
-          callback(eventUpdate);
-        } catch (error) {
-          console.error('[Radar] Error in event update callback:', error);
-        }
-      });
-    } else {
-      console.warn('[Radar] No event emitter available for event updates');
+    if (!callback) {
+      return;
     }
+
+    eventsUpdateSubscription = addListener('eventsEmitter', (event: EventsEmitter) => {
+      const eventUpdate = {
+        user: event.user as RadarUser,
+        events: event.events as RadarEvent[]
+      };
+      callback(eventUpdate);
+    });
+
+    // if (isNewArchitecture && eventsEmitter) {
+    //   eventsUpdateSubscription = eventsEmitter((event: { events: any[]; user: any; }) => {
+    //     try {
+    //       const eventUpdate = {
+    //         user: event.user,
+    //         events: event.events
+    //       };
+    //       callback(eventUpdate);
+    //     } catch (error) {
+    //       console.error('[Radar] Error in event update callback:', error);
+    //     }
+    //   });
+    // } else if (!isNewArchitecture && eventEmitter) {
+    //   eventsUpdateSubscription = eventEmitter.addListener('events', (event: { events: any[]; user: any; }) => {
+    //     try {
+    //       const eventUpdate = {
+    //         user: event.user,
+    //         events: event.events
+    //       };
+    //       callback(eventUpdate);
+    //     } catch (error) {
+    //       console.error('[Radar] Error in event update callback:', error);
+    //     }
+    //   });
+    // } else {
+    //   console.warn('[Radar] No event emitter available for event updates');
+    // }
   },
 
-  clearEventUpdate: () => {
-    if (eventsUpdateSubscription) {
-      eventsUpdateSubscription.remove();
-      eventsUpdateSubscription = null;
-    }
-  },
+  // clearEventUpdate: () => {
+  //   if (eventsUpdateSubscription) {
+  //     eventsUpdateSubscription.remove();
+  //     eventsUpdateSubscription = null;
+  //   }
+  // },
 
-  onTokenUpdate: (callback: RadarTokenUpdateCallback) => {
+  onTokenUpdated: (callback: RadarTokenUpdateCallback | null) => {
     if (tokenUpdateSubscription) {
       tokenUpdateSubscription.remove();
       tokenUpdateSubscription = null;
     }
 
-    if (isNewArchitecture && tokenEmitter) {
-      tokenUpdateSubscription = tokenEmitter((event: { token: any; }) => {
-        callback(event.token);
-      });
-    } else if (!isNewArchitecture && eventEmitter) {
-      tokenUpdateSubscription = eventEmitter.addListener('token', (event: { token: any; }) => {
-        callback(event.token);
-      });
-    } else {
-      console.warn('[Radar] No event emitter available for token updates');
+    if (!callback) {
+      return;
     }
+
+    tokenUpdateSubscription = addListener('tokenEmitter', (event: TokenEmitter) => {
+      callback(event.token);
+    });
+
+    // if (isNewArchitecture && tokenEmitter) {
+    //   tokenUpdateSubscription = tokenEmitter((event: { token: any; }) => {
+    //     callback(event.token);
+    //   });
+    // } else if (!isNewArchitecture && eventEmitter) {
+    //   tokenUpdateSubscription = eventEmitter.addListener('token', (event: { token: any; }) => {
+    //     callback(event.token);
+    //   });
+    // } else {
+    //   console.warn('[Radar] No event emitter available for token updates');
+    // }
   },
 
-  clearTokenUpdate: () => {
-    if (tokenUpdateSubscription) {
-      tokenUpdateSubscription.remove();
-      tokenUpdateSubscription = null;
-    }
-  },
+  // clearTokenUpdate: () => {
+  //   if (tokenUpdateSubscription) {
+  //     tokenUpdateSubscription.remove();
+  //     tokenUpdateSubscription = null;
+  //   }
+  // },
 
   requestPermissions: (background: boolean) => {
     return NativeRadar.requestPermissions(background) as Promise<RadarPermissionsStatus>;
@@ -282,22 +374,22 @@ const Radar: RadarNativeInterface = {
     return NativeRadar.setMetadata(metadata);
   },
   getMetadata: function (): Promise<RadarMetadata> {
-    return NativeRadar.getMetadata();
+    return NativeRadar.getMetadata() as Promise<RadarMetadata>;
   },
   setAnonymousTrackingEnabled: function (enabled: boolean): void {
     return NativeRadar.setAnonymousTrackingEnabled(enabled);
   },
   getPermissionsStatus: function (): Promise<RadarPermissionsStatus> {
-    return NativeRadar.getPermissionsStatus();
+    return NativeRadar.getPermissionsStatus() as Promise<RadarPermissionsStatus>;
   },
   getLocation: function (desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy): Promise<RadarLocationCallback> {
-    return NativeRadar.getLocation(desiredAccuracy);
+    return NativeRadar.getLocation(desiredAccuracy || null) as Promise<RadarLocationCallback>;
   },
   trackVerified: function (options?: RadarTrackVerifiedOptions): Promise<RadarTrackVerifiedCallback> {
-    return NativeRadar.trackVerified(options);
+    return NativeRadar.trackVerified(options || null) as Promise<RadarTrackVerifiedCallback>;
   },
   getVerifiedLocationToken: function (): Promise<RadarTrackVerifiedCallback> {
-    return NativeRadar.getVerifiedLocationToken();
+    return NativeRadar.getVerifiedLocationToken() as Promise<RadarTrackVerifiedCallback>;
   },
   clearVerifiedLocationToken: function (): void {
     return NativeRadar.clearVerifiedLocationToken();
@@ -315,7 +407,7 @@ const Radar: RadarNativeInterface = {
     return NativeRadar.startTrackingCustom(options);
   },
   startTrackingVerified: function (options?: RadarVerifiedTrackingOptions): void {
-    return NativeRadar.startTrackingVerified(options);
+    return NativeRadar.startTrackingVerified(options || null);
   },
   isTrackingVerified: function (): Promise<boolean> {
     return NativeRadar.isTrackingVerified();
@@ -333,7 +425,7 @@ const Radar: RadarNativeInterface = {
     return NativeRadar.stopTrackingVerified();
   },
   getTrackingOptions: function (): Promise<RadarTrackingOptions> {
-    return NativeRadar.getTrackingOptions();
+    return NativeRadar.getTrackingOptions() as Promise<RadarTrackingOptions>;
   },
   isUsingRemoteTrackingOptions: function (): Promise<boolean> {
     return NativeRadar.isUsingRemoteTrackingOptions();
@@ -348,19 +440,19 @@ const Radar: RadarNativeInterface = {
     return NativeRadar.setNotificationOptions(options);
   },
   getTripOptions: function (): Promise<RadarTripOptions> {
-    return NativeRadar.getTripOptions();
+    return NativeRadar.getTripOptions() as Promise<RadarTripOptions>;
   },
   startTrip: function (options: RadarStartTripOptions): Promise<RadarTripCallback> {
-    return NativeRadar.startTrip(options);
+    return NativeRadar.startTrip(options) as Promise<RadarTripCallback>;
   },
   completeTrip: function (): Promise<RadarTripCallback> {
-    return NativeRadar.completeTrip();
+    return NativeRadar.completeTrip() as Promise<RadarTripCallback>;
   },
   cancelTrip: function (): Promise<RadarTripCallback> {
-    return NativeRadar.cancelTrip();
+    return NativeRadar.cancelTrip() as Promise<RadarTripCallback>;
   },
   updateTrip: function (options: RadarUpdateTripOptions): Promise<RadarTripCallback> {
-    return NativeRadar.updateTrip(options);
+    return NativeRadar.updateTrip(options) as Promise<RadarTripCallback>;
   },
   acceptEvent: function (eventId: string, verifiedPlaceId: string): void {
     return NativeRadar.acceptEvent(eventId, verifiedPlaceId);
@@ -369,37 +461,37 @@ const Radar: RadarNativeInterface = {
     return NativeRadar.rejectEvent(eventId);
   },
   getContext: function (location?: Location): Promise<RadarContextCallback> {
-    return NativeRadar.getContext(location);
+    return NativeRadar.getContext(location || null) as Promise<RadarContextCallback>;
   },
   searchPlaces: function (options: RadarSearchPlacesOptions): Promise<RadarSearchPlacesCallback> {
-    return NativeRadar.searchPlaces(options);
+    return NativeRadar.searchPlaces(options) as Promise<RadarSearchPlacesCallback>;
   },
   searchGeofences: function (options: RadarSearchGeofencesOptions): Promise<RadarSearchGeofencesCallback> {
-    return NativeRadar.searchGeofences(options);
+    return NativeRadar.searchGeofences(options) as Promise<RadarSearchGeofencesCallback>;
   },
   autocomplete: function (options: RadarAutocompleteOptions): Promise<RadarAddressCallback> {
-    return NativeRadar.autocomplete(options);
+    return NativeRadar.autocomplete(options) as Promise<RadarAddressCallback>;
   },
   geocode: function (options: RadarGeocodeOptions): Promise<RadarAddressCallback> {
-    return NativeRadar.geocode(options);
+    return NativeRadar.geocode(options) as Promise<RadarAddressCallback>;
   },
   reverseGeocode: function (options?: RadarReverseGeocodeOptions): Promise<RadarAddressCallback> {
-    return NativeRadar.reverseGeocode(options);
+    return NativeRadar.reverseGeocode(options || null) as Promise<RadarAddressCallback>;
   },
   ipGeocode: function (): Promise<RadarIPGeocodeCallback> {
-    return NativeRadar.ipGeocode();
+    return NativeRadar.ipGeocode() as Promise<RadarIPGeocodeCallback>;
   },
   validateAddress: function (address: RadarAddress): Promise<RadarValidateAddressCallback> {
-    return NativeRadar.validateAddress(address);
+    return NativeRadar.validateAddress(address) as Promise<RadarValidateAddressCallback>;
   },
   getDistance: function (option: RadarGetDistanceOptions): Promise<RadarRouteCallback> {
-    return NativeRadar.getDistance(option);
+    return NativeRadar.getDistance(option) as Promise<RadarRouteCallback>;
   },
   getMatrix: function (option: RadarGetMatrixOptions): Promise<RadarRouteMatrix> {
-    return NativeRadar.getMatrix(option);
+    return NativeRadar.getMatrix(option) as Promise<RadarRouteMatrix>;
   },
   logConversion: function (options: RadarLogConversionOptions): Promise<RadarLogConversionCallback> {
-    return NativeRadar.logConversion(options);
+    return NativeRadar.logConversion(options) as Promise<RadarLogConversionCallback>;
   },
 
   nativeSdkVersion: function (): Promise<string> {

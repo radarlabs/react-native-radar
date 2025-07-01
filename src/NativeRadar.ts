@@ -70,12 +70,12 @@ export interface Spec extends TurboModule {
   updateTrip(options: Object): Promise<Object>;
   acceptEvent(eventId: string, verifiedPlaceId: string): void;
   rejectEvent(eventId: string): void;
-  getContext(location: Object): Promise<Object>;
+  getContext(location: Object | null): Promise<Object>;
   searchPlaces(options: Object): Promise<Object>;
   searchGeofences(options: Object): Promise<Object>;
   autocomplete(options: Object): Promise<Object>;
   geocode(options: Object): Promise<Object>;
-  reverseGeocode(options: Object): Promise<Object>;
+  reverseGeocode(options: Object | null): Promise<Object>;
   ipGeocode(): Promise<Object>;
   validateAddress(address: Object): Promise<Object>;
   getDistance(options: Object): Promise<Object>;

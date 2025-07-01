@@ -6,7 +6,7 @@ import MapLibreGL from "@maplibre/maplibre-react-native";
 
 MapLibreGL.setAccessToken(null);
 
-Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
+Radar.initialize("prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
@@ -36,10 +36,10 @@ export default function App() {
       qux: 1,
     });
 
-    Radar.onLocationUpdate((location) => {
+    Radar.onLocationUpdated((location) => {
       console.log("location update from callback", location);
     });
-    Radar.onTokenUpdate((token) => {
+    Radar.onTokenUpdated((token) => {
       console.log("token update from callback", token);
     });
     // Radar.onLog((message) => {
@@ -48,10 +48,10 @@ export default function App() {
     Radar.onError((error) => {
       console.log("error update from callback", error);
     });
-    Radar.onEventUpdate((events) => {
+    Radar.onEventsReceived((events) => {
       console.log("events update from callback", events);
     });
-    Radar.onClientLocationUpdate((location) => {
+    Radar.onClientLocationUpdated((location) => {
       console.log("client location update from callback", location);
     });
 
@@ -68,9 +68,7 @@ export default function App() {
       console.log("from promise error", error);
     });
 
-    return () => {
-      Radar.clearLocationUpdate();
-    }
+
   }, [])
 
   return (

@@ -48,7 +48,7 @@ public class RadarOldArchReceiver extends RadarReceiver {
                 map.putMap("user", RadarUtils.mapForJson(user.toJson()));
             }
 
-            sendEvent("events", map);
+            sendEvent("eventsEmitter", map);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }
@@ -64,7 +64,7 @@ public class RadarOldArchReceiver extends RadarReceiver {
             map.putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)));
             map.putMap("user", RadarUtils.mapForJson(user.toJson()));
 
-            sendEvent("location", map);
+            sendEvent("locationEmitter", map);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }
@@ -81,7 +81,7 @@ public class RadarOldArchReceiver extends RadarReceiver {
             map.putBoolean("stopped", stopped);
             map.putString("source", source.toString());
 
-            sendEvent("clientLocation", map);
+            sendEvent("clientLocationEmitter", map);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }
@@ -93,7 +93,7 @@ public class RadarOldArchReceiver extends RadarReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("error", status.toString());
+            sendEvent("errorEmitter", status.toString());
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }
@@ -105,7 +105,7 @@ public class RadarOldArchReceiver extends RadarReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("log", message);
+            sendEvent("logEmitter", message);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }

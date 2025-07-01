@@ -38,7 +38,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"events", @"location", @"clientLocation", @"error", @"log", @"token"];
+    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter"];
 }
 
 - (void)startObserving {
@@ -59,7 +59,7 @@ RCT_EXPORT_MODULE()
     [self emitEventsEmitter:body];
     #else
     if (hasListeners) {
-        [self sendEventWithName:@"events" body:body];
+        [self sendEventWithName:@"eventsEmitter" body:body];
     }
     #endif
 }
@@ -72,7 +72,7 @@ RCT_EXPORT_MODULE()
     }];
     #else
     if (hasListeners) {
-        [self sendEventWithName:@"location" body:@{
+        [self sendEventWithName:@"locationEmitter" body:@{
             @"location": [Radar dictionaryForLocation:location],
             @"user": [user dictionaryValue]
         }];
@@ -89,7 +89,7 @@ RCT_EXPORT_MODULE()
     }];
     #else
     if (hasListeners) {
-        [self sendEventWithName:@"clientLocation" body:@{
+        [self sendEventWithName:@"clientLocationEmitter" body:@{
             @"location": [Radar dictionaryForLocation:location],
             @"stopped": @(stopped),
             @"source": [Radar stringForLocationSource:source]
@@ -106,7 +106,7 @@ RCT_EXPORT_MODULE()
     [self emitErrorEmitter:body];
     #else
     if (hasListeners) {
-        [self sendEventWithName:@"error" body:body];
+        [self sendEventWithName:@"errorEmitter" body:body];
     }
     #endif
 }
@@ -119,7 +119,7 @@ RCT_EXPORT_MODULE()
     [self emitLogEmitter:body];
     #else
     if (hasListeners) {
-        [self sendEventWithName:@"log" body:body];
+        [self sendEventWithName:@"logEmitter" body:body];
     }
     #endif
 }
@@ -132,14 +132,14 @@ RCT_EXPORT_MODULE()
     [self emitTokenEmitter:body];
     #else
     if (hasListeners) {
-        [self sendEventWithName:@"token" body:body];
+        [self sendEventWithName:@"tokenEmitter" body:body];
     }
     #endif
 }
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.21.0-beta.2" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.21.0-beta.3" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
