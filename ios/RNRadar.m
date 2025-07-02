@@ -228,7 +228,7 @@ RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseRes
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
     RadarTrackingOptionsDesiredAccuracy accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
-
+    
     if (desiredAccuracy) {
         NSString *lowerAccuracy = [desiredAccuracy lowercaseString];
         if ([lowerAccuracy isEqualToString:@"high"]) {
