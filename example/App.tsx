@@ -43,7 +43,7 @@ export default function App() {
     setDisplayText(displayText);
   };
   Radar.initialize(
-    "org_test_pk_5857c63d9c1565175db8b00750808a66a002acb8",
+    "prj_test_pk_0000000000000000000000000000000000000000",
     true
   );
 
