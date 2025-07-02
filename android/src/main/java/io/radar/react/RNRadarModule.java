@@ -96,7 +96,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.20.3");
+        editor.putString("x_platform_sdk_version", "3.20.4");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -179,6 +179,21 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
         JSONObject metaJson =  Radar.getMetadata();        
         promise.resolve(RNRadarUtils.mapForJson(metaJson));
+    }
+
+    @ReactMethod
+    public void setProduct(String product) throws JSONException {
+        Radar.setProduct(product);
+    }
+
+    @ReactMethod
+    public void getProduct(final Promise promise) throws JSONException {        
+        if (promise == null) {
+            return;
+        }
+
+        String product =  Radar.getProduct();        
+        promise.resolve(product);
     }
 
     @ReactMethod
@@ -265,7 +280,6 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
     @ReactMethod
     public void getLocation(String desiredAccuracy, final Promise promise) {
-        
         RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;        
         String accuracy = desiredAccuracy != null ? desiredAccuracy.toLowerCase()  : "medium";
         
@@ -384,6 +398,8 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
         boolean beaconsTrackingOption = false;
         RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+        String reason = null;
+        String transactionId = null;
 
         if (optionsMap != null) {
             if (optionsMap.hasKey("beacons")) {
@@ -400,6 +416,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                 } else if (desiredAccuracy.equals("high")) {
                     accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
                 }
+            }
+            if (optionsMap.hasKey("reason")) {
+                reason = optionsMap.getString("reason");
+            }
+            if (optionsMap.hasKey("transactionId")) {
+                transactionId = optionsMap.getString("transactionId");
             }
         }
 
@@ -428,17 +450,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
         };
 
-        Radar.trackVerified(beaconsTrackingOption, accuracyLevel, trackCallback);
+        Radar.trackVerified(beaconsTrackingOption, accuracyLevel, reason, transactionId, trackCallback);
     }
 
     @ReactMethod
     public void isTrackingVerified(final Promise promise) {
         promise.resolve(Radar.isTrackingVerified());
-    }
-
-    @ReactMethod
-    public void setProduct(String product) {
-        Radar.setProduct(product);
     }
 
     @ReactMethod

@@ -102,7 +102,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.20.3" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.20.4" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -148,6 +148,14 @@ RCT_EXPORT_METHOD(setMetadata:(NSDictionary *)metadataDict) {
 
 RCT_EXPORT_METHOD(getMetadata:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     resolve([Radar getMetadata]);
+}
+
+RCT_EXPORT_METHOD(setProduct:(NSString *)product) {
+    [Radar setProduct:product];
+}
+
+RCT_EXPORT_METHOD(getProduct:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getProduct]);
 }
 
 RCT_EXPORT_METHOD(setAnonymousTrackingEnabled:(BOOL)enabled) {
@@ -323,6 +331,8 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
 RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     BOOL beacons = NO;
     RadarTrackingOptionsDesiredAccuracy desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+    NSString *reason = nil;
+    NSString *transactionId = nil;
 
     if (optionsDict != nil) {
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
@@ -341,6 +351,8 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
                 desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
             }
         }
+        reason = optionsDict[@"reason"];
+        transactionId = optionsDict[@"transactionId"];
     }
 
     __block RCTPromiseResolveBlock resolver = resolve;
@@ -361,16 +373,12 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         rejecter = nil;
     };
 
-    [Radar trackVerifiedWithBeacons:beacons desiredAccuracy:desiredAccuracy completionHandler:completionHandler];
+    [Radar trackVerifiedWithBeacons:beacons desiredAccuracy:desiredAccuracy reason:reason transactionId:transactionId completionHandler:completionHandler];
 }
 
 RCT_EXPORT_METHOD(isTrackingVerified:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     BOOL res = [Radar isTrackingVerified];
     resolve(@(res));
-}
-
-RCT_EXPORT_METHOD(setProduct:(NSString *)product) {
-    [Radar setProduct:product];
 }
 
 RCT_EXPORT_METHOD(getVerifiedLocationToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {

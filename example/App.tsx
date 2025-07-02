@@ -556,7 +556,12 @@ export default function App() {
           <ExampleButton
             title="trackVerified"
             onPress={() => {
-              Radar.trackVerified()
+              Radar.trackVerified({
+                desiredAccuracy: 'high',
+                beacons: true,
+                reason: 'test',
+                transactionId: '123',
+              })
                 .then((result) => {
                   handlePopulateText("trackVerified:" + stringify(result));
                 })
