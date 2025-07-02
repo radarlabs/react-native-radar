@@ -17,7 +17,8 @@
     "owner": "radarlabs",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.radar.reactnative.example"
+      "bundleIdentifier": "com.radar.reactnative.example",
+      "appleTeamId": "96GHH65B9D"
     },
     "android": {
       "adaptiveIcon": {
