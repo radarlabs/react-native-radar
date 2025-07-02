@@ -307,7 +307,7 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
         [Radar trackOnceWithLocation:location completionHandler:completionHandler];
     } else {
         NSString *accuracy = optionsDict[@"desiredAccuracy"];
-        
+
         if (accuracy != nil && [accuracy isKindOfClass:[NSString class]]) {
             NSString *lowerAccuracy = [accuracy lowercaseString];
             if ([lowerAccuracy isEqualToString:@"high"]) {
@@ -339,6 +339,7 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
             beacons = [beaconsNumber boolValue]; 
         }
+
         NSString *accuracy = optionsDict[@"desiredAccuracy"];
         if (accuracy != nil && [accuracy isKindOfClass:[NSString class]]) {
             NSString *lowerAccuracy = [accuracy lowercaseString];
