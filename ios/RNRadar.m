@@ -224,19 +224,19 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
     }
 }
 
-RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracyStr resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
-    RadarTrackingOptionsDesiredAccuracy accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+    RadarTrackingOptionsDesiredAccuracy desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
     
-    if (desiredAccuracy) {
-        NSString *lowerAccuracy = [desiredAccuracy lowercaseString];
-        if ([lowerAccuracy isEqualToString:@"high"]) {
-            accuracy = RadarTrackingOptionsDesiredAccuracyHigh;
-        } else if ([lowerAccuracy isEqualToString:@"medium"]) {
-            accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
-        } else if ([lowerAccuracy isEqualToString:@"low"]) {
-            accuracy = RadarTrackingOptionsDesiredAccuracyLow;
+    if (desiredAccuracyStr) {
+        desiredAccuracyStr = [desiredAccuracyStr lowercaseString];
+        if ([desiredAccuracyStr isEqualToString:@"high"]) {
+            desiredAccuracy = RadarTrackingOptionsDesiredAccuracyHigh;
+        } else if ([desiredAccuracyStr isEqualToString:@"medium"]) {
+            desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+        } else if ([desiredAccuracyStr isEqualToString:@"low"]) {
+            desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
         } else {
             if (reject) {
                 reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
@@ -246,7 +246,7 @@ RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseRes
         }
     }
 
-    [Radar getLocationWithDesiredAccuracy:accuracy completionHandler:^(RadarStatus status, CLLocation * _Nullable location, BOOL stopped) {
+    [Radar getLocationWithDesiredAccuracy:desiredAccuracy completionHandler:^(RadarStatus status, CLLocation * _Nullable location, BOOL stopped) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];

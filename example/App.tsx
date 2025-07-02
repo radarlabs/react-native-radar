@@ -43,7 +43,7 @@ export default function App() {
     setDisplayText(displayText);
   };
   Radar.initialize(
-    "prj_test_pk_0000000000000000000000000000000000000000",
+    "org_test_pk_5857c63d9c1565175db8b00750808a66a002acb8",
     true
   );
 
@@ -556,7 +556,12 @@ export default function App() {
           <ExampleButton
             title="trackVerified"
             onPress={() => {
-              Radar.trackVerified()
+              Radar.trackVerified({
+                desiredAccuracy: 'high',
+                beacons: true,
+                reason: 'test',
+                transactionId: '123',
+              })
                 .then((result) => {
                   handlePopulateText("trackVerified:" + stringify(result));
                 })
