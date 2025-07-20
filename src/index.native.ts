@@ -50,7 +50,7 @@ import type {
 } from "./@types/types";
 import { NativeEventEmitter, NativeModules } from "react-native";
 import { VERSION } from "./version";
-import NativeRadar, {
+import NativeRadarMod, {
   ClientLocationEmitter,
   ErrorEmitter,
   EventsEmitter,
@@ -58,6 +58,21 @@ import NativeRadar, {
   LogEmitter,
   TokenEmitter,
 } from "./NativeRadar";
+
+const NativeRadar = NativeRadarMod;
+// Comment above and uncomment below for QA logging
+// const NativeRadar = new Proxy(NativeRadarMod, {
+//   get: function (target, name, receiver) {
+//     if (typeof target[name] == "function") {
+//       return function () {
+//         console.log("rn native:", name, "(", ...arguments, ")");
+//         return target[name].apply(target, arguments);
+//       };
+//     } else {
+//       return target[name];
+//     }
+//   },
+// });
 
 const compatEventEmitter =
   NativeRadar.locationEmitter == null
