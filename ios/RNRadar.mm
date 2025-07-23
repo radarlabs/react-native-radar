@@ -17,7 +17,7 @@ RCT_EXPORT_MODULE()
         locationManager = [CLLocationManager new];
         locationManager.delegate = self;
         [Radar setDelegate:self];
-        [Radar setVerifiedDelegate:self];    
+        [Radar setVerifiedDelegate:self];
     }
     return self;
 }
@@ -183,6 +183,14 @@ RCT_EXPORT_METHOD(getMetadata:(RCTPromiseResolveBlock)resolve reject:(RCTPromise
     resolve([Radar getMetadata]);
 }
 
+RCT_EXPORT_METHOD(setProduct:(NSString *)product) {
+    [Radar setProduct:product];
+}
+
+RCT_EXPORT_METHOD(getProduct:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getProduct]);
+}
+
 RCT_EXPORT_METHOD(setAnonymousTrackingEnabled:(BOOL)enabled) {
     [Radar setAnonymousTrackingEnabled:enabled];
 }
@@ -252,7 +260,7 @@ RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseRes
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
     RadarTrackingOptionsDesiredAccuracy accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
-    
+
     if (desiredAccuracy) {
         NSString *lowerAccuracy = [desiredAccuracy lowercaseString];
         if ([lowerAccuracy isEqualToString:@"high"]) {
@@ -265,7 +273,7 @@ RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseRes
             if (reject) {
                 reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
             }
-            
+
             return;
         }
     }
@@ -342,12 +350,12 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
                 desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
             }
         }
-        
+
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
-            beacons = [beaconsNumber boolValue]; 
+            beacons = [beaconsNumber boolValue];
         }
-        
+
         [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons:beacons completionHandler:completionHandler];
     }
 }
@@ -356,11 +364,13 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
 RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     BOOL beacons = NO;
     RadarTrackingOptionsDesiredAccuracy desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
+    NSString *reason = nil;
+    NSString *transactionId = nil;
 
     if (optionsDict != nil) {
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
-            beacons = [beaconsNumber boolValue]; 
+            beacons = [beaconsNumber boolValue];
         }
 
         NSString *accuracy = optionsDict[@"desiredAccuracy"];
@@ -374,6 +384,8 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
                 desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
             }
         }
+        reason = optionsDict[@"reason"];
+        transactionId = optionsDict[@"transactionId"];
     }
 
     __block RCTPromiseResolveBlock resolver = resolve;
@@ -394,16 +406,12 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         rejecter = nil;
     };
 
-    [Radar trackVerifiedWithBeacons:beacons desiredAccuracy:desiredAccuracy completionHandler:completionHandler];
+    [Radar trackVerifiedWithBeacons:beacons desiredAccuracy:desiredAccuracy reason:reason transactionId:transactionId completionHandler:completionHandler];
 }
 
 RCT_EXPORT_METHOD(isTrackingVerified:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     BOOL res = [Radar isTrackingVerified];
     resolve(@(res));
-}
-
-RCT_EXPORT_METHOD(setProduct:(NSString *)product) {
-    [Radar setProduct:product];
 }
 
 RCT_EXPORT_METHOD(getVerifiedLocationToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
@@ -457,7 +465,7 @@ RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
     if (optionsDict != nil) {
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
-            beacons = [beaconsNumber boolValue]; 
+            beacons = [beaconsNumber boolValue];
         }
         NSNumber *intervalNumber = optionsDict[@"interval"];
         if (intervalNumber != nil && [intervalNumber isKindOfClass:[NSNumber class]]) {
@@ -530,7 +538,7 @@ RCT_EXPORT_METHOD(getTrackingOptions:(RCTPromiseResolveBlock)resolve reject:(RCT
     if (resolve == nil) {
         return;
     }
-    
+
     RadarTrackingOptions* options = [Radar getTrackingOptions];
     resolve([options dictionaryValue]);
 }
@@ -555,7 +563,7 @@ RCT_EXPORT_METHOD(getTripOptions:(RCTPromiseResolveBlock)resolve reject:(RCTProm
     if (resolve == nil) {
         return;
     }
-    
+
     RadarTripOptions* options = [Radar getTripOptions];
     if (options != nil) {
         resolve([options dictionaryValue]);
@@ -573,7 +581,7 @@ RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     }
 
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:tripOptionsDict];
-    
+
     RadarTrackingOptions *trackingOptions;
     NSDictionary *trackingOptionsDict = optionsDict[@"trackingOptions"];
     if (trackingOptionsDict != nil) {
@@ -603,7 +611,7 @@ RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
 }
 
 RCT_EXPORT_METHOD(completeTrip:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    
+
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -849,12 +857,12 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
     }
 
     BOOL includeGeometry = NO;
-    
+
     NSNumber *includeGeometryNumber = optionsDict[@"includeGeometry"];
     if (includeGeometryNumber != nil && [includeGeometryNumber isKindOfClass:[NSNumber class]]) {
-        includeGeometry = [includeGeometryNumber boolValue]; 
+        includeGeometry = [includeGeometryNumber boolValue];
     }
-    
+
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
@@ -896,16 +904,16 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     if (nearDict && [nearDict isKindOfClass:[NSDictionary class]]) {
         id latitudeObj = nearDict[@"latitude"];
         id longitudeObj = nearDict[@"longitude"];
-        
-        if (latitudeObj && longitudeObj && 
-            [latitudeObj isKindOfClass:[NSNumber class]] && 
+
+        if (latitudeObj && longitudeObj &&
+            [latitudeObj isKindOfClass:[NSNumber class]] &&
             [longitudeObj isKindOfClass:[NSNumber class]]) {
-            
+
             double latitude = [RCTConvert double:latitudeObj];
             double longitude = [RCTConvert double:longitudeObj];
             NSDate *timestamp = [NSDate new];
             near = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
-        }       
+        }
     }
 
 
@@ -927,7 +935,7 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     BOOL mailable = false;
     NSNumber *mailableNumber = optionsDict[@"mailable"];
     if (mailableNumber != nil && [mailableNumber isKindOfClass:[NSNumber class]]) {
-        mailable = [mailableNumber boolValue]; 
+        mailable = [mailableNumber boolValue];
     }
 
     __block RCTPromiseResolveBlock resolver = resolve;
@@ -957,11 +965,11 @@ RCT_EXPORT_METHOD(geocode:(NSDictionary *)optionsDict resolve:(RCTPromiseResolve
 
         return;
     }
-    
+
     NSString *query = optionsDict[@"address"];
     NSArray *layers = optionsDict[@"layers"];
     NSArray *countries = optionsDict[@"countries"];
-    
+
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -1012,10 +1020,10 @@ RCT_EXPORT_METHOD(reverseGeocode:(NSDictionary *)optionsDict resolve:(RCTPromise
         double latitude = [RCTConvert double:locationDict[@"latitude"]];
         double longitude = [RCTConvert double:locationDict[@"longitude"]];
         NSDate *timestamp = [NSDate new];
-        CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) 
-                                                             altitude:-1 
+        CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude)
+                                                             altitude:-1
                                                    horizontalAccuracy:5
-                                                     verticalAccuracy:-1 
+                                                     verticalAccuracy:-1
                                                             timestamp:timestamp];
         [Radar reverseGeocodeLocation:location layers:layers completionHandler:completionHandler];
     } else {
@@ -1053,7 +1061,7 @@ RCT_EXPORT_METHOD(validateAddress:(NSDictionary *)addressDict resolve:(RCTPromis
     if (address == nil) {
         reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
     }
-    
+
     [Radar validateAddress:address completionHandler:^(RadarStatus status, RadarAddress * _Nullable address, RadarAddressVerificationStatus verificationStatus) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
@@ -1235,7 +1243,7 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
 
         return;
     }
-    
+
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -1253,7 +1261,7 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         resolver = nil;
         rejecter = nil;
     };
-    
+
     if (revenue) {
         [Radar logConversionWithName:name revenue:revenue metadata:metadata completionHandler:completionHandler];
     } else {

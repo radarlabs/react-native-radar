@@ -53,7 +53,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     private Promise mPermissionsRequestPromise;
 
     private RadarOldArchReceiver receiver;
-    private RadarOldArchVerifiedReceiver verifiedReceiver;    
+    private RadarOldArchVerifiedReceiver verifiedReceiver;
     private int listenerCount = 0;
     private boolean fraud = false;
     private RadarModuleImpl radarModuleImpl;
@@ -145,7 +145,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
-    public void getMetadata(final Promise promise) throws JSONException {        
+    public void getMetadata(final Promise promise) throws JSONException {
         radarModuleImpl.getMetadata(promise);
     }
 
@@ -168,11 +168,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
             return;
         }
 
-        boolean foreground = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || 
+        boolean foreground = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
                              ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean background = foreground;
         boolean denied = ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION);
-        
+
         if (Build.VERSION.SDK_INT >= 29) {
             background = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
         }
@@ -236,6 +236,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     @ReactMethod
     public void setProduct(String product) {
         radarModuleImpl.setProduct(product);
+    }
+
+    @ReactMethod
+    public void getProduct(final Promise promise) throws JSONException {
+        radarModuleImpl.getProduct(promise);
     }
 
     @ReactMethod
@@ -412,5 +417,5 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     public void getPublishableKey(final Promise promise) {
         radarModuleImpl.getPublishableKey(promise);
     }
-    
+
 }

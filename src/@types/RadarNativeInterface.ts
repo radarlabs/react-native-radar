@@ -53,6 +53,8 @@ export interface RadarNativeInterface {
   getDescription: () => Promise<string>;
   setMetadata: (metadata: RadarMetadata) => void;
   getMetadata: () => Promise<RadarMetadata>;
+  setProduct(product: string): void;
+  getProduct: () => Promise<string>;
   setAnonymousTrackingEnabled: (enabled: boolean) => void;
   getPermissionsStatus: () => Promise<RadarPermissionsStatus>;
   requestPermissions: (background: boolean) => Promise<RadarPermissionsStatus>;
@@ -71,7 +73,6 @@ export interface RadarNativeInterface {
   startTrackingCustom: (options: RadarTrackingOptions) => void;
   startTrackingVerified: (options?: RadarVerifiedTrackingOptions) => void;
   isTrackingVerified: () => Promise<boolean>;
-  setProduct(product: string): void;
   mockTracking: (options: RadarMockTrackingOptions) => void;
   stopTracking: () => void;
   stopTrackingVerified: () => void;

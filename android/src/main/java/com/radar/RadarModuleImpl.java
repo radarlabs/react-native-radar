@@ -52,11 +52,11 @@ public class RadarModuleImpl {
 
 
     private boolean fraud = false;
-    
+
     public String getName() {
         return "RNRadar";
     }
-    
+
     public void setLogLevel(String level) {
         Radar.RadarLogLevel logLevel = Radar.RadarLogLevel.NONE;
         if (level != null) {
@@ -73,12 +73,12 @@ public class RadarModuleImpl {
         Radar.setLogLevel(logLevel);
     }
 
-    
+
     public void setUserId(String userId) {
         Radar.setUserId(userId);
     }
 
-    
+
     public void getUserId(final Promise promise) {
         if (promise == null) {
             return;
@@ -87,12 +87,12 @@ public class RadarModuleImpl {
         promise.resolve(Radar.getUserId());
     }
 
-    
+
     public void setDescription(String description) {
         Radar.setDescription(description);
     }
 
-    
+
     public void getDescription(final Promise promise) {
         if (promise == null) {
             return;
@@ -101,7 +101,7 @@ public class RadarModuleImpl {
         promise.resolve(Radar.getDescription());
     }
 
-    
+
     public void nativeSdkVersion(final Promise promise) {
         if (promise == null) {
             return;
@@ -109,33 +109,46 @@ public class RadarModuleImpl {
         String sdkVersion = Radar.sdkVersion();
 
         if (sdkVersion != null) {
-            promise.resolve(sdkVersion); 
+            promise.resolve(sdkVersion);
         } else {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
         }
     }
 
-    
+
     public void setMetadata(ReadableMap metadataMap) throws JSONException {
         Radar.setMetadata(RadarUtils.jsonForMap(metadataMap));
     }
 
-    
-    public void getMetadata(final Promise promise) throws JSONException {        
+
+    public void getMetadata(final Promise promise) throws JSONException {
         if (promise == null) {
             return;
         }
 
-        JSONObject metaJson =  Radar.getMetadata();        
+        JSONObject metaJson =  Radar.getMetadata();
         promise.resolve(RadarUtils.mapForJson(metaJson));
     }
 
-    
+    public void setProduct(String product) {
+        Radar.setProduct(product);
+    }
+
+    public void getProduct(final Promise promise) throws JSONException {
+        if (promise == null) {
+            return;
+        }
+
+        String product = Radar.getProduct();
+        promise.resolve(product);
+    }
+
+
     public void setAnonymousTrackingEnabled(boolean enabled) {
         Radar.setAnonymousTrackingEnabled(enabled);
     }
 
-    
+
     public void getHost(final Promise promise) {
         if (promise == null) {
             return;
@@ -144,7 +157,7 @@ public class RadarModuleImpl {
         promise.resolve(Radar.getHost());
     }
 
-    
+
     public void getPublishableKey(final Promise promise) {
         if (promise == null) {
             return;
@@ -152,12 +165,12 @@ public class RadarModuleImpl {
 
         promise.resolve(Radar.getPublishableKey());
     }
-    
+
     public void getLocation(String desiredAccuracy, final Promise promise) {
-        
-        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;        
+
+        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
         String accuracy = desiredAccuracy != null ? desiredAccuracy.toLowerCase()  : "medium";
-        
+
         if (accuracy.equals("low")) {
             accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
         } else if (accuracy.equals("medium")) {
@@ -169,7 +182,7 @@ public class RadarModuleImpl {
         }
 
         Radar.getLocation(accuracyLevel, new Radar.RadarLocationCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, boolean stopped) {
                 if (promise == null) {
                     return;
@@ -195,9 +208,9 @@ public class RadarModuleImpl {
         });
     }
 
-    
+
     public void trackOnce(ReadableMap optionsMap, final Promise promise) {
-        
+
         Location location = null;
         RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
         boolean beaconsTrackingOption = false;
@@ -231,7 +244,7 @@ public class RadarModuleImpl {
         }
 
         Radar.RadarTrackCallback trackCallback = new Radar.RadarTrackCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
                 if (promise == null) {
                     return;
@@ -268,11 +281,13 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void trackVerified(ReadableMap optionsMap, final Promise promise) {
 
         boolean beaconsTrackingOption = false;
         RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
+        String reason = null;
+        String transactionId = null;
 
         if (optionsMap != null) {
             if (optionsMap.hasKey("beacons")) {
@@ -290,10 +305,16 @@ public class RadarModuleImpl {
                     accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.HIGH;
                 }
             }
+            if (optionsMap.hasKey("reason")) {
+                reason = optionsMap.getString("reason");
+            }
+            if (optionsMap.hasKey("transactionId")) {
+                transactionId = optionsMap.getString("transactionId");
+            }
         }
 
         Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
                 if (promise == null) {
                     return;
@@ -317,23 +338,18 @@ public class RadarModuleImpl {
             }
         };
 
-        Radar.trackVerified(beaconsTrackingOption, accuracyLevel, trackCallback);
+        Radar.trackVerified(beaconsTrackingOption, accuracyLevel, reason, transactionId, trackCallback);
     }
 
-    
+
     public void isTrackingVerified(final Promise promise) {
         promise.resolve(Radar.isTrackingVerified());
     }
 
-    
-    public void setProduct(String product) {
-        Radar.setProduct(product);
-    }
 
-    
     public void getVerifiedLocationToken(final Promise promise) {
         Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
                 if (promise == null) {
                     return;
@@ -360,27 +376,27 @@ public class RadarModuleImpl {
         Radar.getVerifiedLocationToken(trackCallback);
     }
 
-    
+
     public void clearVerifiedLocationToken() {
         Radar.clearVerifiedLocationToken();
     }
 
-    
+
     public void startTrackingEfficient() {
         Radar.startTracking(RadarTrackingOptions.EFFICIENT);
     }
 
-    
+
     public void startTrackingResponsive() {
         Radar.startTracking(RadarTrackingOptions.RESPONSIVE);
     }
 
-    
+
     public void startTrackingContinuous() {
         Radar.startTracking(RadarTrackingOptions.CONTINUOUS);
     }
 
-    
+
     public void startTrackingCustom(ReadableMap optionsMap) {
         try {
             JSONObject optionsObj = RadarUtils.jsonForMap(optionsMap);
@@ -391,7 +407,7 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void startTrackingVerified(ReadableMap optionsMap) {
         boolean beacons = false;
         int interval = 1200;
@@ -404,7 +420,7 @@ public class RadarModuleImpl {
         Radar.startTrackingVerified(interval, beacons);
     }
 
-    
+
     public void mockTracking(ReadableMap optionsMap) {
         ReadableMap originMap = optionsMap.getMap("origin");
         double originLatitude = originMap.getDouble("latitude");
@@ -431,24 +447,24 @@ public class RadarModuleImpl {
         int interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : 1;
 
         Radar.mockTracking(origin, destination, mode, steps, interval, new Radar.RadarTrackCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
 
             }
         });
     }
 
-    
+
     public void stopTracking() {
         Radar.stopTracking();
     }
 
-    
+
     public void stopTrackingVerified() {
         Radar.stopTrackingVerified();
     }
 
-    
+
     public void isTracking(final Promise promise) {
         if (promise == null) {
             return;
@@ -457,7 +473,7 @@ public class RadarModuleImpl {
         promise.resolve(Radar.isTracking());
     }
 
-    
+
     public void getTrackingOptions(final Promise promise) {
         if (promise == null) {
             return;
@@ -471,7 +487,7 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void isUsingRemoteTrackingOptions(final Promise promise) {
         if (promise == null) {
             return;
@@ -480,7 +496,7 @@ public class RadarModuleImpl {
         promise.resolve(Radar.isUsingRemoteTrackingOptions());
     }
 
-    
+
     public void setForegroundServiceOptions(ReadableMap optionsMap) {
         try {
             JSONObject optionsObj = RadarUtils.jsonForMap(optionsMap);
@@ -491,7 +507,7 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void setNotificationOptions(ReadableMap optionsMap) {
         try {
             JSONObject optionsObj = RadarUtils.jsonForMap(optionsMap);
@@ -502,17 +518,17 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void acceptEvent(String eventId, String verifiedPlaceId) {
         Radar.acceptEvent(eventId, verifiedPlaceId);
     }
 
-    
+
     public void rejectEvent(String eventId) {
         Radar.rejectEvent(eventId);
     }
 
-    
+
     public void getTripOptions(final Promise promise) {
         if (promise == null) {
             return;
@@ -526,7 +542,7 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void startTrip(ReadableMap optionsMap, final Promise promise) {
         try {
             JSONObject optionsJson = RadarUtils.jsonForMap(optionsMap);
@@ -544,7 +560,7 @@ public class RadarModuleImpl {
                 trackingOptions = RadarTrackingOptions.fromJson(trackingOptionsJson);
             }
             Radar.startTrip(options, trackingOptions, new Radar.RadarTripCallback() {
-                
+
                 public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
                     if (promise == null) {
                         return;
@@ -575,10 +591,10 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void completeTrip(final Promise promise) {
         Radar.completeTrip(new Radar.RadarTripCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
                 if (promise == null) {
                     return;
@@ -605,10 +621,10 @@ public class RadarModuleImpl {
         });
     }
 
-    
+
     public void cancelTrip(final Promise promise) {
         Radar.cancelTrip(new Radar.RadarTripCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
                 if (promise == null) {
                     return;
@@ -635,7 +651,7 @@ public class RadarModuleImpl {
         });
     }
 
-    
+
     public void updateTrip(ReadableMap optionsMap, final Promise promise) {
 
         try {
@@ -667,7 +683,7 @@ public class RadarModuleImpl {
             }
 
             Radar.updateTrip(options, status, new Radar.RadarTripCallback() {
-                
+
                 public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
                     if (promise == null) {
                         return;
@@ -698,14 +714,14 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void getContext(@Nullable ReadableMap locationMap, final Promise promise) {
         if (promise == null) {
             return;
         }
 
         Radar.RadarContextCallback callback = new Radar.RadarContextCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarContext context) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
@@ -740,7 +756,7 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void searchPlaces(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -764,7 +780,7 @@ public class RadarModuleImpl {
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
         Radar.RadarSearchPlacesCallback callback = new Radar.RadarSearchPlacesCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarPlace[] places) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
@@ -794,7 +810,7 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void searchGeofences(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -824,10 +840,10 @@ public class RadarModuleImpl {
         }
 
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 100;
-        boolean includeGeometry = optionsMap.hasKey("includeGeometry") ? optionsMap.getBoolean("includeGeometry") : false; 
+        boolean includeGeometry = optionsMap.hasKey("includeGeometry") ? optionsMap.getBoolean("includeGeometry") : false;
 
         Radar.RadarSearchGeofencesCallback callback = new Radar.RadarSearchGeofencesCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarGeofence[] geofences) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
@@ -857,7 +873,7 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void autocomplete(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -895,7 +911,7 @@ public class RadarModuleImpl {
         boolean mailable = optionsMap.hasKey("mailable") ? optionsMap.getBoolean("mailable") : false;
 
         Radar.autocomplete(query, near, layers, limit, country, true, mailable, new Radar.RadarGeocodeCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
@@ -916,7 +932,7 @@ public class RadarModuleImpl {
         });
     }
 
-    
+
     public void geocode(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -933,7 +949,7 @@ public class RadarModuleImpl {
         String[] countries = optionsMap.hasKey("countries") ? RadarUtils.stringArrayForArray(optionsMap.getArray("countries")) : null;
 
         Radar.geocode(address, layers, countries, new Radar.RadarGeocodeCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
@@ -954,7 +970,7 @@ public class RadarModuleImpl {
         });
     }
 
-    
+
     public void reverseGeocode(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -969,7 +985,7 @@ public class RadarModuleImpl {
         }
 
         Radar.RadarGeocodeCallback callback = new Radar.RadarGeocodeCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
@@ -1002,14 +1018,14 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void ipGeocode(final Promise promise) {
         if (promise == null) {
             return;
         }
 
         Radar.ipGeocode(new Radar.RadarIpGeocodeCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, boolean proxy) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
@@ -1031,7 +1047,7 @@ public class RadarModuleImpl {
         });
     }
 
-    
+
     public void validateAddress(ReadableMap addressMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -1045,7 +1061,7 @@ public class RadarModuleImpl {
             return;
         }
         Radar.validateAddress(address, new Radar.RadarValidateAddressCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, @Nullable Radar.RadarAddressVerificationStatus verificationStatus) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
@@ -1069,7 +1085,7 @@ public class RadarModuleImpl {
         });
     }
 
-    
+
     public void getDistance(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -1113,7 +1129,7 @@ public class RadarModuleImpl {
         Radar.RadarRouteUnits units = unitsStr != null && (unitsStr.equals("METRIC") || unitsStr.equals("metric")) ? Radar.RadarRouteUnits.METRIC : Radar.RadarRouteUnits.IMPERIAL;
 
         Radar.RadarRouteCallback callback = new Radar.RadarRouteCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarRoutes routes) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
@@ -1140,7 +1156,7 @@ public class RadarModuleImpl {
         }
     }
 
-    
+
     public void getMatrix(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -1187,7 +1203,7 @@ public class RadarModuleImpl {
         Radar.RadarRouteUnits units = unitsStr != null && (unitsStr.equals("METRIC") || unitsStr.equals("metric")) ? Radar.RadarRouteUnits.METRIC : Radar.RadarRouteUnits.IMPERIAL;
 
         Radar.getMatrix(origins, destinations, mode, units, new Radar.RadarMatrixCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarRouteMatrix matrix) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
@@ -1208,7 +1224,7 @@ public class RadarModuleImpl {
         });
     }
 
-    
+
     public void logConversion(ReadableMap optionsMap, final Promise promise) throws JSONException  {
         if (promise == null) {
             return;
@@ -1223,10 +1239,10 @@ public class RadarModuleImpl {
         String name = optionsMap.getString("name");
         Double revenue = optionsMap.hasKey("revenue") ? new Double(optionsMap.getDouble("revenue")) : null;
         ReadableMap metadata = optionsMap.hasKey("metadata") ? optionsMap.getMap("metadata") : null;
-        
+
         JSONObject metadataObj = RadarUtils.jsonForMap(metadata);
         Radar.RadarLogConversionCallback callback = new Radar.RadarLogConversionCallback() {
-            
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarEvent event) {
                 try {
                     if (status == Radar.RadarStatus.SUCCESS) {
@@ -1253,4 +1269,3 @@ public class RadarModuleImpl {
         }
     }
 }
-

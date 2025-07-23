@@ -12,6 +12,8 @@ export interface RadarTrackOnceOptions {
 export interface RadarTrackVerifiedOptions {
   beacons?: boolean;
   desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy;
+  reason?: string;
+  transactionId?: string;
 }
 
 /**

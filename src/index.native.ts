@@ -268,6 +268,12 @@ const Radar: RadarNativeInterface = {
   getMetadata: function (): Promise<RadarMetadata> {
     return NativeRadar.getMetadata() as Promise<RadarMetadata>;
   },
+  setProduct: function (product: string): void {
+    return NativeRadar.setProduct(product);
+  },
+  getProduct: function (): Promise<string> {
+    return NativeRadar.getProduct();
+  },
   setAnonymousTrackingEnabled: function (enabled: boolean): void {
     return NativeRadar.setAnonymousTrackingEnabled(enabled);
   },
@@ -313,9 +319,6 @@ const Radar: RadarNativeInterface = {
   },
   isTrackingVerified: function (): Promise<boolean> {
     return NativeRadar.isTrackingVerified();
-  },
-  setProduct: function (product: string): void {
-    return NativeRadar.setProduct(product);
   },
   mockTracking: function (options: RadarMockTrackingOptions): void {
     return NativeRadar.mockTracking(options);

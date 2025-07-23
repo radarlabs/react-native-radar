@@ -106,7 +106,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         editor.putString("x_platform_sdk_type", "ReactNative")
         editor.putString("x_platform_sdk_version", "3.21.0-beta.3")
         editor.apply()
-        
+
         if (fraud) {
             Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud)
             Radar.setVerifiedReceiver(radarVerifiedReceiver)
@@ -144,10 +144,18 @@ class RadarModule(reactContext: ReactApplicationContext) :
         radarModuleImpl.getMetadata(promise)
     }
 
+    override fun setProduct(product: String): Unit {
+        radarModuleImpl.setProduct(product)
+    }
+
+    override fun getProduct(promise: Promise): Unit {
+        radarModuleImpl.getProduct(promise)
+    }
+
     override fun setAnonymousTrackingEnabled(enabled: Boolean): Unit {
         radarModuleImpl.setAnonymousTrackingEnabled(enabled)
     }
-    
+
     override fun requestPermissions(background: Boolean, promise: Promise): Unit {
         mPermissionsRequestPromise = promise
         val activity = currentActivity as? PermissionAwareActivity
@@ -252,10 +260,6 @@ class RadarModule(reactContext: ReactApplicationContext) :
         radarModuleImpl.isTrackingVerified(promise)
     }
 
-    override fun setProduct(product: String): Unit {
-        radarModuleImpl.setProduct(product)
-    }
-
     override fun mockTracking(options: ReadableMap): Unit {
         radarModuleImpl.mockTracking(options)
     }
@@ -323,7 +327,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun searchPlaces(options: ReadableMap, promise: Promise): Unit {
         radarModuleImpl.searchPlaces(options, promise)
     }
-    
+
     override fun searchGeofences(options: ReadableMap, promise: Promise): Unit {
         radarModuleImpl.searchGeofences(options, promise)
     }
@@ -371,8 +375,8 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun getPublishableKey(promise: Promise): Unit {
         radarModuleImpl.getPublishableKey(promise)
     }
-    
-    
+
+
     companion object {
         const val NAME = "RNRadar"
         private const val PERMISSIONS_REQUEST_CODE = 1

@@ -42,6 +42,8 @@ export interface Spec extends TurboModule {
   getDescription(): Promise<string>;
   setMetadata(metadata: Object): void;
   getMetadata(): Promise<Object>;
+  setProduct(product: string): void;
+  getProduct(): Promise<string>;
   setAnonymousTrackingEnabled(enabled: boolean): void;
   getLocation(desiredAccuracy: string | null): Promise<Object>;
   trackVerified(trackVerifiedOptions: Object | null): Promise<Object>;
@@ -53,7 +55,6 @@ export interface Spec extends TurboModule {
   startTrackingCustom(options: Object): void;
   startTrackingVerified(options: Object | null): void;
   isTrackingVerified(): Promise<boolean>;
-  setProduct(product: string): void;
   mockTracking(options: Object): void;
   stopTracking(): void;
   stopTrackingVerified(): void;
