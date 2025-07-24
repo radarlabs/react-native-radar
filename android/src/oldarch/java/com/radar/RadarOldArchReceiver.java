@@ -93,7 +93,10 @@ public class RadarOldArchReceiver extends RadarReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("errorEmitter", status.toString());
+            WritableMap map = Arguments.createMap();
+            map.putString("status", status.toString());
+
+            sendEvent("errorEmitter", map);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }
@@ -105,7 +108,10 @@ public class RadarOldArchReceiver extends RadarReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("logEmitter", message);
+            WritableMap map = Arguments.createMap();
+            map.putString("message", message);
+
+            sendEvent("logEmitter", map);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }
