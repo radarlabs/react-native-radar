@@ -40,7 +40,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [        
+    "plugins": [
       [
         "react-native-radar",
         {
@@ -61,7 +61,8 @@
         "expo-build-properties",
         {
           "ios": {
-            "newArchEnabled": true
+            "newArchEnabled": true,
+            "deploymentTarget": "15.1"
           },
           "android": {
             "newArchEnabled": true,

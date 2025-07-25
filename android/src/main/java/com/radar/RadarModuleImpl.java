@@ -346,7 +346,6 @@ public class RadarModuleImpl {
         promise.resolve(Radar.isTrackingVerified());
     }
 
-
     public void getVerifiedLocationToken(final Promise promise) {
         Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
 

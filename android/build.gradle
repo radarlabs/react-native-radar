@@ -79,10 +79,10 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
 dependencies {
   // Expose React Native to consumers of this module
   api "com.facebook.react:react-android"
-  
+
   // Keep Kotlin stdlib internal to this module
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  
+
   api 'io.radar:sdk:3.21.3'
 }
 
