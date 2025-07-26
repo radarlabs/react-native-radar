@@ -1191,6 +1191,21 @@ RCT_EXPORT_METHOD(getMatrix:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     }];
 }
 
+RCT_EXPORT_METHOD(doIndoorSurvey:(NSString *)placeLabel forLength:(int)surveyLengthSeconds resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    RadarIndoorsSurveyCompletionHandler completionHandler = ^(NSString * _Nullable response) {
+        NSMutableDictionary *dict = [NSMutableDictionary new];
+        [dict setObject:response forKey:@"response"];
+        resolver(dict);
+        resolver = nil;
+        rejecter = nil;
+    };
+
+    [Radar doIndoorSurvey:placeLabel forLength:surveyLengthSeconds completionHandler:completionHandler];
+}
+
 RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     if (optionsDict == nil) {
         if (reject) {
