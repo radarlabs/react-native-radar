@@ -3,6 +3,7 @@ package io.radar.react;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -1334,6 +1335,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                 }
             }
         });
+    }
+
+    public static void logOpenedAppConversion(Intent intent) {
+        Radar.logOpenedAppConversion(intent);
     }
 
     @ReactMethod
