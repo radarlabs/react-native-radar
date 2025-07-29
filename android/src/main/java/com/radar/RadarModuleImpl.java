@@ -1,4 +1,4 @@
-package io.radar.react;
+package com.radar;
 
 import android.Manifest;
 import android.app.Activity;
@@ -46,68 +46,17 @@ import org.json.JSONObject;
 import java.util.EnumSet;
 import java.util.Map;
 
-public class RNRadarModule extends ReactContextBaseJavaModule implements PermissionListener {
+public class RadarModuleImpl {
 
     private static final String TAG = "RNRadarModule";
-    private static final int PERMISSIONS_REQUEST_CODE = 20160525; // random request code (Radar's birthday!)
-    private Promise mPermissionsRequestPromise;
 
-    private RNRadarReceiver receiver;
-    private RNRadarVerifiedReceiver verifiedReceiver;    
-    private int listenerCount = 0;
+
     private boolean fraud = false;
 
-    public RNRadarModule(ReactApplicationContext reactContext) {
-        super(reactContext);
-        receiver = new RNRadarReceiver();
-        verifiedReceiver = new RNRadarVerifiedReceiver();
-    }
-
-    @ReactMethod
-    public void addListener(String eventName) {
-        if (listenerCount == 0) {
-            if (fraud) {
-                verifiedReceiver.hasListeners = true;
-            }
-            receiver.hasListeners = true;
-        }
-
-        listenerCount += 1;
-    }
-
-    @ReactMethod
-    public void removeListeners(Integer count) {
-        listenerCount -= count;
-        if (listenerCount == 0) {
-            if (fraud) {
-                verifiedReceiver.hasListeners = false;
-            }
-            receiver.hasListeners = false;
-        }
-    }
-
-    @Override
     public String getName() {
         return "RNRadar";
     }
 
-    @ReactMethod
-    public void initialize(String publishableKey, boolean fraud) {
-        this.fraud = fraud;
-        SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
-        editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.20.4");
-        editor.apply();
-        if (fraud) {
-            Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
-            Radar.setVerifiedReceiver(verifiedReceiver);
-        } else {
-            Radar.initialize(getReactApplicationContext(), publishableKey);
-            Radar.setReceiver(receiver);
-        }
-    }
-
-    @ReactMethod
     public void setLogLevel(String level) {
         Radar.RadarLogLevel logLevel = Radar.RadarLogLevel.NONE;
         if (level != null) {
@@ -124,12 +73,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Radar.setLogLevel(logLevel);
     }
 
-    @ReactMethod
+
     public void setUserId(String userId) {
         Radar.setUserId(userId);
     }
 
-    @ReactMethod
+
     public void getUserId(final Promise promise) {
         if (promise == null) {
             return;
@@ -138,12 +87,12 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         promise.resolve(Radar.getUserId());
     }
 
-    @ReactMethod
+
     public void setDescription(String description) {
         Radar.setDescription(description);
     }
 
-    @ReactMethod
+
     public void getDescription(final Promise promise) {
         if (promise == null) {
             return;
@@ -152,7 +101,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         promise.resolve(Radar.getDescription());
     }
 
-    @ReactMethod
+
     public void nativeSdkVersion(final Promise promise) {
         if (promise == null) {
             return;
@@ -160,48 +109,46 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         String sdkVersion = Radar.sdkVersion();
 
         if (sdkVersion != null) {
-            promise.resolve(sdkVersion); 
+            promise.resolve(sdkVersion);
         } else {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
         }
     }
 
-    @ReactMethod
+
     public void setMetadata(ReadableMap metadataMap) throws JSONException {
-        Radar.setMetadata(RNRadarUtils.jsonForMap(metadataMap));
+        Radar.setMetadata(RadarUtils.jsonForMap(metadataMap));
     }
 
-    @ReactMethod
-    public void getMetadata(final Promise promise) throws JSONException {        
+
+    public void getMetadata(final Promise promise) throws JSONException {
         if (promise == null) {
             return;
         }
 
-        JSONObject metaJson =  Radar.getMetadata();        
-        promise.resolve(RNRadarUtils.mapForJson(metaJson));
+        JSONObject metaJson =  Radar.getMetadata();
+        promise.resolve(RadarUtils.mapForJson(metaJson));
     }
 
-    @ReactMethod
-    public void setProduct(String product) throws JSONException {
+    public void setProduct(String product) {
         Radar.setProduct(product);
     }
 
-    @ReactMethod
-    public void getProduct(final Promise promise) throws JSONException {        
+    public void getProduct(final Promise promise) throws JSONException {
         if (promise == null) {
             return;
         }
 
-        String product =  Radar.getProduct();        
+        String product = Radar.getProduct();
         promise.resolve(product);
     }
 
-    @ReactMethod
+
     public void setAnonymousTrackingEnabled(boolean enabled) {
         Radar.setAnonymousTrackingEnabled(enabled);
     }
 
-    @ReactMethod
+
     public void getHost(final Promise promise) {
         if (promise == null) {
             return;
@@ -210,7 +157,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         promise.resolve(Radar.getHost());
     }
 
-    @ReactMethod
+
     public void getPublishableKey(final Promise promise) {
         if (promise == null) {
             return;
@@ -219,70 +166,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         promise.resolve(Radar.getPublishableKey());
     }
 
-    @ReactMethod
-    public void getPermissionsStatus(final Promise promise) {
-        if (promise == null) {
-            return;
-        }
-
-        Activity activity = getCurrentActivity();
-
-        if (activity == null) {
-            promise.resolve("UNKNOWN");
-
-            return;
-        }
-
-        boolean foreground = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || 
-                             ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        boolean background = foreground;
-        boolean denied = ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION);
-        
-        if (Build.VERSION.SDK_INT >= 29) {
-            background = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        }
-
-        if (background) {
-            promise.resolve("GRANTED_BACKGROUND");
-        } else if (foreground) {
-            promise.resolve("GRANTED_FOREGROUND");
-        } else if (denied) {
-            promise.resolve("DENIED");
-        } else {
-            promise.resolve("NOT_DETERMINED");
-        }
-    }
-
-    @Override
-    public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST_CODE && mPermissionsRequestPromise != null) {
-            getPermissionsStatus(mPermissionsRequestPromise);
-            mPermissionsRequestPromise = null;
-        }
-        return true;
-    }
-
-
-    @ReactMethod
-    public void requestPermissions(boolean background, final Promise promise) {
-        PermissionAwareActivity activity = (PermissionAwareActivity)getCurrentActivity();
-        mPermissionsRequestPromise = promise;
-        if (activity != null) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (background && Build.VERSION.SDK_INT >= 29) {
-                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_BACKGROUND_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
-                } else {
-                    activity.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSIONS_REQUEST_CODE, this);
-                }
-            }
-        }
-    }
-
-    @ReactMethod
     public void getLocation(String desiredAccuracy, final Promise promise) {
-        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;        
+
+        RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
         String accuracy = desiredAccuracy != null ? desiredAccuracy.toLowerCase()  : "medium";
-        
+
         if (accuracy.equals("low")) {
             accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.LOW;
         } else if (accuracy.equals("medium")) {
@@ -294,7 +182,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
 
         Radar.getLocation(accuracyLevel, new Radar.RadarLocationCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, boolean stopped) {
                 if (promise == null) {
                     return;
@@ -305,7 +193,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                            map.putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)));
                         }
                         map.putBoolean("stopped", stopped);
                         promise.resolve(map);
@@ -320,9 +208,9 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         });
     }
 
-    @ReactMethod
+
     public void trackOnce(ReadableMap optionsMap, final Promise promise) {
-        
+
         Location location = null;
         RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
         boolean beaconsTrackingOption = false;
@@ -356,7 +244,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
 
         Radar.RadarTrackCallback trackCallback = new Radar.RadarTrackCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
                 if (promise == null) {
                     return;
@@ -367,13 +255,13 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                            map.putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)));
                         }
                         if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                            map.putArray("events", RadarUtils.arrayForJson(RadarEvent.toJson(events)));
                         }
                         if (user != null) {
-                            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                            map.putMap("user", RadarUtils.mapForJson(user.toJson()));
                         }
                         promise.resolve(map);
                     } else {
@@ -393,7 +281,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void trackVerified(ReadableMap optionsMap, final Promise promise) {
 
         boolean beaconsTrackingOption = false;
@@ -426,7 +314,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
 
         Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
                 if (promise == null) {
                     return;
@@ -437,7 +325,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (token != null) {
-                            map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
+                            map.putMap("token", RadarUtils.mapForJson(token.toJson()));
                         }
                         promise.resolve(map);
                     } else {
@@ -453,15 +341,14 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Radar.trackVerified(beaconsTrackingOption, accuracyLevel, reason, transactionId, trackCallback);
     }
 
-    @ReactMethod
+
     public void isTrackingVerified(final Promise promise) {
         promise.resolve(Radar.isTrackingVerified());
     }
 
-    @ReactMethod
     public void getVerifiedLocationToken(final Promise promise) {
         Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
                 if (promise == null) {
                     return;
@@ -472,7 +359,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (token != null) {
-                            map.putMap("token", RNRadarUtils.mapForJson(token.toJson()));
+                            map.putMap("token", RadarUtils.mapForJson(token.toJson()));
                         }
                         promise.resolve(map);
                     } else {
@@ -488,30 +375,30 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Radar.getVerifiedLocationToken(trackCallback);
     }
 
-    @ReactMethod
+
     public void clearVerifiedLocationToken() {
         Radar.clearVerifiedLocationToken();
     }
 
-    @ReactMethod
+
     public void startTrackingEfficient() {
         Radar.startTracking(RadarTrackingOptions.EFFICIENT);
     }
 
-    @ReactMethod
+
     public void startTrackingResponsive() {
         Radar.startTracking(RadarTrackingOptions.RESPONSIVE);
     }
 
-    @ReactMethod
+
     public void startTrackingContinuous() {
         Radar.startTracking(RadarTrackingOptions.CONTINUOUS);
     }
 
-    @ReactMethod
+
     public void startTrackingCustom(ReadableMap optionsMap) {
         try {
-            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            JSONObject optionsObj = RadarUtils.jsonForMap(optionsMap);
             RadarTrackingOptions options = RadarTrackingOptions.fromJson(optionsObj);
             Radar.startTracking(options);
         } catch (JSONException e) {
@@ -519,7 +406,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void startTrackingVerified(ReadableMap optionsMap) {
         boolean beacons = false;
         int interval = 1200;
@@ -532,7 +419,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Radar.startTrackingVerified(interval, beacons);
     }
 
-    @ReactMethod
+
     public void mockTracking(ReadableMap optionsMap) {
         ReadableMap originMap = optionsMap.getMap("origin");
         double originLatitude = originMap.getDouble("latitude");
@@ -559,24 +446,24 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         int interval = optionsMap.hasKey("interval") ? optionsMap.getInt("interval") : 1;
 
         Radar.mockTracking(origin, destination, mode, steps, interval, new Radar.RadarTrackCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarEvent[] events, @Nullable RadarUser user) {
 
             }
         });
     }
 
-    @ReactMethod
+
     public void stopTracking() {
         Radar.stopTracking();
     }
 
-    @ReactMethod
+
     public void stopTrackingVerified() {
         Radar.stopTrackingVerified();
     }
 
-    @ReactMethod
+
     public void isTracking(final Promise promise) {
         if (promise == null) {
             return;
@@ -585,21 +472,21 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         promise.resolve(Radar.isTracking());
     }
 
-    @ReactMethod
+
     public void getTrackingOptions(final Promise promise) {
         if (promise == null) {
             return;
         }
         try {
             RadarTrackingOptions options = Radar.getTrackingOptions();
-            promise.resolve(RNRadarUtils.mapForJson(options.toJson()));
+            promise.resolve(RadarUtils.mapForJson(options.toJson()));
         } catch(JSONException e) {
             Log.e(TAG, "JSONException", e);
             promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
         }
     }
 
-    @ReactMethod
+
     public void isUsingRemoteTrackingOptions(final Promise promise) {
         if (promise == null) {
             return;
@@ -608,10 +495,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         promise.resolve(Radar.isUsingRemoteTrackingOptions());
     }
 
-    @ReactMethod
+
     public void setForegroundServiceOptions(ReadableMap optionsMap) {
         try {
-            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            JSONObject optionsObj = RadarUtils.jsonForMap(optionsMap);
             RadarTrackingOptionsForegroundService options = RadarTrackingOptionsForegroundService.fromJson(optionsObj);
             Radar.setForegroundServiceOptions(options);
         } catch (JSONException e) {
@@ -619,10 +506,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void setNotificationOptions(ReadableMap optionsMap) {
         try {
-            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            JSONObject optionsObj = RadarUtils.jsonForMap(optionsMap);
             RadarNotificationOptions options = RadarNotificationOptions.fromJson(optionsObj);
             Radar.setNotificationOptions(options);
         } catch (JSONException e) {
@@ -630,34 +517,34 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void acceptEvent(String eventId, String verifiedPlaceId) {
         Radar.acceptEvent(eventId, verifiedPlaceId);
     }
 
-    @ReactMethod
+
     public void rejectEvent(String eventId) {
         Radar.rejectEvent(eventId);
     }
 
-    @ReactMethod
+
     public void getTripOptions(final Promise promise) {
         if (promise == null) {
             return;
         }
         try {
             RadarTripOptions options = Radar.getTripOptions();
-            promise.resolve(options != null ? RNRadarUtils.mapForJson(options.toJson()) : null);
+            promise.resolve(options != null ? RadarUtils.mapForJson(options.toJson()) : null);
         } catch(JSONException e) {
             Log.e(TAG, "JSONException", e);
             promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
         }
     }
 
-    @ReactMethod
+
     public void startTrip(ReadableMap optionsMap, final Promise promise) {
         try {
-            JSONObject optionsJson = RNRadarUtils.jsonForMap(optionsMap);
+            JSONObject optionsJson = RadarUtils.jsonForMap(optionsMap);
             // new format is { tripOptions, trackingOptions }
             JSONObject tripOptionsJson = optionsJson.optJSONObject("tripOptions");
             if (tripOptionsJson == null) {
@@ -672,7 +559,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                 trackingOptions = RadarTrackingOptions.fromJson(trackingOptionsJson);
             }
             Radar.startTrip(options, trackingOptions, new Radar.RadarTripCallback() {
-                @Override
+
                 public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
                     if (promise == null) {
                         return;
@@ -682,10 +569,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                             WritableMap map = Arguments.createMap();
                             map.putString("status", status.toString());
                             if (trip != null) {
-                                map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
+                                map.putMap("trip", RadarUtils.mapForJson(trip.toJson()));
                             }
                             if (events != null) {
-                                map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                                map.putArray("events", RadarUtils.arrayForJson(RadarEvent.toJson(events)));
                             }
                             promise.resolve(map);
                         } else {
@@ -703,10 +590,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void completeTrip(final Promise promise) {
         Radar.completeTrip(new Radar.RadarTripCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
                 if (promise == null) {
                     return;
@@ -716,10 +603,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (trip != null) {
-                            map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
+                            map.putMap("trip", RadarUtils.mapForJson(trip.toJson()));
                         }
                         if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                            map.putArray("events", RadarUtils.arrayForJson(RadarEvent.toJson(events)));
                         }
                         promise.resolve(map);
                     } else {
@@ -733,10 +620,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         });
     }
 
-    @ReactMethod
+
     public void cancelTrip(final Promise promise) {
         Radar.cancelTrip(new Radar.RadarTripCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
                 if (promise == null) {
                     return;
@@ -746,10 +633,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (trip != null) {
-                            map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
+                            map.putMap("trip", RadarUtils.mapForJson(trip.toJson()));
                         }
                         if (events != null) {
-                            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                            map.putArray("events", RadarUtils.arrayForJson(RadarEvent.toJson(events)));
                         }
                         promise.resolve(map);
                     } else {
@@ -763,11 +650,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         });
     }
 
-    @ReactMethod
+
     public void updateTrip(ReadableMap optionsMap, final Promise promise) {
 
         try {
-            JSONObject optionsObj = RNRadarUtils.jsonForMap(optionsMap);
+            JSONObject optionsObj = RadarUtils.jsonForMap(optionsMap);
             RadarTripOptions options = RadarTripOptions.fromJson(optionsObj.getJSONObject("options"));
             RadarTrip.RadarTripStatus status = RadarTrip.RadarTripStatus.UNKNOWN;
 
@@ -795,7 +682,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             }
 
             Radar.updateTrip(options, status, new Radar.RadarTripCallback() {
-                @Override
+
                 public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
                     if (promise == null) {
                         return;
@@ -805,10 +692,10 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
                             WritableMap map = Arguments.createMap();
                             map.putString("status", status.toString());
                             if (trip != null) {
-                                map.putMap("trip", RNRadarUtils.mapForJson(trip.toJson()));
+                                map.putMap("trip", RadarUtils.mapForJson(trip.toJson()));
                             }
                             if (events != null) {
-                                map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                                map.putArray("events", RadarUtils.arrayForJson(RadarEvent.toJson(events)));
                             }
                             promise.resolve(map);
                         } else {
@@ -826,24 +713,24 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void getContext(@Nullable ReadableMap locationMap, final Promise promise) {
         if (promise == null) {
             return;
         }
 
         Radar.RadarContextCallback callback = new Radar.RadarContextCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarContext context) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                            map.putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)));
                         }
                         if (context != null) {
-                            map.putMap("context", RNRadarUtils.mapForJson(context.toJson()));
+                            map.putMap("context", RadarUtils.mapForJson(context.toJson()));
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
@@ -868,7 +755,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void searchPlaces(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -884,25 +771,25 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             near.setLongitude(longitude);
         }
         int radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : 1000;
-        String[] chains = optionsMap.hasKey("chains") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("chains")) : null;
-        Map<String, String> chainMetadata = RNRadarUtils.stringStringMap(optionsMap.getMap("chainMetadata"));
-        String[] categories = optionsMap.hasKey("categories") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("categories")) : null;
-        String[] groups = optionsMap.hasKey("groups") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("groups")) : null;
-        String[] countryCodes = optionsMap.hasKey("countryCodes") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("countryCodes")) : null;
+        String[] chains = optionsMap.hasKey("chains") ? RadarUtils.stringArrayForArray(optionsMap.getArray("chains")) : null;
+        Map<String, String> chainMetadata = RadarUtils.stringStringMap(optionsMap.getMap("chainMetadata"));
+        String[] categories = optionsMap.hasKey("categories") ? RadarUtils.stringArrayForArray(optionsMap.getArray("categories")) : null;
+        String[] groups = optionsMap.hasKey("groups") ? RadarUtils.stringArrayForArray(optionsMap.getArray("groups")) : null;
+        String[] countryCodes = optionsMap.hasKey("countryCodes") ? RadarUtils.stringArrayForArray(optionsMap.getArray("countryCodes")) : null;
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
 
         Radar.RadarSearchPlacesCallback callback = new Radar.RadarSearchPlacesCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarPlace[] places) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                            map.putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)));
                         }
                         if (places != null) {
-                            map.putArray("places", RNRadarUtils.arrayForJson(RadarPlace.toJson(places)));
+                            map.putArray("places", RadarUtils.arrayForJson(RadarPlace.toJson(places)));
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
@@ -922,7 +809,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void searchGeofences(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -938,11 +825,11 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
             near.setLongitude(longitude);
         }
         Integer radius = optionsMap.hasKey("radius") ? optionsMap.getInt("radius") : null;
-        String[] tags = optionsMap.hasKey("tags") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("tags")) : null;
+        String[] tags = optionsMap.hasKey("tags") ? RadarUtils.stringArrayForArray(optionsMap.getArray("tags")) : null;
         JSONObject metadata = null;
         if (optionsMap.hasKey("metadata")) {
             try {
-                metadata = RNRadarUtils.jsonForMap(optionsMap.getMap("metadata"));
+                metadata = RadarUtils.jsonForMap(optionsMap.getMap("metadata"));
             } catch (JSONException e) {
                 Log.e(TAG, "JSONException", e);
                 promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
@@ -952,20 +839,20 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
 
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 100;
-        boolean includeGeometry = optionsMap.hasKey("includeGeometry") ? optionsMap.getBoolean("includeGeometry") : false; 
+        boolean includeGeometry = optionsMap.hasKey("includeGeometry") ? optionsMap.getBoolean("includeGeometry") : false;
 
         Radar.RadarSearchGeofencesCallback callback = new Radar.RadarSearchGeofencesCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable Location location, @Nullable RadarGeofence[] geofences) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (location != null) {
-                            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+                            map.putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)));
                         }
                         if (geofences != null) {
-                            map.putArray("geofences", RNRadarUtils.arrayForJson(RadarGeofence.toJson(geofences)));
+                            map.putArray("geofences", RadarUtils.arrayForJson(RadarGeofence.toJson(geofences)));
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
@@ -985,7 +872,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void autocomplete(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -1018,19 +905,19 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
         int limit = optionsMap.hasKey("limit") ? optionsMap.getInt("limit") : 10;
         String country = optionsMap.hasKey("countryCode") ? optionsMap.getString("countryCode") : optionsMap.hasKey("country") ? optionsMap.getString("country") : null;
-        String[] layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
+        String[] layers = optionsMap.hasKey("layers") ? RadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
 
         boolean mailable = optionsMap.hasKey("mailable") ? optionsMap.getBoolean("mailable") : false;
 
         Radar.autocomplete(query, near, layers, limit, country, true, mailable, new Radar.RadarGeocodeCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (addresses != null) {
-                            map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
+                            map.putArray("addresses", RadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
@@ -1044,7 +931,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         });
     }
 
-    @ReactMethod
+
     public void geocode(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -1057,18 +944,18 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
 
         String address = optionsMap.getString("address");
-        String[] layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
-        String[] countries = optionsMap.hasKey("countries") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("countries")) : null;
+        String[] layers = optionsMap.hasKey("layers") ? RadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
+        String[] countries = optionsMap.hasKey("countries") ? RadarUtils.stringArrayForArray(optionsMap.getArray("countries")) : null;
 
         Radar.geocode(address, layers, countries, new Radar.RadarGeocodeCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (addresses != null) {
-                            map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
+                            map.putArray("addresses", RadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
@@ -1082,7 +969,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         });
     }
 
-    @ReactMethod
+
     public void reverseGeocode(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -1093,18 +980,18 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
         if (optionsMap != null) {
             locationMap = optionsMap.getMap("location");
-            layers = optionsMap.hasKey("layers") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
+            layers = optionsMap.hasKey("layers") ? RadarUtils.stringArrayForArray(optionsMap.getArray("layers")) : null;
         }
 
         Radar.RadarGeocodeCallback callback = new Radar.RadarGeocodeCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (addresses != null) {
-                            map.putArray("addresses", RNRadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
+                            map.putArray("addresses", RadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
@@ -1130,21 +1017,21 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void ipGeocode(final Promise promise) {
         if (promise == null) {
             return;
         }
 
         Radar.ipGeocode(new Radar.RadarIpGeocodeCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, boolean proxy) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (address != null) {
-                            map.putMap("address", RNRadarUtils.mapForJson(address.toJson()));
+                            map.putMap("address", RadarUtils.mapForJson(address.toJson()));
                             map.putBoolean("proxy", proxy);
                         }
                         promise.resolve(map);
@@ -1159,7 +1046,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         });
     }
 
-    @ReactMethod
+
     public void validateAddress(ReadableMap addressMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -1167,20 +1054,20 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
 
         RadarAddress address;
         try {
-            address = RadarAddress.fromJson(RNRadarUtils.jsonForMap(addressMap));
+            address = RadarAddress.fromJson(RadarUtils.jsonForMap(addressMap));
         } catch (JSONException e) {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
             return;
         }
         Radar.validateAddress(address, new Radar.RadarValidateAddressCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, @Nullable Radar.RadarAddressVerificationStatus verificationStatus) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (address != null) {
-                            map.putMap("address", RNRadarUtils.mapForJson(address.toJson()));
+                            map.putMap("address", RadarUtils.mapForJson(address.toJson()));
                         }
                         if (verificationStatus != null) {
                             map.putString("verificationStatus", verificationStatus.toString());
@@ -1197,7 +1084,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         });
     }
 
-    @ReactMethod
+
     public void getDistance(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -1224,7 +1111,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Location destination = new Location("RNRadarModule");
         destination.setLatitude(latitude);
         destination.setLongitude(longitude);
-        String[] modesArr = optionsMap.hasKey("modes") ? RNRadarUtils.stringArrayForArray(optionsMap.getArray("modes")) : new String[]{};
+        String[] modesArr = optionsMap.hasKey("modes") ? RadarUtils.stringArrayForArray(optionsMap.getArray("modes")) : new String[]{};
         EnumSet<Radar.RadarRouteMode> modes = EnumSet.noneOf(Radar.RadarRouteMode.class);
         for (String modeStr : modesArr) {
             if (modeStr.equals("FOOT") || modeStr.equals("foot")) {
@@ -1241,14 +1128,14 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Radar.RadarRouteUnits units = unitsStr != null && (unitsStr.equals("METRIC") || unitsStr.equals("metric")) ? Radar.RadarRouteUnits.METRIC : Radar.RadarRouteUnits.IMPERIAL;
 
         Radar.RadarRouteCallback callback = new Radar.RadarRouteCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarRoutes routes) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (routes != null) {
-                            map.putMap("routes", RNRadarUtils.mapForJson(routes.toJson()));
+                            map.putMap("routes", RadarUtils.mapForJson(routes.toJson()));
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
@@ -1268,7 +1155,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         }
     }
 
-    @ReactMethod
+
     public void getMatrix(ReadableMap optionsMap, final Promise promise) {
         if (promise == null) {
             return;
@@ -1315,14 +1202,14 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         Radar.RadarRouteUnits units = unitsStr != null && (unitsStr.equals("METRIC") || unitsStr.equals("metric")) ? Radar.RadarRouteUnits.METRIC : Radar.RadarRouteUnits.IMPERIAL;
 
         Radar.getMatrix(origins, destinations, mode, units, new Radar.RadarMatrixCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarRouteMatrix matrix) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (matrix != null) {
-                            map.putArray("matrix", RNRadarUtils.arrayForJson(matrix.toJson()));
+                            map.putArray("matrix", RadarUtils.arrayForJson(matrix.toJson()));
                         }
                         promise.resolve(map);
                     } catch (JSONException e) {
@@ -1336,7 +1223,7 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         });
     }
 
-    @ReactMethod
+
     public void logConversion(ReadableMap optionsMap, final Promise promise) throws JSONException  {
         if (promise == null) {
             return;
@@ -1351,17 +1238,17 @@ public class RNRadarModule extends ReactContextBaseJavaModule implements Permiss
         String name = optionsMap.getString("name");
         Double revenue = optionsMap.hasKey("revenue") ? new Double(optionsMap.getDouble("revenue")) : null;
         ReadableMap metadata = optionsMap.hasKey("metadata") ? optionsMap.getMap("metadata") : null;
-        
-        JSONObject metadataObj = RNRadarUtils.jsonForMap(metadata);
+
+        JSONObject metadataObj = RadarUtils.jsonForMap(metadata);
         Radar.RadarLogConversionCallback callback = new Radar.RadarLogConversionCallback() {
-            @Override
+
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarEvent event) {
                 try {
                     if (status == Radar.RadarStatus.SUCCESS) {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
                         if (event != null) {
-                            map.putMap("event", RNRadarUtils.mapForJson(event.toJson()));
+                            map.putMap("event", RadarUtils.mapForJson(event.toJson()));
                         }
                         promise.resolve(map);
                     } else {

@@ -1,21 +1,41 @@
-import { EmitterSubscription, NativeEventEmitter, NativeModules, Platform } from "react-native";
-import { version } from "../package.json";
-import { RadarNativeInterface } from "./@types/RadarNativeInterface";
-import {
-  Location,
-  RadarAutocompleteOptions,
+import type { EventSubscription } from "react-native";
+import type { RadarNativeInterface } from "./@types/RadarNativeInterface";
+import type {
+  RadarTrackCallback,
+  RadarTrackOnceOptions,
+  RadarLocationUpdateCallback,
+  RadarPermissionsStatus,
+  RadarClientLocationUpdateCallback,
+  RadarLocationSource,
+  RadarErrorCallback,
+  RadarLogUpdateCallback,
+  RadarTokenUpdateCallback,
+  RadarEventUpdateCallback,
+  RadarLogLevel,
+  RadarMetadata,
+  RadarLocationCallback,
+  RadarTrackingOptionsDesiredAccuracy,
+  RadarTrackVerifiedCallback,
+  RadarTrackVerifiedOptions,
+  RadarMockTrackingOptions,
+  RadarTrackingOptions,
+  RadarVerifiedTrackingOptions,
   RadarContextCallback,
+  RadarNotificationOptions,
+  RadarStartTripOptions,
+  RadarTrackingOptionsForegroundService,
+  RadarTripCallback,
+  RadarTripOptions,
+  RadarUpdateTripOptions,
+  RadarAddress,
   RadarAddressCallback,
-  RadarEventChannel,
+  RadarAutocompleteOptions,
   RadarGeocodeOptions,
   RadarGetDistanceOptions,
-  RadarLocationCallback,
+  RadarGetMatrixOptions,
+  RadarIPGeocodeCallback,
   RadarLogConversionCallback,
   RadarLogConversionOptions,
-  RadarLogLevel,
-  RadarMockTrackingOptions,
-  RadarNotificationOptions,
-  RadarPermissionsStatus,
   RadarReverseGeocodeOptions,
   RadarRouteCallback,
   RadarRouteMatrix,
@@ -23,299 +43,410 @@ import {
   RadarSearchGeofencesOptions,
   RadarSearchPlacesCallback,
   RadarSearchPlacesOptions,
-  RadarStartTripOptions,
-  RadarTrackCallback,
-  RadarTrackOnceOptions,
-  RadarTrackingOptions,
-  RadarTrackingOptionsDesiredAccuracy,
-  RadarTrackingOptionsForegroundService,
-  RadarTripCallback,
-  RadarTripOptions,
-  RadarUpdateTripOptions,
-  RadarVerifiedTrackingOptions,
-  RadarListenerCallback,
-  RadarGetMatrixOptions,
-  RadarMetadata,
-  RadarIPGeocodeCallback,
-  RadarTrackVerifiedOptions,
-  RadarTrackVerifiedCallback,
   RadarValidateAddressCallback,
-  RadarAddress,
+  RadarUser,
+  Location,
+  RadarEvent,
 } from "./@types/types";
+import { NativeEventEmitter, NativeModules } from "react-native";
+import { VERSION } from "./version";
+import NativeRadarMod, {
+  ClientLocationEmitter,
+  ErrorEmitter,
+  EventsEmitter,
+  LocationEmitter,
+  LogEmitter,
+  TokenEmitter,
+} from "./NativeRadar";
 
-if (
-  !NativeModules.RNRadar &&
-  (Platform.OS === "ios" || Platform.OS === "android")
-) {
-  throw new Error("NativeModules.RNRadar is undefined");
+const NativeRadar = NativeRadarMod;
+// Comment above and uncomment below for QA logging
+// const NativeRadar = new Proxy(NativeRadarMod, {
+//   get: function (target, name, receiver) {
+//     if (typeof target[name] == "function") {
+//       return function () {
+//         console.log("rn native:", name, "(", ...arguments, ")");
+//         return target[name].apply(target, arguments);
+//       };
+//     } else {
+//       return target[name];
+//     }
+//   },
+// });
+
+const compatEventEmitter =
+  NativeRadar.locationEmitter == null
+    ? new NativeEventEmitter(NativeModules.RNRadar)
+    : null;
+
+type Events =
+  | "locationEmitter"
+  | "clientLocationEmitter"
+  | "errorEmitter"
+  | "logEmitter"
+  | "eventsEmitter"
+  | "tokenEmitter";
+
+export function addListener<EventT extends Events>(
+  event: EventT,
+  handler: Parameters<(typeof NativeRadar)[EventT]>[0]
+): EventSubscription {
+  if (compatEventEmitter != null) {
+    return compatEventEmitter.addListener(event, handler);
+  }
+  return NativeRadar[event](handler as any);
 }
 
-const eventEmitter = new NativeEventEmitter(NativeModules.RNRadar);
-
-const initialize = (publishableKey: string, fraud: boolean = false): void => {
-  NativeModules.RNRadar.initialize(publishableKey, fraud);
-};
-
-const setLogLevel = (level: RadarLogLevel): void => {
-  NativeModules.RNRadar.setLogLevel(level);
-};
-
-const setUserId = (userId: string): void => {
-  NativeModules.RNRadar.setUserId(userId);
-};
-
-const getUserId = (): Promise<string> => NativeModules.RNRadar.getUserId();
-
-const setDescription = (description: string): void => {
-  NativeModules.RNRadar.setDescription(description);
-};
-
-const getDescription = (): Promise<string> =>
-  NativeModules.RNRadar.getDescription();
-
-const setMetadata = (metadata: RadarMetadata): void => {
-  NativeModules.RNRadar.setMetadata(metadata);
-};
-
-const getMetadata = (): Promise<RadarMetadata> =>
-  NativeModules.RNRadar.getMetadata();
-
-const setProduct = (product: string): void => {
-  NativeModules.RNRadar.setProduct(product);
-};
-
-const getProduct = (): Promise<string> =>
-  NativeModules.RNRadar.getProduct();
-
-const setAnonymousTrackingEnabled = (enabled: boolean): void =>
-  NativeModules.RNRadar.setAnonymousTrackingEnabled(enabled);
-
-const getPermissionsStatus = (): Promise<RadarPermissionsStatus> =>
-  NativeModules.RNRadar.getPermissionsStatus();
-
-const requestPermissions = (
-  background: boolean
-): Promise<RadarPermissionsStatus> =>
-  NativeModules.RNRadar.requestPermissions(background);
-
-const getLocation = (
-  desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy
-): Promise<RadarLocationCallback> =>
-  NativeModules.RNRadar.getLocation(desiredAccuracy);
-
-const trackOnce = (
-  options?: RadarTrackOnceOptions | Location
-): Promise<RadarTrackCallback> => {
-  let backCompatibleOptions = options;
-  if (options && "latitude" in options) {
-    backCompatibleOptions = {
-      location: {
-        ...options,
-      },
-    };
-  }
-  return NativeModules.RNRadar.trackOnce(backCompatibleOptions);
-};
-
-const trackVerified = (
-  options?: RadarTrackVerifiedOptions
-): Promise<RadarTrackVerifiedCallback> =>
-  NativeModules.RNRadar.trackVerified(options);
-
-const getVerifiedLocationToken = (): Promise<RadarTrackVerifiedCallback> =>
-  NativeModules.RNRadar.getVerifiedLocationToken();
-
-const clearVerifiedLocationToken = (): void =>
-  NativeModules.RNRadar.clearVerifiedLocationToken();
-
-const startTrackingEfficient = (): void =>
-  NativeModules.RNRadar.startTrackingEfficient();
-
-const startTrackingResponsive = (): void =>
-  NativeModules.RNRadar.startTrackingResponsive();
-
-const startTrackingContinuous = (): void =>
-  NativeModules.RNRadar.startTrackingContinuous();
-
-const startTrackingCustom = (options: RadarTrackingOptions): void =>
-  NativeModules.RNRadar.startTrackingCustom(options);
-
-const startTrackingVerified = (options?: RadarVerifiedTrackingOptions): void =>
-  NativeModules.RNRadar.startTrackingVerified(options);
-
-const mockTracking = (options: RadarMockTrackingOptions): void =>
-  NativeModules.RNRadar.mockTracking(options);
-
-const stopTracking = (): void => NativeModules.RNRadar.stopTracking();
-
-const stopTrackingVerified = (): void =>
-  NativeModules.RNRadar.stopTrackingVerified();
-
-const isTracking = (): Promise<boolean> => NativeModules.RNRadar.isTracking();
-
-const isTrackingVerified = (): Promise<boolean> =>
-  NativeModules.RNRadar.isTrackingVerified();
-
-const getTrackingOptions = (): Promise<RadarTrackingOptions> =>
-  NativeModules.RNRadar.getTrackingOptions();
-
-const isUsingRemoteTrackingOptions = (): Promise<boolean> =>
-  NativeModules.RNRadar.isUsingRemoteTrackingOptions();
-
-const setForegroundServiceOptions = (
-  options: RadarTrackingOptionsForegroundService
-): void => NativeModules.RNRadar.setForegroundServiceOptions(options);
-
-const setNotificationOptions = (options: RadarNotificationOptions): void =>
-  NativeModules.RNRadar.setNotificationOptions(options);
-
-const getTripOptions = (): Promise<RadarTripOptions> =>
-  NativeModules.RNRadar.getTripOptions();
-
-const startTrip = (
-  options: RadarStartTripOptions
-): Promise<RadarTripCallback> => NativeModules.RNRadar.startTrip(options);
-
-const completeTrip = (): Promise<RadarTripCallback> =>
-  NativeModules.RNRadar.completeTrip();
-
-const cancelTrip = (): Promise<RadarTripCallback> =>
-  NativeModules.RNRadar.cancelTrip();
-
-const updateTrip = (
-  options: RadarUpdateTripOptions
-): Promise<RadarTripCallback> => NativeModules.RNRadar.updateTrip(options);
-
-const acceptEvent = (eventId: string, verifiedPlaceId: string): void =>
-  NativeModules.RNRadar.acceptEvent(eventId, verifiedPlaceId);
-
-const rejectEvent = (eventId: string): void =>
-  NativeModules.RNRadar.rejectEvent(eventId);
-
-const getContext = (location?: Location): Promise<RadarContextCallback> =>
-  NativeModules.RNRadar.getContext(location);
-
-const searchPlaces = (
-  options: RadarSearchPlacesOptions
-): Promise<RadarSearchPlacesCallback> =>
-  NativeModules.RNRadar.searchPlaces(options);
-
-const searchGeofences = (
-  options: RadarSearchGeofencesOptions
-): Promise<RadarSearchGeofencesCallback> =>
-  NativeModules.RNRadar.searchGeofences(options);
-
-const autocomplete = (
-  options: RadarAutocompleteOptions
-): Promise<RadarAddressCallback> => NativeModules.RNRadar.autocomplete(options);
-
-const geocode = (options: RadarGeocodeOptions): Promise<RadarAddressCallback> =>
-  NativeModules.RNRadar.geocode(options);
-
-const reverseGeocode = (
-  options?: RadarReverseGeocodeOptions
-): Promise<RadarAddressCallback> =>
-  NativeModules.RNRadar.reverseGeocode(options);
-
-const ipGeocode = (): Promise<RadarIPGeocodeCallback> =>
-  NativeModules.RNRadar.ipGeocode();
-
-const validateAddress = (address: RadarAddress): Promise<RadarValidateAddressCallback> =>
-  NativeModules.RNRadar.validateAddress(address);
-
-const getDistance = (
-  options: RadarGetDistanceOptions
-): Promise<RadarRouteCallback> => NativeModules.RNRadar.getDistance(options);
-
-const getMatrix = (options: RadarGetMatrixOptions): Promise<RadarRouteMatrix> =>
-  NativeModules.RNRadar.getMatrix(options);
-
-const logConversion = (
-  options: RadarLogConversionOptions
-): Promise<RadarLogConversionCallback> =>
-  NativeModules.RNRadar.logConversion(options);
-
-const sendEvent = (name: string, metadata: RadarMetadata): void =>
-  NativeModules.RNRadar.sendEvent(name, metadata);
-
-const on = (
-  channel: RadarEventChannel,
-  callback: RadarListenerCallback
-): EmitterSubscription => eventEmitter.addListener(channel, callback);
-
-const off = (
-  channel: RadarEventChannel,
-  callback?: Function | undefined
-): void => {
-  if (callback) {
-    // @ts-ignore
-    eventEmitter.removeListener(channel, callback);
-  } else {
-    eventEmitter.removeAllListeners(channel);
-  }
-};
-
-const nativeSdkVersion = (): Promise<string> =>
-  NativeModules.RNRadar.nativeSdkVersion();
-
-const rnSdkVersion = (): string => version;
+let locationUpdateSubscription: EventSubscription | null = null;
+let clientLocationUpdateSubscription: EventSubscription | null = null;
+let errorUpdateSubscription: EventSubscription | null = null;
+let logUpdateSubscription: EventSubscription | null = null;
+let eventsUpdateSubscription: EventSubscription | null = null;
+let tokenUpdateSubscription: EventSubscription | null = null;
 
 const Radar: RadarNativeInterface = {
-  initialize,
-  setLogLevel,
-  setUserId,
-  getUserId,
-  setDescription,
-  getDescription,
-  setMetadata,
-  getMetadata,
-  setProduct,
-  getProduct,
-  setAnonymousTrackingEnabled,
-  getPermissionsStatus,
-  requestPermissions,
-  getLocation,
-  trackOnce,
-  trackVerified,
-  isTrackingVerified,
-  getVerifiedLocationToken,
-  clearVerifiedLocationToken,
-  startTrackingEfficient,
-  startTrackingResponsive,
-  startTrackingContinuous,
-  startTrackingCustom,
-  startTrackingVerified,
-  mockTracking,
-  stopTracking,
-  stopTrackingVerified,
-  isTracking,
-  getTrackingOptions,
-  isUsingRemoteTrackingOptions,
-  setForegroundServiceOptions,
-  setNotificationOptions,
-  getTripOptions,
-  startTrip,
-  completeTrip,
-  cancelTrip,
-  updateTrip,
-  acceptEvent,
-  rejectEvent,
-  getContext,
-  searchPlaces,
-  searchGeofences,
-  autocomplete,
-  geocode,
-  reverseGeocode,
-  ipGeocode,
-  validateAddress,
-  getDistance,
-  getMatrix,
-  logConversion,
-  sendEvent,
-  on,
-  off,
-  nativeSdkVersion,
-  rnSdkVersion,
+  initialize: (publishableKey: string, fraud?: boolean) => {
+    return NativeRadar.initialize(publishableKey, !!fraud);
+  },
+
+  trackOnce: async (options?: RadarTrackOnceOptions) => {
+    return NativeRadar.trackOnce(
+      options || null
+    ) as Promise<RadarTrackCallback>;
+  },
+
+  onLocationUpdated: (callback: RadarLocationUpdateCallback | null) => {
+    // Clear any existing subscription
+    if (locationUpdateSubscription) {
+      locationUpdateSubscription.remove();
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    locationUpdateSubscription = addListener(
+      "locationEmitter",
+      (event: LocationEmitter) => {
+        try {
+          const locationUpdate = {
+            location: event.location as Location,
+            user: event.user as RadarUser,
+          };
+          callback(locationUpdate);
+        } catch (error) {
+          console.error("[Radar] Error in location update callback:", error);
+        }
+      }
+    );
+  },
+
+  onClientLocationUpdated: (
+    callback: RadarClientLocationUpdateCallback | null
+  ) => {
+    if (clientLocationUpdateSubscription) {
+      clientLocationUpdateSubscription.remove();
+      clientLocationUpdateSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    clientLocationUpdateSubscription = addListener(
+      "clientLocationEmitter",
+      (event: ClientLocationEmitter) => {
+        const clientLocationUpdate = {
+          location: event.location as Location,
+          stopped: event.stopped,
+          source: event.source as RadarLocationSource,
+        };
+        callback(clientLocationUpdate);
+      }
+    );
+  },
+
+  onError: (callback: RadarErrorCallback | null) => {
+    if (errorUpdateSubscription) {
+      errorUpdateSubscription.remove();
+      errorUpdateSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    errorUpdateSubscription = addListener(
+      "errorEmitter",
+      (event: ErrorEmitter) => {
+        const errorUpdate = {
+          status: event.status,
+        };
+        callback(errorUpdate.status);
+      }
+    );
+  },
+
+  onLog: (callback: RadarLogUpdateCallback | null) => {
+    if (logUpdateSubscription) {
+      logUpdateSubscription.remove();
+      logUpdateSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    logUpdateSubscription = addListener("logEmitter", (event: LogEmitter) => {
+      callback(event.message);
+    });
+  },
+
+  onEventsReceived: (callback: RadarEventUpdateCallback | null) => {
+    if (eventsUpdateSubscription) {
+      eventsUpdateSubscription.remove();
+      eventsUpdateSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    eventsUpdateSubscription = addListener(
+      "eventsEmitter",
+      (event: EventsEmitter) => {
+        const eventUpdate = {
+          user: event.user as RadarUser,
+          events: event.events as RadarEvent[],
+        };
+        callback(eventUpdate);
+      }
+    );
+  },
+
+  onTokenUpdated: (callback: RadarTokenUpdateCallback | null) => {
+    if (tokenUpdateSubscription) {
+      tokenUpdateSubscription.remove();
+      tokenUpdateSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    tokenUpdateSubscription = addListener(
+      "tokenEmitter",
+      (event: TokenEmitter) => {
+        callback(event.token);
+      }
+    );
+  },
+
+  requestPermissions: (background: boolean) => {
+    return NativeRadar.requestPermissions(
+      background
+    ) as Promise<RadarPermissionsStatus>;
+  },
+  setLogLevel: function (level: RadarLogLevel): void {
+    return NativeRadar.setLogLevel(level);
+  },
+  setUserId: function (userId: string): void {
+    return NativeRadar.setUserId(userId);
+  },
+  getUserId: function (): Promise<string> {
+    return NativeRadar.getUserId();
+  },
+  setDescription: function (description: string): void {
+    return NativeRadar.setDescription(description);
+  },
+  getDescription: function (): Promise<string> {
+    return NativeRadar.getDescription();
+  },
+  setMetadata: function (metadata: RadarMetadata): void {
+    return NativeRadar.setMetadata(metadata);
+  },
+  getMetadata: function (): Promise<RadarMetadata> {
+    return NativeRadar.getMetadata() as Promise<RadarMetadata>;
+  },
+  setProduct: function (product: string): void {
+    return NativeRadar.setProduct(product);
+  },
+  getProduct: function (): Promise<string> {
+    return NativeRadar.getProduct();
+  },
+  setAnonymousTrackingEnabled: function (enabled: boolean): void {
+    return NativeRadar.setAnonymousTrackingEnabled(enabled);
+  },
+  getPermissionsStatus: function (): Promise<RadarPermissionsStatus> {
+    return NativeRadar.getPermissionsStatus() as Promise<RadarPermissionsStatus>;
+  },
+  getLocation: function (
+    desiredAccuracy?: RadarTrackingOptionsDesiredAccuracy
+  ): Promise<RadarLocationCallback> {
+    return NativeRadar.getLocation(
+      desiredAccuracy || null
+    ) as Promise<RadarLocationCallback>;
+  },
+  trackVerified: function (
+    options?: RadarTrackVerifiedOptions
+  ): Promise<RadarTrackVerifiedCallback> {
+    return NativeRadar.trackVerified(
+      options || null
+    ) as Promise<RadarTrackVerifiedCallback>;
+  },
+  getVerifiedLocationToken: function (): Promise<RadarTrackVerifiedCallback> {
+    return NativeRadar.getVerifiedLocationToken() as Promise<RadarTrackVerifiedCallback>;
+  },
+  clearVerifiedLocationToken: function (): void {
+    return NativeRadar.clearVerifiedLocationToken();
+  },
+  startTrackingEfficient: function (): void {
+    return NativeRadar.startTrackingEfficient();
+  },
+  startTrackingResponsive: function (): void {
+    return NativeRadar.startTrackingResponsive();
+  },
+  startTrackingContinuous: function (): void {
+    return NativeRadar.startTrackingContinuous();
+  },
+  startTrackingCustom: function (options: RadarTrackingOptions): void {
+    return NativeRadar.startTrackingCustom(options);
+  },
+  startTrackingVerified: function (
+    options?: RadarVerifiedTrackingOptions
+  ): void {
+    return NativeRadar.startTrackingVerified(options || null);
+  },
+  isTrackingVerified: function (): Promise<boolean> {
+    return NativeRadar.isTrackingVerified();
+  },
+  mockTracking: function (options: RadarMockTrackingOptions): void {
+    return NativeRadar.mockTracking(options);
+  },
+  stopTracking: function (): void {
+    return NativeRadar.stopTracking();
+  },
+  stopTrackingVerified: function (): void {
+    return NativeRadar.stopTrackingVerified();
+  },
+  getTrackingOptions: function (): Promise<RadarTrackingOptions> {
+    return NativeRadar.getTrackingOptions() as Promise<RadarTrackingOptions>;
+  },
+  isUsingRemoteTrackingOptions: function (): Promise<boolean> {
+    return NativeRadar.isUsingRemoteTrackingOptions();
+  },
+  isTracking: function (): Promise<boolean> {
+    return NativeRadar.isTracking();
+  },
+  setForegroundServiceOptions: function (
+    options: RadarTrackingOptionsForegroundService
+  ): void {
+    return NativeRadar.setForegroundServiceOptions(options);
+  },
+  setNotificationOptions: function (options: RadarNotificationOptions): void {
+    return NativeRadar.setNotificationOptions(options);
+  },
+  getTripOptions: function (): Promise<RadarTripOptions> {
+    return NativeRadar.getTripOptions() as Promise<RadarTripOptions>;
+  },
+  startTrip: function (
+    options: RadarStartTripOptions
+  ): Promise<RadarTripCallback> {
+    return NativeRadar.startTrip(options) as Promise<RadarTripCallback>;
+  },
+  completeTrip: function (): Promise<RadarTripCallback> {
+    return NativeRadar.completeTrip() as Promise<RadarTripCallback>;
+  },
+  cancelTrip: function (): Promise<RadarTripCallback> {
+    return NativeRadar.cancelTrip() as Promise<RadarTripCallback>;
+  },
+  updateTrip: function (
+    options: RadarUpdateTripOptions
+  ): Promise<RadarTripCallback> {
+    return NativeRadar.updateTrip(options) as Promise<RadarTripCallback>;
+  },
+  acceptEvent: function (eventId: string, verifiedPlaceId: string): void {
+    return NativeRadar.acceptEvent(eventId, verifiedPlaceId);
+  },
+  rejectEvent: function (eventId: string): void {
+    return NativeRadar.rejectEvent(eventId);
+  },
+  getContext: function (location?: Location): Promise<RadarContextCallback> {
+    return NativeRadar.getContext(
+      location || null
+    ) as Promise<RadarContextCallback>;
+  },
+  searchPlaces: function (
+    options: RadarSearchPlacesOptions
+  ): Promise<RadarSearchPlacesCallback> {
+    return NativeRadar.searchPlaces(
+      options
+    ) as Promise<RadarSearchPlacesCallback>;
+  },
+  searchGeofences: function (
+    options: RadarSearchGeofencesOptions
+  ): Promise<RadarSearchGeofencesCallback> {
+    return NativeRadar.searchGeofences(
+      options
+    ) as Promise<RadarSearchGeofencesCallback>;
+  },
+  autocomplete: function (
+    options: RadarAutocompleteOptions
+  ): Promise<RadarAddressCallback> {
+    return NativeRadar.autocomplete(options) as Promise<RadarAddressCallback>;
+  },
+  geocode: function (
+    options: RadarGeocodeOptions
+  ): Promise<RadarAddressCallback> {
+    return NativeRadar.geocode(options) as Promise<RadarAddressCallback>;
+  },
+  reverseGeocode: function (
+    options?: RadarReverseGeocodeOptions
+  ): Promise<RadarAddressCallback> {
+    return NativeRadar.reverseGeocode(
+      options || null
+    ) as Promise<RadarAddressCallback>;
+  },
+  ipGeocode: function (): Promise<RadarIPGeocodeCallback> {
+    return NativeRadar.ipGeocode() as Promise<RadarIPGeocodeCallback>;
+  },
+  validateAddress: function (
+    address: RadarAddress
+  ): Promise<RadarValidateAddressCallback> {
+    return NativeRadar.validateAddress(
+      address
+    ) as Promise<RadarValidateAddressCallback>;
+  },
+  getDistance: function (
+    option: RadarGetDistanceOptions
+  ): Promise<RadarRouteCallback> {
+    return NativeRadar.getDistance(option) as Promise<RadarRouteCallback>;
+  },
+  getMatrix: function (
+    option: RadarGetMatrixOptions
+  ): Promise<RadarRouteMatrix> {
+    return NativeRadar.getMatrix(option) as Promise<RadarRouteMatrix>;
+  },
+  logConversion: function (
+    options: RadarLogConversionOptions
+  ): Promise<RadarLogConversionCallback> {
+    return NativeRadar.logConversion(
+      options
+    ) as Promise<RadarLogConversionCallback>;
+  },
+
+  nativeSdkVersion: function (): Promise<string> {
+    return NativeRadar.nativeSdkVersion();
+  },
+  rnSdkVersion: function (): string {
+    return VERSION;
+  },
+  getHost: function (): Promise<string> {
+    return NativeRadar.getHost();
+  },
+  getPublishableKey: function (): Promise<string> {
+    return NativeRadar.getPublishableKey();
+  },
 };
 
 export default Radar;

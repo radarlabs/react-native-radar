@@ -1,10 +1,10 @@
-import { ConfigPlugin, withInfoPlist, withDangerousMod } from "expo/config-plugins";
+const { withInfoPlist, withDangerousMod } = require("expo/config-plugins");
 import type { RadarPluginProps } from "./types";
-import fs from 'fs/promises';
-import path from 'path';
+const fs = require('fs/promises');
+const path = require('path');
 
-export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
-  config = withInfoPlist(config, (config) => {
+export const withRadarIOS = (config: any, args: RadarPluginProps) => {
+  config = withInfoPlist(config, (config: { modResults: { NSLocationWhenInUseUsageDescription: string; NSLocationAlwaysAndWhenInUseUsageDescription: string; UIBackgroundModes: string[]; NSAppTransportSecurity: { NSAllowsArbitraryLoads: boolean; NSPinnedDomains: { "api-verified.radar.io": { NSIncludesSubdomains: boolean; NSPinnedLeafIdentities: { "SPKI-SHA256-BASE64": string; }[]; }; }; }; NSMotionUsageDescription: string; }; }) => {
     config.modResults.NSLocationWhenInUseUsageDescription =
       args.iosNSLocationWhenInUseUsageDescription ??
       "This app uses the location service to provide location-based services.";
@@ -47,7 +47,7 @@ export const withRadarIOS: ConfigPlugin<RadarPluginProps> = (config, args) => {
   if (args.addRadarSDKMotion) {
     config = withDangerousMod(config, [
       'ios',
-      async config => {
+      async (config: { modRequest: { platformProjectRoot: any; }; }) => {
         const filePath = path.join(config.modRequest.platformProjectRoot, 'Podfile');
         const contents = await fs.readFile(filePath, 'utf-8');
 

@@ -1,33 +1,30 @@
 #import "RNRadar.h"
 #include <Foundation/Foundation.h>
-
 #import <CoreLocation/CoreLocation.h>
 #import <React/RCTConvert.h>
-#import <React/RCTUtils.h>
 
 @implementation RNRadar {
-    BOOL hasListeners;
     CLLocationManager *locationManager;
     RCTPromiseResolveBlock permissionsRequestResolver;
+    bool hasListeners;
 }
 
-RCT_EXPORT_MODULE();
+RCT_EXPORT_MODULE()
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [Radar setDelegate:self];
-        [Radar setVerifiedDelegate:self];
         locationManager = [CLLocationManager new];
         locationManager.delegate = self;
+        [Radar setDelegate:self];
+        [Radar setVerifiedDelegate:self];
     }
     return self;
 }
 
-
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if (permissionsRequestResolver) {
-        [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+        [self getPermissionsStatus:permissionsRequestResolver reject:nil];
         permissionsRequestResolver = nil;
     }
 }
@@ -41,7 +38,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"events", @"location", @"clientLocation", @"error", @"log", @"token"];
+    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter"];
 }
 
 - (void)startObserving {
@@ -53,56 +50,96 @@ RCT_EXPORT_MODULE();
 }
 
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser * _Nullable )user {
-    if (hasListeners) {
-        NSMutableDictionary *body = [NSMutableDictionary new];
-        [body setValue:[RadarEvent arrayForEvents:events] forKey:@"events"];
-        if (user) {
-            [body setValue:[user dictionaryValue] forKey:@"user"];
-        }
-        [self sendEventWithName:@"events" body:body];
+    NSMutableDictionary *body = [NSMutableDictionary new];
+    [body setValue:[RadarEvent arrayForEvents:events] forKey:@"events"];
+    if (user) {
+        [body setValue:[user dictionaryValue] forKey:@"user"];
     }
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitEventsEmitter:body];
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"eventsEmitter" body:body];
+    }
+    #endif
 }
 
 - (void)didUpdateLocation:(CLLocation *)location user:(RadarUser *)user {
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitLocationEmitter:@{
+        @"location": [Radar dictionaryForLocation:location],
+        @"user": [user dictionaryValue]
+    }];
+    #else
     if (hasListeners) {
-        [self sendEventWithName:@"location" body:@{
+        [self sendEventWithName:@"locationEmitter" body:@{
             @"location": [Radar dictionaryForLocation:location],
             @"user": [user dictionaryValue]
         }];
     }
+    #endif
 }
 
 - (void)didUpdateClientLocation:(CLLocation *)location stopped:(BOOL)stopped source:(RadarLocationSource)source {
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitClientLocationEmitter:@{
+        @"location": [Radar dictionaryForLocation:location],
+        @"stopped": @(stopped),
+        @"source": [Radar stringForLocationSource:source]
+    }];
+    #else
     if (hasListeners) {
-        [self sendEventWithName:@"clientLocation" body:@{
+        [self sendEventWithName:@"clientLocationEmitter" body:@{
             @"location": [Radar dictionaryForLocation:location],
             @"stopped": @(stopped),
             @"source": [Radar stringForLocationSource:source]
         }];
     }
+    #endif
 }
 
 - (void)didFailWithStatus:(RadarStatus)status {
+    NSDictionary *body = @{
+        @"status": [Radar stringForStatus:status]
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitErrorEmitter:body];
+    #else
     if (hasListeners) {
-        [self sendEventWithName:@"error" body:[Radar stringForStatus:status]];
+        [self sendEventWithName:@"errorEmitter" body:body];
     }
+    #endif
 }
 
 - (void)didLogMessage:(NSString *)message {
+    NSDictionary *body = @{
+        @"message": message
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitLogEmitter:body];
+    #else
     if (hasListeners) {
-        [self sendEventWithName:@"log" body:message];
+        [self sendEventWithName:@"logEmitter" body:body];
     }
+    #endif
 }
 
-- (void)didUpdateToken:(RadarVerifiedLocationToken *)token  {
+- (void)didUpdateToken:(RadarVerifiedLocationToken *)token {
+    NSDictionary *body = @{
+        @"token": [token dictionaryValue]
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitTokenEmitter:body];
+    #else
     if (hasListeners) {
-        [self sendEventWithName:@"token" body:[token dictionaryValue]];
+        [self sendEventWithName:@"tokenEmitter" body:body];
     }
+    #endif
 }
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.20.4" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.21.0" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -128,10 +165,6 @@ RCT_EXPORT_METHOD(setUserId:(NSString *)userId) {
 
 RCT_EXPORT_METHOD(getUserId:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     resolve([Radar getUserId]);
-}
-
-RCT_EXPORT_METHOD(nativeSdkVersion:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
-    resolve([Radar sdkVersion]);
 }
 
 RCT_EXPORT_METHOD(setDescription:(NSString *)description) {
@@ -170,7 +203,7 @@ RCT_EXPORT_METHOD(getPublishableKey:(RCTPromiseResolveBlock)resolve reject:(RCTP
     resolve([RadarSettings publishableKey]);
 }
 
-RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getPermissionsStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     NSString *statusStr;
     switch (status) {
@@ -197,7 +230,6 @@ RCT_REMAP_METHOD(getPermissionsStatus, getPermissionsStatusWithResolver:(RCTProm
 }
 
 RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (background && status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         permissionsRequestResolver = resolve;
@@ -210,7 +242,7 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
         permissionsRequestResolver = resolve;
         [locationManager requestWhenInUseAuthorization];
     } else {
-        [self getPermissionsStatusWithResolver:resolve rejecter:reject];
+        [self getPermissionsStatus:resolve reject:reject];
         permissionsRequestResolver = nil;
     }
 }
@@ -219,7 +251,7 @@ RCT_EXPORT_METHOD(requestPermissions:(BOOL)background resolve:(RCTPromiseResolve
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
      if (permissionsRequestResolver) {
-        [self getPermissionsStatusWithResolver:permissionsRequestResolver rejecter:nil];
+        [self getPermissionsStatus:permissionsRequestResolver reject:nil];
         permissionsRequestResolver = nil;
     }
 }
@@ -228,7 +260,7 @@ RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseRes
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
     RadarTrackingOptionsDesiredAccuracy accuracy = RadarTrackingOptionsDesiredAccuracyMedium;
-    
+
     if (desiredAccuracy) {
         NSString *lowerAccuracy = [desiredAccuracy lowercaseString];
         if ([lowerAccuracy isEqualToString:@"high"]) {
@@ -241,7 +273,7 @@ RCT_EXPORT_METHOD(getLocation:(NSString *)desiredAccuracy resolve:(RCTPromiseRes
             if (reject) {
                 reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
             }
-            
+
             return;
         }
     }
@@ -318,15 +350,16 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
                 desiredAccuracy = RadarTrackingOptionsDesiredAccuracyLow;
             }
         }
-        
+
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
-            beacons = [beaconsNumber boolValue]; 
+            beacons = [beaconsNumber boolValue];
         }
-        
+
         [Radar trackOnceWithDesiredAccuracy:desiredAccuracy beacons:beacons completionHandler:completionHandler];
     }
 }
+
 
 RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     BOOL beacons = NO;
@@ -337,7 +370,7 @@ RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseR
     if (optionsDict != nil) {
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
-            beacons = [beaconsNumber boolValue]; 
+            beacons = [beaconsNumber boolValue];
         }
 
         NSString *accuracy = optionsDict[@"desiredAccuracy"];
@@ -432,7 +465,7 @@ RCT_EXPORT_METHOD(startTrackingVerified:(NSDictionary *)optionsDict) {
     if (optionsDict != nil) {
         NSNumber *beaconsNumber = optionsDict[@"beacons"];
         if (beaconsNumber != nil && [beaconsNumber isKindOfClass:[NSNumber class]]) {
-            beacons = [beaconsNumber boolValue]; 
+            beacons = [beaconsNumber boolValue];
         }
         NSNumber *intervalNumber = optionsDict[@"interval"];
         if (intervalNumber != nil && [intervalNumber isKindOfClass:[NSNumber class]]) {
@@ -505,7 +538,7 @@ RCT_EXPORT_METHOD(getTrackingOptions:(RCTPromiseResolveBlock)resolve reject:(RCT
     if (resolve == nil) {
         return;
     }
-    
+
     RadarTrackingOptions* options = [Radar getTrackingOptions];
     resolve([options dictionaryValue]);
 }
@@ -530,7 +563,7 @@ RCT_EXPORT_METHOD(getTripOptions:(RCTPromiseResolveBlock)resolve reject:(RCTProm
     if (resolve == nil) {
         return;
     }
-    
+
     RadarTripOptions* options = [Radar getTripOptions];
     if (options != nil) {
         resolve([options dictionaryValue]);
@@ -548,7 +581,7 @@ RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
     }
 
     RadarTripOptions *options = [RadarTripOptions tripOptionsFromDictionary:tripOptionsDict];
-    
+
     RadarTrackingOptions *trackingOptions;
     NSDictionary *trackingOptionsDict = optionsDict[@"trackingOptions"];
     if (trackingOptionsDict != nil) {
@@ -578,7 +611,7 @@ RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
 }
 
 RCT_EXPORT_METHOD(completeTrip:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    
+
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -824,12 +857,12 @@ RCT_EXPORT_METHOD(searchGeofences:(NSDictionary *)optionsDict resolve:(RCTPromis
     }
 
     BOOL includeGeometry = NO;
-    
+
     NSNumber *includeGeometryNumber = optionsDict[@"includeGeometry"];
     if (includeGeometryNumber != nil && [includeGeometryNumber isKindOfClass:[NSNumber class]]) {
-        includeGeometry = [includeGeometryNumber boolValue]; 
+        includeGeometry = [includeGeometryNumber boolValue];
     }
-    
+
 
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
@@ -871,16 +904,16 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     if (nearDict && [nearDict isKindOfClass:[NSDictionary class]]) {
         id latitudeObj = nearDict[@"latitude"];
         id longitudeObj = nearDict[@"longitude"];
-        
-        if (latitudeObj && longitudeObj && 
-            [latitudeObj isKindOfClass:[NSNumber class]] && 
+
+        if (latitudeObj && longitudeObj &&
+            [latitudeObj isKindOfClass:[NSNumber class]] &&
             [longitudeObj isKindOfClass:[NSNumber class]]) {
-            
+
             double latitude = [RCTConvert double:latitudeObj];
             double longitude = [RCTConvert double:longitudeObj];
             NSDate *timestamp = [NSDate new];
             near = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) altitude:-1 horizontalAccuracy:5 verticalAccuracy:-1 timestamp:timestamp];
-        }       
+        }
     }
 
 
@@ -902,7 +935,7 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     BOOL mailable = false;
     NSNumber *mailableNumber = optionsDict[@"mailable"];
     if (mailableNumber != nil && [mailableNumber isKindOfClass:[NSNumber class]]) {
-        mailable = [mailableNumber boolValue]; 
+        mailable = [mailableNumber boolValue];
     }
 
     __block RCTPromiseResolveBlock resolver = resolve;
@@ -932,11 +965,11 @@ RCT_EXPORT_METHOD(geocode:(NSDictionary *)optionsDict resolve:(RCTPromiseResolve
 
         return;
     }
-    
+
     NSString *query = optionsDict[@"address"];
     NSArray *layers = optionsDict[@"layers"];
     NSArray *countries = optionsDict[@"countries"];
-    
+
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -987,10 +1020,10 @@ RCT_EXPORT_METHOD(reverseGeocode:(NSDictionary *)optionsDict resolve:(RCTPromise
         double latitude = [RCTConvert double:locationDict[@"latitude"]];
         double longitude = [RCTConvert double:locationDict[@"longitude"]];
         NSDate *timestamp = [NSDate new];
-        CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) 
-                                                             altitude:-1 
+        CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude)
+                                                             altitude:-1
                                                    horizontalAccuracy:5
-                                                     verticalAccuracy:-1 
+                                                     verticalAccuracy:-1
                                                             timestamp:timestamp];
         [Radar reverseGeocodeLocation:location layers:layers completionHandler:completionHandler];
     } else {
@@ -1028,7 +1061,7 @@ RCT_EXPORT_METHOD(validateAddress:(NSDictionary *)addressDict resolve:(RCTPromis
     if (address == nil) {
         reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
     }
-    
+
     [Radar validateAddress:address completionHandler:^(RadarStatus status, RadarAddress * _Nullable address, RadarAddressVerificationStatus verificationStatus) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
@@ -1210,7 +1243,7 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
 
         return;
     }
-    
+
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
@@ -1228,12 +1261,25 @@ RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         resolver = nil;
         rejecter = nil;
     };
-    
+
     if (revenue) {
         [Radar logConversionWithName:name revenue:revenue metadata:metadata completionHandler:completionHandler];
     } else {
         [Radar logConversionWithName:name metadata:metadata completionHandler:completionHandler];
     }
 }
+
+RCT_EXPORT_METHOD(nativeSdkVersion:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
+    resolve([Radar sdkVersion]);
+}
+
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeRadarSpecJSI>(params);
+}
+#endif
 
 @end

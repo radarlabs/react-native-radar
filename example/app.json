@@ -17,7 +17,11 @@
     "owner": "radarlabs",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.radar.reactnative.example"
+      "bundleIdentifier": "com.radar.reactnative.example",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app needs location.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs location."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -41,7 +45,7 @@
         "react-native-radar",
         {
           "iosFraud": true,
-          "iosNSLocationAlwaysAndWhenInUseUsageDescription": "test value",
+          "iosNSLocationAlwaysAndWhenInUseUsageDescription": "please allow location for background tracking",
           "iosBackgroundMode": true,
           "androidFraud": false,
           "androidBackgroundPermission": true,
@@ -57,11 +61,11 @@
         "expo-build-properties",
         {
           "ios": {
-            "newArchEnabled": false,
+            "newArchEnabled": true,
             "deploymentTarget": "15.1"
           },
           "android": {
-            "newArchEnabled": false,
+            "newArchEnabled": true,
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true
           }

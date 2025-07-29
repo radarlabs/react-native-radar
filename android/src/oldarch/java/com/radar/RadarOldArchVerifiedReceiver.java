@@ -1,4 +1,4 @@
-package io.radar.react;
+package com.radar;
 
 import android.content.Context;
 import android.util.Log;
@@ -18,10 +18,10 @@ import io.radar.sdk.Radar;
 import io.radar.sdk.RadarVerifiedReceiver;
 import io.radar.sdk.model.RadarVerifiedLocationToken;
 
-public class RNRadarVerifiedReceiver extends RadarVerifiedReceiver {
+public class RadarOldArchVerifiedReceiver extends RadarVerifiedReceiver {
 
     private ReactNativeHost reactNativeHost;
-    private static final String TAG = "RNRadarVerifiedReceiver";
+    private static final String TAG = "RadarOldArchVerifiedReceiver";
     protected boolean hasListeners = false;
 
     private void sendEvent(final String eventName, final Object data) {
@@ -38,7 +38,7 @@ public class RNRadarVerifiedReceiver extends RadarVerifiedReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("token", RNRadarUtils.mapForJson(token.toJson()));
+            sendEvent("tokenEmitter", RadarUtils.mapForJson(token.toJson()));
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }

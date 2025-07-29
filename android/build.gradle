@@ -1,51 +1,93 @@
 buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
+  ext.getExtOrDefault = {name ->
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['Radar_' + name]
+  }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
-    }
+  repositories {
+    google()
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath "com.android.tools.build:gradle:8.7.2"
+    // noinspection DifferentKotlinGradleVersion
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefault('kotlinVersion')}"
+  }
 }
 
-apply plugin: 'com.android.library'
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+apply plugin: "com.facebook.react"
+
+def getExtOrIntegerDefault(name) {
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["Radar_" + name]).toInteger()
+}
+
+def isNewArchitectureEnabled() {
+    return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
 
 android {
-    compileSdkVersion 31
+  namespace "com.radar"
 
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 31
-        versionCode 1
-        versionName '3.20.4'
-        consumerProguardFiles 'proguard-rules.pro'
+  compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
+
+  defaultConfig {
+    minSdkVersion getExtOrIntegerDefault("minSdkVersion")
+    targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+    buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString())
+  }
+
+  buildFeatures {
+    buildConfig true
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
     }
-    lintOptions {
-        abortOnError false
+  }
+
+  lintOptions {
+    disable "GradleCompatible"
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+  sourceSets {
+    main {
+      if (isNewArchitectureEnabled()) {
+        java.srcDirs += ['src/newarch']
+      } else {
+        java.srcDirs += ['src/oldarch']
+      }
     }
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
-    configurations.all {
-        resolutionStrategy {
-            force 'androidx.core:core:1.6.0'
-            force 'androidx.core:core-ktx:1.6.0'
-        }
-    }
+  }
 }
 
 repositories {
-    mavenCentral()
-    google()
-    maven {
-        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        url "$rootDir/../node_modules/react-native/android"
-    }
+  mavenCentral()
+  google()
 }
+
+def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {
-    api 'com.facebook.react:react-native:+'
-    api 'io.radar:sdk:3.21.3'
+  // Expose React Native to consumers of this module
+  api "com.facebook.react:react-android"
+
+  // Keep Kotlin stdlib internal to this module
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+  api 'io.radar:sdk:3.21.3'
 }
 
+react {
+  jsRootDir = file("../src/")
+  libraryName = "Radar"
+  codegenJavaPackageName = "com.radar"
+}

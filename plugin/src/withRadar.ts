@@ -1,17 +1,16 @@
-import {
-  ConfigPlugin,
+const {
   createRunOncePlugin,
   WarningAggregator,
-} from "expo/config-plugins";
+} = require("expo/config-plugins");
 
-
-import { withRadarAndroid } from "./withRadarAndroid";
-import { withRadarIOS } from "./withRadarIOS";
+const { withRadarAndroid } = require("./withRadarAndroid");
+const { withRadarIOS } = require("./withRadarIOS");
 const pkg = require("../../package.json");
 
+// Import types separately
 import type { RadarPluginProps } from "./types";
 
-const withRadarPlugin: ConfigPlugin<RadarPluginProps> = (config, args = {}) => {
+const withRadarPlugin = (config: any, args: RadarPluginProps = {}) => {
   try {
     config = withRadarAndroid(config, args);
   } catch (e) {
@@ -36,4 +35,4 @@ const withRadarPlugin: ConfigPlugin<RadarPluginProps> = (config, args = {}) => {
 
 const withRadar = createRunOncePlugin(withRadarPlugin, pkg.name, pkg.version);
 
-export { withRadar };
+export default withRadar;

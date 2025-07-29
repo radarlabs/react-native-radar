@@ -1,4 +1,4 @@
-package io.radar.react;
+package com.radar;
 
 import android.content.Context;
 import android.location.Location;
@@ -22,10 +22,10 @@ import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarUser;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class RNRadarReceiver extends RadarReceiver {
+public class RadarOldArchReceiver extends RadarReceiver {
 
     private ReactNativeHost reactNativeHost;
-    private static final String TAG = "RNRadarReceiver";
+    private static final String TAG = "RadarOldArchReceiver";
     protected boolean hasListeners = false;
 
     private void sendEvent(final String eventName, final Object data) {
@@ -43,12 +43,12 @@ public class RNRadarReceiver extends RadarReceiver {
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
-            map.putArray("events", RNRadarUtils.arrayForJson(RadarEvent.toJson(events)));
+            map.putArray("events", RadarUtils.arrayForJson(RadarEvent.toJson(events)));
             if (user != null) {
-                map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+                map.putMap("user", RadarUtils.mapForJson(user.toJson()));
             }
 
-            sendEvent("events", map);
+            sendEvent("eventsEmitter", map);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }
@@ -61,10 +61,10 @@ public class RNRadarReceiver extends RadarReceiver {
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
-            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
-            map.putMap("user", RNRadarUtils.mapForJson(user.toJson()));
+            map.putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)));
+            map.putMap("user", RadarUtils.mapForJson(user.toJson()));
 
-            sendEvent("location", map);
+            sendEvent("locationEmitter", map);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }
@@ -77,11 +77,11 @@ public class RNRadarReceiver extends RadarReceiver {
             reactNativeHost = reactApplication.getReactNativeHost();
 
             WritableMap map = Arguments.createMap();
-            map.putMap("location", RNRadarUtils.mapForJson(Radar.jsonForLocation(location)));
+            map.putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)));
             map.putBoolean("stopped", stopped);
             map.putString("source", source.toString());
 
-            sendEvent("clientLocation", map);
+            sendEvent("clientLocationEmitter", map);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }
@@ -93,7 +93,10 @@ public class RNRadarReceiver extends RadarReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("error", status.toString());
+            WritableMap map = Arguments.createMap();
+            map.putString("status", status.toString());
+
+            sendEvent("errorEmitter", map);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }
@@ -105,7 +108,10 @@ public class RNRadarReceiver extends RadarReceiver {
             ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
             reactNativeHost = reactApplication.getReactNativeHost();
 
-            sendEvent("log", message);
+            WritableMap map = Arguments.createMap();
+            map.putString("message", message);
+
+            sendEvent("logEmitter", map);
         } catch (Exception e) {
             Log.e(TAG, "Exception", e);
         }

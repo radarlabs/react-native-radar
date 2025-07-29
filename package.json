@@ -3,26 +3,42 @@
   "description": "React Native module for Radar, the leading geofencing and location tracking platform",
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
-  "version": "3.20.4",
+  "version": "3.21.0",
   "main": "dist/index.js",
   "files": [
-    "/android",
-    "/ios",
-    "README.md",
-    "react-native-radar.podspec",
-    "/dist",
+    "dist",
+    "src",
+    "android",
+    "ios",
+    "plugin/build",
+    "*.podspec",
+    "react-native.config.js",
     "app.plugin.js",
-    "/plugin/build"
+    "plugin/build",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
   ],
-  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest ./test/*.test.js",
+    "example": "yarn workspace react-native-radar-example",
+    "test": "jest",
+    "typecheck": "tsc",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
+    "copy-assets": "./copyAssets.sh",
+    "update-version": "node scripts/update-version.js",
+    "build-all": "npm run update-version && npm run build && npm run copy-assets && npm run build-plugin",
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
-    "build": "tsc",
-    "copy-assets": "./copyAssets.sh",
     "build-plugin": "tsc --build plugin/",
-    "build-all": "npm run build && npm run build-plugin && npm run copy-assets"
+    "build": "tsc"
   },
   "jest": {
     "preset": "react-native",
@@ -40,7 +56,7 @@
     ]
   },
   "peerDependencies": {
-    "@maplibre/maplibre-react-native": ">=9.0.1 || >=10.0.0-alpha",
+    "@maplibre/maplibre-react-native": ">=10.0.1",
     "expo": ">=43.0.5",
     "react": ">= 16.8.6",
     "react-native": ">= 0.60.0"
@@ -54,30 +70,33 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.0.0",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.4.2",
-    "braces": ">=2.3.2",
-    "eslint": "^5.6.1",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jest": "^22.1.2",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-react": "^7.11.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@eslint/compat": "^1.2.7",
+    "@eslint/eslintrc": "^3.3.0",
+    "@eslint/js": "^9.22.0",
+    "@evilmartians/lefthook": "^1.5.0",
+    "@react-native-community/cli": "15.0.0-alpha.2",
+    "@react-native/babel-preset": "0.79.2",
+    "@react-native/eslint-config": "^0.78.0",
+    "@release-it/conventional-changelog": "^9.0.2",
+    "@types/jest": "^29.5.5",
+    "@types/react": "^19.0.0",
+    "commitlint": "^19.6.1",
+    "del-cli": "^5.1.0",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.3",
     "expo": "^51.0.0",
-    "expo-module-scripts": "^3.5.2",
+    "expo-module-scripts": "^3.5.4",
     "jest": "^29.7.0",
     "jest-junit": "^16.0.0",
     "logkitty": ">=0.7.1",
     "metro-react-native-babel-preset": "^0.51.1",
     "npm-run-all": "^4.1.5",
-    "react": "^18.2.0",
-    "react-native": "^0.74.5",
-    "typescript": "^5.3.3"
+    "prettier": "^3.0.3",
+    "react": "19.0.0",
+    "react-native": "0.79.2",
+    "typescript": "^5.8.3"
   },
   "bugs": {
     "url": "https://github.com/radarlabs/react-native-radar/issues"
@@ -90,5 +109,18 @@
     "@babel/runtime": "^7.21.0",
     "@react-native-community/netinfo": "^7.1.3",
     "radar-sdk-js": "^3.7.1"
+  },
+  "codegenConfig": {
+    "name": "RadarSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.radar"
+    },
+    "ios": {
+      "modulesProvider": {
+        "NativeRadar": "RNRadar"
+      }
+    }
   }
 }
