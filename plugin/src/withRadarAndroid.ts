@@ -13,6 +13,69 @@ export const withRadarAndroid = (
   config: any,
   args: RadarPluginProps
 ) => {
+
+  if (!!args.androidLocalRadarSdkPath) {
+    config = withDangerousMod(config, [
+      "android",
+      async (config: { modRequest: { projectRoot: any; }; }) => {
+        const aarPath = path.join(
+            args.androidLocalRadarSdkPath,
+            "sdk",
+            "build",
+            "outputs",
+            "aar",
+            "sdk-debug.aar"
+          );
+
+        if (!fs.existsSync(aarPath)) {
+          throw new Error(
+            `Local Radar SDK aar file not found at ${aarPath}. Please ensure the androidLocalRadarSdkPath is correct.`
+          );
+        }
+
+        fs.copyFileSync(
+          aarPath,
+          path.join(
+            config.modRequest.projectRoot,
+            "android",
+            "app",
+            "local_radar_sdk.aar"
+          )
+        );
+
+        fs.copyFileSync(
+          aarPath,
+          path.join(
+            config.modRequest.projectRoot,
+            "node_modules",
+            "react-native-radar",
+            "android",
+            "local_radar_sdk.aar"
+          )
+        );
+
+        const buildGradlePath = path.join(
+          config.modRequest.projectRoot,
+          "node_modules",
+          "react-native-radar",
+          "android",
+          "build.gradle"
+        );
+
+        if (fs.existsSync(buildGradlePath)) {
+          const buildGradleContents = fs.readFileSync(buildGradlePath, "utf8");
+          const updatedBuildGradleContents = buildGradleContents.replace(
+            /api 'io\.radar:sdk:.+/,
+            "implementation files('local_radar_sdk.aar')"
+          );
+          fs.writeFileSync(buildGradlePath, updatedBuildGradleContents);
+        }
+
+        return config;
+      },
+    ]);
+  }
+
   config = withAndroidPermissions(config, args);
 
   config = withDangerousMod(config, [
@@ -48,7 +111,7 @@ export const withRadarAndroid = (
           <domain-config cleartextTrafficPermitted="true">
               <domain includeSubdomains="true">localhost</domain>
           </domain-config>
-      
+
           <!-- for SSL pinning -->
           <domain-config cleartextTrafficPermitted="false">
               <domain includeSubdomains="true">api-verified.radar.io</domain>
@@ -70,7 +133,8 @@ export const withRadarAndroid = (
     if (config.modResults.language === "groovy") {
       config.modResults.contents = modifyAppBuildGradle(
         config.modResults.contents,
-        args.androidFraud ?? false
+        args.androidFraud ?? false,
+        args
       );
     } else {
       throw new Error(
@@ -102,7 +166,7 @@ function withAndroidPermissions(
   );
 }
 
-function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
+function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean, args: RadarPluginProps) {
   let hasLocationService = false;
   let hasPlayIntegrity = false;
   if (
@@ -139,8 +203,8 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
       "\n\n" + '    implementation "com.google.android.play:integrity:1.2.0"';
   }
 
-  return buildGradle.replace(
-    pattern,
-    (match: string) => match + replacementString
-  );
+    return buildGradle.replace(
+      pattern,
+      (match: string) => match + replacementString
+    );
 }

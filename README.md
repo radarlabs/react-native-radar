@@ -24,8 +24,15 @@ To run example app with local `react-native-radar` dependency:
 - build local `react-native-radar` with `npm run build-all`.
 - navigate to the example dir with `cd example`.
 - install node dependency of example with `npm ci`.
-- build native app using expo pre-build and `react-native-plugin` with `npm run install-radar-rebuild`. 
+- build native app using expo pre-build and `react-native-plugin` with `npm run install-radar-rebuild`.
 - run iOS and android example app with `npx expo run:ios` or `npx expo run:android`.
+
+To run example app with local `RadarSDK` native dependencies:
+
+- open `example/app.json`
+- to use your local android sdk, set `androidLocalRadarSdkPath` to your local android sdk folder (e.g. `"../../radar-sdk-android"`).
+- to use your local ios sdk, set `iosLocalRadarSdkPath` to your local ios sdk folder (e.g. `"../../radar-sdk-ios"`).
+- follow the steps listed above to rebuild and reinstall your `react-native-radar` dependency.
 
 
 ## Support
