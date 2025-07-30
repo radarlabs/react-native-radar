@@ -51,7 +51,9 @@
           "androidBackgroundPermission": true,
           "addRadarSDKMotion": true,
           "androidActivityRecognition": true,
-          "androidForegroundService": true
+          "androidForegroundService": true,
+          "iosLocalRadarSdkPath": null,
+          "androidLocalRadarSdkPath": null
         }
       ],
       [

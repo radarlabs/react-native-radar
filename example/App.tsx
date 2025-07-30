@@ -14,7 +14,7 @@ import MapLibreGL from "@maplibre/maplibre-react-native";
 
 MapLibreGL.setAccessToken(null);
 
-Radar.initialize("prj_test_pk_b2e957d3287bed449edede86ed2006a9c93f7f51", true);
+Radar.initialize("prj_test_pk_0000000000000000000000000000000000000000", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
@@ -688,10 +688,10 @@ export default function App() {
 
     Radar.setLogLevel("info");
 
-    // // for qa (leave commented for iOS)
+    // for qa
     // Radar.onLog((message) => {
     //   if (/^\w+\(/.test(message))
-    //     console.log("native sdk:", message);
+    //     console.log("native sdk:", message.replace(/[\n\r]+\s*/g, " "));
     // });
 
     Radar.setUserId("foo");

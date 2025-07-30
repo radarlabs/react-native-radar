@@ -10,7 +10,7 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
       "This app uses the location service to provide location-based services.";
     if (args.iosNSLocationAlwaysAndWhenInUseUsageDescription) {
       config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription =
-        args.iosNSLocationAlwaysAndWhenInUseUsageDescription; 
+        args.iosNSLocationAlwaysAndWhenInUseUsageDescription;
     }
     if (args.iosBackgroundMode) {
       config.modResults.UIBackgroundModes = ["location", "fetch"];
@@ -47,7 +47,7 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
   if (args.addRadarSDKMotion) {
     config = withDangerousMod(config, [
       'ios',
-      async (config: { modRequest: { platformProjectRoot: any; }; }) => {
+      async (config: { modRequest: { platformProjectRoot: any; projectRoot: string }; }) => {
         const filePath = path.join(config.modRequest.platformProjectRoot, 'Podfile');
         const contents = await fs.readFile(filePath, 'utf-8');
 
@@ -69,6 +69,32 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
             // Write the updated contents back to the Podfile
             await fs.writeFile(filePath, newContents);
           }
+        }
+
+        if (!!args.iosLocalRadarSdkPath) {
+          const localPodspecContents = await fs.readFile(path.join(args.iosLocalRadarSdkPath, "RadarSDK.podspec"), "utf-8");
+          const localRadarSdkVersion = localPodspecContents.match(/s\.version\s*=\s*["'](.+?)["']/)[1];
+
+          const podspecPath = path.join(
+            config.modRequest.projectRoot,
+            "node_modules",
+            "react-native-radar",
+            "radar.podspec"
+          );
+          const podspecContents = await fs.readFile(podspecPath, "utf-8");
+          const updatedPodspecContents = podspecContents.replace(
+            /s\.dependency "RadarSDK", "~> .+?"/g,
+            `s.dependency "RadarSDK", "~> ${localRadarSdkVersion}"`
+          );
+          await fs.writeFile(podspecPath, updatedPodspecContents);
+
+          const podfilePath = path.join(config.modRequest.platformProjectRoot, 'Podfile');
+          const podfileContents = await fs.readFile(podfilePath, 'utf-8');
+          const updatedPodfileContents = podfileContents.replace(
+            /(target '(\w+)' do)/g,
+            `$1\n  pod 'RadarSDK', :path => '${path.resolve(args.iosLocalRadarSdkPath)}'`
+          );
+          await fs.writeFile(podfilePath, updatedPodfileContents);
         }
 
         return config;
