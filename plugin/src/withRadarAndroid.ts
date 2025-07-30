@@ -133,8 +133,7 @@ export const withRadarAndroid = (
     if (config.modResults.language === "groovy") {
       config.modResults.contents = modifyAppBuildGradle(
         config.modResults.contents,
-        args.androidFraud ?? false,
-        args
+        args.androidFraud ?? false
       );
     } else {
       throw new Error(
@@ -166,7 +165,7 @@ function withAndroidPermissions(
   );
 }
 
-function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean, args: RadarPluginProps) {
+function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
   let hasLocationService = false;
   let hasPlayIntegrity = false;
   if (
