@@ -72,8 +72,8 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
         }
 
         if (!!args.iosLocalRadarSdkPath) {
-            const localPodspecContents = await fs.readFile(path.join(args.iosLocalRadarSdkPath, "RadarSDK.podspec"), "utf-8");
-            const localRadarSdkVersion = localPodspecContents.match(/s\.version\s*=\s*["']([\d.]+)["']/)[1];
+          const localPodspecContents = await fs.readFile(path.join(args.iosLocalRadarSdkPath, "RadarSDK.podspec"), "utf-8");
+          const localRadarSdkVersion = localPodspecContents.match(/s\.version\s*=\s*["'](.+?)["']/)[1];
 
           const podspecPath = path.join(
             config.modRequest.projectRoot,
@@ -83,7 +83,7 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
           );
           const podspecContents = await fs.readFile(podspecPath, "utf-8");
           const updatedPodspecContents = podspecContents.replace(
-            /s\.dependency "RadarSDK", "~> [\d.]+"/g,
+            /s\.dependency "RadarSDK", "~> .+?"/g,
             `s.dependency "RadarSDK", "~> ${localRadarSdkVersion}"`
           );
           await fs.writeFile(podspecPath, updatedPodspecContents);
