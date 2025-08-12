@@ -60,12 +60,11 @@
       [
         "expo-build-properties",
         {
+          "newArchEnabled": true,
           "ios": {
-            "newArchEnabled": true,
             "deploymentTarget": "15.1"
           },
           "android": {
-            "newArchEnabled": true,
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true
           }
