@@ -14,7 +14,7 @@ import MapLibreGL from "@maplibre/maplibre-react-native";
 
 MapLibreGL.setAccessToken(null);
 
-Radar.initialize("prj_test_pk_b2e957d3287bed449edede86ed2006a9c93f7f51", true);
+Radar.initialize("prj_test_pk_", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
