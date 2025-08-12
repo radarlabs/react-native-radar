@@ -13,17 +13,19 @@ import ExampleButton from "./components/exampleButton";
 import MapLibreGL from "@maplibre/maplibre-react-native";
 
 import { Settings as RNSettings } from 'react-native';
-import SharedPreferences from 'react-native-shared-preferences';
 
 MapLibreGL.setAccessToken(null);
 
-// let host = 'https://api-shicheng.radar-staging.com';
-// if (Platform.OS === 'ios') {
-//   RNSettings.set({ 'radar-host': host });
-// } else if (Platform.OS === 'android') {
-//   SharedPreferences.setName('RadarSDK');
-//   SharedPreferences.setItem('host', host);
-// }
+let host = 'https://api-shicheng.radar-staging.com';
+if (Platform.OS === 'ios') {
+  RNSettings.set({ 'radar-host': host });
+} else if (Platform.OS === 'android') {
+  const SharedPreferences = require('expo-shared-preferences');
+  SharedPreferences.setItemAsync('host', host, {
+    name: 'RadarSDK',
+  });
+}
+
 
 Radar.initialize("prj_test_pk_", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
