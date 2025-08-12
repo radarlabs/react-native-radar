@@ -107,13 +107,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
         editor.putString("x_platform_sdk_version", "3.21.0")
         editor.apply()
 
+        Radar.initialize(reactApplicationContext, publishableKey, null, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, currentActivity)
         if (fraud) {
-            Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud)
             Radar.setVerifiedReceiver(radarVerifiedReceiver)
-        } else {
-            Radar.initialize(reactApplicationContext, publishableKey)
-            Radar.setReceiver(radarReceiver)
-        }
+        } 
     }
 
     override fun setLogLevel(level: String): Unit {
