@@ -53,6 +53,10 @@ export interface RadarNativeInterface {
   getDescription: () => Promise<string>;
   setMetadata: (metadata: RadarMetadata) => void;
   getMetadata: () => Promise<RadarMetadata>;
+  setTags: (tags: string[]) => void;
+  getTags: () => Promise<string[]>;
+  addTags: (tags: string[]) => void;
+  removeTags: (tags: string[]) => void;
   setProduct(product: string): void;
   getProduct: () => Promise<string>;
   setAnonymousTrackingEnabled: (enabled: boolean) => void;

@@ -83,7 +83,7 @@ dependencies {
   // Keep Kotlin stdlib internal to this module
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-  api 'io.radar:sdk:3.21.3'
+  api 'io.radar:sdk:3.22.0'
 }
 
 react {

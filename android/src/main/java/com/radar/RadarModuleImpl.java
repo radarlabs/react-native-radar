@@ -129,6 +129,26 @@ public class RadarModuleImpl {
         JSONObject metaJson =  Radar.getMetadata();
         promise.resolve(RadarUtils.mapForJson(metaJson));
     }
+    
+    public void setTags(ReadableArray tags) throws JSONException {
+        Radar.setTags(RadarUtils.stringArrayForArray(tags));
+    }
+
+    public void getTags(final Promise promise) throws JSONException {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(RadarUtils.arrayForStringArray(Radar.getTags()));
+    }
+
+    public void addTags(ReadableArray tags) throws JSONException {
+        Radar.addTags(RadarUtils.stringArrayForArray(tags));
+    }
+
+    public void removeTags(ReadableArray tags) throws JSONException {
+        Radar.removeTags(RadarUtils.stringArrayForArray(tags));
+    }
 
     public void setProduct(String product) {
         Radar.setProduct(product);
