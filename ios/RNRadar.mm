@@ -139,7 +139,7 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.21.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.22.0" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
@@ -181,6 +181,22 @@ RCT_EXPORT_METHOD(setMetadata:(NSDictionary *)metadataDict) {
 
 RCT_EXPORT_METHOD(getMetadata:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     resolve([Radar getMetadata]);
+}
+
+RCT_EXPORT_METHOD(setTags:(NSArray<NSString *> *)tags) {
+    [Radar setTags:tags];
+}
+
+RCT_EXPORT_METHOD(getTags:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getTags]);
+}
+
+RCT_EXPORT_METHOD(addTags:(NSArray<NSString *> *)tags) {
+    [Radar addTags:tags];
+}
+
+RCT_EXPORT_METHOD(removeTags:(NSArray<NSString *> *)tags) {
+    [Radar removeTags:tags];
 }
 
 RCT_EXPORT_METHOD(setProduct:(NSString *)product) {

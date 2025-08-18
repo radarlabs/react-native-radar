@@ -150,6 +150,18 @@ public class RadarUtils {
         }
         return arr;
     }
+
+    static ReadableArray arrayForStringArray(String[] arr) {
+        if (arr == null) {
+            return null;
+        }
+        WritableArray array = new WritableNativeArray();
+        for (String s : arr) {
+            array.pushString(s);
+        }
+        return array;
+    }
+
     static Map<String, String> stringStringMap(ReadableMap readableMap) {
         if (readableMap == null) {
             return null;
