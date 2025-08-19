@@ -105,7 +105,7 @@ const RadarMap = ({ mapOptions, children }) => {
         compassEnabled={false}
         logoEnabled={false}
         attributionEnabled
-        onRegionDidChange={(mapOptions === null || mapOptions === void 0 ? void 0 : mapOptions.onRegionDidChange) ? mapOptions.onRegionDidChange : null} 
+        onRegionDidChange={mapOptions?.onRegionDidChange ? mapOptions.onRegionDidChange : null}
         mapStyle={styleURL}>
         {userLocationMapIndicator}
         {children}
