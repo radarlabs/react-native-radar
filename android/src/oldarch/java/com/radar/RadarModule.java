@@ -98,7 +98,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.21.0");
+        editor.putString("x_platform_sdk_version", "3.22.0");
         editor.apply();
         if (fraud) {
             Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
@@ -147,6 +147,26 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     @ReactMethod
     public void getMetadata(final Promise promise) throws JSONException {
         radarModuleImpl.getMetadata(promise);
+    }
+
+    @ReactMethod
+    public void setTags(ReadableArray tags) throws JSONException {
+        radarModuleImpl.setTags(tags);
+    }
+
+    @ReactMethod
+    public void getTags(final Promise promise) throws JSONException {
+        radarModuleImpl.getTags(promise);
+    }
+
+    @ReactMethod
+    public void addTags(ReadableArray tags) throws JSONException {
+        radarModuleImpl.addTags(tags);
+    }
+
+    @ReactMethod
+    public void removeTags(ReadableArray tags) throws JSONException {
+        radarModuleImpl.removeTags(tags);
     }
 
     @ReactMethod

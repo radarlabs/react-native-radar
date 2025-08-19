@@ -18,6 +18,8 @@ See an example app in `example/`.
 
 Setup Radar public key check pre-commit hook with `cp -r hooks .git` to prevent accidental key leak when working with the Example app.
 
+Android: compile with java 17
+
 To run example app with local `react-native-radar` dependency:
 
 - install node dependencies with `npm ci` and typescript if needed with `npm install -g typescript`.

@@ -268,6 +268,18 @@ const Radar: RadarNativeInterface = {
   getMetadata: function (): Promise<RadarMetadata> {
     return NativeRadar.getMetadata() as Promise<RadarMetadata>;
   },
+  setTags: function (tags: string[]): void {
+    return NativeRadar.setTags(tags);
+  },
+  getTags: function (): Promise<string[]> {
+    return NativeRadar.getTags() as Promise<string[]>;
+  },
+  addTags: function (tags: string[]): void {
+    return NativeRadar.addTags(tags);
+  },
+  removeTags: function (tags: string[]): void {
+    return NativeRadar.removeTags(tags);
+  },
   setProduct: function (product: string): void {
     return NativeRadar.setProduct(product);
   },

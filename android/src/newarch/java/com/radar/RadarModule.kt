@@ -31,6 +31,7 @@ import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.ReadableArray
 import org.json.JSONException
 
 @ReactModule(name = RadarModule.NAME)
@@ -104,7 +105,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun initialize(publishableKey: String, fraud: Boolean): Unit {
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "3.21.0")
+        editor.putString("x_platform_sdk_version", "3.22.0")
         editor.apply()
 
         if (fraud) {
@@ -142,6 +143,22 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun getMetadata(promise: Promise): Unit {
         radarModuleImpl.getMetadata(promise)
+    }
+
+    override fun setTags(tags: ReadableArray): Unit {
+        radarModuleImpl.setTags(tags)
+    }
+
+    override fun getTags(promise: Promise): Unit {
+        radarModuleImpl.getTags(promise)
+    }
+
+    override fun addTags(tags: ReadableArray): Unit {
+        radarModuleImpl.addTags(tags)
+    }
+
+    override fun removeTags(tags: ReadableArray): Unit {
+        radarModuleImpl.removeTags(tags)
     }
 
     override fun setProduct(product: String): Unit {
