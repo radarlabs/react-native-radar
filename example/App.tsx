@@ -16,18 +16,20 @@ import { Settings as RNSettings } from 'react-native';
 
 MapLibreGL.setAccessToken(null);
 
-let host = 'https://api-shicheng.radar-staging.com';
-if (Platform.OS === 'ios') {
-  RNSettings.set({ 'radar-host': host });
-} else if (Platform.OS === 'android') {
-  const SharedPreferences = require('expo-shared-preferences');
-  SharedPreferences.setItemAsync('host', host, {
-    name: 'RadarSDK',
-  });
+let host = '';
+if (host) {
+  if (Platform.OS === 'ios') {
+    RNSettings.set({ 'radar-host': host });
+  } else if (Platform.OS === 'android') {
+    const SharedPreferences = require('expo-shared-preferences');
+    SharedPreferences.setItemAsync('host', host, {
+      name: 'RadarSDK',
+    });
+  }
 }
 
 
-Radar.initialize("prj_test_pk_", true);
+Radar.initialize("prj_live_pk_", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;

@@ -98,9 +98,9 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.23.0-beta.2");
+        editor.putString("x_platform_sdk_version", "3.23.0-beta.3");
         editor.apply();
-        Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, getCurrentActivity());
+        Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, null, getCurrentActivity());
         if (fraud) { 
             Radar.setVerifiedReceiver(verifiedReceiver);
         }
