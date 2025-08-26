@@ -10,4 +10,5 @@ export interface RadarPluginProps {
     addRadarSDKMotion?: boolean;
     iosNSMotionUsageDescription?: string;
     addRadarSDKIndoors?: boolean;
+    iosNSBluetoothWhenInUseUsageDescription?: string;
   }

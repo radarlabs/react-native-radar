@@ -4,7 +4,7 @@ const fs = require('fs/promises');
 const path = require('path');
 
 export const withRadarIOS = (config: any, args: RadarPluginProps) => {
-  config = withInfoPlist(config, (config: { modResults: { NSLocationWhenInUseUsageDescription: string; NSLocationAlwaysAndWhenInUseUsageDescription: string; UIBackgroundModes: string[]; NSAppTransportSecurity: { NSAllowsArbitraryLoads: boolean; NSPinnedDomains: { "api-verified.radar.io": { NSIncludesSubdomains: boolean; NSPinnedLeafIdentities: { "SPKI-SHA256-BASE64": string; }[]; }; }; }; NSMotionUsageDescription: string; }; }) => {
+  config = withInfoPlist(config, (config: { modResults: { NSLocationWhenInUseUsageDescription: string; NSLocationAlwaysAndWhenInUseUsageDescription: string; UIBackgroundModes: string[]; NSAppTransportSecurity: { NSAllowsArbitraryLoads: boolean; NSPinnedDomains: { "api-verified.radar.io": { NSIncludesSubdomains: boolean; NSPinnedLeafIdentities: { "SPKI-SHA256-BASE64": string; }[]; }; }; }; NSMotionUsageDescription: string; NSBluetoothWhenInUseUsageDescription: string; }; }) => {
     config.modResults.NSLocationWhenInUseUsageDescription =
       args.iosNSLocationWhenInUseUsageDescription ??
       "This app uses the location service to provide location-based services.";
@@ -39,6 +39,11 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
       config.modResults.NSMotionUsageDescription =
         args.iosNSMotionUsageDescription ??
         "This app uses the motion service to provide motion-based services.";
+    }
+    if (args.addRadarSDKIndoors) {
+      config.modResults.NSBluetoothWhenInUseUsageDescription =
+        args.iosNSBluetoothWhenInUseUsageDescription ??
+        "This app uses Bluetooth to detect nearby beacons for precise indoor positioning. Bluetooth data is used only for positioning functionality and is not shared with third parties.";
     }
 
     return config;
