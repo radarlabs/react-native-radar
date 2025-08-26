@@ -76,5 +76,36 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
     ]);
   }
 
+  if (args.addRadarSDKIndoors) {
+    config = withDangerousMod(config, [
+      'ios',
+      async (config: { modRequest: { platformProjectRoot: any; }; }) => {
+        const filePath = path.join(config.modRequest.platformProjectRoot, 'Podfile');
+        const contents = await fs.readFile(filePath, 'utf-8');
+
+        // Check if the pod declaration already exists
+        if (contents.indexOf("pod 'RadarSDKIndoors', '3.24.0-beta.1'") === -1) {
+          // Find the target block
+          const targetRegex = /target '(\w+)' do/g;
+          const match = targetRegex.exec(contents);
+          if (match) {
+            const targetStartIndex = match.index;
+            const targetEndIndex = contents.indexOf('end', targetStartIndex) + 3;
+
+            // Insert the pod declaration within the target block
+            const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
+            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'RadarSDKIndoors', '3.24.0-beta.1'`);
+            const newContents = contents.replace(targetBlock, updatedTargetBlock);
+
+            // Write the updated contents back to the Podfile
+            await fs.writeFile(filePath, newContents);
+          }
+        }
+
+        return config;
+      },
+    ]);
+  }
+
   return config;
 };

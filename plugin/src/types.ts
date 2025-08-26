@@ -9,4 +9,5 @@ export interface RadarPluginProps {
     androidActivityRecognition?: boolean;
     addRadarSDKMotion?: boolean;
     iosNSMotionUsageDescription?: string;
+    addRadarSDKIndoors?: boolean;
   }
