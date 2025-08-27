@@ -47,6 +47,10 @@ import type {
   RadarUser,
   Location,
   RadarEvent,
+  RadarNewInAppMessageCallback,
+  RadarInAppMessageDismissedCallback,
+  RadarInAppMessageClickedCallback,
+  RadarInAppMessage,
 } from "./@types/types";
 import { NativeEventEmitter, NativeModules } from "react-native";
 import { VERSION } from "./version";
@@ -56,6 +60,9 @@ import NativeRadarMod, {
   EventsEmitter,
   LocationEmitter,
   LogEmitter,
+  InAppMessageClickedEmitter,
+  InAppMessageDismissedEmitter,
+  NewInAppMessageEmitter,
   TokenEmitter,
 } from "./NativeRadar";
 
@@ -85,7 +92,10 @@ type Events =
   | "errorEmitter"
   | "logEmitter"
   | "eventsEmitter"
-  | "tokenEmitter";
+  | "tokenEmitter"
+  | "newInAppMessageEmitter"
+  | "inAppMessageDismissedEmitter"
+  | "inAppMessageClickedEmitter";
 
 export function addListener<EventT extends Events>(
   event: EventT,
@@ -103,10 +113,18 @@ let errorUpdateSubscription: EventSubscription | null = null;
 let logUpdateSubscription: EventSubscription | null = null;
 let eventsUpdateSubscription: EventSubscription | null = null;
 let tokenUpdateSubscription: EventSubscription | null = null;
+let newInAppMessageUpdateSubscription: EventSubscription | null = null;
+let inAppMessageDismissedUpdateSubscription: EventSubscription | null = null;
+let inAppMessageClickedUpdateSubscription: EventSubscription | null = null;
 
 const Radar: RadarNativeInterface = {
   initialize: (publishableKey: string, fraud?: boolean) => {
-    return NativeRadar.initialize(publishableKey, !!fraud);
+    NativeRadar.initialize(publishableKey, !!fraud);
+    Radar.onNewInAppMessage((inAppMessage) => {
+      console.log("inAppMessage displayed from callback", inAppMessage);
+      Radar.showInAppMessage(inAppMessage);
+    });
+    return;
   },
 
   trackOnce: async (options?: RadarTrackOnceOptions) => {
@@ -240,6 +258,64 @@ const Radar: RadarNativeInterface = {
         callback(event.token);
       }
     );
+  },
+
+  onNewInAppMessage: (callback: RadarNewInAppMessageCallback | null) => {
+    if (newInAppMessageUpdateSubscription) {
+      newInAppMessageUpdateSubscription.remove();
+      newInAppMessageUpdateSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    newInAppMessageUpdateSubscription = addListener(
+      "newInAppMessageEmitter",
+      (event: NewInAppMessageEmitter) => {
+        callback(event.inAppMessage as RadarInAppMessage);
+      }
+    );
+  },
+
+  onInAppMessageDismissed: (callback: RadarInAppMessageDismissedCallback | null) => {
+    if (inAppMessageDismissedUpdateSubscription) {
+      inAppMessageDismissedUpdateSubscription.remove();
+      inAppMessageDismissedUpdateSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    inAppMessageDismissedUpdateSubscription = addListener(
+      "inAppMessageDismissedEmitter",
+      (event: InAppMessageDismissedEmitter) => {
+        callback(event.inAppMessage as RadarInAppMessage);
+      }
+    );
+  },
+
+  onInAppMessageClicked: (callback: RadarInAppMessageClickedCallback | null) => {
+    if (inAppMessageClickedUpdateSubscription) {
+      inAppMessageClickedUpdateSubscription.remove();
+      inAppMessageClickedUpdateSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    inAppMessageClickedUpdateSubscription = addListener(
+      "inAppMessageClickedEmitter",
+      (event: InAppMessageClickedEmitter) => {
+        callback(event.inAppMessage as RadarInAppMessage);
+      }
+    );
+  },
+
+  showInAppMessage: (inAppMessage: RadarInAppMessage) => {
+    return NativeRadar.showInAppMessage(inAppMessage);
   },
 
   requestPermissions: (background: boolean) => {

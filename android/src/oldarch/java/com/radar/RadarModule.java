@@ -54,6 +54,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
 
     private RadarOldArchReceiver receiver;
     private RadarOldArchVerifiedReceiver verifiedReceiver;
+    private RadarOldArchInAppMessageReceiver inAppMessageReceiver;
     private int listenerCount = 0;
     private boolean fraud = false;
     private RadarModuleImpl radarModuleImpl;
@@ -62,6 +63,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         super(reactContext);
         receiver = new RadarOldArchReceiver();
         verifiedReceiver = new RadarOldArchVerifiedReceiver();
+        inAppMessageReceiver = new RadarOldArchInAppMessageReceiver(reactContext);
         radarModuleImpl = new RadarModuleImpl();
     }
 
@@ -72,6 +74,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
                 verifiedReceiver.hasListeners = true;
             }
             receiver.hasListeners = true;
+            inAppMessageReceiver.hasListeners = true;
         }
 
         listenerCount += 1;
@@ -85,6 +88,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
                 verifiedReceiver.hasListeners = false;
             }
             receiver.hasListeners = false;
+            inAppMessageReceiver.hasListeners = false;
         }
     }
 
@@ -101,6 +105,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         editor.putString("x_platform_sdk_version", "3.23.0-beta.3");
         editor.apply();
         Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, null, getCurrentActivity());
+        Radar.setInAppMessageReceiver(inAppMessageReceiver);
         if (fraud) { 
             Radar.setVerifiedReceiver(verifiedReceiver);
         }
@@ -413,6 +418,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     @ReactMethod
     public void getPublishableKey(final Promise promise) {
         radarModuleImpl.getPublishableKey(promise);
+    }
+
+    @ReactMethod
+    public void showInAppMessage(ReadableMap inAppMessageMap) {
+        radarModuleImpl.showInAppMessage(inAppMessageMap);
     }
 
 }

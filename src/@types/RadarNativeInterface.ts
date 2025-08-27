@@ -42,6 +42,10 @@ import type {
   RadarLogConversionCallback,
   RadarRouteMatrix,
   Location,
+  RadarNewInAppMessageCallback,
+  RadarInAppMessageDismissedCallback,
+  RadarInAppMessageClickedCallback,
+  RadarInAppMessage,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -115,6 +119,7 @@ export interface RadarNativeInterface {
   ) => Promise<RadarLogConversionCallback>;
   nativeSdkVersion: () => Promise<string>;
   rnSdkVersion: () => string;
+  showInAppMessage: (inAppMessage: RadarInAppMessage) => void;
 
   onLocationUpdated: (callback: RadarLocationUpdateCallback | null) => void;
   onClientLocationUpdated: (
@@ -124,6 +129,9 @@ export interface RadarNativeInterface {
   onLog: (callback: RadarLogUpdateCallback | null) => void;
   onEventsReceived: (callback: RadarEventUpdateCallback | null) => void;
   onTokenUpdated: (callback: RadarTokenUpdateCallback | null) => void;
+  onNewInAppMessage: (callback: RadarNewInAppMessageCallback | null) => void;
+  onInAppMessageDismissed: (callback: RadarInAppMessageDismissedCallback | null) => void;
+  onInAppMessageClicked: (callback: RadarInAppMessageClickedCallback | null) => void;
   getHost: () => Promise<string>;
   getPublishableKey: () => Promise<string>;
 }

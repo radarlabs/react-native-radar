@@ -49,7 +49,7 @@
           "iosBackgroundMode": true,
           "androidFraud": false,
           "androidBackgroundPermission": true,
-          "addRadarSDKMotion": true,
+          "addRadarSDKMotion": false,
           "androidActivityRecognition": true,
           "androidForegroundService": true
         }
@@ -62,11 +62,14 @@
         {
           "newArchEnabled": true,
           "ios": {
-            "deploymentTarget": "15.1"
+            "deploymentTarget": "15.1",
+            "useFrameworks": "static",
+            "newArchEnabled": true
           },
           "android": {
             "enableProguardInReleaseBuilds": true,
-            "enableShrinkResourcesInReleaseBuilds": true
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "newArchEnabled": true
           }
         }
       ]

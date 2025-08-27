@@ -9,9 +9,9 @@
 #import <React/RCTBridgeModule.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
-@interface RNRadar : NativeRadarSpecBase <NativeRadarSpec, RadarDelegate, CLLocationManagerDelegate, RadarVerifiedDelegate>
+@interface RNRadar : NativeRadarSpecBase <NativeRadarSpec, RadarDelegate, CLLocationManagerDelegate, RadarVerifiedDelegate, RadarInAppMessageProtocol>
 #else
-@interface RNRadar : RCTEventEmitter <RCTBridgeModule, RadarDelegate, CLLocationManagerDelegate, RadarVerifiedDelegate>
+@interface RNRadar : RCTEventEmitter <RCTBridgeModule, RadarDelegate, CLLocationManagerDelegate, RadarVerifiedDelegate, RadarInAppMessageProtocol>
 #endif
 
 @end

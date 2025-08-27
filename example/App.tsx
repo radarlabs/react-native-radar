@@ -29,7 +29,7 @@ if (host) {
 }
 
 
-Radar.initialize("prj_live_pk_", true);
+Radar.initialize("prj_test_pk_", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
@@ -740,6 +740,16 @@ export default function App() {
     // });
     // Radar.onClientLocationUpdated((location) => {
     //   console.log("client location update from callback", location);
+    // });
+    // Radar.onInAppMessageDismissed((inAppMessage) => {
+    //   console.log("inAppMessage dismissed from callback", inAppMessage);
+    // });
+    // Radar.onInAppMessageClicked((inAppMessage) => {
+    //   console.log("inAppMessage clicked from callback", inAppMessage);
+    // });
+    // Radar.onNewInAppMessage((inAppMessage) => {
+    //   console.log("inAppMessage displayed from callback", inAppMessage);
+    //   Radar.showInAppMessage(inAppMessage);
     // });
 
     Radar.requestPermissions(false)

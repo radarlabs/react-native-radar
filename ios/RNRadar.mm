@@ -18,6 +18,7 @@ RCT_EXPORT_MODULE()
         locationManager.delegate = self;
         [Radar setDelegate:self];
         [Radar setVerifiedDelegate:self];
+        [Radar setInAppMessageDelegate:self];
     }
     return self;
 }
@@ -38,7 +39,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter"];
+    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter", @"newInAppMessageEmitter", @"newInAppMessageDismissedEmitter", @"newInAppMessageClickedEmitter"];
 }
 
 - (void)startObserving {
@@ -47,6 +48,53 @@ RCT_EXPORT_MODULE()
 
 - (void)stopObserving {
     hasListeners = NO;
+}
+
+- (void)onNewInAppMessage:(RadarInAppMessage *)inAppMessage {
+
+    NSMutableDictionary *body = [NSMutableDictionary new];
+    [body setValue:[Radar dictionaryForInAppMessage:inAppMessage] forKey:@"inAppMessage"];
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitNewInAppMessageEmitter:body];
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"newInAppMessageEmitter" body:body];
+    }
+    #endif
+    //[Radar showInAppMessage:inAppMessage];
+}
+
+- (void)onInAppMessageDismissed:(RadarInAppMessage *)inAppMessage {
+    NSMutableDictionary *body = [NSMutableDictionary new];
+    [body setValue:[Radar dictionaryForInAppMessage:inAppMessage] forKey:@"inAppMessage"];
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitInAppMessageDismissedEmitter:body];
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"inAppMessageDismissedEmitter" body:body];
+    }
+    #endif
+}
+
+- (void)onInAppMessageButtonClicked:(RadarInAppMessage *)inAppMessage {
+    NSMutableDictionary *body = [NSMutableDictionary new];
+    [body setValue:[Radar dictionaryForInAppMessage:inAppMessage] forKey:@"inAppMessage"];
+    #ifdef RCT_NEW_ARCH_ENABLED
+    [self emitInAppMessageClickedEmitter:body];
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"inAppMessageClickedEmitter" body:body];
+    }
+    #endif
+}
+
+- (void) createInAppMessageView:(RadarInAppMessage * _Nonnull)message
+                      onDismiss:(void (^)(void))onDismiss
+          onInAppMessageClicked:(void (^)(void))onInAppMessageClicked
+              completionHandler:(void (^)(UIViewController *))completionHandler {
+                RadarInAppMessageDelegate *delegate = [RadarInAppMessageDelegate new];
+                [delegate createInAppMessageView:message onDismiss:onDismiss onInAppMessageClicked:onInAppMessageClicked completionHandler:completionHandler];
+
 }
 
 - (void)didReceiveEvents:(NSArray<RadarEvent *> *)events user:(RadarUser * _Nullable )user {
@@ -1222,6 +1270,13 @@ RCT_EXPORT_METHOD(getMatrix:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
         resolver = nil;
         rejecter = nil;
     }];
+}
+
+RCT_EXPORT_METHOD(showInAppMessage:(NSDictionary *)inAppMessageDict) {
+    RadarInAppMessage *inAppMessage = [RadarInAppMessage fromDictionary:inAppMessageDict];
+    if (inAppMessage != nil) {
+        [Radar showInAppMessage:inAppMessage];
+    }
 }
 
 RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {

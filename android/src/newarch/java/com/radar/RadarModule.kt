@@ -24,7 +24,9 @@ import io.radar.sdk.model.RadarRouteMatrix
 import io.radar.sdk.model.RadarRoutes
 import io.radar.sdk.model.RadarTrip
 import io.radar.sdk.model.RadarVerifiedLocationToken
+import io.radar.sdk.model.RadarInAppMessage
 import io.radar.sdk.RadarNotificationOptions
+import io.radar.sdk.RadarInAppMessageReceiver
 import android.content.Context
 import android.location.Location
 import com.facebook.react.bridge.Arguments
@@ -32,6 +34,7 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
 import org.json.JSONException
+import org.json.JSONObject
 
 @ReactModule(name = RadarModule.NAME)
 class RadarModule(reactContext: ReactApplicationContext) :
@@ -84,6 +87,41 @@ class RadarModule(reactContext: ReactApplicationContext) :
         }
     }
 
+    private val radarInAppMessageReceiver = object : RadarInAppMessageReceiver {
+        override fun onNewInAppMessage(message: RadarInAppMessage) {
+            try {
+            val eventBlob = Arguments.createMap().apply {
+                putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
+            }
+                emitNewInAppMessageEmitter(eventBlob)
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception", e)
+            }
+        }
+
+        override fun onInAppMessageDismissed(message: RadarInAppMessage) {
+            try {
+                val eventBlob = Arguments.createMap().apply {
+                    putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
+                }
+                emitInAppMessageDismissedEmitter(eventBlob)
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception", e)
+            }
+        }
+
+        override fun onInAppMessageButtonClicked(message: RadarInAppMessage) {
+            try {
+                val eventBlob = Arguments.createMap().apply {
+                    putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
+                }
+                emitInAppMessageClickedEmitter(eventBlob)
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception", e)
+            }
+        }
+    }
+
     private val radarVerifiedReceiver = object : RadarVerifiedReceiver() {
         override fun onTokenUpdated(context: Context, token: RadarVerifiedLocationToken) {
             val eventBlob = Arguments.createMap().apply {
@@ -108,6 +146,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         editor.apply()
 
         Radar.initialize(reactApplicationContext, publishableKey, null, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, null, currentActivity)
+        Radar.setInAppMessageReceiver(radarInAppMessageReceiver)
         if (fraud) {
             Radar.setVerifiedReceiver(radarVerifiedReceiver)
         } 
@@ -371,6 +410,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun getPublishableKey(promise: Promise): Unit {
         radarModuleImpl.getPublishableKey(promise)
+    }
+
+    override fun showInAppMessage(inAppMessage: ReadableMap): Unit {
+        radarModuleImpl.showInAppMessage(inAppMessage)
     }
 
 

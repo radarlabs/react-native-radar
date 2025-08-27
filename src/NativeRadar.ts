@@ -30,6 +30,18 @@ export type TokenEmitter = {
   token: Object;
 };
 
+export type NewInAppMessageEmitter = {
+  inAppMessage: Object;
+};
+
+export type InAppMessageDismissedEmitter = {
+  inAppMessage: Object;
+};
+
+export type InAppMessageClickedEmitter = {
+  inAppMessage: Object;
+};
+
 export interface Spec extends TurboModule {
   initialize(publishableKey: string, fraud: boolean): void;
   requestPermissions(background: boolean): Promise<string>;
@@ -84,12 +96,16 @@ export interface Spec extends TurboModule {
   nativeSdkVersion(): Promise<string>;
   getHost(): Promise<string>;
   getPublishableKey(): Promise<string>;
+  showInAppMessage(inAppMessage: Object): void;
   readonly locationEmitter: EventEmitter<LocationEmitter>;
   readonly clientLocationEmitter: EventEmitter<ClientLocationEmitter>;
   readonly errorEmitter: EventEmitter<ErrorEmitter>;
   readonly logEmitter: EventEmitter<LogEmitter>;
   readonly eventsEmitter: EventEmitter<EventsEmitter>;
   readonly tokenEmitter: EventEmitter<TokenEmitter>;
+  readonly newInAppMessageEmitter: EventEmitter<NewInAppMessageEmitter>;
+  readonly inAppMessageDismissedEmitter: EventEmitter<InAppMessageDismissedEmitter>;
+  readonly inAppMessageClickedEmitter: EventEmitter<InAppMessageClickedEmitter>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>("RNRadar");
