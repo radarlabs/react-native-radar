@@ -121,7 +121,6 @@ const Radar: RadarNativeInterface = {
   initialize: (publishableKey: string, fraud?: boolean) => {
     NativeRadar.initialize(publishableKey, !!fraud);
     Radar.onNewInAppMessage((inAppMessage) => {
-      console.log("inAppMessage displayed from callback", inAppMessage);
       Radar.showInAppMessage(inAppMessage);
     });
     return;
