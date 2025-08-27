@@ -13,25 +13,22 @@ import React, { useEffect, useState } from "react";
 import ExampleButton from "./components/exampleButton";
 import MapLibreGL from "@maplibre/maplibre-react-native";
 
-let SharedPreferences: any;
-if (Platform.OS === 'android') {
-  SharedPreferences = require('expo-shared-preferences');
-}
+import { Settings as RNSettings } from 'react-native';
 
 MapLibreGL.setAccessToken(null);
 
-const overrideNativeSetting = async (name: string, value: string) => {
+let host = '';
+if (host) {
   if (Platform.OS === 'ios') {
-    Settings.set({ [name]: value });
+    RNSettings.set({ 'radar-host': host });
   } else if (Platform.OS === 'android') {
-    SharedPreferences.setItemAsync(name, value, {
+    const SharedPreferences = require('expo-shared-preferences');
+    SharedPreferences.setItemAsync('host', host, {
       name: 'RadarSDK',
-    })
+    });
   }
 }
 
-let host = '';
-overrideNativeSetting(Platform.OS === 'ios' ? 'radar-host' : 'host', host);
 
 Radar.initialize("prj_test_pk_", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
@@ -779,6 +776,16 @@ export default function App() {
     // });
     // Radar.onClientLocationUpdated((location) => {
     //   console.log("client location update from callback", location);
+    // });
+    // Radar.onInAppMessageDismissed((inAppMessage) => {
+    //   console.log("inAppMessage dismissed from callback", inAppMessage);
+    // });
+    // Radar.onInAppMessageClicked((inAppMessage) => {
+    //   console.log("inAppMessage clicked from callback", inAppMessage);
+    // });
+    // Radar.onNewInAppMessage((inAppMessage) => {
+    //   console.log("inAppMessage displayed from callback", inAppMessage);
+    //   Radar.showInAppMessage(inAppMessage);
     // });
 
     Radar.requestPermissions(false)

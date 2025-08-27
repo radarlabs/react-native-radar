@@ -2,6 +2,7 @@ const { withInfoPlist, withDangerousMod } = require("expo/config-plugins");
 import type { RadarPluginProps } from "./types";
 const fs = require('fs/promises');
 const path = require('path');
+const pkg = require("../../package.json");
 
 export const withRadarIOS = (config: any, args: RadarPluginProps) => {
   config = withInfoPlist(config, (config: { modResults: { NSLocationWhenInUseUsageDescription: string; NSLocationAlwaysAndWhenInUseUsageDescription: string; UIBackgroundModes: string[]; NSAppTransportSecurity: { NSAllowsArbitraryLoads: boolean; NSPinnedDomains: { "api-verified.radar.io": { NSIncludesSubdomains: boolean; NSPinnedLeafIdentities: { "SPKI-SHA256-BASE64": string; }[]; }; }; }; NSMotionUsageDescription: string; }; }) => {
@@ -52,7 +53,7 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
         const contents = await fs.readFile(filePath, 'utf-8');
 
         // Check if the pod declaration already exists
-        if (contents.indexOf("pod 'RadarSDKMotion', '3.20.1'") === -1) {
+        if (contents.indexOf(`pod 'RadarSDKMotion', '${pkg.version}'`) === -1) {
           // Find the target block
           const targetRegex = /target '(\w+)' do/g;
           const match = targetRegex.exec(contents);
@@ -63,7 +64,7 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
             // Insert the pod declaration within the target block
             const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
             // Just for this version of the SDK, we will be using 3.21.1 of the SDKMotion pod. There is no difference between the source code of 3.21.2 and 3.21.1 for RadarSDKMotion.
-            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'RadarSDKMotion', '3.20.1'`);
+            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'RadarSDKMotion', '${pkg.version}'`);
             const newContents = contents.replace(targetBlock, updatedTargetBlock);
 
             // Write the updated contents back to the Podfile

@@ -49,7 +49,7 @@
           "iosBackgroundMode": true,
           "androidFraud": false,
           "androidBackgroundPermission": true,
-          "addRadarSDKMotion": true,
+          "addRadarSDKMotion": false,
           "androidActivityRecognition": true,
           "androidForegroundService": true
         }
@@ -60,14 +60,16 @@
       [
         "expo-build-properties",
         {
+          "newArchEnabled": true,
           "ios": {
-            "newArchEnabled": true,
-            "deploymentTarget": "15.1"
+            "deploymentTarget": "15.1",
+            "useFrameworks": "static",
+            "newArchEnabled": true
           },
           "android": {
-            "newArchEnabled": true,
             "enableProguardInReleaseBuilds": true,
-            "enableShrinkResourcesInReleaseBuilds": true
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "newArchEnabled": true
           }
         }
       ]
