@@ -69,7 +69,7 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
             const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
             // Just for this version of the SDK, we will be using 3.21.1 of the SDKMotion pod. There is no difference between the source code of 3.21.2 and 3.21.1 for RadarSDKMotion.
             const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'RadarSDKMotion', '3.24.0-beta.3'`);
-            const newContents = contents.replace(targetBlock, updatedTargetBlock);`
+            const newContents = contents.replace(targetBlock, updatedTargetBlock);
 
             // Write the updated contents back to the Podfile
             await fs.writeFile(filePath, newContents);
