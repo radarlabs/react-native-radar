@@ -4,7 +4,7 @@ const fs = require('fs/promises');
 const path = require('path');
 
 export const withRadarIOS = (config: any, args: RadarPluginProps) => {
-  config = withInfoPlist(config, (config: { modResults: { NSLocationWhenInUseUsageDescription: string; NSLocationAlwaysAndWhenInUseUsageDescription: string; UIBackgroundModes: string[]; NSAppTransportSecurity: { NSAllowsArbitraryLoads: boolean; NSPinnedDomains: { "api-verified.radar.io": { NSIncludesSubdomains: boolean; NSPinnedLeafIdentities: { "SPKI-SHA256-BASE64": string; }[]; }; }; }; NSMotionUsageDescription: string; }; }) => {
+  config = withInfoPlist(config, (config: { modResults: { NSLocationWhenInUseUsageDescription: string; NSLocationAlwaysAndWhenInUseUsageDescription: string; UIBackgroundModes: string[]; NSAppTransportSecurity: { NSAllowsArbitraryLoads: boolean; NSPinnedDomains: { "api-verified.radar.io": { NSIncludesSubdomains: boolean; NSPinnedLeafIdentities: { "SPKI-SHA256-BASE64": string; }[]; }; }; }; NSMotionUsageDescription: string; NSBluetoothWhenInUseUsageDescription: string; }; }) => {
     config.modResults.NSLocationWhenInUseUsageDescription =
       args.iosNSLocationWhenInUseUsageDescription ??
       "This app uses the location service to provide location-based services.";
@@ -40,6 +40,11 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
         args.iosNSMotionUsageDescription ??
         "This app uses the motion service to provide motion-based services.";
     }
+    if (args.addRadarSDKIndoors) {
+      config.modResults.NSBluetoothWhenInUseUsageDescription =
+        args.iosNSBluetoothWhenInUseUsageDescription ??
+        "This app uses Bluetooth to detect nearby beacons for precise indoor positioning. Bluetooth data is used only for positioning functionality and is not shared with third parties.";
+    }
 
     return config;
   });
@@ -52,7 +57,7 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
         const contents = await fs.readFile(filePath, 'utf-8');
 
         // Check if the pod declaration already exists
-        if (contents.indexOf("pod 'RadarSDKMotion', '3.20.1'") === -1) {
+        if (contents.indexOf("pod 'RadarSDKMotion', '3.24.0-beta.3'") === -1) {
           // Find the target block
           const targetRegex = /target '(\w+)' do/g;
           const match = targetRegex.exec(contents);
@@ -63,7 +68,38 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
             // Insert the pod declaration within the target block
             const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
             // Just for this version of the SDK, we will be using 3.21.1 of the SDKMotion pod. There is no difference between the source code of 3.21.2 and 3.21.1 for RadarSDKMotion.
-            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'RadarSDKMotion', '3.20.1'`);
+            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'RadarSDKMotion', '3.24.0-beta.3'`);
+            const newContents = contents.replace(targetBlock, updatedTargetBlock);
+
+            // Write the updated contents back to the Podfile
+            await fs.writeFile(filePath, newContents);
+          }
+        }
+
+        return config;
+      },
+    ]);
+  }
+
+  if (args.addRadarSDKIndoors) {
+    config = withDangerousMod(config, [
+      'ios',
+      async (config: { modRequest: { platformProjectRoot: any; }; }) => {
+        const filePath = path.join(config.modRequest.platformProjectRoot, 'Podfile');
+        const contents = await fs.readFile(filePath, 'utf-8');
+
+        // Check if the pod declaration already exists
+        if (contents.indexOf("pod 'RadarSDKIndoors', '3.24.0-beta.3'") === -1) {
+          // Find the target block
+          const targetRegex = /target '(\w+)' do/g;
+          const match = targetRegex.exec(contents);
+          if (match) {
+            const targetStartIndex = match.index;
+            const targetEndIndex = contents.indexOf('end', targetStartIndex) + 3;
+
+            // Insert the pod declaration within the target block
+            const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
+            const updatedTargetBlock = targetBlock.replace(/(target '(\w+)' do)/, `$1\n  pod 'RadarSDKIndoors', '3.24.0-beta.3'`);
             const newContents = contents.replace(targetBlock, updatedTargetBlock);
 
             // Write the updated contents back to the Podfile
