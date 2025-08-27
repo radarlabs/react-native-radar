@@ -61,7 +61,6 @@ RCT_EXPORT_MODULE()
         [self sendEventWithName:@"newInAppMessageEmitter" body:body];
     }
     #endif
-    //[Radar showInAppMessage:inAppMessage];
 }
 
 - (void)onInAppMessageDismissed:(RadarInAppMessage *)inAppMessage {
