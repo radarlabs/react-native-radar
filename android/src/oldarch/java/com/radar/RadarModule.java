@@ -152,6 +152,26 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
+    public void setTags(ReadableArray tags) throws JSONException {
+        radarModuleImpl.setTags(tags);
+    }
+
+    @ReactMethod
+    public void getTags(final Promise promise) throws JSONException {
+        radarModuleImpl.getTags(promise);
+    }
+
+    @ReactMethod
+    public void addTags(ReadableArray tags) throws JSONException {
+        radarModuleImpl.addTags(tags);
+    }
+
+    @ReactMethod
+    public void removeTags(ReadableArray tags) throws JSONException {
+        radarModuleImpl.removeTags(tags);
+    }
+
+    @ReactMethod
     public void setAnonymousTrackingEnabled(boolean enabled) {
         radarModuleImpl.setAnonymousTrackingEnabled(enabled);
     }

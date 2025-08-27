@@ -106,8 +106,7 @@ const RadarMap = ({ mapOptions, children }) => {
         logoEnabled={false}
         attributionEnabled
         onRegionDidChange={mapOptions?.onRegionDidChange ? mapOptions.onRegionDidChange : null}
-        styleURL={styleURL}
-      >
+        mapStyle={styleURL}>
         {userLocationMapIndicator}
         {children}
       </MapLibreGL.MapView>

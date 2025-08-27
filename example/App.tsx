@@ -6,6 +6,7 @@ import {
   Platform,
   ScrollView,
   SafeAreaView,
+  Settings
 } from "react-native";
 import Radar, { Map, Autocomplete } from "react-native-radar";
 import React, { useEffect, useState } from "react";
@@ -43,7 +44,6 @@ export default function App() {
     setDisplayText(displayText);
   };
 
-
   const getUserId = async () => {
     try {
       const result = await Radar.getUserId();
@@ -68,6 +68,42 @@ export default function App() {
       populateText("getMetadata: " + stringify(result));
     } catch (err) {
       populateText("getMetadata error: " + err);
+    }
+  };
+
+  const setTags = async () => {
+    try {
+      const result = await Radar.setTags(["tag1", "tag2"]);
+      populateText("setTags: " + result);
+    } catch (err) {
+      populateText("setTags error: " + err);
+    }
+  };
+
+  const getTags = async () => {
+    try {
+      const result = await Radar.getTags();
+      populateText("getTags: " + result);
+    } catch (err) {
+      populateText("getTags error: " + err);
+    }
+  };
+
+  const addTags = async () => {
+    try {
+      const result = await Radar.addTags(["tag3", "tag4"]);
+      populateText("addTags: " + result);
+    } catch (err) {
+      populateText("addTags error: " + err);
+    }
+  };
+
+  const removeTags = async () => {
+    try {
+      const result = await Radar.removeTags(["tag1", "tag2"]);
+      populateText("removeTags: " + result);
+    } catch (err) {
+      populateText("removeTags error: " + err);
     }
   };
 
@@ -812,6 +848,10 @@ export default function App() {
             <ExampleButton title="getUserId" onPress={getUserId} />
             <ExampleButton title="getDescription" onPress={getDescription} />
             <ExampleButton title="getMetadata" onPress={getMetadata} />
+            <ExampleButton title="setTags" onPress={setTags} />
+            <ExampleButton title="getTags" onPress={getTags} />
+            <ExampleButton title="addTags" onPress={addTags} />
+            <ExampleButton title="removeTags" onPress={removeTags} />
             <ExampleButton title="getPermissionsStatus" onPress={getPermissionsStatus} />
             <ExampleButton title="getProduct" onPress={getProduct} />
             <ExampleButton title="requestPermissionsForeground" onPress={requestPermissionsForeground} />

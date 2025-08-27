@@ -54,6 +54,10 @@ export interface Spec extends TurboModule {
   getDescription(): Promise<string>;
   setMetadata(metadata: Object): void;
   getMetadata(): Promise<Object>;
+  setTags(tags: Array<string>): void;
+  getTags(): Promise<Array<string>>;
+  addTags(tags: Array<string>): void;
+  removeTags(tags: Array<string>): void;
   setProduct(product: string): void;
   getProduct(): Promise<string>;
   setAnonymousTrackingEnabled(enabled: boolean): void;

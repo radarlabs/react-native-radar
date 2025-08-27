@@ -231,6 +231,22 @@ RCT_EXPORT_METHOD(getMetadata:(RCTPromiseResolveBlock)resolve reject:(RCTPromise
     resolve([Radar getMetadata]);
 }
 
+RCT_EXPORT_METHOD(setTags:(NSArray<NSString *> *)tags) {
+    [Radar setTags:tags];
+}
+
+RCT_EXPORT_METHOD(getTags:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getTags]);
+}
+
+RCT_EXPORT_METHOD(addTags:(NSArray<NSString *> *)tags) {
+    [Radar addTags:tags];
+}
+
+RCT_EXPORT_METHOD(removeTags:(NSArray<NSString *> *)tags) {
+    [Radar removeTags:tags];
+}
+
 RCT_EXPORT_METHOD(setProduct:(NSString *)product) {
     [Radar setProduct:product];
 }

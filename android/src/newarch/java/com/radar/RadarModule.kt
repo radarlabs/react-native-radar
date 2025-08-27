@@ -33,6 +33,7 @@ import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.ReadableArray
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -178,6 +179,22 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun getMetadata(promise: Promise): Unit {
         radarModuleImpl.getMetadata(promise)
+    }
+
+    override fun setTags(tags: ReadableArray): Unit {
+        radarModuleImpl.setTags(tags)
+    }
+
+    override fun getTags(promise: Promise): Unit {
+        radarModuleImpl.getTags(promise)
+    }
+
+    override fun addTags(tags: ReadableArray): Unit {
+        radarModuleImpl.addTags(tags)
+    }
+
+    override fun removeTags(tags: ReadableArray): Unit {
+        radarModuleImpl.removeTags(tags)
     }
 
     override fun setProduct(product: String): Unit {
