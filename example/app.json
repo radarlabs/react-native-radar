@@ -50,6 +50,8 @@
           "androidFraud": false,
           "androidBackgroundPermission": true,
           "addRadarSDKMotion": true,
+          "addRadarSDKIndoors": true,
+          "iosNSBluetoothWhenInUseUsageDescription": "This example app uses Bluetooth to detect nearby beacons for precise indoor positioning during testing. Bluetooth data is used only for positioning functionality.",
           "androidActivityRecognition": true,
           "androidForegroundService": true
         }
