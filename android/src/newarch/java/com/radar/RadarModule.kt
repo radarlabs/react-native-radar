@@ -146,8 +146,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         editor.putString("x_platform_sdk_version", "3.23.1")
         editor.apply()
 
-        Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, null, currentActivity)
-        Radar.setInAppMessageReceiver(radarInAppMessageReceiver)
+        Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, currentActivity)
         if (fraud) {
             Radar.setVerifiedReceiver(radarVerifiedReceiver)
         } 
