@@ -431,6 +431,39 @@ export interface RadarTokenUpdateCallback {
   (token: Object): void;
 }
 
+export interface RadarInAppMessage {
+  title: {
+    text: string;
+    color: string;
+  };
+  body: {
+    text: string;
+    color: string;
+  };
+  button?: {
+    text: string;
+    color: string;
+    backgroundColor: string;
+    deepLink?: string;
+  };
+  image?: {
+    name: string;
+    url: string;
+  };
+}
+
+export interface RadarNewInAppMessageCallback {
+  (inAppMessage: RadarInAppMessage): void;
+}
+
+export interface RadarInAppMessageDismissedCallback {
+  (inAppMessage: RadarInAppMessage): void;
+}
+
+export interface RadarInAppMessageClickedCallback {
+  (inAppMessage: RadarInAppMessage): void;
+}
+
 export type RadarListenerCallback =
   | RadarEventUpdateCallback
   | RadarLocationUpdateCallback

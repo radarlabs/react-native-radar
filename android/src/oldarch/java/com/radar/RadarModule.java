@@ -54,6 +54,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
 
     private RadarOldArchReceiver receiver;
     private RadarOldArchVerifiedReceiver verifiedReceiver;
+    private RadarOldArchInAppMessageReceiver inAppMessageReceiver;
     private int listenerCount = 0;
     private boolean fraud = false;
     private RadarModuleImpl radarModuleImpl;
@@ -62,6 +63,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         super(reactContext);
         receiver = new RadarOldArchReceiver();
         verifiedReceiver = new RadarOldArchVerifiedReceiver();
+        inAppMessageReceiver = new RadarOldArchInAppMessageReceiver(reactContext);
         radarModuleImpl = new RadarModuleImpl();
     }
 
@@ -72,6 +74,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
                 verifiedReceiver.hasListeners = true;
             }
             receiver.hasListeners = true;
+            inAppMessageReceiver.hasListeners = true;
         }
 
         listenerCount += 1;
@@ -85,6 +88,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
                 verifiedReceiver.hasListeners = false;
             }
             receiver.hasListeners = false;
+            inAppMessageReceiver.hasListeners = false;
         }
     }
 
@@ -98,14 +102,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.22.1");
+        editor.putString("x_platform_sdk_version", "3.23.1");
         editor.apply();
-        if (fraud) {
-            Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud);
+        Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, inAppMessageReceiver, getCurrentActivity());
+        if (fraud) { 
             Radar.setVerifiedReceiver(verifiedReceiver);
-        } else {
-            Radar.initialize(getReactApplicationContext(), publishableKey);
-            Radar.setReceiver(receiver);
         }
     }
 
@@ -436,6 +437,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     @ReactMethod
     public void getPublishableKey(final Promise promise) {
         radarModuleImpl.getPublishableKey(promise);
+    }
+
+    @ReactMethod
+    public void showInAppMessage(ReadableMap inAppMessageMap) {
+        radarModuleImpl.showInAppMessage(inAppMessageMap);
     }
 
 }

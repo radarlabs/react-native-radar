@@ -38,6 +38,7 @@ import io.radar.sdk.model.RadarRoutes;
 import io.radar.sdk.model.RadarTrip;
 import io.radar.sdk.model.RadarUser;
 import io.radar.sdk.model.RadarVerifiedLocationToken;
+import io.radar.sdk.model.RadarInAppMessage;
 import io.radar.sdk.RadarNotificationOptions;
 
 import org.json.JSONException;
@@ -1243,7 +1244,6 @@ public class RadarModuleImpl {
         });
     }
 
-
     public void logConversion(ReadableMap optionsMap, final Promise promise) throws JSONException  {
         if (promise == null) {
             return;
@@ -1286,5 +1286,16 @@ public class RadarModuleImpl {
         } else {
             Radar.logConversion(name, metadataObj, callback);
         }
+    }
+
+    public void showInAppMessage(ReadableMap inAppMessageMap) {
+        RadarInAppMessage inAppMessage;
+        try {
+            inAppMessage = RadarInAppMessage.fromJson(RadarUtils.jsonForMap(inAppMessageMap).toString());
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException", e);
+            return;
+        }
+        Radar.showInAppMessage(inAppMessage);
     }
 }
