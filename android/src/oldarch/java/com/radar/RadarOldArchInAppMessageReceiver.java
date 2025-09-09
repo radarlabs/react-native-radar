@@ -91,7 +91,6 @@ public class RadarOldArchInAppMessageReceiver implements RadarInAppMessageReceiv
         Function0<Unit> onInAppMessageButtonClicked,
         Function1<? super View, Unit> onViewReady
     ) {
-        // Call the default implementation
         RadarInAppMessageReceiver.DefaultImpls.createInAppMessageView(
             this, context, inAppMessage, onDismissListener, onInAppMessageButtonClicked, onViewReady
         );
