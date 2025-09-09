@@ -39,7 +39,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter", @"newInAppMessageEmitter", @"newInAppMessageDismissedEmitter", @"newInAppMessageClickedEmitter"];
+    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter", @"newInAppMessageEmitter", @"inAppMessageDismissedEmitter", @"inAppMessageClickedEmitter"];
 }
 
 - (void)startObserving {
