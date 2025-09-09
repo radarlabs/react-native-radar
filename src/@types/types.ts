@@ -729,6 +729,7 @@ export interface RadarRegion {
 export interface RadarAddress {
   addressLabel?: string;
   borough?: string;
+  categories?: string[];
   city?: string;
   confidence?: string;
   country?: string;

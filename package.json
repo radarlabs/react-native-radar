@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the leading geofencing and location tracking platform",
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
-  "version": "3.23.0-beta.3",
+  "version": "3.23.1",
   "main": "dist/index.js",
   "files": [
     "dist",
@@ -80,6 +80,7 @@
     "@react-native/eslint-config": "^0.78.0",
     "@release-it/conventional-changelog": "^9.0.2",
     "@types/jest": "^29.5.5",
+    "@types/node": "^24.3.0",
     "@types/react": "^19.0.0",
     "commitlint": "^19.6.1",
     "del-cli": "^5.1.0",
