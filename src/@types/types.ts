@@ -846,3 +846,11 @@ export type RadarTripStatus =
   | "expired"
   | "completed"
   | "canceled";
+
+export interface RadarMapOptions {
+  mapStyle?: string;
+  onRegionDidChange?: (feature: any) => void;
+  onDidFinishLoadingMap?: () => void;
+  onWillStartLoadingMap?: () => void;
+  onDidFailLoadingMap?: () => void;
+}

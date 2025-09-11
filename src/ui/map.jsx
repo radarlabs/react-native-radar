@@ -106,6 +106,9 @@ const RadarMap = ({ mapOptions, children }) => {
         logoEnabled={false}
         attributionEnabled
         onRegionDidChange={mapOptions?.onRegionDidChange ? mapOptions.onRegionDidChange : null}
+        onDidFinishLoadingMap={mapOptions?.onDidFinishLoadingMap ? mapOptions.onDidFinishLoadingMap : null}
+        onWillStartLoadingMap={mapOptions?.onWillStartLoadingMap ? mapOptions.onWillStartLoadingMap : null}
+        onDidFailLoadingMap={mapOptions?.onDidFailLoadingMap ? mapOptions.onDidFailLoadingMap : null}
         mapStyle={styleURL}>
         {userLocationMapIndicator}
         {children}
