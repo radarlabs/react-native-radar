@@ -63,7 +63,7 @@ jobs:
       - run:
           name: Set use old arch
           command: |
-            jq ".expo.plugins |= ( map( if (.[0] == \"expo-build-properties\") then . | .[1].[].newArchEnabled |= false else . end))" app.json > oldarch.json
+            jq ".expo.plugins |= ( map( if (.[0] == \"expo-build-properties\") then . | .[1].newArchEnabled |= false | .[1].android.newArchEnabled |= false | .[1].ios.newArchEnabled |= false else . end))" app.json > oldarch.json
             mv oldarch.json app.json
       - run:
           name: Install Radar from local path
@@ -103,7 +103,7 @@ jobs:
       - run:
           name: Set use old arch
           command: |
-            jq ".expo.plugins |= ( map( if (.[0] == \"expo-build-properties\") then . | .[1].[].newArchEnabled |= false else . end))" app.json > oldarch.json
+            jq ".expo.plugins |= ( map( if (.[0] == \"expo-build-properties\") then . | .[1].newArchEnabled |= false | .[1].android.newArchEnabled |= false | .[1].ios.newArchEnabled |= false else . end))" app.json > oldarch.json
             mv oldarch.json app.json
       - run:
           name: Install Radar from local path
