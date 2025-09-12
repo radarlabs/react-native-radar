@@ -19,6 +19,20 @@ const createStyleURL = async (style = DEFAULT_STYLE) => {
   return `${host}/maps/styles/${style}?publishableKey=${publishableKey}`;
 };
 
+/**
+ * RadarMap component for displaying maps with Radar integration
+ * @param {Object} props - Component props
+ * @param {Object} [props.mapOptions] - Map configuration options
+ * @param {string} [props.mapOptions.mapStyle] - Map style identifier (defaults to 'radar-default-v1')
+ * @param {function} [props.mapOptions.onRegionDidChange] - Callback fired when the map region changes
+ * @param {Object} props.mapOptions.onRegionDidChange.feature - The region feature data
+ * @param {function} [props.mapOptions.onDidFinishLoadingMap] - Callback fired when the map finishes loading
+ * @param {function} [props.mapOptions.onWillStartLoadingMap] - Callback fired when the map starts loading
+ * @param {function} [props.mapOptions.onDidFailLoadingMap] - Callback fired when the map fails to load
+ * @param {React.ReactNode} [props.children] - Child components to render within the map
+ * @returns {React.Component|null} The RadarMap component or null if dependencies are missing
+ */
+
 const RadarMap = ({ mapOptions, children }) => {
   const [styleURL, setStyleURL] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
@@ -106,6 +120,9 @@ const RadarMap = ({ mapOptions, children }) => {
         logoEnabled={false}
         attributionEnabled
         onRegionDidChange={mapOptions?.onRegionDidChange ? mapOptions.onRegionDidChange : null}
+        onDidFinishLoadingMap={mapOptions?.onDidFinishLoadingMap ? mapOptions.onDidFinishLoadingMap : null}
+        onWillStartLoadingMap={mapOptions?.onWillStartLoadingMap ? mapOptions.onWillStartLoadingMap : null}
+        onDidFailLoadingMap={mapOptions?.onDidFailLoadingMap ? mapOptions.onDidFailLoadingMap : null}
         mapStyle={styleURL}>
         {userLocationMapIndicator}
         {children}
