@@ -64,7 +64,7 @@
           "ios": {
             "deploymentTarget": "15.1",
             "useFrameworks": "static",
-            "newArchEnabled": false
+            "newArchEnabled": true
           },
           "android": {
             "enableProguardInReleaseBuilds": true,
