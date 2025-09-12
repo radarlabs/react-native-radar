@@ -9,6 +9,7 @@ import {
   Settings
 } from "react-native";
 import Radar, { Map, Autocomplete } from "react-native-radar";
+import type { RadarMapOptions } from "react-native-radar";
 import React, { useEffect, useState } from "react";
 import ExampleButton from "./components/exampleButton";
 import MapLibreGL from "@maplibre/maplibre-react-native";
@@ -30,7 +31,7 @@ if (host) {
 }
 
 
-Radar.initialize("prj_test_pk_", true);
+Radar.initialize("prj_test_pk_e3bd55ab250955926cdd76c2baeb2ed559434925", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
@@ -806,6 +807,26 @@ export default function App() {
       });
   }, []);
 
+  const mapOptions: RadarMapOptions = {
+    mapStyle: 'radar-default-v1',
+    onDidFinishLoadingMap: () => {
+      console.log('Map finished loading');
+      populateText('Map finished loading');
+    },
+    onWillStartLoadingMap: () => {
+      console.log('Map will start loading');
+      populateText('Map will start loading');
+    },
+    onDidFailLoadingMap: () => {
+      console.log('Map failed to load');
+      populateText('Map failed to load');
+    },
+    onRegionDidChange: (feature) => {
+      console.log('Map region changed:', feature);
+      populateText('Map region changed: ' + JSON.stringify(feature));
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -820,7 +841,7 @@ export default function App() {
         {Platform.OS !== "web" && (
           <>
             <View style={{ width: "100%", height: "25%" }}>
-              <Map />
+              <Map mapOptions={mapOptions} />
             </View>
             <View style={{ width: "100%", height: "10%" }}>
               <Autocomplete
