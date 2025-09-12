@@ -64,12 +64,12 @@
           "ios": {
             "deploymentTarget": "15.1",
             "useFrameworks": "static",
-            "newArchEnabled": true
+            "newArchEnabled": false
           },
           "android": {
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
-            "newArchEnabled": true
+            "newArchEnabled": false
           }
         }
       ]
