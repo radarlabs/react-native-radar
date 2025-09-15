@@ -31,7 +31,7 @@ if (host) {
 }
 
 
-Radar.initialize("prj_test_pk_e3bd55ab250955926cdd76c2baeb2ed559434925", true);
+Radar.initialize("prj_test_pk_", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
