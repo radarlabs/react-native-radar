@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the leading geofencing and location tracking platform",
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
-  "version": "3.23.2",
+  "version": "3.23.3",
   "main": "dist/index.js",
   "files": [
     "dist",
