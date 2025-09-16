@@ -25,8 +25,9 @@
   "include": [
     "src/index.tsx",
     "src/index.web.js",
-    "src/ui",
-    "src/NativeRadar.ts"
+    "src/ui/**/*",
+    "src/NativeRadar.ts",
+    "src/helpers.js"
   ],
   "exclude": [
     "node_modules",
