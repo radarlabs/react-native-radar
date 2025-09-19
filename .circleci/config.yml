@@ -54,7 +54,10 @@ jobs:
             sudo apt-get update -o Acquire::AllowInsecureRepositories=true
             sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
-      - run: cd android && ./gradlew assembleDebug
+      - run: 
+          name: Build Android Debug
+          command: | 
+            cd android && ./gradlew assembleDebug --info
   ios:
     macos:
       xcode: "15.3.0"
