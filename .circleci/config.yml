@@ -36,9 +36,9 @@ jobs:
       - image: cimg/android:2024.01.1-browsers
     resource_class: large
     environment:
-      JAVA_OPTS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=512m"
-      NODE_OPTIONS: "--max-old-space-size=4096"
+      JAVA_OPTS: "-Xmx2g -XX:+UseG1GC"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=256m -XX:+UseG1GC"
+      NODE_OPTIONS: "--max-old-space-size=2048"
     steps:
       - attach_workspace:
           at: ~/react-native-radar
