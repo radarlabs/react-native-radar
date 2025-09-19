@@ -34,6 +34,11 @@ jobs:
     working_directory: ~/react-native-radar/example
     docker:
       - image: cimg/android:2024.01.1-browsers
+    resource_class: large
+    environment:
+      JAVA_OPTS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=512m"
+      NODE_OPTIONS: "--max-old-space-size=4096"
     steps:
       - attach_workspace:
           at: ~/react-native-radar
