@@ -56,18 +56,24 @@ jobs:
       - run:
           name: Configure Gradle
           command: |
+            echo "Creating .gradle directory..."
             mkdir -p ~/.gradle
+            echo "Writing gradle.properties..."
             echo "org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=256m -XX:+UseG1GC" >> ~/.gradle/gradle.properties
             echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
             echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
             echo "org.gradle.configureondemand=false" >> ~/.gradle/gradle.properties
+            echo "Gradle properties configured:"
+            cat ~/.gradle/gradle.properties
+            echo "Directory permissions:"
+            ls -la ~/.gradle/
       - run: chown -R $USER:$USER android
       - run: 
           name: Build Android Debug
           command: | 
             cd android 
             ./gradlew clean --no-daemon
-            ./gradlew assembleDebug --no-daemon --info --stacktrace
+            ./gradlew assembleDebug --no-daemon --info
   ios:
     macos:
       xcode: "15.3.0"
