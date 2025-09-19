@@ -49,6 +49,32 @@ jobs:
             sudo apt-get update -o Acquire::AllowInsecureRepositories=true
             sudo apt-get install -y ninja-build
       - run: chown -R $USER:$USER android
+      - run: cd android && ./gradlew
+  android-oldarch:
+    working_directory: ~/react-native-radar/example
+    docker:
+      - image: cimg/android:2024.01.1-browsers
+    steps:
+      - attach_workspace:
+          at: ~/react-native-radar
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Set use old arch
+          command: |
+            jq ".expo.plugins |= ( map( if (.[0] == \"expo-build-properties\") then . | .[1].newArchEnabled |= false | .[1].android.newArchEnabled |= false | .[1].ios.newArchEnabled |= false else . end))" app.json > oldarch.json
+            mv oldarch.json app.json
+            cat app.json
+      - run:
+          name: Install Radar from local path
+          command: npm run install-radar-rebuild
+      - run:
+          name: Install Ninja
+          command: |
+            sudo apt-get update -o Acquire::AllowInsecureRepositories=true
+            sudo apt-get install -y ninja-build
+      - run: chown -R $USER:$USER android
       - run: cd android && ./gradlew 
   ios:
     macos:
@@ -65,6 +91,27 @@ jobs:
           command: npm run install-radar-rebuild
       - run: cd ios 
       - run: xcodebuild -workspace ios/Example.xcworkspace -scheme Example -sdk iphonesimulator
+  ios-oldarch:
+    macos:
+      xcode: "15.3.0"
+    working_directory: ~/react-native-radar/example
+    steps:
+      - attach_workspace:
+          at: ~/react-native-radar
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Set use old arch
+          command: |
+            jq ".expo.plugins |= ( map( if (.[0] == \"expo-build-properties\") then . | .[1].newArchEnabled |= false | .[1].android.newArchEnabled |= false | .[1].ios.newArchEnabled |= false else . end))" app.json > oldarch.json
+            mv oldarch.json app.json
+            cat app.json
+      - run:
+          name: Install Radar from local path
+          command: npm run install-radar-rebuild
+      - run: cd ios 
+      - run: xcodebuild -workspace ios/Example.xcworkspace -scheme Example -sdk iphonesimulator
  
 
 workflows:
@@ -75,6 +122,12 @@ workflows:
       - android:
           requires:
             - node
+      - android-oldarch:
+          requires:
+            - node
       - ios:
+          requires:
+            - node
+      - ios-oldarch:
           requires:
             - node
