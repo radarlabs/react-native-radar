@@ -34,6 +34,11 @@ jobs:
     working_directory: ~/react-native-radar/example
     docker:
       - image: cimg/android:2024.01.1-browsers
+    resource_class: large
+    environment:
+      JAVA_OPTS: "-Xmx2g -XX:+UseG1GC"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=256m -XX:+UseG1GC"
+      NODE_OPTIONS: "--max-old-space-size=2048"
     steps:
       - attach_workspace:
           at: ~/react-native-radar
@@ -48,8 +53,27 @@ jobs:
           command: |
             sudo apt-get update -o Acquire::AllowInsecureRepositories=true
             sudo apt-get install -y ninja-build
+      - run:
+          name: Configure Gradle
+          command: |
+            echo "Creating .gradle directory..."
+            mkdir -p ~/.gradle
+            echo "Writing gradle.properties..."
+            echo "org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=256m -XX:+UseG1GC" >> ~/.gradle/gradle.properties
+            echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
+            echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
+            echo "org.gradle.configureondemand=false" >> ~/.gradle/gradle.properties
+            echo "Gradle properties configured:"
+            cat ~/.gradle/gradle.properties
+            echo "Directory permissions:"
+            ls -la ~/.gradle/
       - run: chown -R $USER:$USER android
-      - run: cd android && ./gradlew 
+      - run: 
+          name: Build Android Debug
+          command: | 
+            cd android 
+            ./gradlew clean --no-daemon
+            ./gradlew assembleDebug --no-daemon --info
   ios:
     macos:
       xcode: "15.3.0"
