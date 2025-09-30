@@ -12,11 +12,11 @@ import Radar, { Map, Autocomplete } from "react-native-radar";
 import type { RadarMapOptions } from "react-native-radar";
 import React, { useEffect, useState } from "react";
 import ExampleButton from "./components/exampleButton";
-import MapLibreGL from "@maplibre/maplibre-react-native";
+// import MapLibreGL from "@maplibre/maplibre-react-native";
 
 import { Settings as RNSettings } from 'react-native';
 
-MapLibreGL.setAccessToken(null);
+// MapLibreGL.setAccessToken(null);
 
 let host = '';
 if (host) {
