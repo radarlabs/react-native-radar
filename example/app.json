@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -60,15 +61,13 @@
       [
         "expo-build-properties",
         {
-          "newArchEnabled": true,
           "ios": {
             "deploymentTarget": "15.1",
             "useFrameworks": "static"
           },
           "android": {
             "enableProguardInReleaseBuilds": true,
-            "enableShrinkResourcesInReleaseBuilds": true,
-            "newArchEnabled": true
+            "enableShrinkResourcesInReleaseBuilds": true
           }
         }
       ]

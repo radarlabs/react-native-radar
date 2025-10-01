@@ -6,7 +6,8 @@ import {
   Platform,
   ScrollView,
   SafeAreaView,
-  Settings
+  Settings,
+  NativeModules
 } from "react-native";
 import Radar, { Map, Autocomplete } from "react-native-radar";
 import type { RadarMapOptions } from "react-native-radar";
@@ -27,12 +28,45 @@ import { Settings as RNSettings } from 'react-native';
 // }
 
 
-Radar.initialize("prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", true);
+Radar.initialize("prj_test_pk_", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
+  var nativeFabricUIManager: any;
 }
-const isNewArchitecture = global.__turboModuleProxy != null;
+
+const globalAny = global as any;
+const isNewArchitecture = (() => {
+
+  if (typeof global !== 'undefined' && globalAny.nativeFabricUIManager) {
+    return true;
+  }
+  
+  if (typeof global !== 'undefined' && globalAny.__turboModuleProxy) {
+    return true;
+  }
+  
+  if (typeof global !== 'undefined' && globalAny.HermesInternal) {
+    try {
+      return typeof globalAny.__turboModuleProxy !== 'undefined';
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  try {
+    const constants = Platform.constants;
+    const version = constants?.reactNativeVersion;
+    if (version && version.major >= 0 && version.minor >= 68) {
+      return typeof global !== 'undefined' && 
+             (globalAny.nativeFabricUIManager || globalAny.__turboModuleProxy);
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+  
+  return false;
+})();
 
 export default function App() {
   const [displayText, setDisplayText] = useState("");
