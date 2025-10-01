@@ -12,26 +12,22 @@ import Radar, { Map, Autocomplete } from "react-native-radar";
 import type { RadarMapOptions } from "react-native-radar";
 import React, { useEffect, useState } from "react";
 import ExampleButton from "./components/exampleButton";
-import MapLibreGL from "@maplibre/maplibre-react-native";
-
 import { Settings as RNSettings } from 'react-native';
 
-MapLibreGL.setAccessToken(null);
-
-let host = '';
-if (host) {
-  if (Platform.OS === 'ios') {
-    RNSettings.set({ 'radar-host': host });
-  } else if (Platform.OS === 'android') {
-    const SharedPreferences = require('expo-shared-preferences');
-    SharedPreferences.setItemAsync('host', host, {
-      name: 'RadarSDK',
-    });
-  }
-}
+// let host = '';
+// if (host) {
+//   if (Platform.OS === 'ios') {
+//     RNSettings.set({ 'radar-host': host });
+//   } else if (Platform.OS === 'android') {
+//     const SharedPreferences = require('expo-shared-preferences');
+//     SharedPreferences.setItemAsync('host', host, {
+//       name: 'RadarSDK',
+//     });
+//   }
+// }
 
 
-Radar.initialize("prj_test_pk_", true);
+Radar.initialize("prj_test_pk_4899327d5733b7741a3bfa223157f3859273be46", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
