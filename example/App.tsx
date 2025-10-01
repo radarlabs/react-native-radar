@@ -37,29 +37,19 @@ declare global {
 
 const globalAny = global as any;
 const isNewArchitecture = (() => {
-
-  if (typeof global !== 'undefined' && globalAny.nativeFabricUIManager) {
+  if (globalAny.nativeFabricUIManager) {
     return true;
   }
   
-  if (typeof global !== 'undefined' && globalAny.__turboModuleProxy) {
+  if (globalAny.__turboModuleProxy) {
     return true;
-  }
-  
-  if (typeof global !== 'undefined' && globalAny.HermesInternal) {
-    try {
-      return typeof globalAny.__turboModuleProxy !== 'undefined';
-    } catch (e) {
-      return false;
-    }
   }
   
   try {
     const constants = Platform.constants;
     const version = constants?.reactNativeVersion;
     if (version && version.major >= 0 && version.minor >= 68) {
-      return typeof global !== 'undefined' && 
-             (globalAny.nativeFabricUIManager || globalAny.__turboModuleProxy);
+      return globalAny.nativeFabricUIManager || globalAny.__turboModuleProxy;
     }
   } catch (e) {
     // Ignore errors
