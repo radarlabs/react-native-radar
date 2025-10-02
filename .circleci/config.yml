@@ -34,10 +34,11 @@ jobs:
     working_directory: ~/react-native-radar/example
     docker:
       - image: cimg/android:2024.01.1-browsers
-    resource_class: large
+    resource_class: xlarge
     environment:
       JAVA_OPTS: "-Xmx2g -XX:+UseG1GC"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=256m -XX:+UseG1GC"
+      ANDROID_NDK_MAX_PARALLEL_JOBS: "2"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.workers.max=2"
       NODE_OPTIONS: "--max-old-space-size=2048"
     steps:
       - attach_workspace:
