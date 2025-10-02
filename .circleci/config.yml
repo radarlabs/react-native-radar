@@ -77,7 +77,7 @@ jobs:
             ./gradlew assembleDebug --no-daemon --info
   ios:
     macos:
-      xcode: "15.4.0"
+      xcode: "16.1.0"
     resource_class: macos-m1-medium-gen1
     working_directory: ~/react-native-radar/example
     steps:
@@ -94,6 +94,10 @@ jobs:
           command: |
             cd ios
             rm -rf ~/Library/Developer/Xcode/DerivedData/Example-* || true
+            # Try to disable problematic sandbox operations
+            export DISABLE_FLIPPER=1
+            export USE_HERMES=1
+            export RCT_NO_LAUNCH_PACKAGER=1
             # Try to fix potential XCFramework issues
             find . -name "*.xcframework" -exec chmod -R 755 {} \; || true
             xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
