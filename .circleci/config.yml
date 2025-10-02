@@ -94,11 +94,10 @@ jobs:
           command: |
             cd ios
             rm -rf ~/Library/Developer/Xcode/DerivedData/Example-* || true
-            rm -rf ./build || true
             # Try to fix potential XCFramework issues
             find . -name "*.xcframework" -exec chmod -R 755 {} \; || true
             xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
-            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=NO -allowProvisioningUpdates -derivedDataPath ./build -quiet
+            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=NO -allowProvisioningUpdates -quiet
  
 
 workflows:
