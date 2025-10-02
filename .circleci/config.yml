@@ -78,7 +78,7 @@ jobs:
   ios:
     macos:
       xcode: "16.1.0"
-    resource_class: medium
+    resource_class: macos-m1-medium-gen1
     working_directory: ~/react-native-radar/example
     steps:
       - attach_workspace:
