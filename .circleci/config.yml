@@ -122,7 +122,7 @@ jobs:
             # Try to fix potential XCFramework issues
             find . -name "*.xcframework" -exec chmod -R 755 {} \; || true
             xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
-            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=NO -allowProvisioningUpdates VALIDATE_WORKSPACE=NO
+            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=NO -allowProvisioningUpdates VALIDATE_WORKSPACE=NO CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
  
 
 workflows:
