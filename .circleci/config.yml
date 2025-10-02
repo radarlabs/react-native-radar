@@ -91,7 +91,8 @@ jobs:
           name: Build iOS
           command: |
             cd ios
-            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
+            xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
+            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=NO
  
 
 workflows:
