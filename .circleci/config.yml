@@ -104,6 +104,7 @@ jobs:
             \        if target.name == "maplibre-react-native"\
             \          config.build_settings["SKIP_INSTALL"] = "YES"\
             \          config.build_settings["BUILT_PRODUCTS_DIR"] = "$(SYMROOT)"\
+            \          config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "i386 x86_64"\
             \        end\
             \      end\
             \    end\
@@ -121,15 +122,8 @@ jobs:
           name: Build iOS
           command: |
             cd ios
-            rm -rf ~/Library/Developer/Xcode/DerivedData/Example-* || true
-            # Try to disable problematic sandbox operations
-            export DISABLE_FLIPPER=1
-            export USE_HERMES=1
-            export RCT_NO_LAUNCH_PACKAGER=1
-            # Try to fix potential XCFramework issues
-            find . -name "*.xcframework" -exec chmod -R 755 {} \; || true
             xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
-            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=YES -allowProvisioningUpdates VALIDATE_WORKSPACE=NO CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation EXCLUDED_ARCHS="x86_64"
+            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO
  
 
 workflows:
