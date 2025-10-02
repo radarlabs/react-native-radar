@@ -77,7 +77,7 @@ jobs:
             ./gradlew assembleDebug --no-daemon --info
   ios:
     macos:
-      xcode: "16.1.0"
+      xcode: "15.4.0"
     resource_class: macos-m1-medium-gen1
     working_directory: ~/react-native-radar/example
     steps:
