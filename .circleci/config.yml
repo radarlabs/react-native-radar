@@ -76,7 +76,7 @@ jobs:
             ./gradlew assembleDebug --no-daemon --info
   ios:
     macos:
-      xcode: "15.3.0"
+      xcode: "16.1.0"
     working_directory: ~/react-native-radar/example
     steps:
       - attach_workspace:
@@ -87,8 +87,11 @@ jobs:
       - run:
           name: Install Radar from local path
           command: npm run install-radar-rebuild
-      - run: cd ios 
-      - run: xcodebuild -workspace ios/Example.xcworkspace -scheme Example -sdk iphonesimulator
+      - run:
+          name: Build iOS
+          command: |
+            cd ios
+            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
  
 
 workflows:
