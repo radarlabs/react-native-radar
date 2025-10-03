@@ -6,37 +6,57 @@ import {
   Platform,
   ScrollView,
   SafeAreaView,
-  Settings
+  Settings,
+  NativeModules
 } from "react-native";
 import Radar, { Map, Autocomplete } from "react-native-radar";
 import type { RadarMapOptions } from "react-native-radar";
 import React, { useEffect, useState } from "react";
 import ExampleButton from "./components/exampleButton";
-import MapLibreGL from "@maplibre/maplibre-react-native";
-
 import { Settings as RNSettings } from 'react-native';
 
-MapLibreGL.setAccessToken(null);
-
-let host = '';
-if (host) {
-  if (Platform.OS === 'ios') {
-    RNSettings.set({ 'radar-host': host });
-  } else if (Platform.OS === 'android') {
-    const SharedPreferences = require('expo-shared-preferences');
-    SharedPreferences.setItemAsync('host', host, {
-      name: 'RadarSDK',
-    });
-  }
-}
+// let host = '';
+// if (host) {
+//   if (Platform.OS === 'ios') {
+//     RNSettings.set({ 'radar-host': host });
+//   } else if (Platform.OS === 'android') {
+//     const SharedPreferences = require('expo-shared-preferences');
+//     SharedPreferences.setItemAsync('host', host, {
+//       name: 'RadarSDK',
+//     });
+//   }
+// }
 
 
 Radar.initialize("prj_test_pk_", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
+  var nativeFabricUIManager: any;
 }
-const isNewArchitecture = global.__turboModuleProxy != null;
+
+const globalAny = global as any;
+const isNewArchitecture = (() => {
+  if (globalAny.nativeFabricUIManager) {
+    return true;
+  }
+  
+  if (globalAny.__turboModuleProxy) {
+    return true;
+  }
+  
+  try {
+    const constants = Platform.constants;
+    const version = constants?.reactNativeVersion;
+    if (version && version.major >= 0 && version.minor >= 68) {
+      return globalAny.nativeFabricUIManager || globalAny.__turboModuleProxy;
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+  
+  return false;
+})();
 
 export default function App() {
   const [displayText, setDisplayText] = useState("");

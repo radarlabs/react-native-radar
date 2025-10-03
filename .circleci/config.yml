@@ -77,7 +77,8 @@ jobs:
             ./gradlew assembleDebug --no-daemon --info
   ios:
     macos:
-      xcode: "15.3.0"
+      xcode: "16.4.0"
+    resource_class: m2pro.large
     working_directory: ~/react-native-radar/example
     steps:
       - attach_workspace:
@@ -88,8 +89,33 @@ jobs:
       - run:
           name: Install Radar from local path
           command: npm run install-radar-rebuild
-      - run: cd ios 
-      - run: xcodebuild -workspace ios/Example.xcworkspace -scheme Example -sdk iphonesimulator
+      - run:
+          name: Fix User Script Sandboxing in Podfile
+          command: |
+            cd ios
+            # Add sandboxing fix to existing post_install block
+            sed -i '' '/react_native_post_install(/i\
+            \    installer.pods_project.targets.each do |target|\
+            \      target.build_configurations.each do |config|\
+            \        config.build_settings["ENABLE_USER_SCRIPT_SANDBOXING"] = "NO"\
+            \      end\
+            \    end\
+            ' Podfile
+            
+            # Verify it worked
+            echo "=== Checking if sandboxing fix was added ==="
+            grep -A 3 -B 3 "ENABLE_USER_SCRIPT_SANDBOXING" Podfile || echo "WARNING: sandboxing fix not found!"
+      - run:
+          name: Reinstall Pods with Sandboxing Fix
+          command: |
+            cd ios
+            pod install
+      - run:
+          name: Build iOS
+          command: |
+            cd ios
+            xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
+            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO
  
 
 workflows:
