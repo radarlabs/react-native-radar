@@ -829,6 +829,7 @@ export default function App() {
 
   const mapOptions: RadarMapOptions = {
     mapStyle: 'radar-default-v1',
+    showUserLocation: true,
     onDidFinishLoadingMap: () => {
       console.log('Map finished loading');
       populateText('Map finished loading');

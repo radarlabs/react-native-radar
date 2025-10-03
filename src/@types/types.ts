@@ -849,6 +849,7 @@ export type RadarTripStatus =
 
 export interface RadarMapOptions {
   mapStyle?: string;
+  showUserLocation?: boolean;
   onRegionDidChange?: (feature: RadarMapRegionChangeEvent) => void;
   onDidFinishLoadingMap?: () => void;
   onWillStartLoadingMap?: () => void;
