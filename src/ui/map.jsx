@@ -4,11 +4,13 @@ import Radar from '../index.native';
 import { getHost, getPublishableKey } from '../helpers';
 import styles from './styles';
 
-let MapLibreGL;
+let MapView, ShapeSource, CircleLayer;
 try {
-  MapLibreGL = require('@maplibre/maplibre-react-native');
+  ({ MapView, ShapeSource, CircleLayer } = require('@maplibre/maplibre-react-native'));
 } catch (e) {
-  MapLibreGL = null;
+  MapView = null;
+  ShapeSource = null;
+  CircleLayer = null;
 }
 
 const DEFAULT_STYLE = 'radar-default-v1';
@@ -62,7 +64,7 @@ const RadarMap = ({ mapOptions, children }) => {
     return null;
   }
 
-  if (!MapLibreGL) {
+  if (!MapView) {
     return null;
   }
 
@@ -80,11 +82,11 @@ const RadarMap = ({ mapOptions, children }) => {
   };
 
   const userLocationMapIndicator = (
-    <MapLibreGL.ShapeSource
+    <ShapeSource
       id="user-location"
       shape={geoJSONUserLocation}
     >
-      <MapLibreGL.CircleLayer
+      <CircleLayer
         id="user-location-inner"
         style={{
           circleRadius: 15,
@@ -93,7 +95,7 @@ const RadarMap = ({ mapOptions, children }) => {
           circlePitchAlignment: 'map',
         }}
       />
-      <MapLibreGL.CircleLayer
+      <CircleLayer
         id="user-location-middle"
         style={{
           circleRadius: 9,
@@ -101,7 +103,7 @@ const RadarMap = ({ mapOptions, children }) => {
           circlePitchAlignment: 'map',
         }}
       />
-      <MapLibreGL.CircleLayer
+      <CircleLayer
         id="user-location-outer"
         style={{
           circleRadius: 6,
@@ -109,12 +111,12 @@ const RadarMap = ({ mapOptions, children }) => {
           circlePitchAlignment: 'map',
         }}
       />
-    </MapLibreGL.ShapeSource>
+    </ShapeSource>
   );
 
   return (
     <View style={styles.mapContainer}>
-      <MapLibreGL.MapView
+      <MapView
         style={styles.map}
         pitchEnabled={false}
         compassEnabled={false}
@@ -127,7 +129,7 @@ const RadarMap = ({ mapOptions, children }) => {
         mapStyle={styleURL}>
         {mapOptions?.showUserLocation !== false && userLocationMapIndicator}
         {children}
-      </MapLibreGL.MapView>
+      </MapView>
       <Image
         source={require('./map-logo.png')}
         style={styles.mapLogo}
