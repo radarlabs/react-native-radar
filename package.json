@@ -56,15 +56,11 @@
     ]
   },
   "peerDependencies": {
-    "@maplibre/maplibre-react-native": ">=10.2.1",
     "expo": ">=43.0.5",
     "react": ">= 16.8.6",
     "react-native": ">= 0.60.0"
   },
   "peerDependenciesMeta": {
-    "@maplibre/maplibre-react-native": {
-      "optional": true
-    },
     "expo": {
       "optional": true
     }
