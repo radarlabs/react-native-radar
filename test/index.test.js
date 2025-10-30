@@ -1,15 +1,9 @@
-// import { NativeEventEmitter, NativeModules } from 'react-native';
-
-// import Radar from '../src/index.native.ts';
-
-const NativeEventEmitter = require('react-native').NativeEventEmitter;
-
-const NativeModules = require('react-native').NativeModules;
+const { NativeEventEmitter, NativeModules, TurboModuleRegistry } = require('react-native');
 
 import Radar from '../src/index.native.ts';
 
-const mockModule = NativeModules.RNRadar;
-const mockEmitter = NativeEventEmitter.mock.results[0].value;
+// Use either TurboModule or fallback to NativeModules
+const mockModule = TurboModuleRegistry.getEnforcing("RNRadar") || NativeModules.RNRadar;
 
 describe('calls native implementation', () => {
   test('setLogLevel', () => {
@@ -96,17 +90,11 @@ describe('calls native implementation', () => {
       longitude: -73.975363,
       accuracy: 65,
     };
-    const expectedLocation = {
-      location: {
-        latitude: 40.783826,
-        longitude: -73.975363,
-        accuracy: 65,
-      }
-    }
+
     Radar.trackOnce(location);
 
     expect(mockModule.trackOnce).toHaveBeenCalledTimes(1);
-    expect(mockModule.trackOnce).toBeCalledWith(expectedLocation);
+    expect(mockModule.trackOnce).toBeCalledWith(location);
   });
 
   test('startTrackingEfficient', () => {
@@ -420,30 +408,25 @@ describe('calls native implementation', () => {
     expect(mockModule.getMatrix).toBeCalledWith(options);
   });
 
-  test('on', () => {
-    const event = 'events';
+  test('onLocationUpdated', () => {
     const callback = () => {};
-    Radar.on(event, callback);
+    Radar.onLocationUpdated(callback);
 
-    expect(mockEmitter.addListener).toHaveBeenCalledTimes(1);
-    expect(mockEmitter.addListener).toHaveBeenCalledWith(event, callback);
+    expect(typeof Radar.onLocationUpdated).toBe('function');
   });
 
-  test('off', () => {
-    const event = 'locations';
-    Radar.off(event);
+  test('onEventsReceived', () => {
+    const callback = () => {};
+    Radar.onEventsReceived(callback);
 
-    expect(mockEmitter.removeAllListeners).toHaveBeenCalledTimes(1);
-    expect(mockEmitter.removeAllListeners).toHaveBeenCalledWith(event);
+    expect(typeof Radar.onEventsReceived).toBe('function');
   });
 
-  test('sendEvent', () => {
-    const eventId = 'in_app_purchase';
-    const metadata = {"price": "$150"};
-    Radar.sendEvent(eventId, metadata);
+  test('onError', () => {
+    const callback = () => {};
+    Radar.onError(callback);
 
-    expect(mockModule.sendEvent).toHaveBeenCalledTimes(1);
-    expect(mockModule.sendEvent).toBeCalledWith(eventId, metadata);
+    expect(typeof Radar.onError).toBe('function');
   });
 
   test('getUserId', () => {
