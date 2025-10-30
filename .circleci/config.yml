@@ -235,12 +235,12 @@ workflows:
       - android:
           requires:
             - node
-      - android-oldarch:
+      - android-oldArch:
           requires:
             - node
       - ios:
           requires:
             - node
-      - ios-oldarch:
+      - ios-oldArch:
           requires:
             - node
