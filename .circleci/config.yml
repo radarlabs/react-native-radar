@@ -11,6 +11,9 @@ jobs:
       - run: npm install
       - run: npm install -g typescript
       - run:
+          name: Run Tests
+          command: npm test
+      - run:
           name: Type-check
           command: npm run build-all
       - persist_to_workspace:
