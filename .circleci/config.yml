@@ -8,8 +8,19 @@ jobs:
       - image: cimg/node:22.16.0
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
       - run: npm install
       - run: npm install -g typescript
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Run Tests
+          command: npm test
       - run:
           name: Type-check
           command: npm run build-all
@@ -75,6 +86,57 @@ jobs:
             cd android 
             ./gradlew clean --no-daemon
             ./gradlew assembleDebug --no-daemon --info
+  android-oldArch:
+    working_directory: ~/react-native-radar/example
+    docker:
+      - image: cimg/android:2024.01.1-browsers
+    resource_class: xlarge
+    environment:
+      JAVA_OPTS: "-Xmx2g -XX:+UseG1GC"
+      ANDROID_NDK_MAX_PARALLEL_JOBS: "2"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.workers.max=2"
+      NODE_OPTIONS: "--max-old-space-size=2048"
+    steps:
+      - attach_workspace:
+          at: ~/react-native-radar
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Set use old arch
+          command: |
+            jq ".expo.plugins |= ( map( if (.[0] == \"expo-build-properties\") then . | .[1].newArchEnabled |= false | .[1].android.newArchEnabled |= false | .[1].ios.newArchEnabled |= false else . end))" app.json > oldarch.json
+            mv oldarch.json app.json
+            cat app.json
+      - run:
+          name: Install Radar from local path
+          command: npm run install-radar-rebuild
+      - run:
+          name: Install Ninja
+          command: |
+            sudo apt-get update -o Acquire::AllowInsecureRepositories=true
+            sudo apt-get install -y ninja-build
+      - run:
+          name: Configure Gradle
+          command: |
+            echo "Creating .gradle directory..."
+            mkdir -p ~/.gradle
+            echo "Writing gradle.properties..."
+            echo "org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=256m -XX:+UseG1GC" >> ~/.gradle/gradle.properties
+            echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
+            echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
+            echo "org.gradle.configureondemand=false" >> ~/.gradle/gradle.properties
+            echo "Gradle properties configured:"
+            cat ~/.gradle/gradle.properties
+            echo "Directory permissions:"
+            ls -la ~/.gradle/
+      - run: chown -R $USER:$USER android
+      - run: 
+          name: Build Android Debug (Old Arch)
+          command: | 
+            cd android 
+            ./gradlew clean --no-daemon
+            ./gradlew assembleDebug --no-daemon --info
   ios:
     macos:
       xcode: "16.4.0"
@@ -116,6 +178,53 @@ jobs:
             cd ios
             xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
             xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO
+  ios-oldArch:
+    macos:
+      xcode: "16.4.0"
+    resource_class: m2pro.large
+    working_directory: ~/react-native-radar/example
+    steps:
+      - attach_workspace:
+          at: ~/react-native-radar
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Set use old arch
+          command: |
+            jq ".expo.plugins |= ( map( if (.[0] == \"expo-build-properties\") then . | .[1].newArchEnabled |= false | .[1].android.newArchEnabled |= false | .[1].ios.newArchEnabled |= false else . end))" app.json > oldarch.json
+            mv oldarch.json app.json
+            cat app.json
+      - run:
+          name: Install Radar from local path
+          command: npm run install-radar-rebuild
+      - run:
+          name: Fix User Script Sandboxing in Podfile
+          command: |
+            cd ios
+            # Add sandboxing fix to existing post_install block
+            sed -i '' '/react_native_post_install(/i\
+            \    installer.pods_project.targets.each do |target|\
+            \      target.build_configurations.each do |config|\
+            \        config.build_settings["ENABLE_USER_SCRIPT_SANDBOXING"] = "NO"\
+            \      end\
+            \    end\
+            ' Podfile
+            
+            # Verify it worked
+            echo "=== Checking if sandboxing fix was added ==="
+            grep -A 3 -B 3 "ENABLE_USER_SCRIPT_SANDBOXING" Podfile || echo "WARNING: sandboxing fix not found!"
+      - run:
+          name: Reinstall Pods with Sandboxing Fix
+          command: |
+            cd ios
+            pod install
+      - run:
+          name: Build iOS (Old Arch)
+          command: |
+            cd ios
+            xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
+            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO
  
 
 workflows:
@@ -126,6 +235,12 @@ workflows:
       - android:
           requires:
             - node
+      - android-oldArch:
+          requires:
+            - node
       - ios:
+          requires:
+            - node
+      - ios-oldArch:
           requires:
             - node
