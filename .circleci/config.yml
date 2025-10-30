@@ -86,7 +86,7 @@ jobs:
             cd android 
             ./gradlew clean --no-daemon
             ./gradlew assembleDebug --no-daemon --info
-  android-oldarch:
+  android-oldArch:
     working_directory: ~/react-native-radar/example
     docker:
       - image: cimg/android:2024.01.1-browsers
@@ -178,6 +178,53 @@ jobs:
             cd ios
             xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
             xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO
+  ios-oldArch:
+    macos:
+      xcode: "16.4.0"
+    resource_class: m2pro.large
+    working_directory: ~/react-native-radar/example
+    steps:
+      - attach_workspace:
+          at: ~/react-native-radar
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Set use old arch
+          command: |
+            jq ".expo.plugins |= ( map( if (.[0] == \"expo-build-properties\") then . | .[1].newArchEnabled |= false | .[1].android.newArchEnabled |= false | .[1].ios.newArchEnabled |= false else . end))" app.json > oldarch.json
+            mv oldarch.json app.json
+            cat app.json
+      - run:
+          name: Install Radar from local path
+          command: npm run install-radar-rebuild
+      - run:
+          name: Fix User Script Sandboxing in Podfile
+          command: |
+            cd ios
+            # Add sandboxing fix to existing post_install block
+            sed -i '' '/react_native_post_install(/i\
+            \    installer.pods_project.targets.each do |target|\
+            \      target.build_configurations.each do |config|\
+            \        config.build_settings["ENABLE_USER_SCRIPT_SANDBOXING"] = "NO"\
+            \      end\
+            \    end\
+            ' Podfile
+            
+            # Verify it worked
+            echo "=== Checking if sandboxing fix was added ==="
+            grep -A 3 -B 3 "ENABLE_USER_SCRIPT_SANDBOXING" Podfile || echo "WARNING: sandboxing fix not found!"
+      - run:
+          name: Reinstall Pods with Sandboxing Fix
+          command: |
+            cd ios
+            pod install
+      - run:
+          name: Build iOS (Old Arch)
+          command: |
+            cd ios
+            xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
+            xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO
  
 
 workflows:
@@ -192,5 +239,8 @@ workflows:
           requires:
             - node
       - ios:
+          requires:
+            - node
+      - ios-oldarch:
           requires:
             - node
