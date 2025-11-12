@@ -1,4 +1,4 @@
-def radar_sdk_version = '3.23.2'
+def radar_sdk_version = '3.23.5'
 
 buildscript {
   ext.getExtOrDefault = {name ->
