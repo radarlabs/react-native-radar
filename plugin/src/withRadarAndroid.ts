@@ -72,6 +72,9 @@ export const withRadarAndroid = (
         config.modResults.contents,
         args.androidFraud ?? false
       );
+      config.modResults.contents = addCoreLibraryDesugaring(
+        config.modResults.contents
+      );
     } else {
       throw new Error(
         "Cannot configure Sentry in the app gradle because the build.gradle is not groovy"
@@ -105,6 +108,7 @@ function withAndroidPermissions(
 function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
   let hasLocationService = false;
   let hasPlayIntegrity = false;
+  
   if (
     buildGradle.includes(
       'com.google.android.gms:play-services-location:21.0.1"'
@@ -139,8 +143,57 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
       "\n\n" + '    implementation "com.google.android.play:integrity:1.2.0"';
   }
 
-  return buildGradle.replace(
+  buildGradle = buildGradle.replace(
     pattern,
     (match: string) => match + replacementString
   );
+
+  return buildGradle;
+}
+
+function addCoreLibraryDesugaring(buildGradle: string) {
+  if (buildGradle.includes('coreLibraryDesugaringEnabled true')) {
+    return buildGradle;
+  }
+  
+  const androidBlockRegex = /android\s*\{([\s\S]*?)^\}/m;
+  const compileOptionsRegex = /compileOptions\s*\{([\s\S]*?)^\s*\}/m;
+  
+  const androidMatch = buildGradle.match(androidBlockRegex);
+  if (androidMatch) {
+    const androidBlock = androidMatch[0];
+    const androidBlockContent = androidMatch[1];
+    
+    const compileOptionsMatch = androidBlockContent.match(compileOptionsRegex);
+    if (compileOptionsMatch) {
+      if (!/coreLibraryDesugaringEnabled\s+true/.test(compileOptionsMatch[0])) {
+        const updatedCompileOptions = compileOptionsMatch[0].replace(
+          /^\s*\}/m,
+          '        coreLibraryDesugaringEnabled true\n    }'
+        );
+        const updatedAndroidBlock = androidBlock.replace(compileOptionsMatch[0], updatedCompileOptions);
+        buildGradle = buildGradle.replace(androidBlock, updatedAndroidBlock);
+      }
+    } else {
+      const insertIndex = buildGradle.indexOf(androidMatch[0]) + androidMatch[0].indexOf('{') + 1;
+      buildGradle =
+        buildGradle.slice(0, insertIndex) +
+        '\n    compileOptions {\n        coreLibraryDesugaringEnabled true\n    }\n' +
+        buildGradle.slice(insertIndex);
+    }
+  }
+  
+  if (!buildGradle.includes('coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"')) {
+    const dependenciesPattern = '\ndependencies {\n';
+    const dependenciesIndex = buildGradle.indexOf(dependenciesPattern);
+    if (dependenciesIndex !== -1) {
+      const dependenciesPivot = dependenciesIndex + dependenciesPattern.length;
+      buildGradle =
+        buildGradle.slice(0, dependenciesPivot) +
+        '    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"\n\n' +
+        buildGradle.slice(dependenciesPivot);
+    }
+  }
+
+  return buildGradle;
 }
