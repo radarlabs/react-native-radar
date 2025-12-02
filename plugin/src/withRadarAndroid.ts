@@ -152,31 +152,47 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
 }
 
 function addCoreLibraryDesugaring(buildGradle: string) {
-  // Skip if already added
-  if (buildGradle.includes('coreLibraryDesugaring')) {
+  if (buildGradle.includes('coreLibraryDesugaringEnabled true')) {
     return buildGradle;
   }
-
-  // Add coreLibraryDesugaringEnabled to compileOptions
-  const androidPattern = '\nandroid {\n';
-  const androidIndex = buildGradle.indexOf(androidPattern);
-  if (androidIndex !== -1) {
-    const androidPivot = androidIndex + androidPattern.length;
-    buildGradle =
-      buildGradle.slice(0, androidPivot) +
-      '    compileOptions {\n        coreLibraryDesugaringEnabled true\n    }\n\n' +
-      buildGradle.slice(androidPivot);
+  
+  const androidBlockRegex = /android\s*\{([\s\S]*?)^\}/m;
+  const compileOptionsRegex = /compileOptions\s*\{([\s\S]*?)^\s*\}/m;
+  
+  const androidMatch = buildGradle.match(androidBlockRegex);
+  if (androidMatch) {
+    const androidBlock = androidMatch[0];
+    const androidBlockContent = androidMatch[1];
+    
+    const compileOptionsMatch = androidBlockContent.match(compileOptionsRegex);
+    if (compileOptionsMatch) {
+      if (!/coreLibraryDesugaringEnabled\s+true/.test(compileOptionsMatch[0])) {
+        const updatedCompileOptions = compileOptionsMatch[0].replace(
+          /^\s*\}/m,
+          '        coreLibraryDesugaringEnabled true\n    }'
+        );
+        const updatedAndroidBlock = androidBlock.replace(compileOptionsMatch[0], updatedCompileOptions);
+        buildGradle = buildGradle.replace(androidBlock, updatedAndroidBlock);
+      }
+    } else {
+      const insertIndex = buildGradle.indexOf(androidMatch[0]) + androidMatch[0].indexOf('{') + 1;
+      buildGradle =
+        buildGradle.slice(0, insertIndex) +
+        '\n    compileOptions {\n        coreLibraryDesugaringEnabled true\n    }\n' +
+        buildGradle.slice(insertIndex);
+    }
   }
-
-  // Add desugar_jdk_libs dependency
-  const dependenciesPattern = '\ndependencies {\n';
-  const dependenciesIndex = buildGradle.indexOf(dependenciesPattern);
-  if (dependenciesIndex !== -1) {
-    const dependenciesPivot = dependenciesIndex + dependenciesPattern.length;
-    buildGradle =
-      buildGradle.slice(0, dependenciesPivot) +
-      '    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"\n\n' +
-      buildGradle.slice(dependenciesPivot);
+  
+  if (!buildGradle.includes('coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"')) {
+    const dependenciesPattern = '\ndependencies {\n';
+    const dependenciesIndex = buildGradle.indexOf(dependenciesPattern);
+    if (dependenciesIndex !== -1) {
+      const dependenciesPivot = dependenciesIndex + dependenciesPattern.length;
+      buildGradle =
+        buildGradle.slice(0, dependenciesPivot) +
+        '    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"\n\n' +
+        buildGradle.slice(dependenciesPivot);
+    }
   }
 
   return buildGradle;
