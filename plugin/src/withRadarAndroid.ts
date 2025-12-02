@@ -72,6 +72,9 @@ export const withRadarAndroid = (
         config.modResults.contents,
         args.androidFraud ?? false
       );
+      config.modResults.contents = addCoreLibraryDesugaring(
+        config.modResults.contents
+      );
     } else {
       throw new Error(
         "Cannot configure Sentry in the app gradle because the build.gradle is not groovy"
@@ -105,6 +108,7 @@ function withAndroidPermissions(
 function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
   let hasLocationService = false;
   let hasPlayIntegrity = false;
+  
   if (
     buildGradle.includes(
       'com.google.android.gms:play-services-location:21.0.1"'
@@ -139,8 +143,41 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
       "\n\n" + '    implementation "com.google.android.play:integrity:1.2.0"';
   }
 
-  return buildGradle.replace(
+  buildGradle = buildGradle.replace(
     pattern,
     (match: string) => match + replacementString
   );
+
+  return buildGradle;
+}
+
+function addCoreLibraryDesugaring(buildGradle: string) {
+  // Skip if already added
+  if (buildGradle.includes('coreLibraryDesugaring')) {
+    return buildGradle;
+  }
+
+  // Add coreLibraryDesugaringEnabled to compileOptions
+  const androidPattern = '\nandroid {\n';
+  const androidIndex = buildGradle.indexOf(androidPattern);
+  if (androidIndex !== -1) {
+    const androidPivot = androidIndex + androidPattern.length;
+    buildGradle =
+      buildGradle.slice(0, androidPivot) +
+      '    compileOptions {\n        coreLibraryDesugaringEnabled true\n    }\n\n' +
+      buildGradle.slice(androidPivot);
+  }
+
+  // Add desugar_jdk_libs dependency
+  const dependenciesPattern = '\ndependencies {\n';
+  const dependenciesIndex = buildGradle.indexOf(dependenciesPattern);
+  if (dependenciesIndex !== -1) {
+    const dependenciesPivot = dependenciesIndex + dependenciesPattern.length;
+    buildGradle =
+      buildGradle.slice(0, dependenciesPivot) +
+      '    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"\n\n' +
+      buildGradle.slice(dependenciesPivot);
+  }
+
+  return buildGradle;
 }
