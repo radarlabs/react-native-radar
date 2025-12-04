@@ -98,7 +98,8 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
-    public void initialize(String publishableKey, boolean fraud) {
+    public void initialize(String publishableKey, boolean fraud, ReadableMap options) {
+        // options parameter is no-op on Android for now
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
@@ -442,6 +443,16 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     @ReactMethod
     public void showInAppMessage(ReadableMap inAppMessageMap) {
         radarModuleImpl.showInAppMessage(inAppMessageMap);
+    }
+
+    @ReactMethod
+    public void setPushNotificationToken(String token) {
+        radarModuleImpl.setPushNotificationToken(token);
+    }
+
+    @ReactMethod
+    public void isInitialized(final Promise promise) {
+        radarModuleImpl.isInitialized(promise);
     }
 
 }

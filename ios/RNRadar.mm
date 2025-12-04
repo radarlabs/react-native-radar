@@ -184,10 +184,15 @@ RCT_EXPORT_MODULE()
     #endif
 }
 
-RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
+RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud options:(NSDictionary *)options) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
     [[NSUserDefaults standardUserDefaults] setObject:@"3.23.6" forKey:@"radar-xPlatformSDKVersion"];
-    [Radar initializeWithPublishableKey:publishableKey];
+    
+    RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
+    if (options[@"silentPush"]) {
+        radarOptions.silentPush = [options[@"silentPush"] boolValue];
+    }
+    [Radar initializeWithPublishableKey:publishableKey options:radarOptions];
 }
 
 RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {
@@ -1292,6 +1297,15 @@ RCT_EXPORT_METHOD(showInAppMessage:(NSDictionary *)inAppMessageDict) {
     if (inAppMessage != nil) {
         [Radar showInAppMessage:inAppMessage];
     }
+}
+
+RCT_EXPORT_METHOD(setPushNotificationToken:(NSString *)token) {
+    // No-op on iOS - push notifications are configured differently
+    // iOS uses didRegisterForRemoteNotificationsWithDeviceToken in AppDelegate
+}
+
+RCT_EXPORT_METHOD(isInitialized:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve(@(Radar.isInitialized));
 }
 
 RCT_EXPORT_METHOD(logConversion:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {

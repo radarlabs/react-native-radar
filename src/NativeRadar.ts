@@ -43,7 +43,7 @@ export type InAppMessageClickedEmitter = {
 };
 
 export interface Spec extends TurboModule {
-  initialize(publishableKey: string, fraud: boolean): void;
+  initialize(publishableKey: string, fraud: boolean, options: Object | null): void;
   requestPermissions(background: boolean): Promise<string>;
   getPermissionsStatus(): Promise<string>;
   trackOnce(trackOnceOptions: Object | null): Promise<Object>;
@@ -101,6 +101,8 @@ export interface Spec extends TurboModule {
   getHost(): Promise<string>;
   getPublishableKey(): Promise<string>;
   showInAppMessage(inAppMessage: Object): void;
+  setPushNotificationToken(token: string): void;
+  isInitialized(): Promise<boolean>;
   readonly locationEmitter: EventEmitter<LocationEmitter>;
   readonly clientLocationEmitter: EventEmitter<ClientLocationEmitter>;
   readonly errorEmitter: EventEmitter<ErrorEmitter>;

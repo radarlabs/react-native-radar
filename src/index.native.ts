@@ -1,4 +1,5 @@
 import type { EventSubscription } from "react-native";
+import { Platform } from "react-native";
 import type { RadarNativeInterface } from "./@types/RadarNativeInterface";
 import type {
   RadarTrackCallback,
@@ -118,8 +119,8 @@ let inAppMessageDismissedUpdateSubscription: EventSubscription | null = null;
 let inAppMessageClickedUpdateSubscription: EventSubscription | null = null;
 
 const Radar: RadarNativeInterface = {
-  initialize: (publishableKey: string, fraud?: boolean) => {
-    NativeRadar.initialize(publishableKey, !!fraud);
+  initialize: (publishableKey: string, fraud?: boolean, options?: Object | null) => {
+    NativeRadar.initialize(publishableKey, !!fraud, options || null);
     Radar.onNewInAppMessage((inAppMessage) => {
       Radar.showInAppMessage(inAppMessage);
     });
@@ -315,6 +316,14 @@ const Radar: RadarNativeInterface = {
 
   showInAppMessage: (inAppMessage: RadarInAppMessage) => {
     return NativeRadar.showInAppMessage(inAppMessage);
+  },
+
+  setPushNotificationToken: (token: string) => {
+    if (Platform.OS === 'android') {
+      return NativeRadar.setPushNotificationToken(token);
+    }
+    // iOS handles push notifications differently via AppDelegate
+    // See: https://docs.radar.com/sdk/silent-push#silent-push
   },
 
   requestPermissions: (background: boolean) => {
@@ -533,6 +542,9 @@ const Radar: RadarNativeInterface = {
   },
   getPublishableKey: function (): Promise<string> {
     return NativeRadar.getPublishableKey();
+  },
+  isInitialized: function (): Promise<boolean> {
+    return NativeRadar.isInitialized();
   },
 };
 

@@ -1298,4 +1298,15 @@ public class RadarModuleImpl {
         }
         Radar.showInAppMessage(inAppMessage);
     }
+
+    public void setPushNotificationToken(String token) {
+        Radar.setPushNotificationToken(token);  
+    }
+
+    public void isInitialized(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+        promise.resolve(Radar.isInitialized());
+    }
 }

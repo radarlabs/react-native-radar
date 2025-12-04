@@ -49,7 +49,7 @@ import type {
 } from "./types";
 
 export interface RadarNativeInterface {
-  initialize: (publishableKey: string, fraud?: boolean) => void;
+  initialize: (publishableKey: string, fraud?: boolean, options?: Object | null) => void;
   setLogLevel: (level: RadarLogLevel) => void;
   setUserId: (userId: string) => void;
   getUserId: () => Promise<string>;
@@ -124,6 +124,8 @@ export interface RadarNativeInterface {
   nativeSdkVersion: () => Promise<string>;
   rnSdkVersion: () => string;
   showInAppMessage: (inAppMessage: RadarInAppMessage) => void;
+  setPushNotificationToken: (token: string) => void;
+  isInitialized: () => Promise<boolean>;
 
   onLocationUpdated: (callback: RadarLocationUpdateCallback | null) => void;
   onClientLocationUpdated: (

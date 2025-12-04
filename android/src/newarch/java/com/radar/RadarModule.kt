@@ -140,7 +140,8 @@ class RadarModule(reactContext: ReactApplicationContext) :
         return NAME
     }
 
-    override fun initialize(publishableKey: String, fraud: Boolean): Unit {
+    override fun initialize(publishableKey: String, fraud: Boolean, options: ReadableMap?): Unit {
+        // options parameter is no-op on Android for now
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
         editor.putString("x_platform_sdk_version", "3.23.6")
@@ -430,6 +431,14 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun showInAppMessage(inAppMessage: ReadableMap): Unit {
         radarModuleImpl.showInAppMessage(inAppMessage)
+    }
+
+    override fun setPushNotificationToken(token: String): Unit {
+        radarModuleImpl.setPushNotificationToken(token)
+    }
+
+    override fun isInitialized(promise: Promise): Unit {
+        radarModuleImpl.isInitialized(promise)
     }
 
 
