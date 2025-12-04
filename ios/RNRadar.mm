@@ -189,7 +189,7 @@ RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud option
     [[NSUserDefaults standardUserDefaults] setObject:@"3.23.6" forKey:@"radar-xPlatformSDKVersion"];
     
     RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
-    if (options[@"silentPush"]) {
+    if (options != nil && options[@"silentPush"]) {
         radarOptions.silentPush = [options[@"silentPush"] boolValue];
     }
     [Radar initializeWithPublishableKey:publishableKey options:radarOptions];

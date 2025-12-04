@@ -1300,7 +1300,7 @@ public class RadarModuleImpl {
     }
 
     public void setPushNotificationToken(String token) {
-        Radar.setPushNotificationToken(token);  
+        Radar.setPushNotificationToken(token);
     }
 
     public void isInitialized(final Promise promise) {
