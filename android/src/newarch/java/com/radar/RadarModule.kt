@@ -144,7 +144,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         // options parameter is no-op on Android for now
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "3.23.7-beta.1")
+        editor.putString("x_platform_sdk_version", "3.23.7-beta.2")
         editor.apply()
 
         Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, currentActivity)
