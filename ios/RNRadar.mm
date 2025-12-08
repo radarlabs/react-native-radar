@@ -1304,6 +1304,14 @@ RCT_EXPORT_METHOD(setPushNotificationToken:(NSString *)token) {
     // iOS uses didRegisterForRemoteNotificationsWithDeviceToken in AppDelegate
 }
 
+RCT_EXPORT_METHOD(setAppGroup:(NSString *)groupId) {
+    [Radar setAppGroup:groupId];
+}
+
+RCT_EXPORT_METHOD(setLocationExtensionToken:(NSString *)token) {
+    [Radar setLocationExtensionToken:token];
+}
+
 RCT_EXPORT_METHOD(isInitialized:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     resolve(@(Radar.isInitialized));
 }

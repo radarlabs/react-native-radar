@@ -326,6 +326,20 @@ const Radar: RadarNativeInterface = {
     // See: https://docs.radar.com/sdk/silent-push#silent-push
   },
 
+  setAppGroup: (groupId: string) => {
+    if (Platform.OS === 'ios') {
+      return NativeRadar.setAppGroup(groupId);
+    }
+    // Android doesn't support app groups
+  },
+
+  setLocationExtensionToken: (token: string) => {
+    if (Platform.OS === 'ios') {
+      return NativeRadar.setLocationExtensionToken(token);
+    }
+    // Android doesn't support location extensions
+  },
+
   requestPermissions: (background: boolean) => {
     return NativeRadar.requestPermissions(
       background

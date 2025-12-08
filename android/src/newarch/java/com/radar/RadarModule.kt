@@ -441,6 +441,14 @@ class RadarModule(reactContext: ReactApplicationContext) :
         radarModuleImpl.isInitialized(promise)
     }
 
+    override fun setAppGroup(groupId: String): Unit {
+        radarModuleImpl.setAppGroup(groupId)
+    }
+
+    override fun setLocationExtensionToken(token: String): Unit {
+        radarModuleImpl.setLocationExtensionToken(token)
+    }
+
 
     companion object {
         const val NAME = "RNRadar"

@@ -455,4 +455,14 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         radarModuleImpl.isInitialized(promise);
     }
 
+    @ReactMethod
+    public void setAppGroup(String groupId) {
+        radarModuleImpl.setAppGroup(groupId);
+    }
+
+    @ReactMethod
+    public void setLocationExtensionToken(String token) {
+        radarModuleImpl.setLocationExtensionToken(token);
+    }
+
 }

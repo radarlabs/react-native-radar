@@ -103,6 +103,8 @@ export interface Spec extends TurboModule {
   showInAppMessage(inAppMessage: Object): void;
   setPushNotificationToken(token: string): void;
   isInitialized(): Promise<boolean>;
+  setAppGroup(groupId: string): void;
+  setLocationExtensionToken(token: string): void;
   readonly locationEmitter: EventEmitter<LocationEmitter>;
   readonly clientLocationEmitter: EventEmitter<ClientLocationEmitter>;
   readonly errorEmitter: EventEmitter<ErrorEmitter>;

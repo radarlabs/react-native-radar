@@ -1309,4 +1309,12 @@ public class RadarModuleImpl {
         }
         promise.resolve(Radar.isInitialized());
     }
+
+    public void setAppGroup(String groupId) {
+        // No-op on Android - app groups are iOS-specific
+    }
+
+    public void setLocationExtensionToken(String token) {
+        // No-op on Android - location extensions are iOS-specific
+    }
 }

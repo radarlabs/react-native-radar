@@ -126,6 +126,8 @@ export interface RadarNativeInterface {
   showInAppMessage: (inAppMessage: RadarInAppMessage) => void;
   setPushNotificationToken: (token: string) => void;
   isInitialized: () => Promise<boolean>;
+  setAppGroup: (groupId: string) => void;
+  setLocationExtensionToken: (token: string) => void;
 
   onLocationUpdated: (callback: RadarLocationUpdateCallback | null) => void;
   onClientLocationUpdated: (
