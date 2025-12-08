@@ -1298,4 +1298,23 @@ public class RadarModuleImpl {
         }
         Radar.showInAppMessage(inAppMessage);
     }
+
+    public void setPushNotificationToken(String token) {
+        Radar.setPushNotificationToken(token);
+    }
+
+    public void isInitialized(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+        promise.resolve(Radar.isInitialized());
+    }
+
+    public void setAppGroup(String groupId) {
+        // No-op on Android - app groups are iOS-specific
+    }
+
+    public void setLocationExtensionToken(String token) {
+        // No-op on Android - location extensions are iOS-specific
+    }
 }

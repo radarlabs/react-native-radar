@@ -98,11 +98,12 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
-    public void initialize(String publishableKey, boolean fraud) {
+    public void initialize(String publishableKey, boolean fraud, ReadableMap options) {
+        // options parameter is no-op on Android for now
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "3.23.6");
+        editor.putString("x_platform_sdk_version", "3.23.7-beta.3");
         editor.apply();
         Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, inAppMessageReceiver, getCurrentActivity());
         if (fraud) { 
@@ -442,6 +443,26 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     @ReactMethod
     public void showInAppMessage(ReadableMap inAppMessageMap) {
         radarModuleImpl.showInAppMessage(inAppMessageMap);
+    }
+
+    @ReactMethod
+    public void setPushNotificationToken(String token) {
+        radarModuleImpl.setPushNotificationToken(token);
+    }
+
+    @ReactMethod
+    public void isInitialized(final Promise promise) {
+        radarModuleImpl.isInitialized(promise);
+    }
+
+    @ReactMethod
+    public void setAppGroup(String groupId) {
+        radarModuleImpl.setAppGroup(groupId);
+    }
+
+    @ReactMethod
+    public void setLocationExtensionToken(String token) {
+        radarModuleImpl.setLocationExtensionToken(token);
     }
 
 }
