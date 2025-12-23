@@ -16,7 +16,7 @@ jobs:
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v2
         with:
-          node-version: '22.x'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
       - run: npm run check-latest-tag
@@ -31,7 +31,7 @@ jobs:
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v2
         with:
-          node-version: '22.x'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
       - run: npm run check-beta-tag
