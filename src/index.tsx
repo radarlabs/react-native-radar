@@ -18,10 +18,5 @@ let Autocomplete =
   Platform.OS !== "web" ? require("./ui/autocomplete").default : {};
 export { Autocomplete };
 
-let Map = Platform.OS !== "web" ? require("./ui/map").default : {};
-export { Map };
-
-export type { RadarMapProps } from "./ui/map";
-
 export * from "./@types/types";
 export * from "./@types/RadarNativeInterface";
