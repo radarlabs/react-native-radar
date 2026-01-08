@@ -106,20 +106,6 @@ const styles = StyleSheet.create({
     height: 15,
     resizeMode: 'contain',
   },
-  mapContainer: {
-    flex: 1,
-  },
-  map: {
-    flex: 1,
-  },
-  mapLogo: {
-    position: 'absolute',
-    bottom: -10,
-    left: 5,
-    width: 50,
-    height: 50,
-    resizeMode: 'contain',
-  },
 });
 
 export default styles;

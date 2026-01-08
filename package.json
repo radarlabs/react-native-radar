@@ -3,7 +3,7 @@
   "description": "React Native module for Radar, the leading geofencing and location tracking platform",
   "homepage": "https://radar.com",
   "license": "Apache-2.0",
-  "version": "3.24.0",
+  "version": "3.23.6-beta.2",
   "main": "dist/index.js",
   "files": [
     "dist",
@@ -56,15 +56,11 @@
     ]
   },
   "peerDependencies": {
-    "@maplibre/maplibre-react-native": ">=10.2.1",
     "expo": ">=43.0.5",
     "react": ">= 16.8.6",
     "react-native": ">= 0.60.0"
   },
   "peerDependenciesMeta": {
-    "@maplibre/maplibre-react-native": {
-      "optional": true
-    },
     "expo": {
       "optional": true
     }
