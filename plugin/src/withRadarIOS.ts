@@ -62,11 +62,11 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
             const targetEndIndex = contents.indexOf('end', targetStartIndex) + 3;
 
             // Insert the pod declaration within the target block
-            const targetBlock = contents.substring(targetStartIndex, targetEndIndex);  
+            const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
             const updatedTargetBlock = targetBlock.replace(
               /(target '(\w+)' do)/,
               `$1\n  pod 'RadarMotion', :path => '../node_modules/react-native-radar'`
-          );
+            );
             const newContents = contents.replace(targetBlock, updatedTargetBlock);
 
             // Write the updated contents back to the Podfile

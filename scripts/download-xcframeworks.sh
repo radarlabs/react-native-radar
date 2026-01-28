@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION="${1:-3.25.0}"
+VERSION="${1:-3.25.2}"
 BASE_URL="https://github.com/radarlabs/radar-sdk-ios/releases/download/${VERSION}"
 
 echo "Downloading RadarSDK.xcframework v${VERSION}..."
