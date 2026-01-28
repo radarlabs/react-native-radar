@@ -5,7 +5,6 @@
 #endif
 
 #import <RadarSDK/RadarSDK.h>
-#import <RadarSDK/RadarSettings.h>
 #import <React/RCTBridgeModule.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED

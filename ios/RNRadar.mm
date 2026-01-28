@@ -3,6 +3,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <React/RCTConvert.h>
 
+static NSString *_publishableKey = nil;
+
 @implementation RNRadar {
     CLLocationManager *locationManager;
     RCTPromiseResolveBlock permissionsRequestResolver;
@@ -185,6 +187,7 @@ RCT_EXPORT_MODULE()
 }
 
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
+    _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
     [[NSUserDefaults standardUserDefaults] setObject:@"3.24.0" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
@@ -259,11 +262,11 @@ RCT_EXPORT_METHOD(setAnonymousTrackingEnabled:(BOOL)enabled) {
 }
 
 RCT_EXPORT_METHOD(getHost:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    resolve([RadarSettings host]);
+    resolve(@"https://api.radar.io");
 }
 
 RCT_EXPORT_METHOD(getPublishableKey:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
-    resolve([RadarSettings publishableKey]);
+    resolve(_publishableKey);
 }
 
 RCT_EXPORT_METHOD(getPermissionsStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
