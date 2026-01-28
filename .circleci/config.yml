@@ -78,7 +78,7 @@ jobs:
   ios:
     macos:
       xcode: "16.4.0"
-    resource_class: m2pro.large
+    resource_class: m4pro.large
     working_directory: ~/react-native-radar/example
     steps:
       - attach_workspace:

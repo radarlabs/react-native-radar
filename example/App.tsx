@@ -28,7 +28,7 @@ import { Settings as RNSettings } from 'react-native';
 // }
 
 
-Radar.initialize("prj_test_pk_", true);
+Radar.initialize("prj_test_pk_7b46891aa0a8278b5acc6bbc9f227aa5c3319483", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
