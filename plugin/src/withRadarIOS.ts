@@ -53,7 +53,7 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
         const contents = await fs.readFile(filePath, 'utf-8');
 
         // Check if the pod declaration already exists
-        if (contents.indexOf(`pod 'RadarMotion'`) === -1) {
+        if (contents.indexOf(`pod 'RadarSDKMotion'`) === -1) {
           // Find the target block
           const targetRegex = /target '(\w+)' do/g;
           const match = targetRegex.exec(contents);
@@ -65,7 +65,7 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
             const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
             const updatedTargetBlock = targetBlock.replace(
               /(target '(\w+)' do)/,
-              `$1\n  pod 'RadarMotion', :path => '../node_modules/react-native-radar'`
+              `$1\n  pod 'RadarSDKMotion', :path => '../node_modules/react-native-radar'`
             );
             const newContents = contents.replace(targetBlock, updatedTargetBlock);
 

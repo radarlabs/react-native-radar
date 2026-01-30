@@ -3,7 +3,7 @@ require "json"
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
 Pod::Spec.new do |s|
-  s.name         = "RadarMotion"
+  s.name         = "RadarSDKMotion"
   s.version      = package["version"]
   s.summary      = "RadarSDKMotion extension for react-native-radar"
   s.homepage     = "https://github.com/radarlabs/react-native-radar"
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/radarlabs/react-native-radar.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/RadarMotionStub.swift"
+  s.source_files = "ios/RadarSDKMotionStub.swift"
 
   s.vendored_frameworks = "ios/RadarSDKMotion.xcframework"
 
