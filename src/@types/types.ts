@@ -1,5 +1,6 @@
 import React from "react";
 import { Platform } from "react-native";
+import type { MapRef } from "@maplibre/maplibre-react-native";
 const platform = Platform.OS;
 
 export type RadarMetadata = Record<string, string | number | boolean>;
@@ -851,7 +852,7 @@ export type RadarTripStatus =
 export interface RadarMapOptions {
   mapStyle?: string;
   showUserLocation?: boolean;
-  mapRef?: React.Ref<any>;
+  mapRef?: React.Ref<MapRef>;
   onRegionDidChange?: (feature: RadarMapRegionChangeEvent) => void;
   onDidFinishLoadingMap?: () => void;
   onWillStartLoadingMap?: () => void;

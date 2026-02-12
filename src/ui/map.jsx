@@ -133,7 +133,7 @@ const RadarMap = ({ mapOptions, children }) => {
         touchPitch={false}
         compass={false}
         logo={false}
-        attribution={false}
+        attribution
         onRegionDidChange={ mapOptions?.onRegionDidChange 
           ? (event) => mapOptions.onRegionDidChange(event.nativeEvent) 
           : null
