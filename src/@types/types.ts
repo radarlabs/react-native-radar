@@ -1,3 +1,4 @@
+import React from "react";
 import { Platform } from "react-native";
 const platform = Platform.OS;
 
@@ -850,6 +851,7 @@ export type RadarTripStatus =
 export interface RadarMapOptions {
   mapStyle?: string;
   showUserLocation?: boolean;
+  mapRef?: React.Ref<any>;
   onRegionDidChange?: (feature: RadarMapRegionChangeEvent) => void;
   onDidFinishLoadingMap?: () => void;
   onWillStartLoadingMap?: () => void;

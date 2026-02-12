@@ -34,6 +34,7 @@ const createStyleURL = async (style = DEFAULT_STYLE) => {
  * @param {Object} [props.mapOptions] - Map configuration options
  * @param {string} [props.mapOptions.mapStyle] - Map style identifier (defaults to 'radar-default-v1')
  * @param {boolean} [props.mapOptions.showUserLocation] - Whether to show the user's location on the map (default: true)
+ * @param {React.Ref} [props.mapOptions.mapRef] - Ref to the underlying MapLibre Map component
  * @param {function} [props.mapOptions.onRegionDidChange] - Callback fired when the map region changes
  * @param {Object} props.mapOptions.onRegionDidChange.feature - The region feature data
  * @param {function} [props.mapOptions.onDidFinishLoadingMap] - Callback fired when the map finishes loading
@@ -127,6 +128,7 @@ const RadarMap = ({ mapOptions, children }) => {
   return (
     <View style={styles.mapContainer}>
       <MapLibreMap
+        ref={mapOptions?.mapRef}
         style={styles.map}
         touchPitch={false}
         compass={false}
