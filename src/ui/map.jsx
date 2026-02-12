@@ -5,10 +5,19 @@ import { getHost, getPublishableKey } from '../helpers';
 import styles from './styles';
 
 let MapLibreGL;
+let MapLibreMap;
+let GeoJSONSource;
+let Layer;
 try {
   MapLibreGL = require('@maplibre/maplibre-react-native');
+  MapLibreMap = MapLibreGL.Map;
+  GeoJSONSource = MapLibreGL.GeoJSONSource;
+  Layer = MapLibreGL.Layer;
 } catch (e) {
   MapLibreGL = null;
+  MapLibreMap = null;
+  GeoJSONSource = null;
+  Layer = null;
 }
 
 const DEFAULT_STYLE = 'radar-default-v1';
@@ -80,54 +89,60 @@ const RadarMap = ({ mapOptions, children }) => {
   };
 
   const userLocationMapIndicator = (
-    <MapLibreGL.ShapeSource
+    <GeoJSONSource
       id="user-location"
-      shape={geoJSONUserLocation}
+      data={JSON.stringify(geoJSONUserLocation)}
     >
-      <MapLibreGL.CircleLayer
+      <Layer
         id="user-location-inner"
-        style={{
-          circleRadius: 15,
-          circleColor: '#000257',
-          circleOpacity: 0.2,
-          circlePitchAlignment: 'map',
+        type="circle"
+        paint={{
+          'circle-radius': 15,
+          'circle-color': '#000257',
+          'circle-opacity': 0.2,
+          'circle-pitch-alignment': 'map',
         }}
       />
-      <MapLibreGL.CircleLayer
+      <Layer
         id="user-location-middle"
-        style={{
-          circleRadius: 9,
-          circleColor: '#fff',
-          circlePitchAlignment: 'map',
+        type="circle"
+        paint={{
+          'circle-radius': 9,
+          'circle-color': '#fff',
+          'circle-pitch-alignment': 'map',
         }}
       />
-      <MapLibreGL.CircleLayer
+      <Layer
         id="user-location-outer"
-        style={{
-          circleRadius: 6,
-          circleColor: '#000257',
-          circlePitchAlignment: 'map',
+        type="circle"
+        paint={{
+          'circle-radius': 6,
+          'circle-color': '#000257',
+          'circle-pitch-alignment': 'map',
         }}
       />
-    </MapLibreGL.ShapeSource>
+    </GeoJSONSource>
   );
 
   return (
     <View style={styles.mapContainer}>
-      <MapLibreGL.MapView
+      <MapLibreMap
         style={styles.map}
-        pitchEnabled={false}
-        compassEnabled={false}
-        logoEnabled={false}
-        attributionEnabled
-        onRegionDidChange={mapOptions?.onRegionDidChange ? mapOptions.onRegionDidChange : null}
+        touchPitch={false}
+        compass={false}
+        logo={false}
+        attribution={false}
+        onRegionDidChange={ mapOptions?.onRegionDidChange 
+          ? (event) => mapOptions.onRegionDidChange(event.nativeEvent) 
+          : null
+        }    
         onDidFinishLoadingMap={mapOptions?.onDidFinishLoadingMap ? mapOptions.onDidFinishLoadingMap : null}
         onWillStartLoadingMap={mapOptions?.onWillStartLoadingMap ? mapOptions.onWillStartLoadingMap : null}
         onDidFailLoadingMap={mapOptions?.onDidFailLoadingMap ? mapOptions.onDidFailLoadingMap : null}
         mapStyle={styleURL}>
         {mapOptions?.showUserLocation !== false && userLocationMapIndicator}
         {children}
-      </MapLibreGL.MapView>
+      </MapLibreMap>
       <Image
         source={require('./map-logo.png')}
         style={styles.mapLogo}

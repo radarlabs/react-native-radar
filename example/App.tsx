@@ -5,10 +5,10 @@ import {
   Button,
   Platform,
   ScrollView,
-  SafeAreaView,
   Settings,
   NativeModules
 } from "react-native";
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Radar, { Map, Autocomplete } from "react-native-radar";
 import type { RadarMapOptions } from "react-native-radar";
 import React, { useEffect, useState } from "react";
@@ -28,7 +28,7 @@ import { Settings as RNSettings } from 'react-native';
 // }
 
 
-Radar.initialize("prj_test_pk_", true);
+Radar.initialize("prj_test_pk_7b46891aa0a8278b5acc6bbc9f227aa5c3319483", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
@@ -849,104 +849,106 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.architectureIndicator}>
-          <Text style={styles.architectureText}>
-            Architecture:{" "}
-            {isNewArchitecture ? "New Architecture" : "Old Architecture"}
-          </Text>
-          <Text style={styles.platformText}>Platform: {Platform.OS}</Text>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <View style={styles.architectureIndicator}>
+            <Text style={styles.architectureText}>
+              Architecture:{" "}
+              {isNewArchitecture ? "New Architecture" : "Old Architecture"}
+            </Text>
+            <Text style={styles.platformText}>Platform: {Platform.OS}</Text>
+          </View>
+          {/* The current version of MapLibre does not support the new react native architecture  */}
+          {Platform.OS !== "web" && (
+            <>
+              <View style={{ width: "100%", height: "25%" }}>
+                <Map mapOptions={mapOptions} />
+              </View>
+              <View style={{ width: "100%", height: "10%" }}>
+                <Autocomplete
+                  options={{
+                    near: {
+                      latitude: 40.7342,
+                      longitude: -73.9911,
+                    },
+                  }}
+                />
+              </View>
+            </>
+          )}
+          <View
+            style={{
+              width: "100%",
+              height: Platform.OS !== "web" ? "50%" : "100%",
+            }}
+          >
+            <ScrollView style={{ height: "25%" }}>
+              <Text style={styles.displayText}>{displayText}</Text>
+            </ScrollView>
+            <ScrollView style={{ height: "55%" }}>
+              <ExampleButton title="runAll" onPress={runAll} />
+              <ExampleButton title="getUserId" onPress={getUserId} />
+              <ExampleButton title="getDescription" onPress={getDescription} />
+              <ExampleButton title="getMetadata" onPress={getMetadata} />
+              <ExampleButton title="setTags" onPress={setTags} />
+              <ExampleButton title="getTags" onPress={getTags} />
+              <ExampleButton title="addTags" onPress={addTags} />
+              <ExampleButton title="removeTags" onPress={removeTags} />
+              <ExampleButton title="getPermissionsStatus" onPress={getPermissionsStatus} />
+              <ExampleButton title="getProduct" onPress={getProduct} />
+              <ExampleButton title="requestPermissionsForeground" onPress={requestPermissionsForeground} />
+              <ExampleButton title="requestPermissionsBackground" onPress={requestPermissionsBackground} />
+              <ExampleButton title="getLocation" onPress={getLocation} />
+              <ExampleButton title="trackOnce" onPress={trackOnce} />
+              <ExampleButton title="trackOnce manual" onPress={trackOnceManual} />
+              <ExampleButton title="trackOnce manual with beacons" onPress={trackOnceManualWithBeacons} />
+              <ExampleButton title="trackVerified" onPress={trackVerified} />
+              <ExampleButton title="getVerifiedLocationToken" onPress={getVerifiedLocationToken} />
+              <ExampleButton title="clearVerifiedLocationToken" onPress={clearVerifiedLocationToken} />
+              <ExampleButton title="startTrackingEfficient" onPress={startTrackingEfficient} />
+              <ExampleButton title="startTrackingResponsive" onPress={startTrackingResponsive} />
+              <ExampleButton title="startTrackingContinuous" onPress={startTrackingContinuous} />
+              <ExampleButton title="startTrackingCustom" onPress={startTrackingCustom} />
+              <ExampleButton title="startTrackingVerified" onPress={startTrackingVerified} />
+              <ExampleButton title="isTrackingVerified" onPress={isTrackingVerified} />
+              <ExampleButton title="mockTracking" onPress={mockTracking} />
+              <ExampleButton title="stopTracking" onPress={stopTracking} />
+              <ExampleButton title="stopTrackingVerified" onPress={stopTrackingVerified} />
+              <ExampleButton title="getTrackingOptions" onPress={getTrackingOptions} />
+              <ExampleButton title="isUsingRemoteTrackingOptions" onPress={isUsingRemoteTrackingOptions} />
+              <ExampleButton title="isTracking" onPress={isTracking} />
+              <ExampleButton title="setForegroundServiceOptions" onPress={setForegroundServiceOptions} />
+              <ExampleButton title="setNotificationOptions" onPress={setNotificationOptions} />
+              <ExampleButton title="getTripOptions" onPress={getTripOptions} />
+              <ExampleButton title="startTrip" onPress={startTrip} />
+              <ExampleButton title="startTrip with tracking options" onPress={startTripWithTrackingOptions} />
+              <ExampleButton title="completeTrip" onPress={completeTrip} />
+              <ExampleButton title="cancelTrip" onPress={cancelTrip} />
+              <ExampleButton title="updateTrip" onPress={updateTrip} />
+              <ExampleButton title="acceptEvent" onPress={acceptEvent} />
+              <ExampleButton title="rejectEvent" onPress={rejectEvent} />
+              <ExampleButton title="getContext" onPress={getContext} />
+              <ExampleButton title="searchPlaces" onPress={searchPlaces} />
+              <ExampleButton title="searchGeofences" onPress={searchGeofences} />
+              <ExampleButton title="autocomplete" onPress={autocomplete} />
+              <ExampleButton title="geocode" onPress={geocode} />
+              <ExampleButton title="reverseGeocode" onPress={reverseGeocode} />
+              <ExampleButton title="ipGeocode" onPress={ipGeocode} />
+              <ExampleButton title="validateAddress" onPress={validateAddress} />
+              <ExampleButton title="getDistance" onPress={getDistance} />
+              <ExampleButton title="getMatrix" onPress={getMatrix} />
+              <ExampleButton title="logConversion" onPress={logConversion} />
+              <ExampleButton title="logConversion with revenue" onPress={logConversionWithRevenue} />
+              <ExampleButton title="nativeSdkVersion" onPress={nativeSdkVersion} />
+              <ExampleButton title="rnSdkVersion" onPress={rnSdkVersion} />
+              <ExampleButton title="getHost" onPress={getHost} />
+              <ExampleButton title="getPublishableKey" onPress={getPublishableKey} />
+            </ScrollView>
+          </View>
         </View>
-        {/* The current version of MapLibre does not support the new react native architecture  */}
-        {Platform.OS !== "web" && (
-          <>
-            <View style={{ width: "100%", height: "25%" }}>
-              <Map mapOptions={mapOptions} />
-            </View>
-            <View style={{ width: "100%", height: "10%" }}>
-              <Autocomplete
-                options={{
-                  near: {
-                    latitude: 40.7342,
-                    longitude: -73.9911,
-                  },
-                }}
-              />
-            </View>
-          </>
-        )}
-        <View
-          style={{
-            width: "100%",
-            height: Platform.OS !== "web" ? "50%" : "100%",
-          }}
-        >
-          <ScrollView style={{ height: "25%" }}>
-            <Text style={styles.displayText}>{displayText}</Text>
-          </ScrollView>
-          <ScrollView style={{ height: "55%" }}>
-            <ExampleButton title="runAll" onPress={runAll} />
-            <ExampleButton title="getUserId" onPress={getUserId} />
-            <ExampleButton title="getDescription" onPress={getDescription} />
-            <ExampleButton title="getMetadata" onPress={getMetadata} />
-            <ExampleButton title="setTags" onPress={setTags} />
-            <ExampleButton title="getTags" onPress={getTags} />
-            <ExampleButton title="addTags" onPress={addTags} />
-            <ExampleButton title="removeTags" onPress={removeTags} />
-            <ExampleButton title="getPermissionsStatus" onPress={getPermissionsStatus} />
-            <ExampleButton title="getProduct" onPress={getProduct} />
-            <ExampleButton title="requestPermissionsForeground" onPress={requestPermissionsForeground} />
-            <ExampleButton title="requestPermissionsBackground" onPress={requestPermissionsBackground} />
-            <ExampleButton title="getLocation" onPress={getLocation} />
-            <ExampleButton title="trackOnce" onPress={trackOnce} />
-            <ExampleButton title="trackOnce manual" onPress={trackOnceManual} />
-            <ExampleButton title="trackOnce manual with beacons" onPress={trackOnceManualWithBeacons} />
-            <ExampleButton title="trackVerified" onPress={trackVerified} />
-            <ExampleButton title="getVerifiedLocationToken" onPress={getVerifiedLocationToken} />
-            <ExampleButton title="clearVerifiedLocationToken" onPress={clearVerifiedLocationToken} />
-            <ExampleButton title="startTrackingEfficient" onPress={startTrackingEfficient} />
-            <ExampleButton title="startTrackingResponsive" onPress={startTrackingResponsive} />
-            <ExampleButton title="startTrackingContinuous" onPress={startTrackingContinuous} />
-            <ExampleButton title="startTrackingCustom" onPress={startTrackingCustom} />
-            <ExampleButton title="startTrackingVerified" onPress={startTrackingVerified} />
-            <ExampleButton title="isTrackingVerified" onPress={isTrackingVerified} />
-            <ExampleButton title="mockTracking" onPress={mockTracking} />
-            <ExampleButton title="stopTracking" onPress={stopTracking} />
-            <ExampleButton title="stopTrackingVerified" onPress={stopTrackingVerified} />
-            <ExampleButton title="getTrackingOptions" onPress={getTrackingOptions} />
-            <ExampleButton title="isUsingRemoteTrackingOptions" onPress={isUsingRemoteTrackingOptions} />
-            <ExampleButton title="isTracking" onPress={isTracking} />
-            <ExampleButton title="setForegroundServiceOptions" onPress={setForegroundServiceOptions} />
-            <ExampleButton title="setNotificationOptions" onPress={setNotificationOptions} />
-            <ExampleButton title="getTripOptions" onPress={getTripOptions} />
-            <ExampleButton title="startTrip" onPress={startTrip} />
-            <ExampleButton title="startTrip with tracking options" onPress={startTripWithTrackingOptions} />
-            <ExampleButton title="completeTrip" onPress={completeTrip} />
-            <ExampleButton title="cancelTrip" onPress={cancelTrip} />
-            <ExampleButton title="updateTrip" onPress={updateTrip} />
-            <ExampleButton title="acceptEvent" onPress={acceptEvent} />
-            <ExampleButton title="rejectEvent" onPress={rejectEvent} />
-            <ExampleButton title="getContext" onPress={getContext} />
-            <ExampleButton title="searchPlaces" onPress={searchPlaces} />
-            <ExampleButton title="searchGeofences" onPress={searchGeofences} />
-            <ExampleButton title="autocomplete" onPress={autocomplete} />
-            <ExampleButton title="geocode" onPress={geocode} />
-            <ExampleButton title="reverseGeocode" onPress={reverseGeocode} />
-            <ExampleButton title="ipGeocode" onPress={ipGeocode} />
-            <ExampleButton title="validateAddress" onPress={validateAddress} />
-            <ExampleButton title="getDistance" onPress={getDistance} />
-            <ExampleButton title="getMatrix" onPress={getMatrix} />
-            <ExampleButton title="logConversion" onPress={logConversion} />
-            <ExampleButton title="logConversion with revenue" onPress={logConversionWithRevenue} />
-            <ExampleButton title="nativeSdkVersion" onPress={nativeSdkVersion} />
-            <ExampleButton title="rnSdkVersion" onPress={rnSdkVersion} />
-            <ExampleButton title="getHost" onPress={getHost} />
-            <ExampleButton title="getPublishableKey" onPress={getPublishableKey} />
-          </ScrollView>
-        </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

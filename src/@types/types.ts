@@ -859,7 +859,9 @@ export interface RadarMapOptions {
 export interface RadarMapRegionChangeEvent {
   center: [number, number];
   zoom: number;
-  bounds?: [number, number, number, number];
+  bounds?: [[number, number], [number, number]];
   bearing?: number;
   pitch?: number;
+  animated: boolean;
+  userInteraction: boolean;
 }

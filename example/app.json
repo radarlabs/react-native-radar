@@ -22,7 +22,8 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app needs location.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs location."
-      }
+      },
+      "appleTeamId": "96GHH65B9D"
     },
     "android": {
       "adaptiveIcon": {
