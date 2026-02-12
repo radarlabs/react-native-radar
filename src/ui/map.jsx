@@ -36,7 +36,7 @@ const createStyleURL = async (style = DEFAULT_STYLE) => {
  * @param {boolean} [props.mapOptions.showUserLocation] - Whether to show the user's location on the map (default: true)
  * @param {React.Ref} [props.mapOptions.mapRef] - Ref to the underlying MapLibre Map component
  * @param {function} [props.mapOptions.onRegionDidChange] - Callback fired when the map region changes
- * @param {Object} props.mapOptions.onRegionDidChange.feature - The region feature data
+ * @param {Object} props.mapOptions.onRegionDidChange.event - The region event data
  * @param {function} [props.mapOptions.onDidFinishLoadingMap] - Callback fired when the map finishes loading
  * @param {function} [props.mapOptions.onWillStartLoadingMap] - Callback fired when the map starts loading
  * @param {function} [props.mapOptions.onDidFailLoadingMap] - Callback fired when the map fails to load
@@ -137,7 +137,7 @@ const RadarMap = ({ mapOptions, children }) => {
         onRegionDidChange={ mapOptions?.onRegionDidChange 
           ? (event) => mapOptions.onRegionDidChange(event.nativeEvent) 
           : null
-        }    
+        }
         onDidFinishLoadingMap={mapOptions?.onDidFinishLoadingMap ? mapOptions.onDidFinishLoadingMap : null}
         onWillStartLoadingMap={mapOptions?.onWillStartLoadingMap ? mapOptions.onWillStartLoadingMap : null}
         onDidFailLoadingMap={mapOptions?.onDidFailLoadingMap ? mapOptions.onDidFailLoadingMap : null}

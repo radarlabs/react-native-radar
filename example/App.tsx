@@ -842,9 +842,9 @@ export default function App() {
       console.log('Map failed to load');
       populateText('Map failed to load');
     },
-    onRegionDidChange: (feature) => {
-      console.log('Map region changed:', feature);
-      populateText('Map region changed: ' + JSON.stringify(feature));
+    onRegionDidChange: (event) => {
+      console.log('Map region changed:', event);
+      populateText('Map region changed: ' + JSON.stringify(event));
     }
   };
 

@@ -853,7 +853,7 @@ export interface RadarMapOptions {
   mapStyle?: string;
   showUserLocation?: boolean;
   mapRef?: React.Ref<MapRef>;
-  onRegionDidChange?: (feature: RadarMapRegionChangeEvent) => void;
+  onRegionDidChange?: (event: RadarMapRegionChangeEvent) => void;
   onDidFinishLoadingMap?: () => void;
   onWillStartLoadingMap?: () => void;
   onDidFailLoadingMap?: () => void;
