@@ -39,5 +39,5 @@ lib/
 .vscode/
 
 # Do NOT ignore these - they're vendored dependencies
-# !ios/RadarSDK.xcframework
-# !ios/RadarSDKMotion.xcframework
+!ios/RadarSDK.xcframework/**
+!ios/RadarSDKMotion.xcframework/**
