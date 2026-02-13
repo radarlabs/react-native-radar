@@ -18,5 +18,9 @@ Pod::Spec.new do |s|
 
   s.vendored_frameworks = "ios/RadarSDK.xcframework"
 
+  s.pod_target_xcconfig = {
+    'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "${PODS_TARGET_SRCROOT}/ios/RadarSDK.xcframework/ios-arm64" "${PODS_TARGET_SRCROOT}/ios/RadarSDK.xcframework/ios-arm64_x86_64-simulator"'
+  }
+
  install_modules_dependencies(s)
 end
