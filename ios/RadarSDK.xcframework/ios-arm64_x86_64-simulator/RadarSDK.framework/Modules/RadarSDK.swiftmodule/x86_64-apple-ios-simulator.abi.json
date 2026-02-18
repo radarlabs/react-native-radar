@@ -1,0 +1,3608 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "RadarSDK",
+    "printedName": "RadarSDK",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarInAppMessageDelegate",
+        "printedName": "RadarInAppMessageDelegate",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "loadImage",
+            "printedName": "loadImage(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "UIKit.UIImage?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIImage",
+                    "printedName": "UIKit.UIImage",
+                    "usr": "c:objc(cs)UIImage"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageDelegate_Swift(cm)loadImage:completionHandler:",
+            "mangledName": "$s8RadarSDK0A20InAppMessageDelegateC9loadImageySo7UIImageCSgSSYaFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "intro_iOS": "13.0",
+            "declAttributes": [
+              "Final",
+              "Custom",
+              "AccessControl",
+              "Available",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "createInAppMessageView",
+            "printedName": "createInAppMessageView(_:onDismiss:onInAppMessageClicked:completionHandler:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessage",
+                "printedName": "RadarSDK.RadarInAppMessage",
+                "usr": "c:objc(cs)RadarInAppMessage"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(UIKit.UIViewController) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIViewController",
+                    "printedName": "UIKit.UIViewController",
+                    "usr": "c:objc(cs)UIViewController"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageDelegate_Swift(im)createInAppMessageView:onDismiss:onInAppMessageClicked:completionHandler:",
+            "mangledName": "$s8RadarSDK0A20InAppMessageDelegateC06createcdE4View_9onDismiss0icdE7Clicked17completionHandlerySo0acdE0C_yycyycySo16UIViewControllerCctF",
+            "moduleName": "RadarSDK",
+            "isOpen": true,
+            "objc_name": "createInAppMessageView:onDismiss:onInAppMessageClicked:completionHandler:",
+            "declAttributes": [
+              "ObjC",
+              "Preconcurrency",
+              "Custom",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "onInAppMessageButtonClicked",
+            "printedName": "onInAppMessageButtonClicked(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessage",
+                "printedName": "RadarSDK.RadarInAppMessage",
+                "usr": "c:objc(cs)RadarInAppMessage"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageDelegate_Swift(im)onInAppMessageButtonClicked:",
+            "mangledName": "$s8RadarSDK0A20InAppMessageDelegateC02oncdE13ButtonClickedyySo0acdE0CF",
+            "moduleName": "RadarSDK",
+            "isOpen": true,
+            "objc_name": "onInAppMessageButtonClicked:",
+            "declAttributes": [
+              "ObjC",
+              "Preconcurrency",
+              "Custom",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "onInAppMessageDismissed",
+            "printedName": "onInAppMessageDismissed(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessage",
+                "printedName": "RadarSDK.RadarInAppMessage",
+                "usr": "c:objc(cs)RadarInAppMessage"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageDelegate_Swift(im)onInAppMessageDismissed:",
+            "mangledName": "$s8RadarSDK0A20InAppMessageDelegateC02oncdE9DismissedyySo0acdE0CF",
+            "moduleName": "RadarSDK",
+            "isOpen": true,
+            "objc_name": "onInAppMessageDismissed:",
+            "declAttributes": [
+              "ObjC",
+              "Preconcurrency",
+              "Custom",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "onNewInAppMessage",
+            "printedName": "onNewInAppMessage(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessage",
+                "printedName": "RadarSDK.RadarInAppMessage",
+                "usr": "c:objc(cs)RadarInAppMessage"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageDelegate_Swift(im)onNewInAppMessage:",
+            "mangledName": "$s8RadarSDK0A20InAppMessageDelegateC05onNewcdE0yySo0acdE0CF",
+            "moduleName": "RadarSDK",
+            "isOpen": true,
+            "objc_name": "onNewInAppMessage:",
+            "declAttributes": [
+              "ObjC",
+              "Preconcurrency",
+              "Custom",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessageDelegate",
+                "printedName": "RadarSDK.RadarInAppMessageDelegate",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageDelegate_Swift"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageDelegate_Swift(im)init",
+            "mangledName": "$s8RadarSDK0A20InAppMessageDelegateCACycfc",
+            "moduleName": "RadarSDK",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Custom",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageDelegate_Swift",
+        "mangledName": "$s8RadarSDK0A20InAppMessageDelegateC",
+        "moduleName": "RadarSDK",
+        "isOpen": true,
+        "intro_iOS": "13.0",
+        "objc_name": "RadarInAppMessageDelegate_Swift",
+        "declAttributes": [
+          "AccessControl",
+          "Custom",
+          "ObjCMembers",
+          "ObjC",
+          "Available"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarAPIClient",
+        "printedName": "RadarAPIClient",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "shared",
+            "printedName": "shared",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarAPIClient",
+                "printedName": "RadarSDK.RadarAPIClient",
+                "usr": "s:8RadarSDK0A9APIClientC"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A9APIClientC6sharedACvpZ",
+            "mangledName": "$s8RadarSDK0A9APIClientC6sharedACvpZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarAPIClient",
+                    "printedName": "RadarSDK.RadarAPIClient",
+                    "usr": "s:8RadarSDK0A9APIClientC"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A9APIClientC6sharedACvgZ",
+                "mangledName": "$s8RadarSDK0A9APIClientC6sharedACvgZ",
+                "moduleName": "RadarSDK",
+                "static": true,
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Class",
+        "usr": "s:8RadarSDK0A9APIClientC",
+        "mangledName": "$s8RadarSDK0A9APIClientC",
+        "moduleName": "RadarSDK",
+        "intro_iOS": "13.0",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "Available"
+        ],
+        "hasMissingDesignatedInitializers": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "OSLog",
+        "printedName": "OSLog",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarLogger",
+        "printedName": "RadarLogger",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "setDelegate",
+            "printedName": "setDelegate(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RadarDelegate",
+                "printedName": "any RadarSDK.RadarDelegate",
+                "usr": "c:objc(pl)RadarDelegate"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarLogger_Swift(cm)setDelegate:",
+            "mangledName": "$s8RadarSDK0A6LoggerC11setDelegateyySo0aE0_pFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "Custom"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarLogger",
+                "printedName": "RadarSDK.RadarLogger",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarLogger_Swift"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarLogger_Swift(im)init",
+            "mangledName": "$s8RadarSDK0A6LoggerCACycfc",
+            "moduleName": "RadarSDK",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@RadarSDK@objc(cs)RadarLogger_Swift",
+        "mangledName": "$s8RadarSDK0A6LoggerC",
+        "moduleName": "RadarSDK",
+        "objc_name": "RadarLogger_Swift",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarInAppMessage_Swift",
+        "printedName": "RadarInAppMessage_Swift",
+        "children": [
+          {
+            "kind": "TypeDecl",
+            "name": "Text",
+            "printedName": "Text",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "text",
+                "printedName": "text",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV4textSSvp",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4TextV4textSSvp",
+                "moduleName": "RadarSDK",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV4textSSvg",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4TextV4textSSvg",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Set",
+                    "printedName": "Set()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV4textSSvs",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4TextV4textSSvs",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "set"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Modify",
+                    "printedName": "Modify()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV4textSSvM",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4TextV4textSSvM",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "_modify"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "color",
+                "printedName": "color",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIColor",
+                    "printedName": "UIKit.UIColor",
+                    "usr": "c:objc(cs)UIColor"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV5colorSo7UIColorCvp",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4TextV5colorSo7UIColorCvp",
+                "moduleName": "RadarSDK",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIColor",
+                        "printedName": "UIKit.UIColor",
+                        "usr": "c:objc(cs)UIColor"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV5colorSo7UIColorCvg",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4TextV5colorSo7UIColorCvg",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Set",
+                    "printedName": "Set()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIColor",
+                        "printedName": "UIKit.UIColor",
+                        "usr": "c:objc(cs)UIColor"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV5colorSo7UIColorCvs",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4TextV5colorSo7UIColorCvs",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "set"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Modify",
+                    "printedName": "Modify()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV5colorSo7UIColorCvM",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4TextV5colorSo7UIColorCvM",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "_modify"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Struct",
+            "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4TextV",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Sendable",
+                "printedName": "Sendable",
+                "usr": "s:s8SendableP",
+                "mangledName": "$ss8SendableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "SendableMetatype",
+                "printedName": "SendableMetatype",
+                "usr": "s:s16SendableMetatypeP",
+                "mangledName": "$ss16SendableMetatypeP"
+              }
+            ]
+          },
+          {
+            "kind": "TypeDecl",
+            "name": "Button",
+            "printedName": "Button",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "text",
+                "printedName": "text",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV4textSSvp",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV4textSSvp",
+                "moduleName": "RadarSDK",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV4textSSvg",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV4textSSvg",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Set",
+                    "printedName": "Set()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV4textSSvs",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV4textSSvs",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "set"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Modify",
+                    "printedName": "Modify()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV4textSSvM",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV4textSSvM",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "_modify"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "color",
+                "printedName": "color",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIColor",
+                    "printedName": "UIKit.UIColor",
+                    "usr": "c:objc(cs)UIColor"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV5colorSo7UIColorCvp",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV5colorSo7UIColorCvp",
+                "moduleName": "RadarSDK",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIColor",
+                        "printedName": "UIKit.UIColor",
+                        "usr": "c:objc(cs)UIColor"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV5colorSo7UIColorCvg",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV5colorSo7UIColorCvg",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Set",
+                    "printedName": "Set()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIColor",
+                        "printedName": "UIKit.UIColor",
+                        "usr": "c:objc(cs)UIColor"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV5colorSo7UIColorCvs",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV5colorSo7UIColorCvs",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "set"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Modify",
+                    "printedName": "Modify()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV5colorSo7UIColorCvM",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV5colorSo7UIColorCvM",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "_modify"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "backgroundColor",
+                "printedName": "backgroundColor",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIColor",
+                    "printedName": "UIKit.UIColor",
+                    "usr": "c:objc(cs)UIColor"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV15backgroundColorSo7UIColorCvp",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV15backgroundColorSo7UIColorCvp",
+                "moduleName": "RadarSDK",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIColor",
+                        "printedName": "UIKit.UIColor",
+                        "usr": "c:objc(cs)UIColor"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV15backgroundColorSo7UIColorCvg",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV15backgroundColorSo7UIColorCvg",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Set",
+                    "printedName": "Set()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIColor",
+                        "printedName": "UIKit.UIColor",
+                        "usr": "c:objc(cs)UIColor"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV15backgroundColorSo7UIColorCvs",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV15backgroundColorSo7UIColorCvs",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "set"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Modify",
+                    "printedName": "Modify()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV15backgroundColorSo7UIColorCvM",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV15backgroundColorSo7UIColorCvM",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "_modify"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "deepLink",
+                "printedName": "deepLink",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV8deepLinkSSSgvp",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV8deepLinkSSSgvp",
+                "moduleName": "RadarSDK",
+                "declAttributes": [
+                  "HasInitialValue",
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV8deepLinkSSSgvg",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV8deepLinkSSSgvg",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Set",
+                    "printedName": "Set()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV8deepLinkSSSgvs",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV8deepLinkSSSgvs",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "set"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Modify",
+                    "printedName": "Modify()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV8deepLinkSSSgvM",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV8deepLinkSSSgvM",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "_modify"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Struct",
+            "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6ButtonV",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Sendable",
+                "printedName": "Sendable",
+                "usr": "s:s8SendableP",
+                "mangledName": "$ss8SendableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "SendableMetatype",
+                "printedName": "SendableMetatype",
+                "usr": "s:s16SendableMetatypeP",
+                "mangledName": "$ss16SendableMetatypeP"
+              }
+            ]
+          },
+          {
+            "kind": "TypeDecl",
+            "name": "Image",
+            "printedName": "Image",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "name",
+                "printedName": "name",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV4nameSSvp",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5ImageV4nameSSvp",
+                "moduleName": "RadarSDK",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV4nameSSvg",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5ImageV4nameSSvg",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Set",
+                    "printedName": "Set()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV4nameSSvs",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5ImageV4nameSSvs",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "set"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Modify",
+                    "printedName": "Modify()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV4nameSSvM",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5ImageV4nameSSvM",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "_modify"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "url",
+                "printedName": "url",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV3urlSSvp",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5ImageV3urlSSvp",
+                "moduleName": "RadarSDK",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV3urlSSvg",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5ImageV3urlSSvg",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Set",
+                    "printedName": "Set()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV3urlSSvs",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5ImageV3urlSSvs",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "set"
+                  },
+                  {
+                    "kind": "Accessor",
+                    "name": "Modify",
+                    "printedName": "Modify()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV3urlSSvM",
+                    "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5ImageV3urlSSvM",
+                    "moduleName": "RadarSDK",
+                    "implicit": true,
+                    "accessorKind": "_modify"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Struct",
+            "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5ImageV",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Sendable",
+                "printedName": "Sendable",
+                "usr": "s:s8SendableP",
+                "mangledName": "$ss8SendableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "SendableMetatype",
+                "printedName": "SendableMetatype",
+                "usr": "s:s16SendableMetatypeP",
+                "mangledName": "$ss16SendableMetatypeP"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "title",
+            "printedName": "title",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Text",
+                "printedName": "RadarSDK.RadarInAppMessage_Swift.Text",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5titleAC4TextVvp",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5titleAC4TextVvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Text",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Text",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5titleAC4TextVvg",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5titleAC4TextVvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Text",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Text",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5titleAC4TextVvs",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5titleAC4TextVvs",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5titleAC4TextVvM",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5titleAC4TextVvM",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "body",
+            "printedName": "body",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Text",
+                "printedName": "RadarSDK.RadarInAppMessage_Swift.Text",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4bodyAC4TextVvp",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4bodyAC4TextVvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Text",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Text",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4bodyAC4TextVvg",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4bodyAC4TextVvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Text",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Text",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4bodyAC4TextVvs",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4bodyAC4TextVvs",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4bodyAC4TextVvM",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC4bodyAC4TextVvM",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "button",
+            "printedName": "button",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "RadarSDK.RadarInAppMessage_Swift.Button?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Button",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Button",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6buttonAC6ButtonVSgvp",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6buttonAC6ButtonVSgvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Button?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Button",
+                        "printedName": "RadarSDK.RadarInAppMessage_Swift.Button",
+                        "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6buttonAC6ButtonVSgvg",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6buttonAC6ButtonVSgvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Button?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Button",
+                        "printedName": "RadarSDK.RadarInAppMessage_Swift.Button",
+                        "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6buttonAC6ButtonVSgvs",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6buttonAC6ButtonVSgvs",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6buttonAC6ButtonVSgvM",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC6buttonAC6ButtonVSgvM",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "image",
+            "printedName": "image",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "RadarSDK.RadarInAppMessage_Swift.Image?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Image",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Image",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5imageAC5ImageVSgvp",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5imageAC5ImageVSgvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Image?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Image",
+                        "printedName": "RadarSDK.RadarInAppMessage_Swift.Image",
+                        "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5imageAC5ImageVSgvg",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5imageAC5ImageVSgvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Image?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Image",
+                        "printedName": "RadarSDK.RadarInAppMessage_Swift.Image",
+                        "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5imageAC5ImageVSgvs",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5imageAC5ImageVSgvs",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5imageAC5ImageVSgvM",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5imageAC5ImageVSgvM",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "metadata",
+            "printedName": "metadata",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Swift.String : any Swift.Sendable]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Sendable",
+                    "printedName": "any Swift.Sendable",
+                    "usr": "s:s8SendableP"
+                  }
+                ],
+                "usr": "s:SD"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift(py)metadata",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC8metadataSDySSs8Sendable_pGvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "ObjC"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Dictionary",
+                    "printedName": "[Swift.String : any Swift.Sendable]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Sendable",
+                        "printedName": "any Swift.Sendable",
+                        "usr": "s:s8SendableP"
+                      }
+                    ],
+                    "usr": "s:SD"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift(im)metadata",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC8metadataSDySSs8Sendable_pGvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Dictionary",
+                    "printedName": "[Swift.String : any Swift.Sendable]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Sendable",
+                        "printedName": "any Swift.Sendable",
+                        "usr": "s:s8SendableP"
+                      }
+                    ],
+                    "usr": "s:SD"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift(im)setMetadata:",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC8metadataSDySSs8Sendable_pGvs",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC8metadataSDySSs8Sendable_pGvM",
+                "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC8metadataSDySSs8Sendable_pGvM",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(title:body:button:image:metadata:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessage_Swift",
+                "printedName": "RadarSDK.RadarInAppMessage_Swift",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Text",
+                "printedName": "RadarSDK.RadarInAppMessage_Swift.Text",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Text",
+                "printedName": "RadarSDK.RadarInAppMessage_Swift.Text",
+                "usr": "s:8RadarSDK0A18InAppMessage_SwiftC4TextV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "RadarSDK.RadarInAppMessage_Swift.Button?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Button",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Button",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC6ButtonV"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "RadarSDK.RadarInAppMessage_Swift.Image?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Image",
+                    "printedName": "RadarSDK.RadarInAppMessage_Swift.Image",
+                    "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5ImageV"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Swift.String : any Swift.Sendable]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Sendable",
+                    "printedName": "any Swift.Sendable",
+                    "usr": "s:s8SendableP"
+                  }
+                ],
+                "usr": "s:SD"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:8RadarSDK0A18InAppMessage_SwiftC5title4body6button5image8metadataA2C4TextV_AjC6ButtonVSgAC5ImageVSgSDySSs8Sendable_pGtcfc",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC5title4body6button5image8metadataA2C4TextV_AjC6ButtonVSgAC5ImageVSgSDySSs8Sendable_pGtcfc",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "fromDictionary",
+            "printedName": "fromDictionary(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "RadarSDK.RadarInAppMessage?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarInAppMessage",
+                    "printedName": "RadarSDK.RadarInAppMessage",
+                    "usr": "c:objc(cs)RadarInAppMessage"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Swift.String : Any]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProtocolComposition",
+                    "printedName": "Any"
+                  }
+                ],
+                "usr": "s:SD"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift(cm)fromDictionary:",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC14fromDictionaryySo0acdE0CSgSDySSypGFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "overriding": true,
+            "objc_name": "fromDictionary:",
+            "declAttributes": [
+              "Final",
+              "ObjC",
+              "Override",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "fromArray",
+            "printedName": "fromArray(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[RadarSDK.RadarInAppMessage]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarInAppMessage",
+                    "printedName": "RadarSDK.RadarInAppMessage",
+                    "usr": "c:objc(cs)RadarInAppMessage"
+                  }
+                ],
+                "usr": "s:Sa"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "ProtocolComposition",
+                "printedName": "Any"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift(cm)fromArray:",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC9fromArrayySaySo0acdE0CGypFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "overriding": true,
+            "objc_name": "fromArray:",
+            "declAttributes": [
+              "Final",
+              "ObjC",
+              "Override",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "toDictionary",
+            "printedName": "toDictionary()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Swift.String : Any]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProtocolComposition",
+                    "printedName": "Any"
+                  }
+                ],
+                "usr": "s:SD"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift(im)toDictionary",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC12toDictionarySDySSypGyF",
+            "moduleName": "RadarSDK",
+            "overriding": true,
+            "objc_name": "toDictionary",
+            "declAttributes": [
+              "Final",
+              "ObjC",
+              "Override",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "toDictionary",
+            "printedName": "toDictionary(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Swift.String : Any]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProtocolComposition",
+                    "printedName": "Any"
+                  }
+                ],
+                "usr": "s:SD"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessage",
+                "printedName": "RadarSDK.RadarInAppMessage",
+                "usr": "c:objc(cs)RadarInAppMessage"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift(cm)toDictionary:",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC12toDictionaryySDySSypGSo0acdE0CFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessage_Swift",
+                "printedName": "RadarSDK.RadarInAppMessage_Swift",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift(im)init",
+            "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftCACycfc",
+            "moduleName": "RadarSDK",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessage_Swift",
+        "mangledName": "$s8RadarSDK0A18InAppMessage_SwiftC",
+        "moduleName": "RadarSDK",
+        "objc_name": "RadarInAppMessage_Swift",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjCMembers",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)RadarInAppMessage",
+        "superclassNames": [
+          "RadarSDK.RadarInAppMessage",
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarInAppMessageManager",
+        "printedName": "RadarInAppMessageManager",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "shared",
+            "printedName": "shared",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessageManager",
+                "printedName": "RadarSDK.RadarInAppMessageManager",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageManager"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageManager(cpy)shared",
+            "mangledName": "$s8RadarSDK0A19InAppMessageManagerC6sharedACvpZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "Custom",
+              "AccessControl",
+              "ObjC"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarInAppMessageManager",
+                    "printedName": "RadarSDK.RadarInAppMessageManager",
+                    "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageManager"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageManager(cm)shared",
+                "mangledName": "$s8RadarSDK0A19InAppMessageManagerC6sharedACvgZ",
+                "moduleName": "RadarSDK",
+                "static": true,
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "delegate",
+            "printedName": "delegate",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessageProtocol",
+                "printedName": "any RadarSDK.RadarInAppMessageProtocol",
+                "usr": "c:objc(pl)RadarInAppMessageProtocol"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A19InAppMessageManagerC8delegateSo0acdE8Protocol_pvp",
+            "mangledName": "$s8RadarSDK0A19InAppMessageManagerC8delegateSo0acdE8Protocol_pvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasInitialValue",
+              "Custom",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarInAppMessageProtocol",
+                    "printedName": "any RadarSDK.RadarInAppMessageProtocol",
+                    "usr": "c:objc(pl)RadarInAppMessageProtocol"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19InAppMessageManagerC8delegateSo0acdE8Protocol_pvg",
+                "mangledName": "$s8RadarSDK0A19InAppMessageManagerC8delegateSo0acdE8Protocol_pvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarInAppMessageProtocol",
+                    "printedName": "any RadarSDK.RadarInAppMessageProtocol",
+                    "usr": "c:objc(pl)RadarInAppMessageProtocol"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19InAppMessageManagerC8delegateSo0acdE8Protocol_pvs",
+                "mangledName": "$s8RadarSDK0A19InAppMessageManagerC8delegateSo0acdE8Protocol_pvs",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19InAppMessageManagerC8delegateSo0acdE8Protocol_pvM",
+                "mangledName": "$s8RadarSDK0A19InAppMessageManagerC8delegateSo0acdE8Protocol_pvM",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "intro_iOS": "13.0",
+                "declAttributes": [
+                  "Available"
+                ],
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "view",
+            "printedName": "view",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "UIKit.UIView?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIView",
+                    "printedName": "UIKit.UIView",
+                    "usr": "c:objc(cs)UIView"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A19InAppMessageManagerC4viewSo6UIViewCSgvp",
+            "mangledName": "$s8RadarSDK0A19InAppMessageManagerC4viewSo6UIViewCSgvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasInitialValue",
+              "Custom",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "UIKit.UIView?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIView",
+                        "printedName": "UIKit.UIView",
+                        "usr": "c:objc(cs)UIView"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19InAppMessageManagerC4viewSo6UIViewCSgvg",
+                "mangledName": "$s8RadarSDK0A19InAppMessageManagerC4viewSo6UIViewCSgvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "UIKit.UIView?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIView",
+                        "printedName": "UIKit.UIView",
+                        "usr": "c:objc(cs)UIView"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19InAppMessageManagerC4viewSo6UIViewCSgvs",
+                "mangledName": "$s8RadarSDK0A19InAppMessageManagerC4viewSo6UIViewCSgvs",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19InAppMessageManagerC4viewSo6UIViewCSgvM",
+                "mangledName": "$s8RadarSDK0A19InAppMessageManagerC4viewSo6UIViewCSgvM",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "intro_iOS": "13.0",
+                "declAttributes": [
+                  "Available"
+                ],
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "showInAppMessage",
+            "printedName": "showInAppMessage(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessage",
+                "printedName": "RadarSDK.RadarInAppMessage",
+                "usr": "c:objc(cs)RadarInAppMessage"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageManager(im)showInAppMessage:completionHandler:",
+            "mangledName": "$s8RadarSDK0A19InAppMessageManagerC04showcdE0yySo0acdE0CYaF",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "Custom",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "onInAppMessageReceived",
+            "printedName": "onInAppMessageReceived(messages:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[RadarSDK.RadarInAppMessage]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarInAppMessage",
+                    "printedName": "RadarSDK.RadarInAppMessage",
+                    "usr": "c:objc(cs)RadarInAppMessage"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageManager(im)onInAppMessageReceivedWithMessages:",
+            "mangledName": "$s8RadarSDK0A19InAppMessageManagerC02oncdE8Received8messagesySaySo0acdE0CG_tF",
+            "moduleName": "RadarSDK",
+            "objc_name": "onInAppMessageReceivedWithMessages:",
+            "declAttributes": [
+              "Custom",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "setDelegate",
+            "printedName": "setDelegate(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessageProtocol",
+                "printedName": "any RadarSDK.RadarInAppMessageProtocol",
+                "usr": "c:objc(pl)RadarInAppMessageProtocol"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageManager(im)setDelegate:",
+            "mangledName": "$s8RadarSDK0A19InAppMessageManagerC11setDelegateyySo0acdE8Protocol_pF",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "Custom",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarInAppMessageManager",
+                "printedName": "RadarSDK.RadarInAppMessageManager",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageManager"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageManager(im)init",
+            "mangledName": "$s8RadarSDK0A19InAppMessageManagerCACycfc",
+            "moduleName": "RadarSDK",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Custom",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@RadarSDK@objc(cs)RadarInAppMessageManager",
+        "mangledName": "$s8RadarSDK0A19InAppMessageManagerC",
+        "moduleName": "RadarSDK",
+        "intro_iOS": "13.0",
+        "declAttributes": [
+          "AccessControl",
+          "ObjC",
+          "Available",
+          "Custom"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "StringLiteral",
+      "offset": 2996,
+      "length": 6,
+      "value": "\"type\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "StringLiteral",
+      "offset": 3004,
+      "length": 8,
+      "value": "\"banner\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "StringLiteral",
+      "offset": 3030,
+      "length": 7,
+      "value": "\"title\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "Dictionary",
+      "offset": 3039,
+      "length": 107,
+      "value": "[(\"text\", \"This is the title\"), (\"color\", \"#000000\")]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "StringLiteral",
+      "offset": 3164,
+      "length": 6,
+      "value": "\"body\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "Dictionary",
+      "offset": 3172,
+      "length": 112,
+      "value": "[(\"text\", \"This is a demo message\"), (\"color\", \"#666666\")]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "StringLiteral",
+      "offset": 3302,
+      "length": 8,
+      "value": "\"button\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "Dictionary",
+      "offset": 3312,
+      "length": 148,
+      "value": "[(\"text\", \"Send it\"), (\"color\", \"#FFFFFF\"), (\"backgroundColor\", \"#EB0083\")]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "StringLiteral",
+      "offset": 3478,
+      "length": 7,
+      "value": "\"image\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "Dictionary",
+      "offset": 3487,
+      "length": 155,
+      "value": "[(\"url\", \"https:\/\/images.pexels.com\/photos\/949587\/pexels-photo-949587.jpeg\"), (\"name\", \"image.jpeg\")]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "StringLiteral",
+      "offset": 3767,
+      "length": 11,
+      "value": "\"Dismissed\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
+      "kind": "StringLiteral",
+      "offset": 3827,
+      "length": 15,
+      "value": "\"Button tapped\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
+      "kind": "Dictionary",
+      "offset": 262,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
+      "kind": "Dictionary",
+      "offset": 295,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
+      "kind": "Dictionary",
+      "offset": 322,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
+      "kind": "Dictionary",
+      "offset": 1651,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
+      "kind": "Dictionary",
+      "offset": 1684,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
+      "kind": "Dictionary",
+      "offset": 1711,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "StringLiteral",
+      "offset": 372,
+      "length": 21,
+      "value": "\"yyyy-MM-dd HH:mm:ss\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 516,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "StringLiteral",
+      "offset": 973,
+      "length": 10,
+      "value": "\"RadarSDK\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "StringLiteral",
+      "offset": 995,
+      "length": 10,
+      "value": "\"RadarSDK\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1090,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1120,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1142,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1374,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1404,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1426,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1660,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1690,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1712,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1961,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1991,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2013,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
+      "kind": "StringLiteral",
+      "offset": 235,
+      "length": 22,
+      "value": "\"https:\/\/api.radar.io\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
+      "kind": "StringLiteral",
+      "offset": 295,
+      "length": 31,
+      "value": "\"https:\/\/api-verified.radar.io\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
+      "kind": "StringLiteral",
+      "offset": 3113,
+      "length": 5,
+      "value": "\"%.f\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
+      "kind": "IntegerLiteral",
+      "offset": 9566,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
+      "kind": "IntegerLiteral",
+      "offset": 10301,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
+      "kind": "BooleanLiteral",
+      "offset": 10416,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
+      "kind": "BooleanLiteral",
+      "offset": 10899,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageManager.swift",
+      "kind": "BooleanLiteral",
+      "offset": 698,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 268,
+      "length": 22,
+      "value": "\"radar-publishableKey\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 316,
+      "length": 17,
+      "value": "\"radar-installId\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 359,
+      "length": 17,
+      "value": "\"radar-sessionId\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 395,
+      "length": 11,
+      "value": "\"radar-_id\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 429,
+      "length": 14,
+      "value": "\"radar-userId\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 471,
+      "length": 19,
+      "value": "\"radar-description\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 514,
+      "length": 15,
+      "value": "\"radar-product\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 554,
+      "length": 16,
+      "value": "\"radar-metadata\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 596,
+      "length": 17,
+      "value": "\"radar-anonymous\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 638,
+      "length": 16,
+      "value": "\"radar-tracking\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 686,
+      "length": 23,
+      "value": "\"radar-trackingOptions\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 749,
+      "length": 31,
+      "value": "\"radar-previousTrackingOptions\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 818,
+      "length": 29,
+      "value": "\"radar-remoteTrackingOptions\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 886,
+      "length": 30,
+      "value": "\"radar-clientSdkConfiguration\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 949,
+      "length": 24,
+      "value": "\"radar-sdkConfiguration\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1001,
+      "length": 19,
+      "value": "\"radar-tripOptions\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1045,
+      "length": 16,
+      "value": "\"radar-logLevel\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1089,
+      "length": 19,
+      "value": "\"radar-beaconUUIDs\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1129,
+      "length": 12,
+      "value": "\"radar-host\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1173,
+      "length": 23,
+      "value": "\"radar-lastTrackedTime\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1225,
+      "length": 20,
+      "value": "\"radar-verifiedHost\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1277,
+      "length": 23,
+      "value": "\"radar-lastAppOpenTime\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1326,
+      "length": 17,
+      "value": "\"radar-userDebug\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1376,
+      "length": 24,
+      "value": "\"radar-xPlatformSDKType\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1436,
+      "length": 27,
+      "value": "\"radar-xPlatformSDKVersion\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1497,
+      "length": 25,
+      "value": "\"radar-initializeOptions\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1547,
+      "length": 16,
+      "value": "\"radar-userTags\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1601,
+      "length": 29,
+      "value": "\"radar-pushNotificationToken\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1669,
+      "length": 30,
+      "value": "\"radar-locationExtensionToken\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1728,
+      "length": 20,
+      "value": "\"radar-inSurveyMode\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1773,
+      "length": 16,
+      "value": "\"radar-appGroup\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1849,
+      "length": 20,
+      "value": "\"radar-lastLocation\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1903,
+      "length": 25,
+      "value": "\"radar-lastMovedLocation\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1956,
+      "length": 19,
+      "value": "\"radar-lastMovedAt\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1999,
+      "length": 15,
+      "value": "\"radar-stopped\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2041,
+      "length": 18,
+      "value": "\"radar-lastSentAt\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2083,
+      "length": 15,
+      "value": "\"radar-canExit\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2140,
+      "length": 33,
+      "value": "\"radar-lastFailedStoppedLocation\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2201,
+      "length": 19,
+      "value": "\"radar-geofenceIds\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2244,
+      "length": 15,
+      "value": "\"radar-placeId\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2285,
+      "length": 17,
+      "value": "\"radar-regionIds\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2328,
+      "length": 17,
+      "value": "\"radar-beaconIds\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2377,
+      "length": 23,
+      "value": "\"radar-lastHeadingData\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2439,
+      "length": 30,
+      "value": "\"radar-lastMotionActivityData\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2502,
+      "length": 24,
+      "value": "\"radar-lastPressureData\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2572,
+      "length": 37,
+      "value": "\"radar-notificationPermissionGranted\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 2649,
+      "length": 31,
+      "value": "\"radar-registeredNotifications\""
+    }
+  ]
+}

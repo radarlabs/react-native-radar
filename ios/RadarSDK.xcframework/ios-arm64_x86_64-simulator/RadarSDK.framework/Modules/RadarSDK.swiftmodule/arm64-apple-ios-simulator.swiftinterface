@@ -1,0 +1,82 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.3 (swiftlang-6.2.3.3.21 clang-1700.6.3.2)
+// swift-module-flags: -target arm64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -module-name RadarSDK
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.3
+import Foundation
+import OSLog
+@_exported import RadarSDK
+import Swift
+import SwiftUI
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+
+@_inheritsConvenienceInitializers @available(iOS 13.0, *)
+@objc(RadarInAppMessageDelegate_Swift) @objcMembers @_Concurrency.MainActor open class RadarInAppMessageDelegate : ObjectiveC.NSObject, RadarSDK.RadarInAppMessageProtocol {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc @available(iOS 13.0, *)
+  @_Concurrency.MainActor public static func loadImage(_ url: Swift.String) async -> UIKit.UIImage?
+  #endif
+  @_Concurrency.MainActor @preconcurrency @objc open func createInAppMessageView(_ message: RadarSDK.RadarInAppMessage, onDismiss: @escaping () -> Swift.Void, onInAppMessageClicked: @escaping () -> Swift.Void, completionHandler: @escaping (UIKit.UIViewController) -> Swift.Void)
+  @_Concurrency.MainActor @preconcurrency @objc open func onInAppMessageButtonClicked(_ message: RadarSDK.RadarInAppMessage)
+  @_Concurrency.MainActor @preconcurrency @objc open func onInAppMessageDismissed(_ message: RadarSDK.RadarInAppMessage)
+  @_Concurrency.MainActor @preconcurrency @objc open func onNewInAppMessage(_ message: RadarSDK.RadarInAppMessage)
+  @_Concurrency.MainActor @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @available(iOS 13.0, *)
+final public class RadarAPIClient : Swift.Sendable {
+  public static let shared: RadarSDK.RadarAPIClient
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(RadarLogger_Swift) final public class RadarLogger : ObjectiveC.NSObject, Swift.Sendable {
+  @_Concurrency.MainActor @objc public static func setDelegate(_ delegate: any RadarSDK.RadarDelegate)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(RadarInAppMessage_Swift) @objcMembers final public class RadarInAppMessage_Swift : RadarSDK.RadarInAppMessage {
+  public struct Text : Swift.Sendable {
+    public var text: Swift.String
+    public var color: UIKit.UIColor
+  }
+  public struct Button : Swift.Sendable {
+    public var text: Swift.String
+    public var color: UIKit.UIColor
+    public var backgroundColor: UIKit.UIColor
+    public var deepLink: Swift.String?
+  }
+  public struct Image : Swift.Sendable {
+    public var name: Swift.String
+    public var url: Swift.String
+  }
+  final public var title: RadarSDK.RadarInAppMessage_Swift.Text
+  final public var body: RadarSDK.RadarInAppMessage_Swift.Text
+  final public var button: RadarSDK.RadarInAppMessage_Swift.Button?
+  final public var image: RadarSDK.RadarInAppMessage_Swift.Image?
+  @objc final public var metadata: [Swift.String : any Swift.Sendable]
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(title: RadarSDK.RadarInAppMessage_Swift.Text, body: RadarSDK.RadarInAppMessage_Swift.Text, button: RadarSDK.RadarInAppMessage_Swift.Button?, image: RadarSDK.RadarInAppMessage_Swift.Image?, metadata: [Swift.String : any Swift.Sendable])
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc override public static func fromDictionary(_ dict: [Swift.String : Any]) -> RadarSDK.RadarInAppMessage?
+  #endif
+  @objc override public static func fromArray(_ array: Any) -> [RadarSDK.RadarInAppMessage]
+  @objc override final public func toDictionary() -> [Swift.String : Any]
+  @objc public static func toDictionary(_ message: RadarSDK.RadarInAppMessage) -> [Swift.String : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @available(iOS 13.0, *)
+@_Concurrency.MainActor @objc public class RadarInAppMessageManager : ObjectiveC.NSObject {
+  @objc @_Concurrency.MainActor public static let shared: RadarSDK.RadarInAppMessageManager
+  @_Concurrency.MainActor public var delegate: any RadarSDK.RadarInAppMessageProtocol
+  @_Concurrency.MainActor public var view: UIKit.UIView?
+  @objc @_Concurrency.MainActor public func showInAppMessage(_ message: RadarSDK.RadarInAppMessage) async
+  @objc @_Concurrency.MainActor public func onInAppMessageReceived(messages: [RadarSDK.RadarInAppMessage])
+  @objc @_Concurrency.MainActor public func setDelegate(_ delegate: any RadarSDK.RadarInAppMessageProtocol)
+  @_Concurrency.MainActor @objc override dynamic public init()
+  @objc deinit
+}
+@available(iOS 13.0, *)
+extension RadarSDK.RadarInAppMessageDelegate : Swift.Sendable {}
+@available(iOS 13.0, *)
+extension RadarSDK.RadarInAppMessageManager : Swift.Sendable {}

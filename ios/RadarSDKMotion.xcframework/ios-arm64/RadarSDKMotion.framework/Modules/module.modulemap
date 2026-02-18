@@ -1,0 +1,6 @@
+framework module RadarSDKMotion {
+  umbrella header "RadarSDKMotion.h"
+  export *
+
+  module * { export * }
+}

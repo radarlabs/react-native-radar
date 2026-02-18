@@ -13,10 +13,14 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/radarlabs/react-native-radar.git/react-native-radar.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm,cpp}"
-  s.private_header_files = "ios/**/*.h"
+  s.source_files = "ios/*.{h,m,mm,cpp}"
+  s.private_header_files = "ios/*.h"
 
-  s.dependency "RadarSDK", "3.25.0"
+  s.vendored_frameworks = "ios/RadarSDK.xcframework"
+
+  s.pod_target_xcconfig = {
+    'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "${PODS_TARGET_SRCROOT}/ios/RadarSDK.xcframework/ios-arm64" "${PODS_TARGET_SRCROOT}/ios/RadarSDK.xcframework/ios-arm64_x86_64-simulator"'
+  }
 
  install_modules_dependencies(s)
 end
