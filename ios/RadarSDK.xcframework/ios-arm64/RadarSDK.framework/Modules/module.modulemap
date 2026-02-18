@@ -1,0 +1,11 @@
+framework module RadarSDK {
+  umbrella header "RadarSDK.h"
+  export *
+
+  module * { export * }
+}
+
+module RadarSDK.Swift {
+  header "RadarSDK-Swift.h"
+  requires objc
+}
