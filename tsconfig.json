@@ -27,7 +27,8 @@
     "src/index.web.js",
     "src/ui/**/*",
     "src/NativeRadar.ts",
-    "src/helpers.js"
+    "src/helpers.js",
+    "src/@types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules",

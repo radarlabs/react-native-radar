@@ -14,10 +14,10 @@ import {
   Dimensions,
   Easing,
   Keyboard,
-  SafeAreaView,
   Pressable,
   Platform,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Radar from '../index.native';
 import {
   BACK_ICON,
