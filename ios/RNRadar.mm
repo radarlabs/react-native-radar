@@ -60,7 +60,7 @@ RCT_EXPORT_MODULE()
     [super setEventEmitterCallback:eventEmitterCallbackWrapper];
     _jsEventEmitterReady = YES;
 }
-#endif 
+#endif
 
 - (void)onNewInAppMessage:(RadarInAppMessage *)inAppMessage {
 
