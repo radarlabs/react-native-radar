@@ -1,5 +1,48 @@
 # Migration guides
 
+## 3.x to <4.0>
+
+### Breaking: Minimum dependency versions raised
+
+| Dependency | Previous | New |
+|---|---|---|
+| `react` | `>= 16.8.6` | `>= 19.1.0` |
+| `react-native` | `>= 0.60.0` | `>= 0.80.0` |
+| `@maplibre/maplibre-react-native` | `>= 10.2.1` | `>= 11.0.0-beta.10` |
+
+### Recommended: `react-native-safe-area-context`
+
+- `react-native-safe-area-context` `^5.6.2` is now an optional peer dependency. If installed, the `RadarAutocomplete` component will use it automatically. If not installed, it falls back to the deprecated `SafeAreaView` from `react-native`.
+
+### Steps to upgrade
+
+1. Upgrade React and React Native:
+```bash
+npm install react@^19.1.0 react-native@^0.80.0
+```
+
+2. Upgrade MapLibre React Native:
+```bash
+npm install @maplibre/maplibre-react-native@^11.0.0-beta.10
+```
+
+3. (Recommended) Install `react-native-safe-area-context` if not already present:
+```bash
+npm install react-native-safe-area-context@^5.6.2
+```
+
+### New: `mapRef` option
+
+You can now pass a ref to the underlying MapLibre Map component via `mapOptions.mapRef` to access imperative map methods like `getCenter()`, `getZoom()`, `getBounds()`, etc.
+
+```tsx
+import { useRef } from 'react';
+import type { MapRef } from '@maplibre/maplibre-react-native';
+
+const mapRef = useRef<MapRef>(null);
+<RadarMap mapOptions={{ mapRef }} />
+```
+
 ## 3.20.x to 3.21.x
 
 - `Radar.on()` and `Radar.off()` calls are deprecated, the new interfaces are

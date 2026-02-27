@@ -1,4 +1,6 @@
+import React from "react";
 import { Platform } from "react-native";
+import type { MapRef } from "@maplibre/maplibre-react-native";
 const platform = Platform.OS;
 
 export type RadarMetadata = Record<string, string | number | boolean>;
@@ -850,7 +852,8 @@ export type RadarTripStatus =
 export interface RadarMapOptions {
   mapStyle?: string;
   showUserLocation?: boolean;
-  onRegionDidChange?: (feature: RadarMapRegionChangeEvent) => void;
+  mapRef?: React.Ref<MapRef>;
+  onRegionDidChange?: (event: RadarMapRegionChangeEvent) => void;
   onDidFinishLoadingMap?: () => void;
   onWillStartLoadingMap?: () => void;
   onDidFailLoadingMap?: () => void;
@@ -859,7 +862,9 @@ export interface RadarMapOptions {
 export interface RadarMapRegionChangeEvent {
   center: [number, number];
   zoom: number;
-  bounds?: [number, number, number, number];
+  bounds?: [[number, number], [number, number]];
   bearing?: number;
   pitch?: number;
+  animated: boolean;
+  userInteraction: boolean;
 }
