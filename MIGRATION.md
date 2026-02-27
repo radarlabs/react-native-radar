@@ -10,9 +10,9 @@
 | `react-native` | `>= 0.60.0` | `>= 0.80.0` |
 | `@maplibre/maplibre-react-native` | `>= 10.2.1` | `>= 11.0.0-beta.10` |
 
-### Breaking: New required peer dependency
+### Recommended: `react-native-safe-area-context`
 
-- `react-native-safe-area-context` `^5.6.2`
+- `react-native-safe-area-context` `^5.6.2` is now an optional peer dependency. If installed, the `RadarAutocomplete` component will use it automatically. If not installed, it falls back to the deprecated `SafeAreaView` from `react-native`.
 
 ### Steps to upgrade
 
@@ -23,10 +23,10 @@ npm install react@^19.1.0 react-native@^0.80.0
 
 2. Upgrade MapLibre React Native:
 ```bash
-npm install @maplibre/maplibre-react-native@^11.0.0-beta.6
+npm install @maplibre/maplibre-react-native@^11.0.0-beta.10
 ```
 
-3. Install `react-native-safe-area-context` if not already present:
+3. (Recommended) Install `react-native-safe-area-context` if not already present:
 ```bash
 npm install react-native-safe-area-context@^5.6.2
 ```

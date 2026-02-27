@@ -17,7 +17,12 @@ import {
   Pressable,
   Platform,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+let SafeAreaView;
+try {
+  SafeAreaView = require('react-native-safe-area-context').SafeAreaView;
+} catch (e) {
+  SafeAreaView = require('react-native').SafeAreaView;
+}
 import Radar from '../index.native';
 import {
   BACK_ICON,
