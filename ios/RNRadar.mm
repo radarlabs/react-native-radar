@@ -9,6 +9,9 @@ static NSString *_publishableKey = nil;
     CLLocationManager *locationManager;
     RCTPromiseResolveBlock permissionsRequestResolver;
     bool hasListeners;
+    #ifdef RCT_NEW_ARCH_ENABLED
+    bool jsEventEmitterReady;
+    #endif
 }
 
 RCT_EXPORT_MODULE()
@@ -52,12 +55,21 @@ RCT_EXPORT_MODULE()
     hasListeners = NO;
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (void)setEventEmitterCallback:(EventEmitterCallbackWrapper *)eventEmitterCallbackWrapper {
+    [super setEventEmitterCallback:eventEmitterCallbackWrapper];
+    jsEventEmitterReady = YES;
+}
+#endif
+
 - (void)onNewInAppMessage:(RadarInAppMessage *)inAppMessage {
 
     NSMutableDictionary *body = [NSMutableDictionary new];
     [body setValue:[Radar dictionaryForInAppMessage:inAppMessage] forKey:@"inAppMessage"];
     #ifdef RCT_NEW_ARCH_ENABLED
-    [self emitNewInAppMessageEmitter:body];
+    if (jsEventEmitterReady) {
+        [self emitNewInAppMessageEmitter:body];
+    }
     #else
     if (hasListeners) {
         [self sendEventWithName:@"newInAppMessageEmitter" body:body];
@@ -69,7 +81,9 @@ RCT_EXPORT_MODULE()
     NSMutableDictionary *body = [NSMutableDictionary new];
     [body setValue:[Radar dictionaryForInAppMessage:inAppMessage] forKey:@"inAppMessage"];
     #ifdef RCT_NEW_ARCH_ENABLED
-    [self emitInAppMessageDismissedEmitter:body];
+    if (jsEventEmitterReady) {
+        [self emitInAppMessageDismissedEmitter:body];
+    }
     #else
     if (hasListeners) {
         [self sendEventWithName:@"inAppMessageDismissedEmitter" body:body];
@@ -81,7 +95,9 @@ RCT_EXPORT_MODULE()
     NSMutableDictionary *body = [NSMutableDictionary new];
     [body setValue:[Radar dictionaryForInAppMessage:inAppMessage] forKey:@"inAppMessage"];
     #ifdef RCT_NEW_ARCH_ENABLED
-    [self emitInAppMessageClickedEmitter:body];
+    if (jsEventEmitterReady) {
+        [self emitInAppMessageClickedEmitter:body];
+    }
     #else
     if (hasListeners) {
         [self sendEventWithName:@"inAppMessageClickedEmitter" body:body];
@@ -105,7 +121,9 @@ RCT_EXPORT_MODULE()
         [body setValue:[user dictionaryValue] forKey:@"user"];
     }
     #ifdef RCT_NEW_ARCH_ENABLED
-    [self emitEventsEmitter:body];
+    if (jsEventEmitterReady) {
+        [self emitEventsEmitter:body];
+    }
     #else
     if (hasListeners) {
         [self sendEventWithName:@"eventsEmitter" body:body];
@@ -115,10 +133,12 @@ RCT_EXPORT_MODULE()
 
 - (void)didUpdateLocation:(CLLocation *)location user:(RadarUser *)user {
     #ifdef RCT_NEW_ARCH_ENABLED
-    [self emitLocationEmitter:@{
-        @"location": [Radar dictionaryForLocation:location],
-        @"user": [user dictionaryValue]
-    }];
+    if (jsEventEmitterReady) {
+        [self emitLocationEmitter:@{
+            @"location": [Radar dictionaryForLocation:location],
+            @"user": [user dictionaryValue]
+        }];
+    }
     #else
     if (hasListeners) {
         [self sendEventWithName:@"locationEmitter" body:@{
@@ -131,11 +151,13 @@ RCT_EXPORT_MODULE()
 
 - (void)didUpdateClientLocation:(CLLocation *)location stopped:(BOOL)stopped source:(RadarLocationSource)source {
     #ifdef RCT_NEW_ARCH_ENABLED
-    [self emitClientLocationEmitter:@{
-        @"location": [Radar dictionaryForLocation:location],
-        @"stopped": @(stopped),
-        @"source": [Radar stringForLocationSource:source]
-    }];
+    if (jsEventEmitterReady) {
+        [self emitClientLocationEmitter:@{
+            @"location": [Radar dictionaryForLocation:location],
+            @"stopped": @(stopped),
+            @"source": [Radar stringForLocationSource:source]
+        }];
+    }
     #else
     if (hasListeners) {
         [self sendEventWithName:@"clientLocationEmitter" body:@{
@@ -152,7 +174,9 @@ RCT_EXPORT_MODULE()
         @"status": [Radar stringForStatus:status]
     };
     #ifdef RCT_NEW_ARCH_ENABLED
-    [self emitErrorEmitter:body];
+    if (jsEventEmitterReady) {
+        [self emitErrorEmitter:body];
+    }
     #else
     if (hasListeners) {
         [self sendEventWithName:@"errorEmitter" body:body];
@@ -165,7 +189,9 @@ RCT_EXPORT_MODULE()
         @"message": message
     };
     #ifdef RCT_NEW_ARCH_ENABLED
-    [self emitLogEmitter:body];
+    if (jsEventEmitterReady) {
+        [self emitLogEmitter:body];
+    }
     #else
     if (hasListeners) {
         [self sendEventWithName:@"logEmitter" body:body];
@@ -178,7 +204,9 @@ RCT_EXPORT_MODULE()
         @"token": [token dictionaryValue]
     };
     #ifdef RCT_NEW_ARCH_ENABLED
-    [self emitTokenEmitter:body];
+    if (jsEventEmitterReady) {
+        [self emitTokenEmitter:body];
+    }
     #else
     if (hasListeners) {
         [self sendEventWithName:@"tokenEmitter" body:body];
@@ -189,7 +217,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
     _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.30.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"3.31.0" forKey:@"radar-xPlatformSDKVersion"];
     [Radar initializeWithPublishableKey:publishableKey];
 }
 
