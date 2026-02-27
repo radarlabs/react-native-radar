@@ -14,6 +14,8 @@ import type { RadarMapOptions } from "react-native-radar";
 import React, { useEffect, useState } from "react";
 import ExampleButton from "./components/exampleButton";
 import { Settings as RNSettings } from 'react-native';
+// this import is only here to ensure extending maplibre works as expceted
+import { Camera, Images, GeoJSONSource, Layer } from '@maplibre/maplibre-react-native';
 
 // let host = '';
 // if (host) {

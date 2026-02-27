@@ -1,6 +1,6 @@
 # Migration guides
 
-## 3.x to <TBD>
+## 3.x to <4.0>
 
 ### Breaking: Minimum dependency versions raised
 
@@ -8,7 +8,7 @@
 |---|---|---|
 | `react` | `>= 16.8.6` | `>= 19.1.0` |
 | `react-native` | `>= 0.60.0` | `>= 0.80.0` |
-| `@maplibre/maplibre-react-native` | `>= 10.2.1` | `>= 11.0.0-beta.6` |
+| `@maplibre/maplibre-react-native` | `>= 10.2.1` | `>= 11.0.0-beta.10` |
 
 ### Breaking: New required peer dependency
 
