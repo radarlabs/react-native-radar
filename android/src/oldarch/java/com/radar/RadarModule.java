@@ -115,10 +115,10 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
             options.getString("publishableKey"),
             options.getString("authToken"),
             getCurrentActivity()
-        )
-        this.fraud = initializeOptions.fraud;
+        );
+        this.fraud = initializeOptions.getFraud();
         Radar.initialize(getReactApplicationContext(), initializeOptions);
-        if (initializeOptions.fraud) { 
+        if (initializeOptions.getFraud()) { 
             Radar.setVerifiedReceiver(verifiedReceiver);
         }
     }
