@@ -19,4 +19,3 @@
 - (instancetype _Nonnull)initWithDict:(NSDictionary *_Nullable)dict;
 
 @end
-

@@ -216,14 +216,13 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(initialize:(NSDictionary *)options) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.0.0" forKey:@"radar-xPlatformSDKVersion"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"3.23.6-beta.2" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.1.0-beta.1" forKey:@"radar-xPlatformSDKVersion"];
 
     if (options[@"publishableKey"]) {
-        _publishableKey = options[@"publishableKey"]; 
+        _publishableKey = options[@"publishableKey"];
         [Radar initializeWithPublishableKey:options[@"publishableKey"]];
     } else if (options[@"authToken"]) {
-        [Radar initializeWithAuthToken:options[@"authToken"]];
+        [Radar initializeWithAuthToken:options[@"authToken"] options:nil];
     }
 }
 

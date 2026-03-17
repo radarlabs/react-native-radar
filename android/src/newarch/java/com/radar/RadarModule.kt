@@ -26,6 +26,7 @@ import io.radar.sdk.model.RadarTrip
 import io.radar.sdk.model.RadarVerifiedLocationToken
 import io.radar.sdk.model.RadarInAppMessage
 import io.radar.sdk.RadarNotificationOptions
+import io.radar.sdk.RadarInitializeOptions
 import io.radar.sdk.RadarInAppMessageReceiver
 import android.content.Context
 import android.location.Location
@@ -140,18 +141,6 @@ class RadarModule(reactContext: ReactApplicationContext) :
         return NAME
     }
 
-    override fun initialize(publishableKey: String, fraud: Boolean): Unit {
-        val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
-        editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "4.0.0")
-        editor.apply()
-
-        Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, currentActivity)
-        if (fraud) {
-            Radar.setVerifiedReceiver(radarVerifiedReceiver)
-        }
-    }
-
     override fun initialize(options: ReadableMap): Unit {
         /**
          * options = {
@@ -162,14 +151,24 @@ class RadarModule(reactContext: ReactApplicationContext) :
          */
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "3.23.6-beta.2")
+        editor.putString("x_platform_sdk_version", "4.1.0-beta.1")
         editor.apply()
 
-        options.getString("publishableKey")
-        options.getString("authToken")
-        options.getBoolean("fraud")
-
-        Radar.initialize(reactApplicationContext, options.publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, options.fraud, null, radarInAppMessageReceiver, currentActivity)
+        val initializeOptions = RadarInitializeOptions(
+            radarReceiver = radarReceiver,
+            locationProvider = Radar.RadarLocationServicesProvider.GOOGLE,
+            fraud = options.getBoolean("fraud"),
+            customForegroundNotification = null,
+            inAppMessageReceiver = radarInAppMessageReceiver,
+            silentPush = false,
+            publishableKey = options.getString("publishableKey"),
+            authToken = options.getString("authToken"),
+            activity = currentActivity
+        )
+        Radar.initialize(reactApplicationContext, initializeOptions);
+        if (initializeOptions.fraud) {
+            Radar.setVerifiedReceiver(radarVerifiedReceiver)
+        }
     }
 
     override fun setLogLevel(level: String): Unit {
