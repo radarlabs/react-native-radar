@@ -192,6 +192,18 @@ export const presetEfficientAndroid: RadarTrackingOptions = {
 export const presetEfficient: RadarTrackingOptions =
   platform === "ios" ? presetEfficientIOS : presetEfficientAndroid;
 
+type PublishableKeyAuth = {
+  publishableKey: string;
+  authToken?: never;
+}
+type AuthTokenAuth = {
+  publishableKey?: never;
+  authToken: string;
+}
+export type RadarOptions = (PublishableKeyAuth | AuthTokenAuth) & {
+  fraud?: boolean;
+};
+
 export interface RadarMockTrackingOptions {
   origin: Location;
   destination: Location;

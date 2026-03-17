@@ -1,4 +1,5 @@
 import type {
+  RadarOptions,
   RadarPermissionsStatus,
   RadarTrackCallback,
   RadarTrackOnceOptions,
@@ -49,7 +50,9 @@ import type {
 } from "./types";
 
 export interface RadarNativeInterface {
-  initialize: (publishableKey: string, fraud?: boolean) => void;
+  initialize(options: RadarOptions): void;
+  initialize(publishableKey: string, fraud?: boolean): void;
+  initialize(publishableKey: string | RadarOptions, fraud?: boolean): void;
   setLogLevel: (level: RadarLogLevel) => void;
   setUserId: (userId: string) => void;
   getUserId: () => Promise<string>;

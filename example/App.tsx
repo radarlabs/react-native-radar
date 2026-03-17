@@ -8,14 +8,12 @@ import {
   Settings,
   NativeModules
 } from "react-native";
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import Radar, { Map, Autocomplete } from "react-native-radar";
-import type { RadarMapOptions } from "react-native-radar";
+import Radar, { Autocomplete } from "react-native-radar";
+// import type { RadarMapOptions } from "react-native-radar";
 import React, { useEffect, useState } from "react";
 import ExampleButton from "./components/exampleButton";
 import { Settings as RNSettings } from 'react-native';
 // this import is only here to ensure extending maplibre works as expceted
-import { Camera, Images, GeoJSONSource, Layer } from '@maplibre/maplibre-react-native';
 
 // let host = '';
 // if (host) {

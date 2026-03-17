@@ -51,6 +51,7 @@ import type {
   RadarInAppMessageDismissedCallback,
   RadarInAppMessageClickedCallback,
   RadarInAppMessage,
+  RadarOptions,
 } from "./@types/types";
 import { NativeEventEmitter, NativeModules } from "react-native";
 import { VERSION } from "./version";
@@ -118,8 +119,17 @@ let inAppMessageDismissedUpdateSubscription: EventSubscription | null = null;
 let inAppMessageClickedUpdateSubscription: EventSubscription | null = null;
 
 const Radar: RadarNativeInterface = {
-  initialize: (publishableKey: string, fraud?: boolean) => {
-    NativeRadar.initialize(publishableKey, !!fraud);
+  initialize: (publishableKeyOrOptions: string | RadarOptions, fraud?: boolean) => {
+    if (typeof publishableKeyOrOptions === "string") {
+      NativeRadar.initialize({
+        publishableKey: publishableKeyOrOptions,
+        fraud: !!fraud,
+      });
+    } else if (typeof publishableKeyOrOptions === "object") {
+      NativeRadar.initialize(publishableKeyOrOptions);
+    } else {
+      throw new Error("Invalid publishable key");
+    }
     Radar.onNewInAppMessage((inAppMessage) => {
       Radar.showInAppMessage(inAppMessage);
     });

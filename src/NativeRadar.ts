@@ -1,6 +1,7 @@
 import type { TurboModule } from "react-native";
 import { TurboModuleRegistry } from "react-native";
 import type { EventEmitter } from "react-native/Libraries/Types/CodegenTypes";
+import { RadarOptions } from "./@types/types";
 
 export type LocationEmitter = {
   location: Object;
@@ -43,7 +44,7 @@ export type InAppMessageClickedEmitter = {
 };
 
 export interface Spec extends TurboModule {
-  initialize(publishableKey: string, fraud: boolean): void;
+  initialize(options: Object): void;
   requestPermissions(background: boolean): Promise<string>;
   getPermissionsStatus(): Promise<string>;
   trackOnce(trackOnceOptions: Object | null): Promise<Object>;

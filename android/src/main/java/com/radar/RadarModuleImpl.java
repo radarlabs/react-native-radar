@@ -58,6 +58,11 @@ public class RadarModuleImpl {
         return "RNRadar";
     }
 
+
+    public void initialize(RadarInitializeOptions options) {
+
+    }
+
     public void setLogLevel(String level) {
         Radar.RadarLogLevel logLevel = Radar.RadarLogLevel.NONE;
         if (level != null) {
