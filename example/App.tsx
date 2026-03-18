@@ -6,31 +6,19 @@ import {
   Platform,
   ScrollView,
   Settings,
-  NativeModules
+  NativeModules,
 } from "react-native";
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import Radar, { Map, Autocomplete } from "react-native-radar";
-import type { RadarMapOptions } from "react-native-radar";
+import Radar, { Autocomplete } from "react-native-radar";
+// import type { RadarMapOptions } from "react-native-radar";
 import React, { useEffect, useState } from "react";
 import ExampleButton from "./components/exampleButton";
 import { Settings as RNSettings } from 'react-native';
 // this import is only here to ensure extending maplibre works as expceted
 import { Camera, Images, GeoJSONSource, Layer } from '@maplibre/maplibre-react-native';
-
-// let host = '';
-// if (host) {
-//   if (Platform.OS === 'ios') {
-//     RNSettings.set({ 'radar-host': host });
-//   } else if (Platform.OS === 'android') {
-//     const SharedPreferences = require('expo-shared-preferences');
-//     SharedPreferences.setItemAsync('host', host, {
-//       name: 'RadarSDK',
-//     });
-//   }
-// }
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 
-Radar.initialize("prj_test_pk_", true);
+Radar.initialize("", true);
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
 declare global {
   var __turboModuleProxy: any;
@@ -829,26 +817,26 @@ export default function App() {
       });
   }, []);
 
-  const mapOptions: RadarMapOptions = {
-    mapStyle: 'radar-default-v1',
-    showUserLocation: true,
-    onDidFinishLoadingMap: () => {
-      console.log('Map finished loading');
-      populateText('Map finished loading');
-    },
-    onWillStartLoadingMap: () => {
-      console.log('Map will start loading');
-      populateText('Map will start loading');
-    },
-    onDidFailLoadingMap: () => {
-      console.log('Map failed to load');
-      populateText('Map failed to load');
-    },
-    onRegionDidChange: (event) => {
-      console.log('Map region changed:', event);
-      populateText('Map region changed: ' + JSON.stringify(event));
-    }
-  };
+  // const mapOptions: RadarMapOptions = {
+  //   mapStyle: 'radar-default-v1',
+  //   showUserLocation: true,
+  //   onDidFinishLoadingMap: () => {
+  //     console.log('Map finished loading');
+  //     populateText('Map finished loading');
+  //   },
+  //   onWillStartLoadingMap: () => {
+  //     console.log('Map will start loading');
+  //     populateText('Map will start loading');
+  //   },
+  //   onDidFailLoadingMap: () => {
+  //     console.log('Map failed to load');
+  //     populateText('Map failed to load');
+  //   },
+  //   onRegionDidChange: (event) => {
+  //     console.log('Map region changed:', event);
+  //     populateText('Map region changed: ' + JSON.stringify(event));
+  //   }
+  // };
 
   return (
     <SafeAreaProvider>
@@ -865,7 +853,7 @@ export default function App() {
           {Platform.OS !== "web" && (
             <>
               <View style={{ width: "100%", height: "25%" }}>
-                <Map mapOptions={mapOptions} />
+                {/* <Map mapOptions={mapOptions} /> */}
               </View>
               <View style={{ width: "100%", height: "10%" }}>
                 <Autocomplete

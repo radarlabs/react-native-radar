@@ -38,6 +38,7 @@ import io.radar.sdk.model.RadarTrip;
 import io.radar.sdk.model.RadarUser;
 import io.radar.sdk.model.RadarVerifiedLocationToken;
 import io.radar.sdk.RadarNotificationOptions;
+import io.radar.sdk.RadarInitializeOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,14 +99,26 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
-    public void initialize(String publishableKey, boolean fraud) {
-        this.fraud = fraud;
+    public void initialize(ReadableMap options) {
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "4.0.0");
+        editor.putString("x_platform_sdk_version", "4.1.0-beta.1");
         editor.apply();
-        Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, inAppMessageReceiver, getCurrentActivity());
-        if (fraud) { 
+
+        RadarInitializeOptions initializeOptions = new RadarInitializeOptions(
+            receiver,
+            Radar.RadarLocationServicesProvider.GOOGLE,
+            options.getBoolean("fraud"),
+            null, // customForegroundNotification
+            inAppMessageReceiver,
+            false, // silentPush
+            options.getString("publishableKey"),
+            options.getString("authToken"),
+            getCurrentActivity()
+        );
+        this.fraud = initializeOptions.getFraud();
+        Radar.initialize(getReactApplicationContext(), initializeOptions);
+        if (initializeOptions.getFraud()) { 
             Radar.setVerifiedReceiver(verifiedReceiver);
         }
     }

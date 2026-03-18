@@ -214,11 +214,16 @@ RCT_EXPORT_MODULE()
     #endif
 }
 
-RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
-    _publishableKey = publishableKey; 
+RCT_EXPORT_METHOD(initialize:(NSDictionary *)options) {
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.0.0" forKey:@"radar-xPlatformSDKVersion"];
-    [Radar initializeWithPublishableKey:publishableKey];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.1.0-beta.1" forKey:@"radar-xPlatformSDKVersion"];
+
+    if (options[@"publishableKey"]) {
+        _publishableKey = options[@"publishableKey"];
+        [Radar initializeWithPublishableKey:options[@"publishableKey"]];
+    } else if (options[@"authToken"]) {
+        [Radar initializeWithAuthToken:options[@"authToken"] options:nil];
+    }
 }
 
 RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {
