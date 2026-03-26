@@ -221,14 +221,17 @@ RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud option
     
     RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
     if (options != nil) {
-        if (options[@"silentPush"] != nil) {
-            radarOptions.silentPush = [options[@"silentPush"] boolValue];
+        id silentPushValue = options[@"silentPush"];
+        if (silentPushValue && silentPushValue != [NSNull null]) {
+            radarOptions.silentPush = [silentPushValue boolValue];
         }
-        if (options[@"autoLogNotificationConversions"] != nil) {
-            radarOptions.autoLogNotificationConversions = [options[@"autoLogNotificationConversions"] boolValue];
+        id autoLogValue = options[@"autoLogNotificationConversions"];
+        if (autoLogValue && autoLogValue != [NSNull null]) {
+            radarOptions.autoLogNotificationConversions = [autoLogValue boolValue];
         }
-        if (options[@"autoHandleNotificationDeepLinks"] != nil) {
-            radarOptions.autoHandleNotificationDeepLinks = [options[@"autoHandleNotificationDeepLinks"] boolValue];
+        id autoHandleValue = options[@"autoHandleNotificationDeepLinks"];
+        if (autoHandleValue && autoHandleValue != [NSNull null]) {
+            radarOptions.autoHandleNotificationDeepLinks = [autoHandleValue boolValue];
         }
     }
     [Radar initializeWithPublishableKey:publishableKey options:radarOptions];
