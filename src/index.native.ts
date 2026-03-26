@@ -318,17 +318,17 @@ const Radar: RadarNativeInterface = {
     return NativeRadar.showInAppMessage(inAppMessage);
   },
   setPushNotificationToken: (token: string) => {
-    if (Platform.OS === 'android') {
+    if (Platform.OS === "android") {
       return NativeRadar.setPushNotificationToken(token);
     }
   },
   setAppGroup: (groupId: string) => {
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === "ios") {
       return NativeRadar.setAppGroup(groupId);
     }
   },
   setLocationExtensionToken: (token: string) => {
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === "ios") {
       return NativeRadar.setLocationExtensionToken(token);
     }
   },
