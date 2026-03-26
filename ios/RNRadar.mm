@@ -214,11 +214,24 @@ RCT_EXPORT_MODULE()
     #endif
 }
 
-RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud) {
+RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
     [[NSUserDefaults standardUserDefaults] setObject:@"4.0.0" forKey:@"radar-xPlatformSDKVersion"];
-    [Radar initializeWithPublishableKey:publishableKey];
+    
+    RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
+    if (options != nil) {
+        if (options[@"silentPush"]) {
+            radarOptions.silentPush = [options[@"silentPush"] boolValue];
+        }
+        if (options[@"autoLogNotificationConversions"]) {
+            radarOptions.autoLogNotificationConversions = [options[@"autoLogNotificationConversions"] boolValue];
+        }
+        if (options[@"autoHandleNotificationDeepLinks"]) {
+            radarOptions.autoHandleNotificationDeepLinks = [options[@"autoHandleNotificationDeepLinks"] boolValue];
+        }
+    }
+    [Radar initializeWithPublishableKey:publishableKey options:radarOptions];
 }
 
 RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {
@@ -1374,6 +1387,21 @@ RCT_EXPORT_METHOD(nativeSdkVersion:(RCTPromiseResolveBlock)resolve reject:(RCTPr
     resolve([Radar sdkVersion]);
 }
 
+RCT_EXPORT_METHOD(setPushNotificationToken:(NSString *)token) {
+    // No-op on iOS - push notifications are configured via AppDelegate
+}
+
+RCT_EXPORT_METHOD(setAppGroup:(NSString *)groupId) {
+    [Radar setAppGroup:groupId];
+}
+
+RCT_EXPORT_METHOD(setLocationExtensionToken:(NSString *)token) {
+    [Radar setLocationExtensionToken:token];
+}
+
+RCT_EXPORT_METHOD(isInitialized:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve(@(Radar.isInitialized));
+}
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
