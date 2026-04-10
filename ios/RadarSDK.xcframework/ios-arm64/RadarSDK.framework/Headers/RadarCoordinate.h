@@ -19,5 +19,6 @@
 @property (assign, nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 - (NSDictionary* _Nonnull)dictionaryValue;
+- (instancetype _Nullable)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 
 @end

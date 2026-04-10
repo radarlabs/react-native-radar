@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION="${1:-3.25.2}"
+VERSION="${1:-3.30.0}"
 SDK_REPO="https://github.com/radarlabs/radar-sdk-ios.git"
 BUILD_DIR="/tmp/radar-static-build"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
