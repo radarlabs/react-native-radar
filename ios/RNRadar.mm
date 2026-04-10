@@ -237,6 +237,27 @@ RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud option
     [Radar initializeWithPublishableKey:publishableKey options:radarOptions];
 }
 
+RCT_EXPORT_METHOD(initializeWithAuthToken:(NSString *)authToken fraud:(BOOL)fraud options:(NSDictionary *)options) {
+    [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.0.0" forKey:@"radar-xPlatformSDKVersion"];
+    RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
+    if (options != nil) {
+        id silentPushValue = options[@"silentPush"];
+        if (silentPushValue && silentPushValue != [NSNull null]) {
+            radarOptions.silentPush = [silentPushValue boolValue];
+        }
+        id autoLogValue = options[@"autoLogNotificationConversions"];
+        if (autoLogValue && autoLogValue != [NSNull null]) {
+            radarOptions.autoLogNotificationConversions = [autoLogValue boolValue];
+        }
+        id autoHandleValue = options[@"autoHandleNotificationDeepLinks"];
+        if (autoHandleValue && autoHandleValue != [NSNull null]) {
+            radarOptions.autoHandleNotificationDeepLinks = [autoHandleValue boolValue];
+        }
+    }
+    [Radar initializeWithAuthToken:authToken options:radarOptions];
+}
+
 RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {
     RadarLogLevel logLevel = RadarLogLevelNone;
     if (level) {

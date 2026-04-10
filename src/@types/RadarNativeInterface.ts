@@ -50,6 +50,7 @@ import type {
 
 export interface RadarNativeInterface {
   initialize: (publishableKey: string, fraud?: boolean, options?: Object | null) => void;
+  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: Object | null) => void;
   setLogLevel: (level: RadarLogLevel) => void;
   setUserId: (userId: string) => void;
   getUserId: () => Promise<string>;

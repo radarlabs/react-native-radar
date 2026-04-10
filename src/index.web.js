@@ -10,6 +10,10 @@ const initialize = (publishableKey) => {
   RadarJS.initialize(publishableKey);
 }
 
+const initializeWithAuthToken = (authToken) => {
+  if (throws) throw new Error("initializeWithAuthToken() is not implemented on web");
+}
+
 const setLogLevel = (level) => {
   if (throws) throw new Error("setLogLevel() is not implemented on web");
 };
@@ -467,6 +471,7 @@ const rnSdkVersion = () => VERSION;
 
 const Radar = {
   initialize,
+  initializeWithAuthToken,
   setLogLevel,
   setUserId,
   getUserId,

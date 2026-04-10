@@ -44,6 +44,7 @@ export type InAppMessageClickedEmitter = {
 
 export interface Spec extends TurboModule {
   initialize(publishableKey: string, fraud: boolean, options: Object | null): void;
+  initializeWithAuthToken(authToken: string, fraud: boolean, options: Object | null): void;
   requestPermissions(background: boolean): Promise<string>;
   getPermissionsStatus(): Promise<string>;
   trackOnce(trackOnceOptions: Object | null): Promise<Object>;

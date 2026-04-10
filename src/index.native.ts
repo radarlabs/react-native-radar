@@ -127,6 +127,14 @@ const Radar: RadarNativeInterface = {
     return;
   },
 
+  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: Object | null) => {
+    NativeRadar.initializeWithAuthToken(authToken, !!fraud, options || null);
+    Radar.onNewInAppMessage((inAppMessage) => {
+      Radar.showInAppMessage(inAppMessage);
+    });
+    return;
+  },
+  
   trackOnce: async (options?: RadarTrackOnceOptions) => {
     return NativeRadar.trackOnce(
       options || null

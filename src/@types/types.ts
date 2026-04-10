@@ -31,7 +31,7 @@ export interface RadarTrackingOptions {
   desiredAccuracy: RadarTrackingOptionsDesiredAccuracy;
   stopDuration: number;
   stopDistance: number;
-  sync: "all" | "stopsAndExits" | "none";
+  sync: "all" | "stopsAndExits" | "none" | "events";
   replay: "all" | "stops" | "none";
   useStoppedGeofence: boolean;
   showBlueBar?: boolean;
@@ -823,7 +823,7 @@ export interface RadarFraud {
 
 export type RadarTrackingOptionsReplay = "all" | "stops" | "none";
 
-export type RadarTrackingOptionsSync = "none" | "stopsAndExits" | "all";
+export type RadarTrackingOptionsSync = "none" | "stopsAndExits" | "all" | "events";
 
 export type RadarRouteMode = "foot" | "bike" | "car" | "truck" | "motorbike";
 
