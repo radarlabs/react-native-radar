@@ -263,6 +263,16 @@ const updateTrip = (tripOptions) => {
   });
 };
 
+const updateTripLeg = (options) => {
+  if (throws) throw new Error("updateTripLeg() is not implemented on web");
+  return new Promise((resolve, reject) => { reject("updateTripLeg() is not implemented on web") });
+}
+
+const reorderTripLegs = (options) => {
+  if (throws) throw new Error("reorderTripLegs() is not implemented on web");
+  return new Promise((resolve, reject) => { reject("reorderTripLegs() is not implemented on web") });
+}
+
 const acceptEvent = (eventId, verifiedPlaceId) => {
   if (throws) throw new Error("acceptEvent() is not implemented on web");
 };
@@ -504,6 +514,8 @@ const Radar = {
   completeTrip,
   cancelTrip,
   updateTrip,
+  updateTripLeg,
+  reorderTripLegs,
   acceptEvent,
   rejectEvent,
   getContext,

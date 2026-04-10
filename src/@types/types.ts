@@ -316,6 +316,7 @@ export interface RadarTripOptions {
   scheduledArrivalAt?: number;
   approachingThreshold?: number;
   startTracking?: boolean; // defaults to true
+  legs?: RadarTripLeg[];
 }
 
 export interface RadarTrackCallback {
@@ -578,6 +579,59 @@ export interface RadarTrip {
   scheduledArrivalAt?: Date;
   destinationLocation: Location;
   delay: RadarDelay;
+  legs?: RadarTripLeg[];
+}
+
+export type RadarTripLegStatus =
+  | "unknown"
+  | "pending"
+  | "started"
+  | "approaching"
+  | "arrived"
+  | "completed"
+  | "canceled"
+  | "expired";
+
+export type RadarTripLegDestinationType =
+  | "unknown"
+  | "geofence"
+  | "address"
+  | "coordinates";
+
+export interface RadarTripLeg {
+  _id?: string;
+  status?: RadarTripLegStatus;
+  destinationType?: RadarTripLegDestinationType;
+  createdAt?: string;
+  updatedAt?: string;
+  etaDuration?: number;
+  etaDistance?: number;
+  destinationGeofenceTag?: string;
+  destinationGeofenceExternalId?: string;
+  destinationGeofenceId?: string;
+  address?: string;
+  coordinates?: Location;
+  arrivalRadius?: number;
+  stopDuration?: number;
+  metadata?: RadarMetadata;
+}
+
+export interface RadarUpdateTripLegOptions {
+  tripId?: string;
+  legId: string;
+  status: RadarTripLegStatus;
+}
+
+export interface RadarReorderTripLegsOptions {
+  tripId?: string;
+  legIds: string[];
+}
+
+export interface RadarTripLegCallback {
+  status: string;
+  trip?: RadarTrip;
+  leg?: RadarTripLeg;
+  events?: RadarEvent[];
 }
 
 export interface RadarDelay {

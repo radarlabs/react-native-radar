@@ -85,6 +85,8 @@ export interface Spec extends TurboModule {
   completeTrip(): Promise<Object>;
   cancelTrip(): Promise<Object>;
   updateTrip(options: Object): Promise<Object>;
+  updateTripLeg(options: Object): Promise<Object>;
+  reorderTripLegs(options: Object): Promise<Object>;
   acceptEvent(eventId: string, verifiedPlaceId: string): void;
   rejectEvent(eventId: string): void;
   getContext(location: Object | null): Promise<Object>;

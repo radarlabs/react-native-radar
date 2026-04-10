@@ -164,7 +164,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
             .locationProvider(Radar.RadarLocationServicesProvider.GOOGLE)
             .fraud(fraud)
             .inAppMessageReceiver(radarInAppMessageReceiver)
-            .activity(currentActivity)
+            .apply { currentActivity?.let { activity(it) } }
             .build()
         Radar.initialize(reactApplicationContext, initOptions)
         if (fraud) {
@@ -382,6 +382,14 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun updateTrip(options: ReadableMap, promise: Promise): Unit {
         radarModuleImpl.updateTrip(options, promise)
+    }
+
+    override fun updateTripLeg(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.updateTripLeg(options, promise)
+    }
+
+    override fun reorderTripLegs(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.reorderTripLegs(options, promise)
     }
 
     override fun acceptEvent(eventId: String, verifiedPlaceId: String): Unit {

@@ -46,6 +46,9 @@ import type {
   RadarInAppMessageDismissedCallback,
   RadarInAppMessageClickedCallback,
   RadarInAppMessage,
+  RadarReorderTripLegsOptions,
+  RadarUpdateTripLegOptions,
+  RadarTripLegCallback,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -97,6 +100,8 @@ export interface RadarNativeInterface {
   completeTrip: () => Promise<RadarTripCallback>;
   cancelTrip: () => Promise<RadarTripCallback>;
   updateTrip: (options: RadarUpdateTripOptions) => Promise<RadarTripCallback>;
+  updateTripLeg: (options: RadarUpdateTripLegOptions) => Promise<RadarTripLegCallback>;
+  reorderTripLegs: (options: RadarReorderTripLegsOptions) => Promise<RadarTripCallback>;
   acceptEvent: (eventId: string, verifiedPlaceId: string) => void;
   rejectEvent: (eventId: string) => void;
   getContext: (location?: Location) => Promise<RadarContextCallback>;

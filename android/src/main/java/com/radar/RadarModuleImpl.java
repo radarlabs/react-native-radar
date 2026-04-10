@@ -40,6 +40,7 @@ import io.radar.sdk.model.RadarUser;
 import io.radar.sdk.model.RadarVerifiedLocationToken;
 import io.radar.sdk.model.RadarInAppMessage;
 import io.radar.sdk.RadarNotificationOptions;
+import io.radar.sdk.model.RadarTripLeg;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -734,6 +735,96 @@ public class RadarModuleImpl {
         }
     }
 
+    public void updateTripLeg(ReadableMap optionsMap, final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        if (optionsMap == null || !optionsMap.hasKey("legId") || !optionsMap.hasKey("status")) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+            return;
+        }
+
+        String legId = optionsMap.getString("legId");
+        String statusStr = optionsMap.getString("status");
+        RadarTripLeg.RadarTripLegStatus legStatus = RadarTripLeg.statusForString(statusStr);
+    
+        Radar.RadarTripLegCallback callback = new Radar.RadarTripLegCallback() {
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarTripLeg leg, @Nullable RadarEvent[] events) {
+                try {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (trip != null) {
+                            map.putMap("trip", RadarUtils.mapForJson(trip.toJson()));
+                        }
+                        if (leg != null) {
+                            map.putMap("leg", RadarUtils.mapForJson(leg.toJson()));
+                        }
+                        if (events != null) {
+                            map.putArray("events", RadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                        }
+                        promise.resolve(map);
+                    } else {
+                        promise.reject(status.toString(), status.toString());
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                }
+            }
+        };
+
+        String tripId = optionsMap.hasKey("tripId") ? optionsMap.getString("tripId") : null;
+        if (tripId != null) {
+            Radar.updateTripLeg(tripId, legId, legStatus, callback);
+        } else {
+            Radar.updateTripLeg(legId, legStatus, callback);
+        }
+    }
+
+    public void reorderTripLegs(ReadableMap optionsMap, final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        if (optionsMap == null || !optionsMap.hasKey("legIds")) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+            return;
+        }
+
+        String[] legIds = RadarUtils.stringArrayForArray(optionsMap.getArray("legIds"));
+
+        Radar.RadarTripCallback callback = new Radar.RadarTripCallback() {
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarTrip trip, @Nullable RadarEvent[] events) {
+                try {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (trip != null) {
+                            map.putMap("trip", RadarUtils.mapForJson(trip.toJson()));
+                        }
+                        if (events != null) {
+                            map.putArray("events", RadarUtils.arrayForJson(RadarEvent.toJson(events)));
+                        }
+                        promise.resolve(map);
+                    } else {
+                        promise.reject(status.toString(), status.toString());
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                }
+            }
+        };
+    
+        String tripId = optionsMap.hasKey("tripId") ? optionsMap.getString("tripId") : null;
+        if (tripId != null) {
+            Radar.reorderTripLegs(tripId, legIds, callback);
+        } else {
+            Radar.reorderTripLegs(legIds, callback);
+        }
+    }
 
     public void getContext(@Nullable ReadableMap locationMap, final Promise promise) {
         if (promise == null) {

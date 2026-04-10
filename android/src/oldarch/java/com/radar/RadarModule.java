@@ -118,14 +118,17 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         editor.putString("x_platform_sdk_version", "4.0.0");
         editor.apply();
         
-        io.radar.sdk.RadarInitializeOptions initOptions = io.radar.sdk.RadarInitializeOptions.builder()
+        io.radar.sdk.RadarInitializeOptions.Builder builder = io.radar.sdk.RadarInitializeOptions.builder()
             .authToken(authToken)
             .radarReceiver(receiver)
             .locationProvider(Radar.RadarLocationServicesProvider.GOOGLE)
             .fraud(fraud)
-            .inAppMessageReceiver(inAppMessageReceiver)
-            .activity(getCurrentActivity())
-            .build();
+            .inAppMessageReceiver(inAppMessageReceiver);
+        if (getCurrentActivity() != null) {
+            builder.activity(getCurrentActivity());
+        }
+        io.radar.sdk.RadarInitializeOptions initOptions = builder.build();
+
         Radar.initialize(getReactApplicationContext(), initOptions);
         if (fraud) {
             Radar.setVerifiedReceiver(verifiedReceiver);
@@ -394,6 +397,16 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     @ReactMethod
     public void updateTrip(ReadableMap optionsMap, final Promise promise) {
         radarModuleImpl.updateTrip(optionsMap, promise);
+    }
+
+    @ReactMethod
+    public void updateTripLeg(ReadableMap optionsMap, final Promise promise) {
+        radarModuleImpl.updateTripLeg(optionsMap, promise);
+    }
+
+    @ReactMethod
+    public void reorderTripLegs(ReadableMap optionsMap, final Promise promise) {
+        radarModuleImpl.reorderTripLegs(optionsMap, promise);
     }
 
     @ReactMethod

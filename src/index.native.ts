@@ -52,6 +52,9 @@ import type {
   RadarInAppMessageDismissedCallback,
   RadarInAppMessageClickedCallback,
   RadarInAppMessage,
+  RadarUpdateTripLegOptions,
+  RadarReorderTripLegsOptions,
+  RadarTripLegCallback,
 } from "./@types/types";
 import { NativeEventEmitter, NativeModules } from "react-native";
 import { VERSION } from "./version";
@@ -134,7 +137,7 @@ const Radar: RadarNativeInterface = {
     });
     return;
   },
-  
+
   trackOnce: async (options?: RadarTrackOnceOptions) => {
     return NativeRadar.trackOnce(
       options || null
@@ -474,6 +477,16 @@ const Radar: RadarNativeInterface = {
     options: RadarUpdateTripOptions
   ): Promise<RadarTripCallback> {
     return NativeRadar.updateTrip(options) as Promise<RadarTripCallback>;
+  },
+  updateTripLeg: function (
+    options: RadarUpdateTripLegOptions
+  ): Promise<RadarTripLegCallback> {
+    return NativeRadar.updateTripLeg(options) as Promise<RadarTripLegCallback>;
+  },
+  reorderTripLegs: function (
+    options: RadarReorderTripLegsOptions
+  ): Promise<RadarTripCallback> {
+    return NativeRadar.reorderTripLegs(options) as Promise<RadarTripCallback>;
   },
   acceptEvent: function (eventId: string, verifiedPlaceId: string): void {
     return NativeRadar.acceptEvent(eventId, verifiedPlaceId);
