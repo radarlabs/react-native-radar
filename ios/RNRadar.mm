@@ -238,6 +238,7 @@ RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud option
 }
 
 RCT_EXPORT_METHOD(initializeWithAuthToken:(NSString *)authToken fraud:(BOOL)fraud options:(NSDictionary *)options) {
+    _publishableKey = nil;
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
     [[NSUserDefaults standardUserDefaults] setObject:@"4.0.0" forKey:@"radar-xPlatformSDKVersion"];
     RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
@@ -895,7 +896,8 @@ RCT_EXPORT_METHOD(updateTripLeg:(NSDictionary *)optionsDict resolve:(RCTPromiseR
         rejecter = nil;
     };
 
-    NSString *tripId = optionsDict[@"tripId"];
+    id tripIdValue = optionsDict[@"tripId"];
+    NSString *tripId = ([tripIdValue isKindOfClass:[NSString class]]) ? tripIdValue : nil;
     if (tripId) {
         [Radar updateTripLegWithTripId:tripId legId:legId status:legStatus completionHandler:completionHandler];
     } else {
@@ -940,7 +942,8 @@ RCT_EXPORT_METHOD(reorderTripLegs:(NSDictionary *)optionsDict resolve:(RCTPromis
         rejecter = nil;
     };
 
-    NSString *tripId = optionsDict[@"tripId"];
+    id tripIdValue = optionsDict[@"tripId"];
+    NSString *tripId = ([tripIdValue isKindOfClass:[NSString class]]) ? tripIdValue : nil;
     if (tripId) {
         [Radar reorderTripLegsWithTripId:tripId legIds:legIds completionHandler:completionHandler];
     } else {

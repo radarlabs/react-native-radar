@@ -740,7 +740,7 @@ public class RadarModuleImpl {
             return;
         }
 
-        if (optionsMap == null || !optionsMap.hasKey("legId") || !optionsMap.hasKey("status")) {
+        if (optionsMap == null || !optionsMap.hasKey("legId") || optionsMap.isNull("legId") || !optionsMap.hasKey("status") || optionsMap.isNull("status")) {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
             return;
         }
@@ -775,7 +775,7 @@ public class RadarModuleImpl {
             }
         };
 
-        String tripId = optionsMap.hasKey("tripId") ? optionsMap.getString("tripId") : null;
+        String tripId = (optionsMap.hasKey("tripId") && !optionsMap.isNull("tripId")) ? optionsMap.getString("tripId") : null;
         if (tripId != null) {
             Radar.updateTripLeg(tripId, legId, legStatus, callback);
         } else {
@@ -788,7 +788,7 @@ public class RadarModuleImpl {
             return;
         }
 
-        if (optionsMap == null || !optionsMap.hasKey("legIds")) {
+        if (optionsMap == null || !optionsMap.hasKey("legIds") || optionsMap.isNull("legIds")) {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
             return;
         }
@@ -818,7 +818,7 @@ public class RadarModuleImpl {
             }
         };
     
-        String tripId = optionsMap.hasKey("tripId") ? optionsMap.getString("tripId") : null;
+        String tripId = (optionsMap.hasKey("tripId") && !optionsMap.isNull("tripId")) ? optionsMap.getString("tripId") : null;
         if (tripId != null) {
             Radar.reorderTripLegs(tripId, legIds, callback);
         } else {
