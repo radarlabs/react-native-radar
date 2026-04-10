@@ -34,5 +34,3 @@
 + (NSString *)stringForMotionAuthorization;
 
 @end
-
-

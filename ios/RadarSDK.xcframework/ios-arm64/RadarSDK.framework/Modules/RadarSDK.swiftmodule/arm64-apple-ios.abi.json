@@ -6,6 +6,23 @@
     "children": [
       {
         "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
         "name": "SwiftUI",
         "printedName": "SwiftUI",
         "declKind": "Import",
@@ -13,6 +30,23 @@
         "declAttributes": [
           "RawDocComment"
         ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
       },
       {
         "kind": "Import",
@@ -304,38 +338,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "Copyable",
-            "printedName": "Copyable",
-            "usr": "s:s8CopyableP",
-            "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Escapable",
-            "printedName": "Escapable",
-            "usr": "s:s9EscapableP",
-            "mangledName": "$ss9EscapableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Hashable",
-            "printedName": "Hashable",
-            "usr": "s:SH",
-            "mangledName": "$sSH"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
           },
           {
             "kind": "Conformance",
@@ -346,17 +352,17 @@
           },
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
           },
           {
             "kind": "Conformance",
-            "name": "CustomStringConvertible",
-            "printedName": "CustomStringConvertible",
-            "usr": "s:s23CustomStringConvertibleP",
-            "mangledName": "$ss23CustomStringConvertibleP"
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
           },
           {
             "kind": "Conformance",
@@ -367,12 +373,57 @@
           },
           {
             "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
             "name": "Sendable",
             "printedName": "Sendable",
             "usr": "s:s8SendableP",
             "mangledName": "$ss8SendableP"
           }
         ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
       },
       {
         "kind": "Import",
@@ -515,6 +566,778 @@
       },
       {
         "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarSyncManager",
+        "printedName": "RadarSyncManager",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "start",
+            "printedName": "start(interval:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Double",
+                "printedName": "Swift.Double",
+                "usr": "s:Sd"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)startWithInterval:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC5start8intervalySd_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "startWithInterval:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "stop",
+            "printedName": "stop()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)stop",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC4stopyyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "fetchSyncRegion",
+            "printedName": "fetchSyncRegion()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)fetchSyncRegion",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC05fetchC6RegionyyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "shouldTrack",
+            "printedName": "shouldTrack(location:options:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CLLocation",
+                "printedName": "_LocationEssentials.CLLocation",
+                "usr": "c:objc(cs)CLLocation"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RadarTrackingOptions",
+                "printedName": "RadarSDK.RadarTrackingOptions",
+                "usr": "c:objc(cs)RadarTrackingOptions"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)shouldTrackWithLocation:options:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC11shouldTrack8location7optionsSbSo10CLLocationC_So0A15TrackingOptionsCtFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "shouldTrackWithLocation:options:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "isNearSyncedRegionBoundary",
+            "printedName": "isNearSyncedRegionBoundary(location:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CLLocation",
+                "printedName": "_LocationEssentials.CLLocation",
+                "usr": "c:objc(cs)CLLocation"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)isNearSyncedRegionBoundaryWithLocation:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC26isNearSyncedRegionBoundary8locationSbSo10CLLocationC_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "isNearSyncedRegionBoundaryWithLocation:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "isOutsideSyncedRegion",
+            "printedName": "isOutsideSyncedRegion(location:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CLLocation",
+                "printedName": "_LocationEssentials.CLLocation",
+                "usr": "c:objc(cs)CLLocation"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)isOutsideSyncedRegionWithLocation:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC21isOutsideSyncedRegion8locationSbSo10CLLocationC_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "isOutsideSyncedRegionWithLocation:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "isPoint",
+            "printedName": "isPoint(_:insideCircleWithCenter:radius:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CLLocation",
+                "printedName": "_LocationEssentials.CLLocation",
+                "usr": "c:objc(cs)CLLocation"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CLLocationCoordinate2D",
+                "printedName": "_LocationEssentials.CLLocationCoordinate2D",
+                "usr": "c:@S@CLLocationCoordinate2D"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Double",
+                "printedName": "Swift.Double",
+                "usr": "s:Sd"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)isPoint:insideCircleWithCenter:radius:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC7isPoint_22insideCircleWithCenter6radiusSbSo10CLLocationC_So0L12Coordinate2DVSdtFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "hasSyncedRegion",
+            "printedName": "hasSyncedRegion()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)hasSyncedRegion",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC15hasSyncedRegionSbyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "hasGeofenceStateChanged",
+            "printedName": "hasGeofenceStateChanged(location:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CLLocation",
+                "printedName": "_LocationEssentials.CLLocation",
+                "usr": "c:objc(cs)CLLocation"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)hasGeofenceStateChangedWithLocation:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC23hasGeofenceStateChanged8locationSbSo10CLLocationC_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "hasGeofenceStateChangedWithLocation:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "hasBeaconStateChanged",
+            "printedName": "hasBeaconStateChanged(rangedBeaconIds:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Set",
+                "printedName": "Swift.Set<Swift.String>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sh"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)hasBeaconStateChangedWithRangedBeaconIds:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC21hasBeaconStateChanged06rangedF3IdsSbShySSG_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "hasBeaconStateChangedWithRangedBeaconIds:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "hasPlaceStateChanged",
+            "printedName": "hasPlaceStateChanged(location:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CLLocation",
+                "printedName": "_LocationEssentials.CLLocation",
+                "usr": "c:objc(cs)CLLocation"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)hasPlaceStateChangedWithLocation:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC20hasPlaceStateChanged8locationSbSo10CLLocationC_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "hasPlaceStateChangedWithLocation:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "reconcileSyncState",
+            "printedName": "reconcileSyncState(user:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "RadarUser",
+                "printedName": "RadarSDK.RadarUser",
+                "usr": "c:objc(cs)RadarUser"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)reconcileSyncStateWithUser:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC09reconcileC5State4userySo0A4UserC_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "reconcileSyncStateWithUser:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "saveBeaconState",
+            "printedName": "saveBeaconState(beaconIds:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[Swift.String]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)saveBeaconStateWithBeaconIds:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC15saveBeaconState9beaconIdsySaySSG_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "saveBeaconStateWithBeaconIds:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "rollbackSyncState",
+            "printedName": "rollbackSyncState()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)rollbackSyncState",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC08rollbackC5StateyyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "markDwellFired",
+            "printedName": "markDwellFired(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)markDwellFired:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC14markDwellFiredyySSFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getSyncedRegion",
+            "printedName": "getSyncedRegion()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "CoreLocation.CLCircularRegion?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CLCircularRegion",
+                    "printedName": "CoreLocation.CLCircularRegion",
+                    "usr": "c:objc(cs)CLCircularRegion"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)getSyncedRegion",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC15getSyncedRegionSo010CLCircularG0CSgyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getSyncedStateJSON",
+            "printedName": "getSyncedStateJSON()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "[Swift.String : Any]?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Dictionary",
+                    "printedName": "[Swift.String : Any]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ProtocolComposition",
+                        "printedName": "Any"
+                      }
+                    ],
+                    "usr": "s:SD"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)getSyncedStateJSON",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC18getSyncedStateJSONSDySSypGSgyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getObjCBeacons",
+            "printedName": "getObjCBeacons(for:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[RadarSDK.RadarBeacon]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarBeacon",
+                    "printedName": "RadarSDK.RadarBeacon",
+                    "usr": "c:objc(cs)RadarBeacon"
+                  }
+                ],
+                "usr": "s:Sa"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CLLocation",
+                "printedName": "_LocationEssentials.CLLocation",
+                "usr": "c:objc(cs)CLLocation"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)getObjCBeaconsFor:",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC14getObjCBeacons3forSaySo0A6BeaconCGSo10CLLocationC_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "getObjCBeaconsFor:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarSyncManager",
+                "printedName": "RadarSDK.RadarSyncManager",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(im)init",
+            "mangledName": "$s8RadarSDK0A11SyncManagerCACycfc",
+            "moduleName": "RadarSDK",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager",
+        "mangledName": "$s8RadarSDK0A11SyncManagerC",
+        "moduleName": "RadarSDK",
+        "objc_name": "RadarSyncManager",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
         "name": "OSLog",
         "printedName": "OSLog",
         "declKind": "Import",
@@ -600,45 +1423,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "Sendable",
-            "printedName": "Sendable",
-            "usr": "s:s8SendableP",
-            "mangledName": "$ss8SendableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Copyable",
-            "printedName": "Copyable",
-            "usr": "s:s8CopyableP",
-            "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Escapable",
-            "printedName": "Escapable",
-            "usr": "s:s9EscapableP",
-            "mangledName": "$ss9EscapableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Hashable",
-            "printedName": "Hashable",
-            "usr": "s:SH",
-            "mangledName": "$sSH"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
           },
           {
             "kind": "Conformance",
@@ -649,17 +1437,17 @@
           },
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
           },
           {
             "kind": "Conformance",
-            "name": "CustomStringConvertible",
-            "printedName": "CustomStringConvertible",
-            "usr": "s:s23CustomStringConvertibleP",
-            "mangledName": "$ss23CustomStringConvertibleP"
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
           },
           {
             "kind": "Conformance",
@@ -670,10 +1458,45 @@
           },
           {
             "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
             "name": "SendableMetatype",
             "printedName": "SendableMetatype",
             "usr": "s:s16SendableMetatypeP",
             "mangledName": "$ss16SendableMetatypeP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
           }
         ]
       },
@@ -2412,38 +3235,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "Copyable",
-            "printedName": "Copyable",
-            "usr": "s:s8CopyableP",
-            "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Escapable",
-            "printedName": "Escapable",
-            "usr": "s:s9EscapableP",
-            "mangledName": "$ss9EscapableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Hashable",
-            "printedName": "Hashable",
-            "usr": "s:SH",
-            "mangledName": "$sSH"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
           },
           {
             "kind": "Conformance",
@@ -2454,10 +3249,24 @@
           },
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
           },
           {
             "kind": "Conformance",
@@ -2468,12 +3277,50 @@
           },
           {
             "kind": "Conformance",
-            "name": "CustomDebugStringConvertible",
-            "printedName": "CustomDebugStringConvertible",
-            "usr": "s:s28CustomDebugStringConvertibleP",
-            "mangledName": "$ss28CustomDebugStringConvertibleP"
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
           }
         ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "UserNotifications",
+        "printedName": "UserNotifications",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
       },
       {
         "kind": "Import",
@@ -2897,38 +3744,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "Copyable",
-            "printedName": "Copyable",
-            "usr": "s:s8CopyableP",
-            "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Escapable",
-            "printedName": "Escapable",
-            "usr": "s:s9EscapableP",
-            "mangledName": "$ss9EscapableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Hashable",
-            "printedName": "Hashable",
-            "usr": "s:SH",
-            "mangledName": "$sSH"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
           },
           {
             "kind": "Conformance",
@@ -2939,10 +3758,24 @@
           },
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
           },
           {
             "kind": "Conformance",
@@ -2953,10 +3786,24 @@
           },
           {
             "kind": "Conformance",
-            "name": "CustomDebugStringConvertible",
-            "printedName": "CustomDebugStringConvertible",
-            "usr": "s:s28CustomDebugStringConvertibleP",
-            "mangledName": "$ss28CustomDebugStringConvertibleP"
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
           },
           {
             "kind": "Conformance",
@@ -2976,11 +3823,349 @@
         "declAttributes": [
           "RawDocComment"
         ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "SystemConfiguration",
+        "printedName": "SystemConfiguration",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreTelephony",
+        "printedName": "CoreTelephony",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarLogLevel",
+        "printedName": "RadarLogLevel",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "encode",
+            "printedName": "encode(to:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Encoder",
+                "printedName": "any Swift.Encoder",
+                "usr": "s:s7EncoderP"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:So13RadarLogLevelV0A3SDKE6encode2toys7Encoder_p_tKF",
+            "mangledName": "$sSo13RadarLogLevelV0A3SDKE6encode2toys7Encoder_p_tKF",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(from:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarLogLevel",
+                "printedName": "RadarSDK.RadarLogLevel",
+                "usr": "c:@E@RadarLogLevel"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Decoder",
+                "printedName": "any Swift.Decoder",
+                "usr": "s:s7DecoderP"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:So13RadarLogLevelV0A3SDKE4fromABs7Decoder_p_tKcfc",
+            "mangledName": "$sSo13RadarLogLevelV0A3SDKE4fromABs7Decoder_p_tKcfc",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "throwing": true,
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "c:@E@RadarLogLevel",
+        "moduleName": "RadarSDK",
+        "objc_name": "RadarLogLevel",
+        "declAttributes": [
+          "SynthesizedProtocol",
+          "ObjC",
+          "SynthesizedProtocol",
+          "Sendable",
+          "Dynamic"
+        ],
+        "enumRawTypeName": "Int",
+        "isExternal": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "RawRepresentable",
+            "printedName": "RawRepresentable",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "RawValue",
+                "printedName": "RawValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:SY",
+            "mangledName": "$sSY"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Encodable",
+            "printedName": "Encodable",
+            "usr": "s:SE",
+            "mangledName": "$sSE"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Decodable",
+            "printedName": "Decodable",
+            "usr": "s:Se",
+            "mangledName": "$sSe"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "UNUserNotificationCenter",
+        "printedName": "UNUserNotificationCenter",
+        "declKind": "Class",
+        "usr": "c:objc(cs)UNUserNotificationCenter",
+        "moduleName": "UserNotifications",
+        "isOpen": true,
+        "intro_iOS": "10.0",
+        "objc_name": "UNUserNotificationCenter",
+        "declAttributes": [
+          "Available",
+          "ObjC",
+          "Dynamic"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "isExternal": true,
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          }
+        ]
       }
     ],
     "json_format_version": 8
   },
   "ConstValues": [
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarGeofence.swift",
+      "kind": "StringLiteral",
+      "offset": 1073,
+      "length": 5,
+      "value": "\"_id\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "StringLiteral",
+      "offset": 143,
+      "length": 8,
+      "value": "\"radar_\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "StringLiteral",
+      "offset": 187,
+      "length": 17,
+      "value": "\"radar_geofence_\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "StringLiteral",
+      "offset": 4394,
+      "length": 8,
+      "value": "\"denied\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "StringLiteral",
+      "offset": 4429,
+      "length": 12,
+      "value": "\"authorized\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "StringLiteral",
+      "offset": 4471,
+      "length": 16,
+      "value": "\"not_determined\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "StringLiteral",
+      "offset": 4513,
+      "length": 11,
+      "value": "\"ephemeral\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "StringLiteral",
+      "offset": 4552,
+      "length": 13,
+      "value": "\"provisional\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "StringLiteral",
+      "offset": 4589,
+      "length": 9,
+      "value": "\"unknown\""
+    },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageView.swift",
       "kind": "StringLiteral",
@@ -3066,6 +4251,13 @@
       "value": "\"Button tapped\""
     },
     {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarBeacon.swift",
+      "kind": "StringLiteral",
+      "offset": 495,
+      "length": 5,
+      "value": "\"_id\""
+    },
+    {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
       "kind": "Dictionary",
       "offset": 262,
@@ -3106,6 +4298,111 @@
       "offset": 1711,
       "length": 3,
       "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncState.swift",
+      "kind": "Array",
+      "offset": 469,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncState.swift",
+      "kind": "Array",
+      "offset": 511,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncState.swift",
+      "kind": "Array",
+      "offset": 554,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncState.swift",
+      "kind": "Dictionary",
+      "offset": 609,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncState.swift",
+      "kind": "Array",
+      "offset": 650,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarPlace.swift",
+      "kind": "StringLiteral",
+      "offset": 454,
+      "length": 5,
+      "value": "\"_id\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncManager.swift",
+      "kind": "StringLiteral",
+      "offset": 336,
+      "length": 23,
+      "value": "\"radar_sync_state.json\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncManager.swift",
+      "kind": "FloatLiteral",
+      "offset": 420,
+      "length": 4,
+      "value": "75.0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncManager.swift",
+      "kind": "FloatLiteral",
+      "offset": 470,
+      "length": 5,
+      "value": "100.0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncManager.swift",
+      "kind": "FloatLiteral",
+      "offset": 525,
+      "length": 4,
+      "value": "50.0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncManager.swift",
+      "kind": "FloatLiteral",
+      "offset": 589,
+      "length": 3,
+      "value": "0.2"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncManager.swift",
+      "kind": "StringLiteral",
+      "offset": 645,
+      "length": 15,
+      "value": "\"radar_synced_\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncManager.swift",
+      "kind": "Array",
+      "offset": 1034,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSyncManager.swift",
+      "kind": "BooleanLiteral",
+      "offset": 13709,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarFileStorage.swift",
+      "kind": "BooleanLiteral",
+      "offset": 371,
+      "length": 5,
+      "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
@@ -3243,30 +4540,44 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
       "kind": "IntegerLiteral",
-      "offset": 9566,
+      "offset": 9856,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
       "kind": "IntegerLiteral",
-      "offset": 10301,
+      "offset": 10591,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
       "kind": "BooleanLiteral",
-      "offset": 10416,
+      "offset": 10706,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
       "kind": "BooleanLiteral",
-      "offset": 10899,
+      "offset": 11189,
       "length": 4,
       "value": "true"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotificationHelper.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1170,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotificationHelper.swift",
+      "kind": "StringLiteral",
+      "offset": 1041,
+      "length": 23,
+      "value": "\"RadarSDK.RadarNotificationHelper\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInAppMessageManager.swift",
@@ -3390,219 +4701,401 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1045,
+      "offset": 1041,
+      "length": 12,
+      "value": "\"radar-trip\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 1078,
       "length": 16,
       "value": "\"radar-logLevel\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1089,
+      "offset": 1122,
       "length": 19,
       "value": "\"radar-beaconUUIDs\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1129,
+      "offset": 1162,
       "length": 12,
       "value": "\"radar-host\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1173,
+      "offset": 1206,
       "length": 23,
       "value": "\"radar-lastTrackedTime\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1225,
+      "offset": 1258,
       "length": 20,
       "value": "\"radar-verifiedHost\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1277,
+      "offset": 1310,
       "length": 23,
       "value": "\"radar-lastAppOpenTime\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1326,
+      "offset": 1359,
       "length": 17,
       "value": "\"radar-userDebug\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1376,
+      "offset": 1409,
       "length": 24,
       "value": "\"radar-xPlatformSDKType\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1436,
+      "offset": 1469,
       "length": 27,
       "value": "\"radar-xPlatformSDKVersion\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1497,
+      "offset": 1530,
       "length": 25,
       "value": "\"radar-initializeOptions\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1547,
+      "offset": 1580,
       "length": 16,
       "value": "\"radar-userTags\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1601,
+      "offset": 1634,
       "length": 29,
       "value": "\"radar-pushNotificationToken\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1669,
+      "offset": 1702,
       "length": 30,
       "value": "\"radar-locationExtensionToken\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1728,
+      "offset": 1761,
       "length": 20,
       "value": "\"radar-inSurveyMode\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1773,
+      "offset": 1806,
       "length": 16,
       "value": "\"radar-appGroup\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1849,
+      "offset": 1882,
       "length": 20,
       "value": "\"radar-lastLocation\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1903,
+      "offset": 1936,
       "length": 25,
       "value": "\"radar-lastMovedLocation\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1956,
+      "offset": 1989,
       "length": 19,
       "value": "\"radar-lastMovedAt\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1999,
+      "offset": 2032,
       "length": 15,
       "value": "\"radar-stopped\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2041,
+      "offset": 2074,
       "length": 18,
       "value": "\"radar-lastSentAt\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2083,
+      "offset": 2116,
       "length": 15,
       "value": "\"radar-canExit\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2140,
+      "offset": 2173,
       "length": 33,
       "value": "\"radar-lastFailedStoppedLocation\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2201,
+      "offset": 2234,
       "length": 19,
       "value": "\"radar-geofenceIds\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2244,
+      "offset": 2277,
       "length": 15,
       "value": "\"radar-placeId\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2285,
+      "offset": 2318,
       "length": 17,
       "value": "\"radar-regionIds\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2328,
+      "offset": 2361,
       "length": 17,
       "value": "\"radar-beaconIds\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2377,
+      "offset": 2410,
       "length": 23,
       "value": "\"radar-lastHeadingData\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2439,
+      "offset": 2472,
       "length": 30,
       "value": "\"radar-lastMotionActivityData\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2502,
+      "offset": 2535,
       "length": 24,
       "value": "\"radar-lastPressureData\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2572,
+      "offset": 2605,
       "length": 37,
       "value": "\"radar-notificationPermissionGranted\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2649,
+      "offset": 2682,
       "length": 31,
       "value": "\"radar-registeredNotifications\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 242,
+      "length": 8,
+      "value": "\"3.30.0\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 306,
+      "length": 9,
+      "value": "\"unknown\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 332,
+      "length": 6,
+      "value": "\"wifi\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 361,
+      "length": 13,
+      "value": "\"cellular-5g\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 398,
+      "length": 14,
+      "value": "\"cellular-lte\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 435,
+      "length": 13,
+      "value": "\"cellular-3g\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 471,
+      "length": 13,
+      "value": "\"cellular-2g\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 505,
+      "length": 10,
+      "value": "\"cellular\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 799,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "IntegerLiteral",
+      "offset": 891,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 1729,
+      "length": 5,
+      "value": "\"iOS\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 1771,
+      "length": 7,
+      "value": "\"Apple\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4017,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 4175,
+      "length": 19,
+      "value": "\"UIBackgroundModes\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4235,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 4291,
+      "length": 10,
+      "value": "\"location\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 4720,
+      "length": 20,
+      "value": "\"GRANTED_FOREGROUND\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 4793,
+      "length": 20,
+      "value": "\"GRANTED_BACKGROUND\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 4856,
+      "length": 8,
+      "value": "\"DENIED\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 4911,
+      "length": 8,
+      "value": "\"DENIED\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 4969,
+      "length": 16,
+      "value": "\"NOT_DETERMINED\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 5032,
+      "length": 16,
+      "value": "\"NOT_DETERMINED\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 7457,
+      "length": 13,
+      "value": "\"en_US_POSIX\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "StringLiteral",
+      "offset": 7503,
+      "length": 28,
+      "value": "\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
+      "kind": "IntegerLiteral",
+      "offset": 7586,
+      "length": 1,
+      "value": "0"
     }
   ]
 }

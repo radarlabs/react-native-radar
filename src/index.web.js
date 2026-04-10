@@ -10,6 +10,10 @@ const initialize = (publishableKey) => {
   RadarJS.initialize(publishableKey);
 }
 
+const initializeWithAuthToken = (authToken) => {
+  if (throws) throw new Error("initializeWithAuthToken() is not implemented on web");
+}
+
 const setLogLevel = (level) => {
   if (throws) throw new Error("setLogLevel() is not implemented on web");
 };
@@ -259,6 +263,16 @@ const updateTrip = (tripOptions) => {
   });
 };
 
+const updateTripLeg = (options) => {
+  if (throws) throw new Error("updateTripLeg() is not implemented on web");
+  return new Promise((resolve, reject) => { reject("updateTripLeg() is not implemented on web") });
+}
+
+const reorderTripLegs = (options) => {
+  if (throws) throw new Error("reorderTripLegs() is not implemented on web");
+  return new Promise((resolve, reject) => { reject("reorderTripLegs() is not implemented on web") });
+}
+
 const acceptEvent = (eventId, verifiedPlaceId) => {
   if (throws) throw new Error("acceptEvent() is not implemented on web");
 };
@@ -467,6 +481,7 @@ const rnSdkVersion = () => VERSION;
 
 const Radar = {
   initialize,
+  initializeWithAuthToken,
   setLogLevel,
   setUserId,
   getUserId,
@@ -499,6 +514,8 @@ const Radar = {
   completeTrip,
   cancelTrip,
   updateTrip,
+  updateTripLeg,
+  reorderTripLegs,
   acceptEvent,
   rejectEvent,
   getContext,

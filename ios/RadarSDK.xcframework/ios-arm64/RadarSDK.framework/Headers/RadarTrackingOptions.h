@@ -43,7 +43,19 @@ typedef NS_ENUM(NSInteger, RadarTrackingOptionsSyncLocations) {
     /// Syncs only stops and exits to the server
     RadarTrackingOptionsSyncStopsAndExits,
     /// Syncs no location updates to the server
-    RadarTrackingOptionsSyncNone
+    RadarTrackingOptionsSyncNone,
+    /// Syncs only on detected events (geofence, place, beacon changes)
+    RadarTrackingOptionsSyncEvents
+};
+
+/**
+ The type of tracking options.
+ */
+typedef NS_ENUM(NSInteger, RadarTrackingOptionsType) {
+    RadarTrackingOptionsTypeDefault,
+    RadarTrackingOptionsTypeOnTrip,
+    RadarTrackingOptionsTypeInGeofence,
+    RadarTrackingOptionsTypeIsUser
 };
 
 /**
@@ -170,6 +182,11 @@ typedef NS_ENUM(NSInteger, RadarTrackingOptionsSyncLocations) {
 @property (nonatomic, assign) BOOL usePressure;
 
 /**
+ The type of tracking options.
+ */
+@property (nonatomic, assign) RadarTrackingOptionsType type;
+
+/**
  Updates about every 30 seconds while moving or stopped. Moderate battery usage. Shows the flashing blue status bar during tracking.
  @see https://developer.apple.com/documentation/corelocation/cllocationmanager/2923541-showsbackgroundlocationindicator
  */
@@ -197,6 +214,8 @@ typedef NS_ENUM(NSInteger, RadarTrackingOptionsSyncLocations) {
 + (NSString *)stringForSyncLocations:(RadarTrackingOptionsSyncLocations)syncLocations;
 + (RadarTrackingOptionsSyncLocations)syncLocationsForString:(NSString *)str;
 + (RadarTrackingOptions *_Nullable)trackingOptionsFromDictionary:(NSDictionary *_Nonnull)dictionary;
++ (NSString *)stringForType:(RadarTrackingOptionsType)type;
++ (RadarTrackingOptionsType)typeForString:(NSString *)str;
 - (NSDictionary *)dictionaryValue;
 
 @end

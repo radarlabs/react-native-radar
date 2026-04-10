@@ -69,6 +69,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray<NSDictionary *> *_Nullable)arrayForBeacons:(NSArray<RadarBeacon *> *_Nullable)beacons;
 - (NSDictionary *_Nonnull)dictionaryValue;
+- (instancetype _Nullable)initWithId:(NSString *_Nonnull)_id
+                         description:(NSString *_Nullable)description
+                                 tag:(NSString *_Nonnull)tag
+                          externalId:(NSString *_Nonnull)externalId
+                                uuid:(NSString *_Nonnull)uuid
+                               major:(NSString *_Nullable)major
+                               minor:(NSString *_Nullable)minor
+                            metadata:(NSDictionary *_Nullable)metadata
+                            geometry:(RadarCoordinate *_Nonnull)geometry;
+
 
 @end
 

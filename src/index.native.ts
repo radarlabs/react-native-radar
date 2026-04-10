@@ -52,6 +52,9 @@ import type {
   RadarInAppMessageDismissedCallback,
   RadarInAppMessageClickedCallback,
   RadarInAppMessage,
+  RadarUpdateTripLegOptions,
+  RadarReorderTripLegsOptions,
+  RadarTripLegCallback,
 } from "./@types/types";
 import { NativeEventEmitter, NativeModules } from "react-native";
 import { VERSION } from "./version";
@@ -121,6 +124,14 @@ let inAppMessageClickedUpdateSubscription: EventSubscription | null = null;
 const Radar: RadarNativeInterface = {
   initialize: (publishableKey: string, fraud?: boolean, options?: Object | null) => {
     NativeRadar.initialize(publishableKey, !!fraud, options || null);
+    Radar.onNewInAppMessage((inAppMessage) => {
+      Radar.showInAppMessage(inAppMessage);
+    });
+    return;
+  },
+
+  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: Object | null) => {
+    NativeRadar.initializeWithAuthToken(authToken, !!fraud, options || null);
     Radar.onNewInAppMessage((inAppMessage) => {
       Radar.showInAppMessage(inAppMessage);
     });
@@ -466,6 +477,16 @@ const Radar: RadarNativeInterface = {
     options: RadarUpdateTripOptions
   ): Promise<RadarTripCallback> {
     return NativeRadar.updateTrip(options) as Promise<RadarTripCallback>;
+  },
+  updateTripLeg: function (
+    options: RadarUpdateTripLegOptions
+  ): Promise<RadarTripLegCallback> {
+    return NativeRadar.updateTripLeg(options) as Promise<RadarTripLegCallback>;
+  },
+  reorderTripLegs: function (
+    options: RadarReorderTripLegsOptions
+  ): Promise<RadarTripCallback> {
+    return NativeRadar.reorderTripLegs(options) as Promise<RadarTripCallback>;
   },
   acceptEvent: function (eventId: string, verifiedPlaceId: string): void {
     return NativeRadar.acceptEvent(eventId, verifiedPlaceId);

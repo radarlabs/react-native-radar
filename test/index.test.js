@@ -496,4 +496,64 @@ describe('calls native implementation', () => {
 
     expect(mockModule.logConversion).toHaveBeenCalledTimes(1);
   });
+
+  test('initializeWithAuthToken', () => {
+    const authToken = 'test-auth-token';
+    Radar.initializeWithAuthToken(authToken, true, { silentPush: true });
+
+    expect(mockModule.initializeWithAuthToken).toHaveBeenCalledTimes(1);
+    expect(mockModule.initializeWithAuthToken).toBeCalledWith(authToken, true, { silentPush: true });
+  });
+
+  test('initializeWithAuthToken defaults', () => {
+    const authToken = 'test-auth-token';
+    Radar.initializeWithAuthToken(authToken);
+
+    expect(mockModule.initializeWithAuthToken).toHaveBeenCalledTimes(1);
+    expect(mockModule.initializeWithAuthToken).toBeCalledWith(authToken, false, null);
+  });
+
+  test('updateTripLeg', () => {
+    const options = {
+      legId: 'leg_123',
+      status: 'approaching',
+    };
+    Radar.updateTripLeg(options);
+
+    expect(mockModule.updateTripLeg).toHaveBeenCalledTimes(1);
+    expect(mockModule.updateTripLeg).toBeCalledWith(options);
+  });
+
+  test('updateTripLeg with tripId', () => {
+    const options = {
+      tripId: 'trip_456',
+      legId: 'leg_123',
+      status: 'completed',
+    };
+    Radar.updateTripLeg(options);
+
+    expect(mockModule.updateTripLeg).toHaveBeenCalledTimes(1);
+    expect(mockModule.updateTripLeg).toBeCalledWith(options);
+  });
+
+  test('reorderTripLegs', () => {
+    const options = {
+      legIds: ['leg_1', 'leg_3', 'leg_2'],
+    };
+    Radar.reorderTripLegs(options);
+
+    expect(mockModule.reorderTripLegs).toHaveBeenCalledTimes(1);
+    expect(mockModule.reorderTripLegs).toBeCalledWith(options);
+  });
+
+  test('reorderTripLegs with tripId', () => {
+    const options = {
+      tripId: 'trip_456',
+      legIds: ['leg_1', 'leg_3', 'leg_2'],
+    };
+    Radar.reorderTripLegs(options);
+
+    expect(mockModule.reorderTripLegs).toHaveBeenCalledTimes(1);
+    expect(mockModule.reorderTripLegs).toBeCalledWith(options);
+  });
 });

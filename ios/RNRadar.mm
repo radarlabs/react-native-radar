@@ -217,7 +217,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.0.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.1.0" forKey:@"radar-xPlatformSDKVersion"];
     
     RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
     if (options != nil) {
@@ -235,6 +235,28 @@ RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud option
         }
     }
     [Radar initializeWithPublishableKey:publishableKey options:radarOptions];
+}
+
+RCT_EXPORT_METHOD(initializeWithAuthToken:(NSString *)authToken fraud:(BOOL)fraud options:(NSDictionary *)options) {
+    _publishableKey = nil;
+    [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.1.0" forKey:@"radar-xPlatformSDKVersion"];
+    RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
+    if (options != nil) {
+        id silentPushValue = options[@"silentPush"];
+        if (silentPushValue && silentPushValue != [NSNull null]) {
+            radarOptions.silentPush = [silentPushValue boolValue];
+        }
+        id autoLogValue = options[@"autoLogNotificationConversions"];
+        if (autoLogValue && autoLogValue != [NSNull null]) {
+            radarOptions.autoLogNotificationConversions = [autoLogValue boolValue];
+        }
+        id autoHandleValue = options[@"autoHandleNotificationDeepLinks"];
+        if (autoHandleValue && autoHandleValue != [NSNull null]) {
+            radarOptions.autoHandleNotificationDeepLinks = [autoHandleValue boolValue];
+        }
+    }
+    [Radar initializeWithAuthToken:authToken options:radarOptions];
 }
 
 RCT_EXPORT_METHOD(setLogLevel:(NSString *)level) {
@@ -828,6 +850,105 @@ RCT_EXPORT_METHOD(updateTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseReso
         resolver = nil;
         rejecter = nil;
     }];
+}
+
+RCT_EXPORT_METHOD(updateTripLeg:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (optionsDict == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+        return;
+    }
+
+    NSString *legId = optionsDict[@"legId"];
+    NSString *statusStr = optionsDict[@"status"];
+
+    if (legId == nil || statusStr == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+        return;
+    }
+
+    RadarTripLegStatus legStatus = [RadarTripLeg statusForString:statusStr];
+
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    RadarTripLegCompletionHandler completionHandler = ^(RadarStatus status, RadarTrip * _Nullable trip, RadarTripLeg * _Nullable leg, NSArray<RadarEvent *> * _Nullable events) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (trip) {
+                [dict setObject:[trip dictionaryValue] forKey:@"trip"];
+            }
+            if (leg) {
+                [dict setObject:[leg dictionaryValue] forKey:@"leg"];
+            }
+            if (events) {
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    };
+
+    id tripIdValue = optionsDict[@"tripId"];
+    NSString *tripId = ([tripIdValue isKindOfClass:[NSString class]]) ? tripIdValue : nil;
+    if (tripId) {
+        [Radar updateTripLegWithTripId:tripId legId:legId status:legStatus completionHandler:completionHandler];
+    } else {
+        [Radar updateTripLegWithLegId:legId status:legStatus completionHandler:completionHandler];
+    }
+}
+
+RCT_EXPORT_METHOD(reorderTripLegs:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (optionsDict == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+        return;
+    }
+
+    NSArray<NSString *> *legIds = optionsDict[@"legIds"];
+    if (legIds == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+        return;
+    }
+
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    RadarTripCompletionHandler completionHandler = ^(RadarStatus status, RadarTrip * _Nullable trip, NSArray<RadarEvent *> * _Nullable events) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (trip) {
+                [dict setObject:[trip dictionaryValue] forKey:@"trip"];
+            }
+            if (events) {
+                [dict setObject:[RadarEvent arrayForEvents:events] forKey:@"events"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    };
+
+    id tripIdValue = optionsDict[@"tripId"];
+    NSString *tripId = ([tripIdValue isKindOfClass:[NSString class]]) ? tripIdValue : nil;
+    if (tripId) {
+        [Radar reorderTripLegsWithTripId:tripId legIds:legIds completionHandler:completionHandler];
+    } else {
+        [Radar reorderTripLegsWithLegIds:legIds completionHandler:completionHandler];
+    }
 }
 
 RCT_EXPORT_METHOD(getContext:(NSDictionary *)locationDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {

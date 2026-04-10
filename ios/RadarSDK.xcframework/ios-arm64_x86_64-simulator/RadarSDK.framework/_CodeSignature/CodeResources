@@ -4,13 +4,9 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Headers/Radar-Swift.h</key>
-		<data>
-		h7a/HNKiOPzPaN/Q7ojwgjcIKVU=
-		</data>
 		<key>Headers/Radar.h</key>
 		<data>
-		23/2v/JwUplNj3F1msMZ3oB7Wpo=
+		c2T/R1ORTUpuXeLRulu7YTeLTWY=
 		</data>
 		<key>Headers/RadarAddress.h</key>
 		<data>
@@ -18,7 +14,7 @@
 		</data>
 		<key>Headers/RadarBeacon.h</key>
 		<data>
-		rBwTnYPvoGpwuLQkKyL1Y9Ogq50=
+		7ZDDl96yS3efQnvZHiG9zdwzATA=
 		</data>
 		<key>Headers/RadarChain.h</key>
 		<data>
@@ -34,7 +30,7 @@
 		</data>
 		<key>Headers/RadarCoordinate.h</key>
 		<data>
-		6vVS+AFXhBU3GInmfq3zDh8Ti4U=
+		zX2+9likSZfvCgr3vsH59g+pIj0=
 		</data>
 		<key>Headers/RadarDelegate.h</key>
 		<data>
@@ -50,7 +46,7 @@
 		</data>
 		<key>Headers/RadarGeofence.h</key>
 		<data>
-		pkzlSWE+MKlzsXF+9m1m5TMBYks=
+		jAAg529b0YseuxTaCnvqMxT3Fjc=
 		</data>
 		<key>Headers/RadarGeofenceGeometry.h</key>
 		<data>
@@ -70,7 +66,7 @@
 		</data>
 		<key>Headers/RadarInitializeOptions.h</key>
 		<data>
-		vJQzdDI+8SbhILu9WBreKjBRF2U=
+		aosI/wa+rsl/RR8rQxvytTC9aB4=
 		</data>
 		<key>Headers/RadarMotionProtocol.h</key>
 		<data>
@@ -122,15 +118,19 @@
 		</data>
 		<key>Headers/RadarSDK-Swift.h</key>
 		<data>
-		aPAJMI7muVez/g7Vny2jbk7AL7Q=
+		QthgciA/1P7pIapvjHc/bNW1EpA=
 		</data>
 		<key>Headers/RadarSDK.h</key>
 		<data>
-		zQw5Xm3IjpdDnAusxpgemNY2npY=
+		EGR4gv+gcJwvOZtaL9EfD/bNlPQ=
+		</data>
+		<key>Headers/RadarSDKFraudProtocol.h</key>
+		<data>
+		/0LmLQDrRiwTbxkHmTCSdCqxxcU=
 		</data>
 		<key>Headers/RadarSdkConfiguration.h</key>
 		<data>
-		xnkAlYMT2iwqE7lEVaBz5O4WtHQ=
+		YjXMJLR5a7l5GGps+jauryRR5nU=
 		</data>
 		<key>Headers/RadarSegment.h</key>
 		<data>
@@ -142,23 +142,27 @@
 		</data>
 		<key>Headers/RadarTrackingOptions.h</key>
 		<data>
-		6tpYc8FLXbf1fYf4Lfen0NaDJ2k=
+		37mUKuK37RkAdGnQQXnkOdEYNMc=
 		</data>
 		<key>Headers/RadarTrip.h</key>
 		<data>
-		WlAiBaTDvWMLkRKevuPF//egD+g=
+		vQ4KUOV+w8ZU0X/V+kiHA+i47q0=
+		</data>
+		<key>Headers/RadarTripLeg.h</key>
+		<data>
+		Cqnl9wBHbDh69Xz3ViyKcRhhnIU=
 		</data>
 		<key>Headers/RadarTripOptions.h</key>
 		<data>
-		3I0zOIMgoqYKY24WJyOIK7dojgA=
+		IYYLsCOOILxGzCY1RSPLqIZVrsU=
 		</data>
 		<key>Headers/RadarTripOrder.h</key>
 		<data>
-		n91hHic0sZHKeuMr/i7bP2RxIxc=
+		3JwQOfPCkAe5gt8HCgNjCiv7eFs=
 		</data>
 		<key>Headers/RadarUser.h</key>
 		<data>
-		K91ZkPV0Tcv9qIVerxd2XBNUd2E=
+		HlumnKAhOzbqq6d9c4cGinQ3tAo=
 		</data>
 		<key>Headers/RadarVerifiedDelegate.h</key>
 		<data>
@@ -170,51 +174,51 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		RVXpWRouDWM3kGEypp3Q6LxntvU=
+		kQ365vG9PUgcBGvqUkVNZeIoqj0=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
-		wSVXRZN4bEPvQftw9I3pxzY/myc=
+		AxGGOmwQtegC+oasZxzCnsSRSMQ=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		o3F1pOQBAHPcnV30N+5o6q8hgZc=
+		qxjobNRVQJguIvcd/OhwyLfnOoE=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		Na3IsQ92xS9YV6IBsSUAq8MNN9U=
+		xPKdrkc1BTvQFV0BS/6878z3NJs=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		o3F1pOQBAHPcnV30N+5o6q8hgZc=
+		qxjobNRVQJguIvcd/OhwyLfnOoE=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		v2wKMPcaijJrMtIJelQmGUpJEQM=
+		fRo/E2h6V9tqPkakhrztNz5CBSc=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
-		wSVXRZN4bEPvQftw9I3pxzY/myc=
+		AxGGOmwQtegC+oasZxzCnsSRSMQ=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		DvEuQ7ZBPa46n1re8yg8JyRnwqw=
+		XEoZn+t5pYsFItTXw4nBjsw8taU=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		WA/mFi8YS9cIuJdpGq+lM2avcV4=
+		hD1pp6Fhxlwt8Do0opoNRSFKCNI=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		DvEuQ7ZBPa46n1re8yg8JyRnwqw=
+		XEoZn+t5pYsFItTXw4nBjsw8taU=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		W1H0LyVHFF7wcb0coeccJphn2AA=
+		7VkklGf/TsXo6dAGRZe4L96GW6k=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		SCZZs5PO5v32+T428prNFZDH2iw=
+		7hXJQcPMLv0ZfK+PyFbNIiwglD0=
 		</data>
 		<key>PrivacyInfo.xcprivacy</key>
 		<data>
@@ -223,18 +227,11 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Headers/Radar-Swift.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			xn1N6CPQtzg+WFnFcGxru/0DmY0Bbkb0pVJf1QeNPmU=
-			</data>
-		</dict>
 		<key>Headers/Radar.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			9puFwHLO6ptY7BhLcXUDAujjZs5RyJ4oMAbvlRjjcpo=
+			A4zdwJnNRcdjYw4yfchi1GiwmfV992sqBy2jgktF0YU=
 			</data>
 		</dict>
 		<key>Headers/RadarAddress.h</key>
@@ -248,7 +245,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			+XHz0ALo+AP2w4Gi5V0mQpkTpS9pW2dblmk2RwOENRI=
+			kjowFZq/aJ/u2GdLQ3yRCWkuSodTkrnvM5mWU0lmgd4=
 			</data>
 		</dict>
 		<key>Headers/RadarChain.h</key>
@@ -276,7 +273,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			HEdRPNKZpplYIco8bSQuGOFtfongsUnJJ5VIchRqdt8=
+			vrB7h9dcpYJ9FCkLYRlbjZ1a+SOVVDFY4cmwXw9e2K8=
 			</data>
 		</dict>
 		<key>Headers/RadarDelegate.h</key>
@@ -304,7 +301,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			C95qvtVkHUS0LYOwyWd2CNHYYq+I+CymDYUQrV+jG80=
+			z7kJj643tiFbmUxX7BkfjcMnUC2RYI/HZKTOZJoYDQo=
 			</data>
 		</dict>
 		<key>Headers/RadarGeofenceGeometry.h</key>
@@ -339,7 +336,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			TuqVxb2tX9FgA+4ibflxv5VT/Ogunii7P4gHCs1mxy0=
+			H/r+xxzjSqe85IX94erU6oLXzeZDipAaEyeWOhT9y3E=
 			</data>
 		</dict>
 		<key>Headers/RadarMotionProtocol.h</key>
@@ -430,21 +427,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			19M6ZYj/AYCeR4dL4a0p+c8GLe/DPozIkPn8DjtMJvg=
+			U16B37td+sEMtTQr44ZNqk/VUWzv849UouNFPG4Q064=
 			</data>
 		</dict>
 		<key>Headers/RadarSDK.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			cyMtBZS1yg37BtqGU39CQSawa81mew8NiCRykJlrZjY=
+			AV0O8lySri3Ai5c9uLR90TSG+N/zmN0x0wKI4jJ5AI4=
+			</data>
+		</dict>
+		<key>Headers/RadarSDKFraudProtocol.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			iqZFQESY6/jBotmnOnH6aD5i4nWgwmMAyDjrNi4vA14=
 			</data>
 		</dict>
 		<key>Headers/RadarSdkConfiguration.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZZTeemjcIDhC7/PJNLbDbfSB0TUD99esLBxB4mJiG2U=
+			H7WN4uNZVwZe8y5SjmeJJloB+OYpIN9Yl+H5e+8F1SQ=
 			</data>
 		</dict>
 		<key>Headers/RadarSegment.h</key>
@@ -465,35 +469,42 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Pq6KMsTT35dULz9zxrQypaqp8JCSxPi1fvx4lzbFj8k=
+			pyiP6tRNWxtQAIQ4YgtPPf4mCBo9gsyz2kcd51wGzDc=
 			</data>
 		</dict>
 		<key>Headers/RadarTrip.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			RzSnJQrKkTkUXPLVx6rzSpSx8kRE5hm4l1yeohhPSts=
+			YKFWvbTzA9MO4PeCDE0z7E0qBeTHtSIaVJ4aXAHZG5c=
+			</data>
+		</dict>
+		<key>Headers/RadarTripLeg.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			efYbwfqhJ13CbLgzrn4trxnDBBc0ZBN8ODV40gV8754=
 			</data>
 		</dict>
 		<key>Headers/RadarTripOptions.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			r054Jhmtwo3ZSWP8cYXrwcEz8+Rwa0RwRoGg6dmvckk=
+			jjUn+JHppnidTmKdAuOJR20yfA93NyjG6UqQbyI8YrA=
 			</data>
 		</dict>
 		<key>Headers/RadarTripOrder.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			CvPNzv5w5iEtsOexP6PNQzSTqed9+U+KyAZmc5VGPGo=
+			7pUpy+xy5cYjD+HqmXu9iE1Ir8VNbYnqGczJqMXLC2E=
 			</data>
 		</dict>
 		<key>Headers/RadarUser.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			BQ3/5H+NqZpgxPqzPZhBuyevljkNS1yS/aQj3l+e2mo=
+			hsEksrNdEOuZwtBOLCPDEmHQZajmc4TDJ16fXtB/bjg=
 			</data>
 		</dict>
 		<key>Headers/RadarVerifiedDelegate.h</key>
@@ -514,77 +525,77 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			yUMCPNWYTZGrKdHyyc9EZPYRRQWdrt/RadrxmgJdJVI=
+			qxoP7wA/jyhHIWemEUClo6ASBQi4ICwGNq7l6tu/FA4=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			R7nBIuTrlMyofkISq9Vfys+GCpV43BmWnOLzQk9NABw=
+			c3FDxZzEvNwmBqGvKGmdQM3QfyO2M0W4ADDwgW1Hofg=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			VSkgbz9V9K47BP4DBR1Hm5PjMudDTZG4AODe4mxpu8Y=
+			syvTnEtQBkNF2gYX7pDmHzsRQhv5hTh94MY7EtkTenc=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			R7nBIuTrlMyofkISq9Vfys+GCpV43BmWnOLzQk9NABw=
+			c3FDxZzEvNwmBqGvKGmdQM3QfyO2M0W4ADDwgW1Hofg=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			OHRROxDNYrGBjLbSKCuMU7Oet30yw7WX6t8YxeUMVzM=
+			BvvvjncO/AzX+KMRbD7tpWR/eVajZTo1K7q7Uw6KZGY=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			yUMCPNWYTZGrKdHyyc9EZPYRRQWdrt/RadrxmgJdJVI=
+			qxoP7wA/jyhHIWemEUClo6ASBQi4ICwGNq7l6tu/FA4=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			M2bb6J15fPiD8NR48PWbiFRRwtCYEM9KQnDvb5R6N9o=
+			gZ7qp9tNAYUSsRJs7kM7Zg0jy/vzqWH0rMAA2G2MC1c=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			oOvPAlhTJhyszEAI92NmQFZeVB0fX4gKhdZUtafTIcw=
+			Lv9qvrO6e6EMXo1DyNiEp6RpGpjPIH0E9cTwtIz1cHU=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			M2bb6J15fPiD8NR48PWbiFRRwtCYEM9KQnDvb5R6N9o=
+			gZ7qp9tNAYUSsRJs7kM7Zg0jy/vzqWH0rMAA2G2MC1c=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			y0Md0Bo313vSEhI4sKrhlyE4sQaSnVX7Zd1PSNVSA3A=
+			+zmLXcY+DQJnsUbYu99GwrJk5SOckk0cXmDHliJpIEM=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			yWWsnYULfcEbRGaGGY+9M+GfiL7QzAQqv6mhPkL6oiw=
+			DqzUmV7ER43id816msJL8jj5dbR68GzoCf/o/Xa/Opo=
 			</data>
 		</dict>
 		<key>PrivacyInfo.xcprivacy</key>

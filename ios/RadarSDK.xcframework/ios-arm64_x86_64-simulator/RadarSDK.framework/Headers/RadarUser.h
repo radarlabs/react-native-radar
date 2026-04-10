@@ -161,4 +161,6 @@ typedef NS_ENUM(NSInteger, RadarActivityType);
 
 @property (assign, nonatomic, readonly) double altitude;
 
+- (instancetype _Nullable)initWithObject:(id _Nonnull)object;
+
 @end

@@ -21,6 +21,7 @@
 #import "RadarVerifiedLocationToken.h"
 #import "RadarUser.h"
 #import "RadarInitializeOptions.h"
+#import "RadarTripLeg.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -63,6 +64,8 @@ typedef NS_ENUM(NSInteger, RadarStatus) {
     RadarStatusErrorForbidden,
     /// Not found
     RadarStatusErrorNotFound,
+    /// Missing plugin
+    RadarStatusErrorPlugin,
     /// Too many requests (rate limit exceeded)
     RadarStatusErrorRateLimit,
     /// Internal server error
@@ -228,6 +231,15 @@ typedef void (^_Nullable RadarTrackVerifiedCompletionHandler)(RadarStatus status
 typedef void (^_Nullable RadarTripCompletionHandler)(RadarStatus status, RadarTrip *_Nullable trip, NSArray<RadarEvent *> *_Nullable events);
 
 /**
+ Called when a trip leg update succeeds, fails, or times out.
+
+ Receives the request status and, if successful, the trip, the updated leg, and an array of the events generated.
+
+ @see https://radar.com/documentation/sdk/ios
+ */
+typedef void (^_Nullable RadarTripLegCompletionHandler)(RadarStatus status, RadarTrip *_Nullable trip, RadarTripLeg *_Nullable leg, NSArray<RadarEvent *> *_Nullable events);
+
+/**
  Called when a context request succeeds, fails, or times out.
 
  Receives the request status and, if successful, the location and the context.
@@ -331,6 +343,28 @@ typedef void (^_Nonnull RadarIndoorsScanCompletionHandler)(NSString *_Nullable r
  @see https://radar.com/documentation/sdk/ios#initialize-sdk
  */
 + (void)initializeWithPublishableKey:(NSString *_Nonnull)publishableKey NS_SWIFT_NAME(initialize(publishableKey:));
+
+/**
+ Initializes the Radar SDK.
+
+ @warning Call this method from the main thread in your `AppDelegate` class before calling any other Radar methods.
+
+ @param authToken Your auth token.
+ @param options Radar SDK initialization options.
+
+ @see https://radar.com/documentation/sdk/ios#initialize-sdk
+ */
++ (void)initializeWithAuthToken:(NSString *_Nonnull)authToken options:(RadarInitializeOptions *_Nullable)options NS_SWIFT_NAME(initialize(authToken:options:));
+
+/**
+ Initializes the Radar SDK.
+
+ @warning Call this method from the main thread in your `AppDelegate` class before calling any other Radar methods.
+
+ @param authToken Your auth token.
+ @see https://radar.com/documentation/sdk/ios#initialize-sdk
+ */
++ (void)initializeWithAuthToken:(NSString *)authToken NS_SWIFT_NAME(initialize(authToken:));
 
 /**
  Initializes the Radar SDK.
@@ -791,6 +825,16 @@ typedef void (^_Nonnull RadarIndoorsScanCompletionHandler)(NSString *_Nullable r
 + (RadarTripOptions *_Nullable)getTripOptions;
 
 /**
+ Returns the current trip, including legs for multi-destination trips.
+ Use the legs' _id values when calling updateTripLeg.
+
+ @return The current trip, or nil if no trip is active.
+
+ @see https://radar.com/documentation/trip-tracking
+ */
++ (RadarTrip *_Nullable)getTrip;
+
+/**
  Starts a trip.
 
  @param options Configurable trip options.
@@ -867,6 +911,70 @@ typedef void (^_Nonnull RadarIndoorsScanCompletionHandler)(NSString *_Nullable r
  @see https://radar.com/documentation/trip-tracking
  */
 + (void)cancelTripWithCompletionHandler:(RadarTripCompletionHandler _Nullable)completionHandler NS_SWIFT_NAME(cancelTrip(completionHandler:));
+
+/**
+ Updates a trip leg status for multi-destination trips.
+
+ @param tripId The Radar ID of the trip (from RadarTrip._id).
+ @param legId The Radar ID of the leg (from RadarTripLeg._id).
+ @param status The new status for the leg.
+ @param completionHandler An optional completion handler.
+
+ @see https://radar.com/documentation/trip-tracking
+ */
++ (void)updateTripLegWithTripId:(NSString *_Nonnull)tripId
+                          legId:(NSString *_Nonnull)legId
+                         status:(RadarTripLegStatus)status
+              completionHandler:(RadarTripLegCompletionHandler _Nullable)completionHandler NS_SWIFT_NAME(updateTripLeg(tripId:legId:status:completionHandler:));
+
+/**
+ Updates a trip leg status for multi-destination trips, using the current trip's ID.
+
+ @param legId The Radar ID of the leg (from RadarTripLeg._id).
+ @param status The new status for the leg.
+ @param completionHandler An optional completion handler.
+
+ @see https://radar.com/documentation/trip-tracking
+ */
++ (void)updateTripLegWithLegId:(NSString *_Nonnull)legId
+                        status:(RadarTripLegStatus)status
+             completionHandler:(RadarTripLegCompletionHandler _Nullable)completionHandler NS_SWIFT_NAME(updateTripLeg(legId:status:completionHandler:));
+
+/**
+ Updates the current trip leg status for multi-destination trips.
+ Uses the current trip's ID and currentLegId automatically.
+
+ @param status The new status for the current leg.
+ @param completionHandler An optional completion handler.
+
+ @see https://radar.com/documentation/trip-tracking
+ */
++ (void)updateCurrentTripLegWithStatus:(RadarTripLegStatus)status
+                     completionHandler:(RadarTripLegCompletionHandler _Nullable)completionHandler NS_SWIFT_NAME(updateCurrentTripLeg(status:completionHandler:));
+
+/**
+ Reorders the legs of a multi-destination trip.
+
+ @param tripId The Radar ID of the trip (from RadarTrip._id).
+ @param legIds An array of leg IDs in the desired new order.
+ @param completionHandler An optional completion handler.
+
+ @see https://radar.com/documentation/trip-tracking
+ */
++ (void)reorderTripLegsWithTripId:(NSString *_Nonnull)tripId
+                           legIds:(NSArray<NSString *> *_Nonnull)legIds
+                completionHandler:(RadarTripCompletionHandler _Nullable)completionHandler NS_SWIFT_NAME(reorderTripLegs(tripId:legIds:completionHandler:));
+
+/**
+ Reorders the legs of the current multi-destination trip.
+
+ @param legIds An array of leg IDs in the desired new order.
+ @param completionHandler An optional completion handler.
+
+ @see https://radar.com/documentation/trip-tracking
+ */
++ (void)reorderTripLegsWithLegIds:(NSArray<NSString *> *_Nonnull)legIds
+                completionHandler:(RadarTripCompletionHandler _Nullable)completionHandler NS_SWIFT_NAME(reorderTripLegs(legIds:completionHandler:));
 
 #pragma mark - Context
 

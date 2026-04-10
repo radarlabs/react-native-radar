@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 
 #import "RadarRouteMode.h"
+#import "RadarTripLeg.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -66,6 +67,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) UInt16 approachingThreshold;
 
 @property (nonatomic, assign) BOOL startTracking;
+
+/**
+ For multi-destination trips, an optional array of trip legs.
+ */
+@property (nullable, nonatomic, copy) NSArray<RadarTripLeg *> *legs;
 
 + (RadarTripOptions *_Nullable)tripOptionsFromDictionary:(NSDictionary *)dict;
 - (NSDictionary *)dictionaryValue;

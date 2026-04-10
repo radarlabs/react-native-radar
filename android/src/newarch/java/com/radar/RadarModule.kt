@@ -143,13 +143,33 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun initialize(publishableKey: String, fraud: Boolean, options: ReadableMap?): Unit {
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "4.0.0")
+        editor.putString("x_platform_sdk_version", "4.1.0")
         editor.apply()
 
         Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, currentActivity)
         if (fraud) {
             Radar.setVerifiedReceiver(radarVerifiedReceiver)
         } 
+    }
+
+    override fun initializeWithAuthToken(authToken: String, fraud: Boolean, options: ReadableMap?): Unit {
+        val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
+        editor.putString("x_platform_sdk_type", "ReactNative")
+        editor.putString("x_platform_sdk_version", "4.1.0")
+        editor.apply()
+        
+        val initOptions = io.radar.sdk.RadarInitializeOptions.builder()
+            .authToken(authToken)
+            .radarReceiver(radarReceiver)
+            .locationProvider(Radar.RadarLocationServicesProvider.GOOGLE)
+            .fraud(fraud)
+            .inAppMessageReceiver(radarInAppMessageReceiver)
+            .apply { currentActivity?.let { activity(it) } }
+            .build()
+        Radar.initialize(reactApplicationContext, initOptions)
+        if (fraud) {
+            Radar.setVerifiedReceiver(radarVerifiedReceiver)
+        }
     }
 
     override fun setLogLevel(level: String): Unit {
@@ -362,6 +382,14 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun updateTrip(options: ReadableMap, promise: Promise): Unit {
         radarModuleImpl.updateTrip(options, promise)
+    }
+
+    override fun updateTripLeg(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.updateTripLeg(options, promise)
+    }
+
+    override fun reorderTripLegs(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.reorderTripLegs(options, promise)
     }
 
     override fun acceptEvent(eventId: String, verifiedPlaceId: String): Unit {
