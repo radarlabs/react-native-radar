@@ -22,7 +22,7 @@ Android: compile with java 17
 
 To run example app with local `react-native-radar` dependency:
 
-- install node dependencies with `npm ci` and typescript if needed with `npm install -g typescript`.
+- install node dependencies with `npm ci && npm run setup` and typescript if needed with `npm install -g typescript`.
 - build local `react-native-radar` with `npm run build-all`.
 - navigate to the example dir with `cd example`.
 - install node dependency of example with `npm ci`.
