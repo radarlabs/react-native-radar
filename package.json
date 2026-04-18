@@ -38,7 +38,8 @@
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
     "build-plugin": "tsc --build plugin/",
-    "build": "tsc"
+    "build": "tsc",
+    "setup": "npm rebuild esbuild fsevents --ignore-scripts=false"
   },
   "jest": {
     "preset": "react-native",
@@ -82,7 +83,7 @@
     "@react-native-community/cli": "15.0.0-alpha.2",
     "@react-native/babel-preset": "0.79.2",
     "@react-native/eslint-config": "^0.78.0",
-    "@release-it/conventional-changelog": "^9.0.2",
+    "@release-it/conventional-changelog": "^10.0.6",
     "@types/jest": "^29.5.5",
     "@types/node": "^24.3.0",
     "@types/react": "^19.0.0",
@@ -113,6 +114,10 @@
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "radar-sdk-js": "^3.7.1"
+  },
+  "engines": {
+    "node": ">=24",
+    "npm": ">=11"
   },
   "codegenConfig": {
     "name": "RadarSpec",
