@@ -22,7 +22,7 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app needs location.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs location."
-      }
+      },
     },
     "android": {
       "adaptiveIcon": {
