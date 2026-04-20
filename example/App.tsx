@@ -861,7 +861,6 @@ export default function App() {
             </Text>
             <Text style={styles.platformText}>Platform: {Platform.OS}</Text>
           </View>
-          {/* The current version of MapLibre does not support the new react native architecture  */}
           {Platform.OS !== "web" && (
             <>
               <View style={{ width: "100%", height: "25%" }}>

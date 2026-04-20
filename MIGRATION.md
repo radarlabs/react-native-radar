@@ -8,7 +8,7 @@
 |---|---|---|
 | `react` | `>= 16.8.6` | `>= 19.1.0` |
 | `react-native` | `>= 0.60.0` | `>= 0.80.0` |
-| `@maplibre/maplibre-react-native` | `>= 10.2.1` | `>= 11.0.0-beta.10` |
+| `@maplibre/maplibre-react-native` | `>= 10.2.1` | `^11.0.0` |
 
 ### Recommended: `react-native-safe-area-context`
 
@@ -23,7 +23,7 @@ npm install react@^19.1.0 react-native@^0.80.0
 
 2. Upgrade MapLibre React Native:
 ```bash
-npm install @maplibre/maplibre-react-native@^11.0.0-beta.10
+npm install @maplibre/maplibre-react-native@^11.0.0
 ```
 
 3. (Recommended) Install `react-native-safe-area-context` if not already present:

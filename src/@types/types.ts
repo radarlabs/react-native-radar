@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, type NativeSyntheticEvent } from "react-native";
 import type { MapRef } from "@maplibre/maplibre-react-native";
 const platform = Platform.OS;
 
@@ -908,15 +908,15 @@ export interface RadarMapOptions {
   showUserLocation?: boolean;
   mapRef?: React.Ref<MapRef>;
   onRegionDidChange?: (event: RadarMapRegionChangeEvent) => void;
-  onDidFinishLoadingMap?: () => void;
-  onWillStartLoadingMap?: () => void;
-  onDidFailLoadingMap?: () => void;
+  onDidFinishLoadingMap?: (event?: NativeSyntheticEvent<null>) => void;
+  onWillStartLoadingMap?: (event?: NativeSyntheticEvent<null>) => void;
+  onDidFailLoadingMap?: (event?: NativeSyntheticEvent<null>) => void;
 }
 
 export interface RadarMapRegionChangeEvent {
   center: [number, number];
   zoom: number;
-  bounds?: [[number, number], [number, number]];
+  bounds?: [number, number, number, number];
   bearing?: number;
   pitch?: number;
   animated: boolean;
