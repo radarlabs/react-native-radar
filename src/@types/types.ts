@@ -908,15 +908,19 @@ export interface RadarMapOptions {
   showUserLocation?: boolean;
   mapRef?: React.Ref<MapRef>;
   onRegionDidChange?: (event: RadarMapRegionChangeEvent) => void;
-  onDidFinishLoadingMap?: (event?: NativeSyntheticEvent<null>) => void;
-  onWillStartLoadingMap?: (event?: NativeSyntheticEvent<null>) => void;
-  onDidFailLoadingMap?: (event?: NativeSyntheticEvent<null>) => void;
+  onDidFinishLoadingMap?: (event: NativeSyntheticEvent<null>) => void;
+  onWillStartLoadingMap?: (event: NativeSyntheticEvent<null>) => void;
+  onDidFailLoadingMap?: (event: NativeSyntheticEvent<null>) => void;
 }
 
 export interface RadarMapRegionChangeEvent {
   center: [number, number];
   zoom: number;
-  bounds?: [number, number, number, number];
+  /**
+  * Geographic bounds in `[west, south, east, north]` order (south-west corner
+  * then north-east corner, per GeoJSON RFC 7946).
+  */
+  bounds?: [west: number, south: number, east: number, north: number];
   bearing?: number;
   pitch?: number;
   animated: boolean;
