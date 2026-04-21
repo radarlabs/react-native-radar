@@ -25,8 +25,8 @@ To run example app with local `react-native-radar` dependency:
 - install node dependencies with `npm ci && npm run setup` and typescript if needed with `npm install -g typescript`.
 - build local `react-native-radar` with `npm run build-all`.
 - navigate to the example dir with `cd example`.
-- install node dependency of example with `npm ci`.
-- build native app using expo pre-build and `react-native-plugin` with `npm run install-radar-rebuild`. 
+- install node dependency of example with `npm ci && npm run setup`.
+- build native app using expo pre-build and `react-native-plugin` with `npm run install-radar-rebuild`.
 - run iOS and android example app with `npx expo run:ios` or `npx expo run:android`.
 
 
