@@ -39,7 +39,7 @@
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
     "build-plugin": "tsc --build plugin/",
     "build": "tsc",
-    "setup": "npm rebuild esbuild fsevents --ignore-scripts=false"
+    "setup": "npm rebuild fsevents @evilmartians/lefthook --ignore-scripts=false"
   },
   "jest": {
     "preset": "react-native",
@@ -116,7 +116,7 @@
     "radar-sdk-js": "^3.7.1"
   },
   "engines": {
-    "node": ">=24",
+    "node": ">=22",
     "npm": ">=11"
   },
   "codegenConfig": {

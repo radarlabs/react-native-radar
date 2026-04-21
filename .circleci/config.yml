@@ -8,6 +8,7 @@ jobs:
       - image: cimg/node:22.16.0
     steps:
       - checkout
+      - run: npm install -g npm@11
       - run: npm install
       - run: npm install -g typescript
       - run:
@@ -69,10 +70,10 @@ jobs:
             echo "Directory permissions:"
             ls -la ~/.gradle/
       - run: chown -R $USER:$USER android
-      - run: 
+      - run:
           name: Build Android Debug
-          command: | 
-            cd android 
+          command: |
+            cd android
             ./gradlew clean --no-daemon
             ./gradlew assembleDebug --no-daemon --info
   ios:
@@ -83,6 +84,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/react-native-radar
+      - run:
+          name: Update npm
+          command: npm install -g npm@11
       - run:
           name: Install Dependencies
           command: npm install
@@ -101,7 +105,7 @@ jobs:
             \      end\
             \    end\
             ' Podfile
-            
+
             # Verify it worked
             echo "=== Checking if sandboxing fix was added ==="
             grep -A 3 -B 3 "ENABLE_USER_SCRIPT_SANDBOXING" Podfile || echo "WARNING: sandboxing fix not found!"
@@ -116,7 +120,7 @@ jobs:
             cd ios
             xcodebuild clean -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator
             xcodebuild -workspace Example.xcworkspace -scheme Example -sdk iphonesimulator -configuration Debug ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO
- 
+
 
 workflows:
   version: 2
