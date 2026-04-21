@@ -5,10 +5,9 @@ jobs:
   node:
     working_directory: ~/react-native-radar
     docker:
-      - image: cimg/node:22.16.0
+      - image: cimg/node:24
     steps:
       - checkout
-      - run: npm install -g npm@11
       - run: npm install
       - run: npm install -g typescript
       - run:
@@ -84,9 +83,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/react-native-radar
-      - run:
-          name: Update npm
-          command: npm install -g npm@11
       - run:
           name: Install Dependencies
           command: npm install
