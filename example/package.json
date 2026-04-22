@@ -9,8 +9,7 @@
     "web": "expo start --web",
     "install-radar": "npm un react-native-radar ; npm i --install-links ../",
     "install-radar-rebuild-dirty": "npm run install-radar && expo prebuild",
-    "install-radar-rebuild": "npm run install-radar && expo prebuild --clean",
-    "setup": "npm rebuild @evilmartians/lefthook --ignore-scripts=false"
+    "install-radar-rebuild": "npm run install-radar && expo prebuild --clean"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
