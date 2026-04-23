@@ -810,6 +810,7 @@ export interface RadarAddress {
   street?: string;
   unit?: string;
   timeZone?: RadarTimeZone;
+  categories?: string[];
 }
 
 export interface RadarTimeZone {
