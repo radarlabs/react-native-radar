@@ -46,6 +46,8 @@ export interface RadarTrackingOptions {
   beacons: boolean;
   syncGeofencesLimit?: number;
   foregroundServiceEnabled?: boolean;
+  batchInterval?: number;
+  batchSize?: number;
 }
 
 export const presetContinuousIOS: RadarTrackingOptions = {

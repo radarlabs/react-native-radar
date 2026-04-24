@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.3 (swiftlang-6.3.0.123.5 clang-2100.0.123.102)
+// swift-compiler-version: Apple Swift version 6.3.1 (swiftlang-6.3.1.1.2 clang-2100.0.123.102)
 // swift-module-flags: -target x86_64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -O -enable-experimental-feature DebugDescriptionMacro -module-name RadarSDK
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.1
 import CoreLocation
 import CoreTelephony
 import Foundation
@@ -48,8 +48,6 @@ final public class RadarAPIClient : Swift.Sendable {
   @objc public static func saveBeaconState(beaconIds: [Swift.String])
   @objc public static func rollbackSyncState()
   @objc public static func markDwellFired(_ geofenceId: Swift.String)
-  @objc public static func getSyncedRegion() -> CoreLocation.CLCircularRegion?
-  @objc public static func getSyncedStateJSON() -> [Swift.String : Any]?
   @objc public static func getObjCBeacons(for location: _LocationEssentials.CLLocation) -> [RadarSDK.RadarBeacon]
   @objc override dynamic public init()
   @objc deinit
