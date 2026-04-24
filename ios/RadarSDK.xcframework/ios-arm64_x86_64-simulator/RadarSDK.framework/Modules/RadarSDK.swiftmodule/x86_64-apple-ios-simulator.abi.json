@@ -1072,84 +1072,6 @@
           },
           {
             "kind": "Function",
-            "name": "getSyncedRegion",
-            "printedName": "getSyncedRegion()",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "CoreLocation.CLCircularRegion?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "CLCircularRegion",
-                    "printedName": "CoreLocation.CLCircularRegion",
-                    "usr": "c:objc(cs)CLCircularRegion"
-                  }
-                ],
-                "usr": "s:Sq"
-              }
-            ],
-            "declKind": "Func",
-            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)getSyncedRegion",
-            "mangledName": "$s8RadarSDK0A11SyncManagerC15getSyncedRegionSo010CLCircularG0CSgyFZ",
-            "moduleName": "RadarSDK",
-            "static": true,
-            "declAttributes": [
-              "Final",
-              "AccessControl",
-              "ObjC",
-              "RawDocComment"
-            ],
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Function",
-            "name": "getSyncedStateJSON",
-            "printedName": "getSyncedStateJSON()",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "[Swift.String : Any]?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Dictionary",
-                    "printedName": "[Swift.String : Any]",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      },
-                      {
-                        "kind": "TypeNominal",
-                        "name": "ProtocolComposition",
-                        "printedName": "Any"
-                      }
-                    ],
-                    "usr": "s:SD"
-                  }
-                ],
-                "usr": "s:Sq"
-              }
-            ],
-            "declKind": "Func",
-            "usr": "c:@M@RadarSDK@objc(cs)RadarSyncManager(cm)getSyncedStateJSON",
-            "mangledName": "$s8RadarSDK0A11SyncManagerC18getSyncedStateJSONSDySSypGSgyFZ",
-            "moduleName": "RadarSDK",
-            "static": true,
-            "declAttributes": [
-              "Final",
-              "AccessControl",
-              "ObjC"
-            ],
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Function",
             "name": "getObjCBeacons",
             "printedName": "getObjCBeacons(for:)",
             "children": [
@@ -1295,6 +1217,33 @@
             "mangledName": "$sSH"
           }
         ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
       },
       {
         "kind": "Import",
@@ -4398,6 +4347,13 @@
       "value": "false"
     },
     {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarOfflineEventManager.swift",
+      "kind": "StringLiteral",
+      "offset": 342,
+      "length": 30,
+      "value": "\"io.radar.offlineEventManager\""
+    },
+    {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarFileStorage.swift",
       "kind": "BooleanLiteral",
       "offset": 371,
@@ -4927,7 +4883,7 @@
       "kind": "StringLiteral",
       "offset": 242,
       "length": 8,
-      "value": "\"3.30.0\""
+      "value": "\"3.31.0\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",

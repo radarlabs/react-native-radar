@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Radar.h"
+@class RadarRemoteTrackingOptions;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,6 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)bufferGeofenceEntries;
 - (BOOL)bufferGeofenceExits;
 - (BOOL)stopDetection;
+- (BOOL)skipForegroundCheck;
+- (BOOL)useOfflineRTOUpdates;
+- (BOOL)offlineEventGenerationEnabled;
+- (NSArray<RadarRemoteTrackingOptions *> *_Nullable)remoteTrackingOptions;
 - (instancetype)initWithDict:(NSDictionary *_Nullable)dict;
 - (NSDictionary *)dictionaryValue;
 @end

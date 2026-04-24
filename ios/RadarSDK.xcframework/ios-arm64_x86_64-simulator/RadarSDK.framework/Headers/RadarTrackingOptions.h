@@ -182,6 +182,16 @@ typedef NS_ENUM(NSInteger, RadarTrackingOptionsType) {
 @property (nonatomic, assign) BOOL usePressure;
 
 /**
+ Determines the time interval between batch events, in seconds. Set to 0 to disable interval-based batching.
+ */
+@property (nonatomic, assign) int batchInterval;
+
+/**
+ Determines the size of each batch. Set to 0 to disable size-based batching.
+ */
+@property (nonatomic, assign) int batchSize;
+
+/**
  The type of tracking options.
  */
 @property (nonatomic, assign) RadarTrackingOptionsType type;
