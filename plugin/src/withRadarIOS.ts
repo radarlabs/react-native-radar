@@ -11,33 +11,33 @@ const pkg = require("../../package.json");
 
 const NATIVE_SETUP_SENTINEL = "@generated react-native-radar nativeSetup";
 
-function buildObjcSnippet(args: RadarPluginProps): string {
+function buildObjcSnippet(args: RadarPluginProps, indent: string = "  "): string {
   const lines: string[] = [
-    `  // ${NATIVE_SETUP_SENTINEL}`,
-    `  RadarInitializeOptions *radarInitializeOptions = [[RadarInitializeOptions alloc] init];`,
+    `${indent}// ${NATIVE_SETUP_SENTINEL}`,
+    `${indent}RadarInitializeOptions *radarInitializeOptions = [[RadarInitializeOptions alloc] init];`,
   ];
   if (args.iosAutoHandleNotificationDeepLinks) {
-    lines.push(`  radarInitializeOptions.autoHandleNotificationDeepLinks = YES;`);
+    lines.push(`${indent}radarInitializeOptions.autoHandleNotificationDeepLinks = YES;`);
   }
   if (args.iosAutoLogNotificationConversions) {
-    lines.push(`  radarInitializeOptions.autoLogNotificationConversions = YES;`);
+    lines.push(`${indent}radarInitializeOptions.autoLogNotificationConversions = YES;`);
   }
-  lines.push(`  [Radar nativeSetup:radarInitializeOptions];`);
+  lines.push(`${indent}[Radar nativeSetup:radarInitializeOptions];`);
   return lines.join("\n");
 }
 
-function buildSwiftSnippet(args: RadarPluginProps): string {
+function buildSwiftSnippet(args: RadarPluginProps, indent: string = "    "): string {
   const lines: string[] = [
-    `    // ${NATIVE_SETUP_SENTINEL}`,
-    `    let radarInitializeOptions = RadarInitializeOptions()`,
+    `${indent}// ${NATIVE_SETUP_SENTINEL}`,
+    `${indent}let radarInitializeOptions = RadarInitializeOptions()`,
   ];
   if (args.iosAutoHandleNotificationDeepLinks) {
-    lines.push(`    radarInitializeOptions.autoHandleNotificationDeepLinks = true`);
+    lines.push(`${indent}radarInitializeOptions.autoHandleNotificationDeepLinks = true`);
   }
   if (args.iosAutoLogNotificationConversions) {
-    lines.push(`    radarInitializeOptions.autoLogNotificationConversions = true`);
+    lines.push(`${indent}radarInitializeOptions.autoLogNotificationConversions = true`);
   }
-  lines.push(`    Radar.nativeSetup(radarInitializeOptions)`);
+  lines.push(`${indent}Radar.nativeSetup(radarInitializeOptions)`);
   return lines.join("\n");
 }
 
@@ -64,19 +64,24 @@ function withRadarAppDelegate(config: any, args: RadarPluginProps) {
         );
       }
 
-      const anchor =
-        "[super application:application didFinishLaunchingWithOptions:launchOptions];";
-      if (!contents.includes(anchor)) {
+      const anchorRegex =
+        /^([ \t]*)(return\s+|BOOL\s+\w+\s*=\s*)?\[super\s+application:application\s+didFinishLaunchingWithOptions:launchOptions\]\s*;/m;
+      
+      const match = contents.match(anchorRegex);
+      if (!match) {
         WarningAggregator.addWarningIOS(
           "react-native-radar",
           "Could not find didFinishLaunchingWithOptions super call in AppDelegate; skipping nativeSetup injection."
         );
+        
         return config;
       }
+      
       contents = contents.replace(
-        anchor,
-        `${anchor}\n${buildObjcSnippet(args)}`
+        anchorRegex,
+        `${buildObjcSnippet(args, match[1])}\n${match[0]}`
       );
+
     } else if (language === "swift") {
       if (!/^import RadarSDK\b/m.test(contents)) {
         contents = contents.replace(
@@ -84,18 +89,21 @@ function withRadarAppDelegate(config: any, args: RadarPluginProps) {
           `$1\nimport RadarSDK`
         );
       }
-      const anchor =
-        "super.application(application, didFinishLaunchingWithOptions: launchOptions)";
-      if (!contents.includes(anchor)) {
+      const anchorRegex =
+        /^([ \t]*)(return\s+)?super\.application\(application,\s*didFinishLaunchingWithOptions:\s*launchOptions\)/m;
+      
+      const match = contents.match(anchorRegex);
+      if (!match) {
         WarningAggregator.addWarningIOS(
           "react-native-radar",
           "Could not find didFinishLaunchingWithOptions super call in AppDelegate.swift; skipping nativeSetup injection."
         );
+
         return config;
       }
       contents = contents.replace(
-        anchor,
-        `${anchor}\n${buildSwiftSnippet(args)}`
+        anchorRegex,
+        `${buildSwiftSnippet(args, match[1])}\n${match[0]}`
       );
     } else {
       WarningAggregator.addWarningIOS(
