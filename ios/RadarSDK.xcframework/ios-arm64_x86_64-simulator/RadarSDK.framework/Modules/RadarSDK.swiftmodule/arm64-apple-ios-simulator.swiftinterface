@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.3.1 (swiftlang-6.3.1.1.2 clang-2100.0.123.102)
-// swift-module-flags: -target arm64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -O -enable-experimental-feature DebugDescriptionMacro -module-name RadarSDK
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.1
+// swift-compiler-version: Apple Swift version 6.3.2 (swiftlang-6.3.2.1.108 clang-2100.1.1.101)
+// swift-module-flags: -target arm64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -O -enable-experimental-feature DebugDescriptionMacro -module-name RadarSDK
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.2
 import CoreLocation
 import CoreTelephony
 import Foundation
@@ -16,10 +16,8 @@ import _Concurrency
 import _StringProcessing
 import _SwiftConcurrencyShims
 
-@_inheritsConvenienceInitializers @available(iOS 13.0, *)
-@objc(RadarInAppMessageDelegate_Swift) @objcMembers @_Concurrency.MainActor open class RadarInAppMessageDelegate : ObjectiveC.NSObject, RadarSDK.RadarInAppMessageProtocol {
-  @objc @available(iOS 13.0, *)
-  @_Concurrency.MainActor public static func loadImage(_ url: Swift.String) async -> UIKit.UIImage?
+@_inheritsConvenienceInitializers @objc(RadarInAppMessageDelegate_Swift) @objcMembers @_Concurrency.MainActor open class RadarInAppMessageDelegate : ObjectiveC.NSObject, RadarSDK.RadarInAppMessageProtocol {
+  @objc @_Concurrency.MainActor public static func loadImage(_ url: Swift.String) async -> UIKit.UIImage?
   @_Concurrency.MainActor @preconcurrency @objc open func createInAppMessageView(_ message: RadarSDK.RadarInAppMessage, onDismiss: @escaping () -> Swift.Void, onInAppMessageClicked: @escaping () -> Swift.Void, completionHandler: @escaping (UIKit.UIViewController) -> Swift.Void)
   @_Concurrency.MainActor @preconcurrency @objc open func onInAppMessageButtonClicked(_ message: RadarSDK.RadarInAppMessage)
   @_Concurrency.MainActor @preconcurrency @objc open func onInAppMessageDismissed(_ message: RadarSDK.RadarInAppMessage)
@@ -27,10 +25,21 @@ import _SwiftConcurrencyShims
   @_Concurrency.MainActor @objc override dynamic public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @available(iOS 13.0, *)
-final public class RadarAPIClient : Swift.Sendable {
+@_hasMissingDesignatedInitializers final public class RadarAPIClient : Swift.Sendable {
   public static let shared: RadarSDK.RadarAPIClient
   @objc deinit
+}
+extension RadarSDK.RadarLogLevel : Swift.Codable {
+  public func toString() -> Swift.String
+  public static func from(string: Swift.String) -> RadarSDK.RadarLogLevel
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+extension RadarSDK.RadarLogType : Swift.Codable {
+  public func toString() -> Swift.String
+  public static func from(string: Swift.String) -> RadarSDK.RadarLogType
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 @_inheritsConvenienceInitializers @objc(RadarSyncManager) final public class RadarSyncManager : ObjectiveC.NSObject {
   @objc public static func start(interval: Foundation.TimeInterval)
@@ -49,15 +58,6 @@ final public class RadarAPIClient : Swift.Sendable {
   @objc public static func rollbackSyncState()
   @objc public static func markDwellFired(_ geofenceId: Swift.String)
   @objc public static func getObjCBeacons(for location: _LocationEssentials.CLLocation) -> [RadarSDK.RadarBeacon]
-  @objc override dynamic public init()
-  @objc deinit
-}
-extension RadarSDK.RadarLogLevel : Swift.Codable {
-  public func encode(to encoder: any Swift.Encoder) throws
-  public init(from decoder: any Swift.Decoder) throws
-}
-@_inheritsConvenienceInitializers @objc(RadarLogger_Swift) final public class RadarLogger : ObjectiveC.NSObject, Swift.Sendable {
-  @_Concurrency.MainActor @objc public static func setDelegate(_ delegate: any RadarSDK.RadarDelegate)
   @objc override dynamic public init()
   @objc deinit
 }
@@ -88,8 +88,7 @@ extension RadarSDK.RadarLogLevel : Swift.Codable {
   @objc public static func toDictionary(_ message: RadarSDK.RadarInAppMessage) -> [Swift.String : Any]
   @objc deinit
 }
-@_inheritsConvenienceInitializers @available(iOS 13.0, *)
-@_Concurrency.MainActor @objc public class RadarInAppMessageManager : ObjectiveC.NSObject {
+@_inheritsConvenienceInitializers @_Concurrency.MainActor @objc public class RadarInAppMessageManager : ObjectiveC.NSObject {
   @objc @_Concurrency.MainActor public static let shared: RadarSDK.RadarInAppMessageManager
   @_Concurrency.MainActor public var delegate: any RadarSDK.RadarInAppMessageProtocol
   @_Concurrency.MainActor public var view: UIKit.UIView?
@@ -99,7 +98,5 @@ extension RadarSDK.RadarLogLevel : Swift.Codable {
   @_Concurrency.MainActor @objc override dynamic public init()
   @objc deinit
 }
-@available(iOS 13.0, *)
 extension RadarSDK.RadarInAppMessageDelegate : Swift.Sendable {}
-@available(iOS 13.0, *)
 extension RadarSDK.RadarInAppMessageManager : Swift.Sendable {}
