@@ -494,6 +494,17 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
 
 
 RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (!NSClassFromString(@"RadarSDKFraud")) {
+        reject(@"ERROR_PLUGIN",
+               @"trackVerified requires the RadarSDKFraud module. "
+               @"Set iosFraud: true in your react-native-radar Expo config plugin "
+               @"(or add `pod 'RadarSDKFraud', :path => '../node_modules/react-native-radar'` "
+               @"to your ios/Podfile manually), then re-run `npx expo prebuild --clean` "
+               @"and `pod install`.",
+               nil);
+        return;
+    }
+
     BOOL beacons = NO;
     RadarTrackingOptionsDesiredAccuracy desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
     NSString *reason = nil;

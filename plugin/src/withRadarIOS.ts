@@ -118,6 +118,70 @@ function withRadarAppDelegate(config: any, args: RadarPluginProps) {
   });
 }
 
+function injectPodIfMissing(contents: string, podName: string): string {
+  if (contents.indexOf(`pod '${podName}'`) !== -1) {
+    return contents;
+  }
+
+  const targetMatch = /target '(\w+)' do/.exec(contents);
+  if (!targetMatch) {
+    return contents;
+  }
+
+  const targetStartIndex = targetMatch.index;
+  const targetEndIndex = contents.indexOf('end', targetStartIndex) + 3;
+  const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
+
+  const updatedTargetBlock = targetBlock.replace(
+    /(target '(\w+)' do)/,
+    `$1\n  pod '${podName}', :path => '../node_modules/react-native-radar'`
+  );
+
+  return contents.replace(targetBlock, updatedTargetBlock);
+}
+
+const FRAUD_LINK_SENTINEL = "# @generated react-native-radar fraud-link";
+
+function injectFraudLinkPostInstall(contents: string): string {
+  if (contents.indexOf(FRAUD_LINK_SENTINEL) !== -1) {
+    return contents;
+  }
+
+  const body = `    ${FRAUD_LINK_SENTINEL}
+    fraud_xcframework = File.expand_path(
+      '../node_modules/react-native-radar/ios/RadarSDKFraud.xcframework',
+      __dir__
+    )
+    if File.directory?(fraud_xcframework)
+      installer.aggregate_targets.each do |aggregate_target|
+        project = aggregate_target.user_project
+        next if project.nil?
+
+        project.native_targets.each do |native_target|
+          next unless native_target.product_type == 'com.apple.product-type.application'
+
+          link_phase = native_target.frameworks_build_phase
+          already_linked = link_phase.files.any? { |f|
+            f.display_name == 'RadarSDKFraud.xcframework' || f.display_name == 'RadarSDKFraud.framework'
+          }
+          next if already_linked
+
+          ref = project.frameworks_group.new_reference(fraud_xcframework)
+          link_phase.add_file_reference(ref)
+        end
+
+        project.save
+      end
+    end`;
+
+  const postInstallRegex = /(post_install\s+do\s+\|[^|]+\|\s*\n)/;
+  if (postInstallRegex.test(contents)) {
+    return contents.replace(postInstallRegex, `$1${body}\n`);
+  }
+
+  return `${contents}\npost_install do |installer|\n${body}\nend\n`;
+}
+
 export const withRadarIOS = (config: any, args: RadarPluginProps) => {
   config = withInfoPlist(config, (config: { modResults: { NSLocationWhenInUseUsageDescription: string; NSLocationAlwaysAndWhenInUseUsageDescription: string; UIBackgroundModes: string[]; NSAppTransportSecurity: { NSAllowsArbitraryLoads: boolean; NSPinnedDomains: { "api-verified.radar.io": { NSIncludesSubdomains: boolean; NSPinnedLeafIdentities: { "SPKI-SHA256-BASE64": string; }[]; }; }; }; NSMotionUsageDescription: string; }; }) => {
     config.modResults.NSLocationWhenInUseUsageDescription =
@@ -161,33 +225,25 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
 
   config = withRadarAppDelegate(config, args);
   
-  if (args.addRadarSDKMotion) {
+  if (args.addRadarSDKMotion || args.iosFraud) {
     config = withDangerousMod(config, [
       'ios',
       async (config: { modRequest: { platformProjectRoot: any; }; }) => {
         const filePath = path.join(config.modRequest.platformProjectRoot, 'Podfile');
-        const contents = await fs.readFile(filePath, 'utf-8');
+        const original = await fs.readFile(filePath, 'utf-8');
+        let contents = original;
 
-        // Check if the pod declaration already exists
-        if (contents.indexOf(`pod 'RadarSDKMotion'`) === -1) {
-          // Find the target block
-          const targetRegex = /target '(\w+)' do/g;
-          const match = targetRegex.exec(contents);
-          if (match) {
-            const targetStartIndex = match.index;
-            const targetEndIndex = contents.indexOf('end', targetStartIndex) + 3;
+        if (args.addRadarSDKMotion) {
+          contents = injectPodIfMissing(contents, 'RadarSDKMotion');
+        }
 
-            // Insert the pod declaration within the target block
-            const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
-            const updatedTargetBlock = targetBlock.replace(
-              /(target '(\w+)' do)/,
-              `$1\n  pod 'RadarSDKMotion', :path => '../node_modules/react-native-radar'`
-            );
-            const newContents = contents.replace(targetBlock, updatedTargetBlock);
-
-            // Write the updated contents back to the Podfile
-            await fs.writeFile(filePath, newContents);
-          }
+        if (args.iosFraud) {
+          contents = injectPodIfMissing(contents, 'RadarSDKFraud');
+          contents = injectFraudLinkPostInstall(contents);
+        }
+        
+        if (contents !== original) {
+          await fs.writeFile(filePath, contents);
         }
 
         return config;
