@@ -10,6 +10,7 @@ const path = require('path');
 const pkg = require("../../package.json");
 
 const NATIVE_SETUP_SENTINEL = "@generated react-native-radar nativeSetup";
+const IOS_FRAUD_POD_VERSION = "0.0.1-beta.13";
 
 function buildObjcSnippet(args: RadarPluginProps, indent: string = "  "): string {
   const lines: string[] = [
@@ -160,35 +161,29 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
   });
 
   config = withRadarAppDelegate(config, args);
-  
-  if (args.addRadarSDKMotion) {
+
+  if (args.iosFraud || args.addRadarSDKMotion) {
     config = withDangerousMod(config, [
       'ios',
       async (config: { modRequest: { platformProjectRoot: any; }; }) => {
         const filePath = path.join(config.modRequest.platformProjectRoot, 'Podfile');
-        const contents = await fs.readFile(filePath, 'utf-8');
+        let contents = await fs.readFile(filePath, 'utf-8');
 
-        // Check if the pod declaration already exists
-        if (contents.indexOf(`pod 'RadarSDKMotion'`) === -1) {
-          // Find the target block
-          const targetRegex = /target '(\w+)' do/g;
-          const match = targetRegex.exec(contents);
-          if (match) {
-            const targetStartIndex = match.index;
-            const targetEndIndex = contents.indexOf('end', targetStartIndex) + 3;
-
-            // Insert the pod declaration within the target block
-            const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
-            const updatedTargetBlock = targetBlock.replace(
-              /(target '(\w+)' do)/,
-              `$1\n  pod 'RadarSDKMotion', :path => '../node_modules/react-native-radar'`
-            );
-            const newContents = contents.replace(targetBlock, updatedTargetBlock);
-
-            // Write the updated contents back to the Podfile
-            await fs.writeFile(filePath, newContents);
-          }
+        if (args.iosFraud) {
+          contents = insertPodInFirstTarget(
+            contents,
+            `pod 'RadarSDKFraud', '${IOS_FRAUD_POD_VERSION}'`
+          );
         }
+
+        if (args.addRadarSDKMotion) {
+          contents = insertPodInFirstTarget(
+            contents,
+            `pod 'RadarSDKMotion', :path => '../node_modules/react-native-radar'`
+          );
+        }
+
+        await fs.writeFile(filePath, contents);
 
         return config;
       },
@@ -197,3 +192,25 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
 
   return config;
 };
+
+function insertPodInFirstTarget(contents: string, podDeclaration: string): string {
+  if (contents.includes(podDeclaration)) {
+    return contents;
+  }
+
+  const targetRegex = /target '(\w+)' do/g;
+  const match = targetRegex.exec(contents);
+  if (!match) {
+    return contents;
+  }
+
+  const targetStartIndex = match.index;
+  const targetEndIndex = contents.indexOf('end', targetStartIndex) + 3;
+  const targetBlock = contents.substring(targetStartIndex, targetEndIndex);
+  const updatedTargetBlock = targetBlock.replace(
+    /(target '(\w+)' do)/,
+    `$1\n  ${podDeclaration}`
+  );
+
+  return contents.replace(targetBlock, updatedTargetBlock);
+}
