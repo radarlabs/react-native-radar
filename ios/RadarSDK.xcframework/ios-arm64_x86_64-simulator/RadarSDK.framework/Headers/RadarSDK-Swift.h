@@ -377,9 +377,9 @@ extern "C" {
 @class UIImage;
 @class RadarInAppMessage;
 @class UIViewController;
-SWIFT_CLASS_NAMED("RadarInAppMessageDelegate") SWIFT_AVAILABILITY(ios,introduced=13.0)
+SWIFT_CLASS_NAMED("RadarInAppMessageDelegate")
 @interface RadarInAppMessageDelegate_Swift : NSObject <RadarInAppMessageProtocol>
-+ (void)loadImage:(NSString * _Nonnull)url completionHandler:(void (^ _Nonnull)(UIImage * _Nullable))completionHandler SWIFT_AVAILABILITY(ios,introduced=13.0);
++ (void)loadImage:(NSString * _Nonnull)url completionHandler:(void (^ _Nonnull)(UIImage * _Nullable))completionHandler;
 /// Returns the view controller for the message to show, can be overwritten to display a custom view
 - (void)createInAppMessageView:(RadarInAppMessage * _Nonnull)message onDismiss:(void (^ _Nonnull)(void))onDismiss onInAppMessageClicked:(void (^ _Nonnull)(void))onInAppMessageClicked completionHandler:(void (^ _Nonnull)(UIViewController * _Nonnull))completionHandler;
 - (void)onInAppMessageButtonClicked:(RadarInAppMessage * _Nonnull)message;
@@ -388,7 +388,7 @@ SWIFT_CLASS_NAMED("RadarInAppMessageDelegate") SWIFT_AVAILABILITY(ios,introduced
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-SWIFT_CLASS("_TtC8RadarSDK24RadarInAppMessageManager") SWIFT_AVAILABILITY(ios,introduced=13.0)
+SWIFT_CLASS("_TtC8RadarSDK24RadarInAppMessageManager")
 @interface RadarInAppMessageManager : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) RadarInAppMessageManager * _Nonnull shared;)
 + (RadarInAppMessageManager * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
@@ -407,13 +407,6 @@ SWIFT_CLASS_NAMED("RadarInAppMessage_Swift")
 + (NSDictionary<NSString *, id> * _Nonnull)toDictionary:(RadarInAppMessage * _Nonnull)message SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
-@protocol RadarDelegate;
-SWIFT_CLASS_NAMED("RadarLogger")
-@interface RadarLogger_Swift : NSObject
-+ (void)setDelegate:(id <RadarDelegate> _Nonnull)delegate;
-- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 @class CLLocation;
@@ -828,9 +821,9 @@ extern "C" {
 @class UIImage;
 @class RadarInAppMessage;
 @class UIViewController;
-SWIFT_CLASS_NAMED("RadarInAppMessageDelegate") SWIFT_AVAILABILITY(ios,introduced=13.0)
+SWIFT_CLASS_NAMED("RadarInAppMessageDelegate")
 @interface RadarInAppMessageDelegate_Swift : NSObject <RadarInAppMessageProtocol>
-+ (void)loadImage:(NSString * _Nonnull)url completionHandler:(void (^ _Nonnull)(UIImage * _Nullable))completionHandler SWIFT_AVAILABILITY(ios,introduced=13.0);
++ (void)loadImage:(NSString * _Nonnull)url completionHandler:(void (^ _Nonnull)(UIImage * _Nullable))completionHandler;
 /// Returns the view controller for the message to show, can be overwritten to display a custom view
 - (void)createInAppMessageView:(RadarInAppMessage * _Nonnull)message onDismiss:(void (^ _Nonnull)(void))onDismiss onInAppMessageClicked:(void (^ _Nonnull)(void))onInAppMessageClicked completionHandler:(void (^ _Nonnull)(UIViewController * _Nonnull))completionHandler;
 - (void)onInAppMessageButtonClicked:(RadarInAppMessage * _Nonnull)message;
@@ -839,7 +832,7 @@ SWIFT_CLASS_NAMED("RadarInAppMessageDelegate") SWIFT_AVAILABILITY(ios,introduced
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-SWIFT_CLASS("_TtC8RadarSDK24RadarInAppMessageManager") SWIFT_AVAILABILITY(ios,introduced=13.0)
+SWIFT_CLASS("_TtC8RadarSDK24RadarInAppMessageManager")
 @interface RadarInAppMessageManager : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) RadarInAppMessageManager * _Nonnull shared;)
 + (RadarInAppMessageManager * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
@@ -858,13 +851,6 @@ SWIFT_CLASS_NAMED("RadarInAppMessage_Swift")
 + (NSDictionary<NSString *, id> * _Nonnull)toDictionary:(RadarInAppMessage * _Nonnull)message SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
-@protocol RadarDelegate;
-SWIFT_CLASS_NAMED("RadarLogger")
-@interface RadarLogger_Swift : NSObject
-+ (void)setDelegate:(id <RadarDelegate> _Nonnull)delegate;
-- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 @class CLLocation;

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION="${1:-3.31.0}"
+VERSION="${1:-3.33.1}"
 SDK_REPO="https://github.com/radarlabs/radar-sdk-ios.git"
 FRAUD_VERSION="${2:-1.2.0}"
 FRAUD_SHA256="97b83e62bcec8f42954838dcbfa6a7450a56ad181e974ba17db19454f49e2515"
