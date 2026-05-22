@@ -18,7 +18,9 @@ jobs:
             - android
             - ios
             - README.md
-            - react-native-radar.podspec
+            - Radar.podspec
+            - RadarSDKMotion.podspec
+            - RadarSDKFraud.podspec
             - dist
             - src
             - app.plugin.js

@@ -1,0 +1,339 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "RadarSDKFraud",
+    "printedName": "RadarSDKFraud",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "DeviceCheck",
+        "printedName": "DeviceCheck",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CryptoKit",
+        "printedName": "CryptoKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "CryptoKit",
+        "printedName": "CryptoKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "OSLog",
+        "printedName": "OSLog",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "NetworkExtension",
+        "printedName": "NetworkExtension",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "MachO",
+        "printedName": "MachO",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CryptoKit",
+        "printedName": "CryptoKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "StringLiteral",
+      "offset": 254,
+      "length": 7,
+      "value": "\"1.2.0\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1177,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1263,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1304,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "Dictionary",
+      "offset": 10949,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "BooleanLiteral",
+      "offset": 10979,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "Array",
+      "offset": 276,
+      "length": 109,
+      "value": "[\"undecimus:\/\/\", \"sileo:\/\/\", \"zbra:\/\/\", \"filza:\/\/\"]"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 580,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "Array",
+      "offset": 759,
+      "length": 232,
+      "value": "[\"\/bin\/bash\", \"\/usr\/sbin\/sshd\", \"\/usr\/libexec\/ssh-keysign\", \"\/bin\/sh\", \"\/etc\/ssh\/sshd_config\", \"\/usr\/libexec\/sftp-server\", \"\/usr\/bin\/ssh\"]"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "StringLiteral",
+      "offset": 1262,
+      "length": 6,
+      "value": "\"fork\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1463,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1503,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1761,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1813,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "Array",
+      "offset": 1967,
+      "length": 3235,
+      "value": "[\"\/var\/mobile\/Library\/Preferences\/ABPattern\", \"\/usr\/lib\/ABDYLD.dylib\", \"\/usr\/lib\/ABSubLoader.dylib\", \"\/usr\/sbin\/frida-server\", \"\/etc\/apt\/sources.list.d\/electra.list\", \"\/etc\/apt\/sources.list.d\/sileo.sources\", \"\/.bootstrapped_electra\", \"\/usr\/lib\/libjailbreak.dylib\", \"\/jb\/lzma\", \"\/.cydia_no_stash\", \"\/.installed_unc0ver\", \"\/jb\/offsets.plist\", \"\/usr\/share\/jailbreak\/injectme.plist\", \"\/etc\/apt\/undecimus\/undecimus.list\", \"\/var\/lib\/dpkg\/info\/mobilesubstrate.md5sums\", \"\/Library\/MobileSubstrate\/MobileSubstrate.dylib\", \"\/jb\/jailbreakd.plist\", \"\/jb\/amfid_payload.dylib\", \"\/jb\/libjailbreak.dylib\", \"\/usr\/libexec\/cydia\/firmware.sh\", \"\/var\/lib\/cydia\", \"\/etc\/apt\", \"\/private\/var\/lib\/apt\", \"\/private\/var\/Users\/\", \"\/var\/log\/apt\", \"\/Applications\/Cydia.app\", \"\/private\/var\/stash\", \"\/private\/var\/lib\/apt\/\", \"\/private\/var\/lib\/cydia\", \"\/private\/var\/cache\/apt\/\", \"\/private\/var\/log\/syslog\", \"\/private\/var\/tmp\/cydia.log\", \"\/Applications\/Icy.app\", \"\/Applications\/MxTube.app\", \"\/Applications\/RockApp.app\", \"\/Applications\/blackra1n.app\", \"\/Applications\/SBSettings.app\", \"\/Applications\/FakeCarrier.app\", \"\/Applications\/WinterBoard.app\", \"\/Applications\/IntelliScreen.app\", \"\/private\/var\/mobile\/Library\/SBSettings\/Themes\", \"\/Library\/MobileSubstrate\/CydiaSubstrate.dylib\", \"\/System\/Library\/LaunchDaemons\/com.ikey.bbot.plist\", \"\/Library\/MobileSubstrate\/DynamicLibraries\/Veency.plist\", \"\/Library\/MobileSubstrate\/DynamicLibraries\/LiveClock.plist\", \"\/System\/Library\/LaunchDaemons\/com.saurik.Cydia.Startup.plist\", \"\/Applications\/Sileo.app\", \"\/var\/binpack\", \"\/Library\/PreferenceBundles\/LibertyPref.bundle\", \"\/Library\/PreferenceBundles\/ShadowPreferences.bundle\", \"\/Library\/PreferenceBundles\/ABypassPrefs.bundle\", \"\/Library\/PreferenceBundles\/FlyJBPrefs.bundle\", \"\/Library\/PreferenceBundles\/Cephei.bundle\", \"\/Library\/PreferenceBundles\/SubstitutePrefs.bundle\", \"\/Library\/PreferenceBundles\/libhbangprefs.bundle\", \"\/usr\/lib\/libhooker.dylib\", \"\/usr\/lib\/libsubstitute.dylib\", \"\/usr\/lib\/substrate\", \"\/usr\/lib\/TweakInject\", \"\/var\/binpack\/Applications\/loader.app\", \"\/Applications\/FlyJB.app\", \"\/Applications\/Zebra.app\", \"\/Library\/BawAppie\/ABypass\", \"\/Library\/MobileSubstrate\/DynamicLibraries\/SSLKillSwitch2.plist\", \"\/Library\/MobileSubstrate\/DynamicLibraries\/PreferenceLoader.plist\", \"\/Library\/MobileSubstrate\/DynamicLibraries\/PreferenceLoader.dylib\", \"\/Library\/MobileSubstrate\/DynamicLibraries\", \"\/var\/mobile\/Library\/Preferences\/me.jjolano.shadow.plist\"]"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 5403,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5500,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 5527,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "Array",
+      "offset": 5621,
+      "length": 94,
+      "value": "[\"\/\", \"\/root\/\", \"\/private\/\", \"\/jb\/\"]"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "StringLiteral",
+      "offset": 5884,
+      "length": 10,
+      "value": "\"RadarSDK\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 5922,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 6195,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "Array",
+      "offset": 6402,
+      "length": 265,
+      "value": "[\"\/var\/lib\/undecimus\/apt\", \"\/Applications\", \"\/Library\/Ringtones\", \"\/Library\/Wallpaper\", \"\/usr\/arm-apple-darwin9\", \"\/usr\/include\", \"\/usr\/libexec\", \"\/usr\/share\"]"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 6926,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "Array",
+      "offset": 7114,
+      "length": 734,
+      "value": "[\"SubstrateLoader.dylib\", \"SSLKillSwitch2.dylib\", \"SSLKillSwitch.dylib\", \"MobileSubstrate.dylib\", \"TweakInject.dylib\", \"CydiaSubstrate\", \"cynject\", \"CustomWidgetIcons\", \"PreferenceLoader\", \"RocketBootstrap\", \"WeeLoader\", \"\/.file\", \"libhooker\", \"SubstrateInserter\", \"SubstrateBootstrap\", \"ABypass\", \"FlyJB\", \"Substitute\", \"Cephei\", \"Electra\", \"AppSyncUnified-FrontBoard.dylib\", \"Shadow\", \"FridaGadget\", \"frida\", \"libcycript\"]"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "IntegerLiteral",
+      "offset": 7866,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 8217,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "StringLiteral",
+      "offset": 8346,
+      "length": 15,
+      "value": "\"ShadowRuleset\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "StringLiteral",
+      "offset": 8453,
+      "length": 20,
+      "value": "\"internalDictionary\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 8504,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "BooleanLiteral",
+      "offset": 8543,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FeatureA.swift",
+      "kind": "Array",
+      "offset": 303,
+      "length": 2,
+      "value": "[]"
+    }
+  ]
+}

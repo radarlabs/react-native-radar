@@ -108,6 +108,7 @@ function withAndroidPermissions(
 function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
   let hasLocationService = false;
   let hasPlayIntegrity = false;
+  let hasSdkFraud = false;
   
   if (
     buildGradle.includes(
@@ -119,6 +120,10 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
 
   if (buildGradle.includes('com.google.android.play:integrity:1.2.0"')) {
     hasPlayIntegrity = true;
+  }
+
+  if (buildGradle.includes('io.radar:sdk-fraud:')) {
+    hasSdkFraud = true;
   }
 
   const pattern = /^dependencies {/m;
@@ -141,6 +146,11 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
   if (androidFraud && !hasPlayIntegrity) {
     replacementString +=
       "\n\n" + '    implementation "com.google.android.play:integrity:1.2.0"';
+  }
+
+  if (androidFraud && !hasSdkFraud) {
+    replacementString +=
+      "\n\n" + '    implementation "io.radar:sdk-fraud:1.1.0"';
   }
 
   buildGradle = buildGradle.replace(

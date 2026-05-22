@@ -217,7 +217,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.31.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.32.0" forKey:@"radar-xPlatformSDKVersion"];
     
     RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
     if (options != nil) {
@@ -240,7 +240,7 @@ RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud option
 RCT_EXPORT_METHOD(initializeWithAuthToken:(NSString *)authToken fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = nil;
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.31.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.32.0" forKey:@"radar-xPlatformSDKVersion"];
     RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
     if (options != nil) {
         id silentPushValue = options[@"silentPush"];
@@ -494,6 +494,17 @@ RCT_EXPORT_METHOD(trackOnce:(NSDictionary *)optionsDict resolve:(RCTPromiseResol
 
 
 RCT_EXPORT_METHOD(trackVerified:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (!NSClassFromString(@"RadarSDKFraud")) {
+        reject(@"ERROR_PLUGIN",
+               @"trackVerified requires the RadarSDKFraud module. "
+               @"Set iosFraud: true in your react-native-radar Expo config plugin "
+               @"(or add `pod 'RadarSDKFraud', :path => '../node_modules/react-native-radar'` "
+               @"to your ios/Podfile manually), then re-run `npx expo prebuild --clean` "
+               @"and `pod install`.",
+               nil);
+        return;
+    }
+
     BOOL beacons = NO;
     RadarTrackingOptionsDesiredAccuracy desiredAccuracy = RadarTrackingOptionsDesiredAccuracyMedium;
     NSString *reason = nil;

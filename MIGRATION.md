@@ -43,6 +43,40 @@ const mapRef = useRef<MapRef>(null);
 <RadarMap mapOptions={{ mapRef }} />
 ```
 
+### Breaking: `Radar.trackVerified()` now requires opting in to the fraud module 
+
+*iOS** 
+
+In 3.x, the iOS Radar SDK shipped attestation/fraud detection inline within the main `RadarSDK`. In 4.x, `react-native-radar` vendors `RadarSDK.xcframework` and `RadarSDKMotion.xcframework` directly, and fraud detection lives in a separate `RadarSDKFraud.xcframework` that you must opt into. If you call `Radar.trackVerified()` without opting in, it will reject with `ERROR_PLUGIN`.
+
+**Expo users**: set `iosFraud: true` in your `react-native-radar` config plugin, then re-run prebuild and pod install:
+
+```bash
+npx expo prebuild --clean
+cd ios && pod install
+```
+
+This also configures SSL pinning to `api-verified.radar.io` in `Info.plist` (existing behavior in 3.x).
+
+**Bare React Native users**: add the following to your `ios/Podfile` inside the target block, then run `pod install`:
+
+```ruby
+pod 'RadarSDKFraud', :path => '../node_modules/react-native-radar'
+```
+
+**Android** 
+
+set `androidFraud: true` in your `react-native-radar` config plugin, then re-run prebuild and a clean Android build:
+```bash
+npx expo prebuild --clean
+```
+This adds `io.radar:sdk-fraud` (and `com.google.android.play:integrity`) to your `android/app/build.gradle`, plus `network_security_config.xml` for SSL pinning.
+**Bare React Native users**: add the following to your `android/app/build.gradle` `dependencies` block:
+```groovy
+implementation "io.radar:sdk-fraud:1.1.0"
+implementation "com.google.android.play:integrity:1.2.0"
+```
+
 ## 3.20.x to 3.21.x
 
 - `Radar.on()` and `Radar.off()` calls are deprecated, the new interfaces are

@@ -304,7 +304,26 @@ public class RadarModuleImpl {
     }
 
 
+    private static final String FRAUD_CLASS_NAME = "io.radar.sdk.fraud.RadarSDKFraud";
+    private static final String FRAUD_MISSING_MESSAGE =
+        "Radar fraud module is not on the classpath. Enable `androidFraud: true` " +
+        "in the react-native-radar Expo plugin config, or add " +
+        "`implementation \"io.radar:sdk-fraud:1.1.0\"` to your android/app/build.gradle.";
+
+    private static boolean isFraudModuleAvailable() {
+        try {
+            Class.forName(FRAUD_CLASS_NAME);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
     public void trackVerified(ReadableMap optionsMap, final Promise promise) {
+        if (!isFraudModuleAvailable()) {
+            promise.reject(Radar.RadarStatus.ERROR_PLUGIN.toString(), FRAUD_MISSING_MESSAGE);
+            return;
+        }
 
         boolean beaconsTrackingOption = false;
         RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy accuracyLevel = RadarTrackingOptions.RadarTrackingOptionsDesiredAccuracy.MEDIUM;
@@ -369,6 +388,11 @@ public class RadarModuleImpl {
     }
 
     public void getVerifiedLocationToken(final Promise promise) {
+        if (!isFraudModuleAvailable()) {
+            promise.reject(Radar.RadarStatus.ERROR_PLUGIN.toString(), FRAUD_MISSING_MESSAGE);
+            return;
+        }
+
         Radar.RadarTrackVerifiedCallback trackCallback = new Radar.RadarTrackVerifiedCallback() {
 
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarVerifiedLocationToken token) {
@@ -430,6 +454,13 @@ public class RadarModuleImpl {
 
 
     public void startTrackingVerified(ReadableMap optionsMap) {
+        if (!isFraudModuleAvailable()) {
+            Log.w(TAG, FRAUD_MISSING_MESSAGE);
+            // Fall through: the underlying SDK will skip the fraud payload and
+            // surface ERROR_PLUGIN per-tick. Logging here makes the misconfig
+            // visible without changing existing behavior.
+        }
+        
         boolean beacons = false;
         int interval = 1200;
 
