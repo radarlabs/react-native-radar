@@ -55,6 +55,22 @@ RCT_EXPORT_MODULE()
     hasListeners = NO;
 }
 
+- (void)invalidate {
+#ifdef RCT_NEW_ARCH_ENABLED
+    jsEventEmitterReady = NO;
+#endif
+    hasListeners = NO;
+
+    // Detach from the process-level Radar singleton so a stale module
+    // instance doesn't continue to receive events.
+    [Radar setDelegate:nil];
+    [Radar setVerifiedDelegate:nil];
+    [Radar setInAppMessageDelegate:nil];
+
+    locationManager.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #ifdef RCT_NEW_ARCH_ENABLED
 - (void)setEventEmitterCallback:(EventEmitterCallbackWrapper *)eventEmitterCallbackWrapper {
     [super setEventEmitterCallback:eventEmitterCallbackWrapper];
