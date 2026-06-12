@@ -1278,6 +1278,23 @@
       },
       {
         "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
         "name": "Foundation",
         "printedName": "Foundation",
         "declKind": "Import",
@@ -4279,7 +4296,7 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarGeofence.swift",
       "kind": "StringLiteral",
-      "offset": 1065,
+      "offset": 1819,
       "length": 5,
       "value": "\"_id\""
     },
@@ -4300,42 +4317,42 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4335,
+      "offset": 4313,
       "length": 8,
       "value": "\"denied\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4370,
+      "offset": 4348,
       "length": 12,
       "value": "\"authorized\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4412,
+      "offset": 4390,
       "length": 16,
       "value": "\"not_determined\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4454,
+      "offset": 4432,
       "length": 11,
       "value": "\"ephemeral\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4493,
+      "offset": 4471,
       "length": 13,
       "value": "\"provisional\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4530,
+      "offset": 4508,
       "length": 9,
       "value": "\"unknown\""
     },
@@ -4613,6 +4630,27 @@
       "value": "\"io.radar.offlineEventManager\""
     },
     {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarOfflineEventManager.swift",
+      "kind": "IntegerLiteral",
+      "offset": 8533,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
+      "kind": "StringLiteral",
+      "offset": 1352,
+      "length": 15,
+      "value": "\"radar_beacon_\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
+      "kind": "StringLiteral",
+      "offset": 1424,
+      "length": 13,
+      "value": "\"radar_uuid_\""
+    },
+    {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarFileStorage.swift",
       "kind": "Array",
       "offset": 1713,
@@ -4636,126 +4674,126 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 725,
+      "offset": 1289,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "StringLiteral",
-      "offset": 1174,
+      "offset": 1738,
       "length": 10,
       "value": "\"RadarSDK\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "StringLiteral",
-      "offset": 1196,
+      "offset": 1760,
       "length": 10,
       "value": "\"RadarSDK\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 1291,
+      "offset": 1855,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 1321,
+      "offset": 1885,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 1343,
+      "offset": 1907,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 1571,
+      "offset": 2135,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 1601,
+      "offset": 2165,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 1623,
+      "offset": 2187,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 1853,
+      "offset": 2417,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 1883,
+      "offset": 2447,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 1905,
+      "offset": 2469,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 2136,
+      "offset": 2700,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 2166,
+      "offset": 2730,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 2188,
+      "offset": 2752,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 2435,
+      "offset": 2999,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 2465,
+      "offset": 3029,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
-      "offset": 2487,
+      "offset": 3051,
       "length": 5,
       "value": "false"
     },
@@ -4790,35 +4828,35 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
       "kind": "IntegerLiteral",
-      "offset": 9548,
+      "offset": 9743,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
       "kind": "IntegerLiteral",
-      "offset": 10115,
+      "offset": 10310,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
       "kind": "BooleanLiteral",
-      "offset": 10230,
+      "offset": 10425,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarSettings.swift",
       "kind": "BooleanLiteral",
-      "offset": 10697,
+      "offset": 10892,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotificationHelper.swift",
       "kind": "BooleanLiteral",
-      "offset": 1086,
+      "offset": 1080,
       "length": 5,
       "value": "false"
     },
@@ -4874,315 +4912,322 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 469,
+      "offset": 470,
+      "length": 20,
+      "value": "\"radar-userLanguage\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 518,
       "length": 19,
       "value": "\"radar-description\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 512,
+      "offset": 561,
       "length": 15,
       "value": "\"radar-product\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 552,
+      "offset": 601,
       "length": 16,
       "value": "\"radar-metadata\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 594,
+      "offset": 643,
       "length": 17,
       "value": "\"radar-anonymous\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 636,
+      "offset": 685,
       "length": 16,
       "value": "\"radar-tracking\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 684,
+      "offset": 733,
       "length": 23,
       "value": "\"radar-trackingOptions\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 747,
+      "offset": 796,
       "length": 31,
       "value": "\"radar-previousTrackingOptions\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 816,
+      "offset": 865,
       "length": 29,
       "value": "\"radar-remoteTrackingOptions\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 884,
+      "offset": 933,
       "length": 30,
       "value": "\"radar-clientSdkConfiguration\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 947,
+      "offset": 996,
       "length": 24,
       "value": "\"radar-sdkConfiguration\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 999,
+      "offset": 1048,
       "length": 19,
       "value": "\"radar-tripOptions\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1039,
+      "offset": 1088,
       "length": 12,
       "value": "\"radar-trip\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1076,
+      "offset": 1125,
       "length": 16,
       "value": "\"radar-logLevel\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1120,
+      "offset": 1169,
       "length": 19,
       "value": "\"radar-beaconUUIDs\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1160,
+      "offset": 1209,
       "length": 12,
       "value": "\"radar-host\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1204,
+      "offset": 1253,
       "length": 23,
       "value": "\"radar-lastTrackedTime\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1256,
+      "offset": 1305,
       "length": 20,
       "value": "\"radar-verifiedHost\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1308,
+      "offset": 1357,
       "length": 23,
       "value": "\"radar-lastAppOpenTime\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1357,
+      "offset": 1406,
       "length": 17,
       "value": "\"radar-userDebug\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1407,
+      "offset": 1456,
       "length": 24,
       "value": "\"radar-xPlatformSDKType\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1467,
+      "offset": 1516,
       "length": 27,
       "value": "\"radar-xPlatformSDKVersion\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1528,
+      "offset": 1577,
       "length": 25,
       "value": "\"radar-initializeOptions\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1578,
+      "offset": 1627,
       "length": 16,
       "value": "\"radar-userTags\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1632,
+      "offset": 1681,
       "length": 29,
       "value": "\"radar-pushNotificationToken\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1700,
+      "offset": 1749,
       "length": 30,
       "value": "\"radar-locationExtensionToken\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1759,
+      "offset": 1808,
       "length": 20,
       "value": "\"radar-inSurveyMode\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1804,
+      "offset": 1853,
       "length": 16,
       "value": "\"radar-appGroup\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1872,
+      "offset": 1921,
       "length": 20,
       "value": "\"radar-lastLocation\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1926,
+      "offset": 1975,
       "length": 25,
       "value": "\"radar-lastMovedLocation\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 1979,
+      "offset": 2028,
       "length": 19,
       "value": "\"radar-lastMovedAt\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2022,
+      "offset": 2071,
       "length": 15,
       "value": "\"radar-stopped\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2064,
+      "offset": 2113,
       "length": 18,
       "value": "\"radar-lastSentAt\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2106,
+      "offset": 2155,
       "length": 15,
       "value": "\"radar-canExit\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2163,
+      "offset": 2212,
       "length": 33,
       "value": "\"radar-lastFailedStoppedLocation\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2224,
+      "offset": 2273,
       "length": 19,
       "value": "\"radar-geofenceIds\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2267,
+      "offset": 2316,
       "length": 15,
       "value": "\"radar-placeId\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2308,
+      "offset": 2357,
       "length": 17,
       "value": "\"radar-regionIds\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2351,
+      "offset": 2400,
       "length": 17,
       "value": "\"radar-beaconIds\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2400,
+      "offset": 2449,
       "length": 23,
       "value": "\"radar-lastHeadingData\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2462,
+      "offset": 2511,
       "length": 30,
       "value": "\"radar-lastMotionActivityData\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2525,
+      "offset": 2574,
       "length": 24,
       "value": "\"radar-lastPressureData\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2595,
+      "offset": 2644,
       "length": 37,
       "value": "\"radar-notificationPermissionGranted\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 2672,
+      "offset": 2721,
       "length": 31,
       "value": "\"radar-registeredNotifications\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 3276,
+      "offset": 3325,
       "length": 29,
       "value": "\"io.radar.userdefaults.flush\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "Dictionary",
-      "offset": 3487,
+      "offset": 3536,
       "length": 3,
       "value": "[]"
     },
@@ -5254,7 +5299,7 @@
       "kind": "StringLiteral",
       "offset": 1358,
       "length": 8,
-      "value": "\"3.33.1\""
+      "value": "\"3.35.0\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",

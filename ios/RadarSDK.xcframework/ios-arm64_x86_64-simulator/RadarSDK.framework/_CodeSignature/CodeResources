@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/Radar.h</key>
 		<data>
-		hf4xfkdoxlrTFlwjz1SMTvsRoNU=
+		5rPICzdoyToRhSkhFN3XilZNp1Q=
 		</data>
 		<key>Headers/RadarAddress.h</key>
 		<data>
@@ -66,7 +66,7 @@
 		</data>
 		<key>Headers/RadarInitializeOptions.h</key>
 		<data>
-		eh/IAnokIsUwV5ac3tI4nKBHeiw=
+		58L6UYbylhnygkyiBicvep+/5oc=
 		</data>
 		<key>Headers/RadarMotionProtocol.h</key>
 		<data>
@@ -126,11 +126,11 @@
 		</data>
 		<key>Headers/RadarSDKFraudProtocol.h</key>
 		<data>
-		/0LmLQDrRiwTbxkHmTCSdCqxxcU=
+		r/EkgdZdInndGBsktEWD5z/+EXI=
 		</data>
 		<key>Headers/RadarSdkConfiguration.h</key>
 		<data>
-		/x0t1qhuIvuw/tdu/99yQKkh8IM=
+		4JcEZd1dn7TPdFzB9tQpvHIjj0g=
 		</data>
 		<key>Headers/RadarSegment.h</key>
 		<data>
@@ -166,7 +166,7 @@
 		</data>
 		<key>Headers/RadarVerifiedDelegate.h</key>
 		<data>
-		ku6Fjl18XgBMY0yCLgbK+ZTty+Q=
+		4f9A+0VOJg0LfByevgzdI56BZ/s=
 		</data>
 		<key>Headers/RadarVerifiedLocationToken.h</key>
 		<data>
@@ -174,11 +174,11 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		7Fc6mfGanu7ZswoKAQP+/9huZaE=
+		CyXIOlBk6Hbsm+mvd6FRvEHfLIs=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
-		m3s10/8+OV3+hOuNxgqVAjhFaow=
+		3QovnEBl6opRQH4Wb4j3jGXlQQo=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
@@ -194,11 +194,11 @@
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		6R9fbNDr2db604+T3/PsyV/Rink=
+		cItqlzkovc3FxfcoLSF4AH7NEzY=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
-		m3s10/8+OV3+hOuNxgqVAjhFaow=
+		3QovnEBl6opRQH4Wb4j3jGXlQQo=
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
@@ -214,7 +214,7 @@
 		</data>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		o19j5+gIb8ju4q+Hme+py6JxOIc=
+		CH/veN7YgY1fTv7wemEQH/8bkrI=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -231,7 +231,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			pckUFvuE959ls+si0S5/gALwPssskA4T7x9Q/IF0CUo=
+			2C2Gn3PE7nMUxnn30tlogXPexoO5sBdg8CbdXhQOu34=
 			</data>
 		</dict>
 		<key>Headers/RadarAddress.h</key>
@@ -336,7 +336,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			oxC3u8b67RVPFDPSAvPl6sK5uELsCYFwdJPDYfNngXY=
+			kr9Gm7Ycrz00ztE2GVPsCawTpYwTBEG1mqkHfDDuf0w=
 			</data>
 		</dict>
 		<key>Headers/RadarMotionProtocol.h</key>
@@ -441,14 +441,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			iqZFQESY6/jBotmnOnH6aD5i4nWgwmMAyDjrNi4vA14=
+			N5PWqruCA67SLk7fkvSn/kRQ/xEDHP6F2cRvaluEPsA=
 			</data>
 		</dict>
 		<key>Headers/RadarSdkConfiguration.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			wed+AQsy+TPPNfW5TqVizppjMgvSh2cOgZYXXfBfnTI=
+			ZnM8RbfUu44iiTLszOwkKNxR7E70gWyGi9TowvBRjEE=
 			</data>
 		</dict>
 		<key>Headers/RadarSegment.h</key>
@@ -511,7 +511,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WPVRKa2LC2e4PrS7IvpcvKjPbSqRg4ZqtrOi1U0B4Rk=
+			7ffzY4FfibU97HPdlpyOJijUFj5V8eL1IE6iRwD2Tv4=
 			</data>
 		</dict>
 		<key>Headers/RadarVerifiedLocationToken.h</key>
@@ -525,7 +525,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			rJPqYIrCpwfjcBBej6eXTlYr3gi5/4WWnh3n6HYu+5g=
+			EcfHJflaMb6pWCS2rzPDUo1UyCidJzXAH57Rt5EW0+8=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
@@ -553,14 +553,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			FlQnQUFhQY1D7fWpANHLMyAmIXzHbSngPSUGJgsv3oU=
+			D1HjgitEAA/B8X3nN6f94rgL4fToaZe3oQavU9nVcto=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			rJPqYIrCpwfjcBBej6eXTlYr3gi5/4WWnh3n6HYu+5g=
+			EcfHJflaMb6pWCS2rzPDUo1UyCidJzXAH57Rt5EW0+8=
 			</data>
 		</dict>
 		<key>Modules/RadarSDK.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
@@ -588,7 +588,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			5ijhSDF4KxrCYjRpQjQoOv8B4VaKHKqj7Qr+n/zmzQQ=
+			q95jKjPhFBkyxrYz6H2gj35X0FqFZG40gVJrUEcS1pk=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
