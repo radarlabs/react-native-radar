@@ -34,6 +34,7 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.bridge.CxxCallbackImpl
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -41,8 +42,16 @@ import org.json.JSONObject
 class RadarModule(reactContext: ReactApplicationContext) :
     NativeRadarSpec(reactContext), PermissionListener {
 
+    @Volatile private var jsEventEmitterReady = false
+
+    override fun setEventEmitterCallback(eventEmitterCallback: CxxCallbackImpl) {
+        super.setEventEmitterCallback(eventEmitterCallback)
+        jsEventEmitterReady = true
+    }
+
     private val radarReceiver = object : RadarReceiver() {
         override fun onEventsReceived(context: Context, events: Array<RadarEvent>, user: RadarUser?) {
+            if (!jsEventEmitterReady) return
             val eventBlob = Arguments.createMap().apply {
                 var eventsArray = Arguments.createArray()
                 for (event in events) {
@@ -57,6 +66,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         }
 
         override fun onLocationUpdated(context: Context, location: Location, user: RadarUser) {
+            if (!jsEventEmitterReady) return
             val eventBlob = Arguments.createMap().apply {
                 putString("location", Radar.jsonForLocation(location).toString())
                 putString("user", user.toJson().toString())
@@ -65,6 +75,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         }
 
         override fun onClientLocationUpdated(context: Context, location: Location, stopped: Boolean, source: Radar.RadarLocationSource) {
+            if (!jsEventEmitterReady) return
             val eventBlob = Arguments.createMap().apply {
                 putString("location", Radar.jsonForLocation(location).toString())
                 putBoolean("stopped", stopped)
@@ -74,6 +85,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         }
 
         override fun onError(context: Context, status: Radar.RadarStatus) {
+            if (!jsEventEmitterReady) return
             val eventBlob = Arguments.createMap().apply {
                 putString("status", status.toString())
             }
@@ -81,6 +93,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         }
 
         override fun onLog(context: Context, message: String) {
+            if (!jsEventEmitterReady) return
             val eventBlob = Arguments.createMap().apply {
                 putString("message", message)
             }
@@ -90,6 +103,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     private val radarInAppMessageReceiver = object : RadarInAppMessageReceiver {
         override fun onNewInAppMessage(message: RadarInAppMessage) {
+            if (!jsEventEmitterReady) return
             try {
             val eventBlob = Arguments.createMap().apply {
                 putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
@@ -101,6 +115,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         }
 
         override fun onInAppMessageDismissed(message: RadarInAppMessage) {
+            if (!jsEventEmitterReady) return
             try {
                 val eventBlob = Arguments.createMap().apply {
                     putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
@@ -112,6 +127,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         }
 
         override fun onInAppMessageButtonClicked(message: RadarInAppMessage) {
+            if (!jsEventEmitterReady) return
             try {
                 val eventBlob = Arguments.createMap().apply {
                     putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
@@ -125,6 +141,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     private val radarVerifiedReceiver = object : RadarVerifiedReceiver() {
         override fun onTokenUpdated(context: Context, token: RadarVerifiedLocationToken) {
+            if (!jsEventEmitterReady) return
             val eventBlob = Arguments.createMap().apply {
                 putString("token", token.toJson().toString())
             }
