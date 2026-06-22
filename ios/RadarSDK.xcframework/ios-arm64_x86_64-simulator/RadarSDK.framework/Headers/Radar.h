@@ -285,6 +285,15 @@ typedef void (^_Nonnull RadarGeocodeCompletionHandler)(RadarStatus status, NSArr
 typedef void (^_Nonnull RadarIPGeocodeCompletionHandler)(RadarStatus status, RadarAddress *_Nullable address, BOOL proxy);
 
 /**
+ Called when an IP geocoding request succeeds, fails, or times out.
+
+ Receives the request status and, if successful, the geocoding result (a partial address) and a boolean indicating whether the IP address is a known proxy. Also receives the underlying NSError when the failure originated from a caught network, parse, or exception error — forward it to an error collector (Sentry, Crashlytics, etc.) to capture diagnostics.
+
+ @see https://radar.com/documentation/api#ip-geocode
+ */
+typedef void (^_Nonnull RadarIPGeocodeWithErrorCompletionHandler)(RadarStatus status, RadarAddress *_Nullable address, BOOL proxy, NSError *_Nullable error);
+
+/**
  Called when an address validation request succeeds, fails, or times out.
 
  Receives the request status and, if successful, the address and a verification status.
@@ -407,6 +416,20 @@ typedef void (^_Nonnull RadarIndoorsScanCompletionHandler)(NSString *_Nullable r
  @see https://radar.com/documentation/sdk/ios#identify-user
  */
 + (NSString *_Nullable)getUserId;
+
+/**
+ Sets the user's preferred language. Pass a BCP-47 language tag like `"en"` or `"es-PR"`.
+
+ @param userLanguage The user's preferred language. If `nil`, the previous `userLanguage` will be cleared.
+ */
++ (void)setUserLanguage:(NSString *_Nullable)userLanguage;
+
+/**
+ Returns the current `userLanguage`.
+
+ @return The current `userLanguage`.
+ */
++ (NSString *_Nullable)getUserLanguage;
 
 /**
  Sets an optional description for the user, displayed in the dashboard.
@@ -1300,7 +1323,17 @@ typedef void (^_Nonnull RadarIndoorsScanCompletionHandler)(NSString *_Nullable r
 
  @see https://radar.com/documentation/api#ip-geocode
  */
-+ (void)ipGeocodeWithCompletionHandler:(RadarIPGeocodeCompletionHandler)completionHandler NS_SWIFT_NAME(ipGeocode(completionHandler:));
++ (void)ipGeocodeWithCompletionHandler:(RadarIPGeocodeCompletionHandler)completionHandler
+    __attribute__((deprecated("Use ipGeocodeWithErrorCompletionHandler: to also receive the underlying NSError on network/parse errors.")));
+
+/**
+ Geocodes the device's current IP address, converting IP address to partial address. The completion handler also receives the underlying NSError when the failure originated from a caught network, parse, or exception error — forward it to an error collector (Sentry, Crashlytics, etc.) to capture diagnostics.
+
+ @param completionHandler A completion handler.
+
+ @see https://radar.com/documentation/api#ip-geocode
+ */
++ (void)ipGeocodeWithErrorCompletionHandler:(RadarIPGeocodeWithErrorCompletionHandler)completionHandler NS_SWIFT_NAME(ipGeocode(completionHandler:));
 
 
 /**

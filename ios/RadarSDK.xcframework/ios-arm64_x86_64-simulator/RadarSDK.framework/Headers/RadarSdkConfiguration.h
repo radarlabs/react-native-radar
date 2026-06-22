@@ -37,6 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)skipForegroundCheck;
 - (BOOL)useOfflineRTOUpdates;
 - (BOOL)offlineEventGenerationEnabled;
+- (BOOL)useSwiftLocationManager;
+- (BOOL)startUpdatesWhileInUse;
 - (NSArray<RadarRemoteTrackingOptions *> *_Nullable)remoteTrackingOptions;
 - (instancetype)initWithDict:(NSDictionary *_Nullable)dict;
 - (NSDictionary *)dictionaryValue;
