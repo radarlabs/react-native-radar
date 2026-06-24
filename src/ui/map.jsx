@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image } from 'react-native';
 import Radar from '../index.native';
-import { getHost, getPublishableKey } from '../helpers';
+import { getHost, getPublishableKey, getMobileOrigin } from '../helpers';
 import styles from './styles';
 
 let MapLibreGL;
 let MapLibreMap;
 let GeoJSONSource;
 let Layer;
+let TransformRequestManager;
 try {
   MapLibreGL = require('@maplibre/maplibre-react-native');
   MapLibreMap = MapLibreGL.Map;
   GeoJSONSource = MapLibreGL.GeoJSONSource;
   Layer = MapLibreGL.Layer;
+  TransformRequestManager = MapLibreGL.TransformRequestManager;
 } catch (e) {
   MapLibreGL = null;
   MapLibreMap = null;
   GeoJSONSource = null;
   Layer = null;
+  TransformRequestManager = null;
 }
 
 const DEFAULT_STYLE = 'radar-default-v1';
@@ -49,10 +52,35 @@ const RadarMap = ({ mapOptions, children }) => {
   const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
-    createStyleURL(mapOptions?.mapStyle || DEFAULT_STYLE).then((result) => {
+    const setup = async () => {
+      const host = await getHost();
+
+      if (TransformRequestManager) {
+        try {
+          const mobileOrigin = await getMobileOrigin();
+          if (mobileOrigin) {
+            const mapHostPattern = `${host
+              .replace(/^https?:\/\//, '')
+              .replace(/\./g, '\\.')}/maps/`;
+            TransformRequestManager.addHeader({
+              id: 'radar-mobile-origin',
+              name: 'X-Radar-Mobile-Origin',
+              value: mobileOrigin,
+              match: mapHostPattern,
+            });
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.warn(`Radar SDK: Failed to set mobile origin header: ${err}`);
+        }
+      }
+
+      const result = await createStyleURL(mapOptions?.mapStyle || DEFAULT_STYLE);
       setStyleURL(result);
-    });
-  }, [mapOptions]);
+    };
+
+    setup();
+  }, [mapOptions?.mapStyle]);
 
   useEffect(() => {
     Radar.getLocation().then((result) => {

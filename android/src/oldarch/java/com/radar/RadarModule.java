@@ -475,6 +475,14 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
+    public void getMobileOrigin(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+        promise.resolve(getReactApplicationContext().getPackageName());
+    }
+
+    @ReactMethod
     public void showInAppMessage(ReadableMap inAppMessageMap) {
         radarModuleImpl.showInAppMessage(inAppMessageMap);
     }

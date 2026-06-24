@@ -8,4 +8,8 @@ const getPublishableKey = () => (
   Radar.getPublishableKey()
 );
 
-export { getHost, getPublishableKey };
+const getMobileOrigin = () => (
+  Radar.getMobileOrigin()
+);
+
+export { getHost, getPublishableKey, getMobileOrigin };

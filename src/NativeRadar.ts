@@ -103,6 +103,7 @@ export interface Spec extends TurboModule {
   nativeSdkVersion(): Promise<string>;
   getHost(): Promise<string>;
   getPublishableKey(): Promise<string>;
+  getMobileOrigin(): Promise<string>;
   showInAppMessage(inAppMessage: Object): void;
   setPushNotificationToken(token: string): void;
   isInitialized(): Promise<boolean>;

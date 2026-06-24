@@ -147,4 +147,5 @@ export interface RadarNativeInterface {
   onInAppMessageClicked: (callback: RadarInAppMessageClickedCallback | null) => void;
   getHost: () => Promise<string>;
   getPublishableKey: () => Promise<string>;
+  getMobileOrigin: () => Promise<string>;
 }

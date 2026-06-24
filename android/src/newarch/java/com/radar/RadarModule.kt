@@ -456,6 +456,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
         radarModuleImpl.getPublishableKey(promise)
     }
 
+    override fun getMobileOrigin(promise: Promise): Unit {
+        promise.resolve(reactApplicationContext.packageName)
+    }
+
     override fun showInAppMessage(inAppMessage: ReadableMap): Unit {
         radarModuleImpl.showInAppMessage(inAppMessage)
     }
