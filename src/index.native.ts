@@ -570,6 +570,9 @@ const Radar: RadarNativeInterface = {
   getPublishableKey: function (): Promise<string> {
     return NativeRadar.getPublishableKey();
   },
+  getMobileOrigin: function (): Promise<string> {
+    return NativeRadar.getMobileOrigin();
+  },
   isInitialized: function (): Promise<boolean> {
     return NativeRadar.isInitialized();
   },

@@ -351,6 +351,10 @@ RCT_EXPORT_METHOD(getPublishableKey:(RCTPromiseResolveBlock)resolve reject:(RCTP
     resolve(_publishableKey);
 }
 
+RCT_EXPORT_METHOD(getMobileOrigin:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([[NSBundle mainBundle] bundleIdentifier]);
+}
+
 RCT_EXPORT_METHOD(getPermissionsStatus:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     NSString *statusStr;
