@@ -233,7 +233,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.34.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.35.0" forKey:@"radar-xPlatformSDKVersion"];
     
     RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
     if (options != nil) {
@@ -256,7 +256,7 @@ RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud option
 RCT_EXPORT_METHOD(initializeWithAuthToken:(NSString *)authToken fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = nil;
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.34.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.35.0" forKey:@"radar-xPlatformSDKVersion"];
     RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
     if (options != nil) {
         id silentPushValue = options[@"silentPush"];
@@ -337,6 +337,22 @@ RCT_EXPORT_METHOD(setProduct:(NSString *)product) {
 
 RCT_EXPORT_METHOD(getProduct:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     resolve([Radar getProduct]);
+}
+
+RCT_EXPORT_METHOD(setUserLanguage:(NSString *)userLanguage) {
+    [Radar setUserLanguage:userLanguage];
+}
+
+RCT_EXPORT_METHOD(getUserLanguage:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve([Radar getUserLanguage]);
+}
+
+RCT_EXPORT_METHOD(isSharing:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    resolve(@([Radar isSharing]));
+}
+
+RCT_EXPORT_METHOD(clearSharing) {
+    [Radar clearSharing];
 }
 
 RCT_EXPORT_METHOD(setAnonymousTrackingEnabled:(BOOL)enabled) {

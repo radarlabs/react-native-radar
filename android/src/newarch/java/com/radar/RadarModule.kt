@@ -170,7 +170,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun initialize(publishableKey: String, fraud: Boolean, options: ReadableMap?): Unit {
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "4.34.0")
+        editor.putString("x_platform_sdk_version", "4.35.0")
         editor.apply()
 
         Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, currentActivity)
@@ -182,7 +182,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun initializeWithAuthToken(authToken: String, fraud: Boolean, options: ReadableMap?): Unit {
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "4.34.0")
+        editor.putString("x_platform_sdk_version", "4.35.0")
         editor.apply()
         
         val initOptions = io.radar.sdk.RadarInitializeOptions.builder()
@@ -249,6 +249,22 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun getProduct(promise: Promise): Unit {
         radarModuleImpl.getProduct(promise)
+    }
+
+    override fun setUserLanguage(language: String?): Unit {
+        radarModuleImpl.setUserLanguage(language)
+    }
+
+    override fun getUserLanguage(promise: Promise): Unit {
+        radarModuleImpl.getUserLanguage(promise)
+    }
+
+    override fun isSharing(promise: Promise): Unit {
+        radarModuleImpl.isSharing(promise)
+    }
+
+    override fun clearSharing(): Unit {
+        radarModuleImpl.clearSharing()
     }
 
     override fun setAnonymousTrackingEnabled(enabled: Boolean): Unit {

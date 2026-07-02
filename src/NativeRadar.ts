@@ -61,6 +61,10 @@ export interface Spec extends TurboModule {
   removeTags(tags: Array<string>): void;
   setProduct(product: string): void;
   getProduct(): Promise<string>;
+  setUserLanguage(language: string | null): void;
+  getUserLanguage(): Promise<string>;
+  isSharing(): Promise<boolean>;
+  clearSharing(): void;
   setAnonymousTrackingEnabled(enabled: boolean): void;
   getLocation(desiredAccuracy: string | null): Promise<Object>;
   trackVerified(trackVerifiedOptions: Object | null): Promise<Object>;

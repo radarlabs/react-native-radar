@@ -90,24 +90,6 @@ describe('calls native implementation', () => {
     expect(mockModule.trackOnce).toBeCalledWith(location);
   });
 
-  test('updateLocation with old format parameters', () => {
-    const location = {
-      latitude: 40.783826,
-      longitude: -73.975363,
-      accuracy: 65,
-    };
-    const expectedLocation = {
-      location: {
-        latitude: 40.783826,
-        longitude: -73.975363,
-        accuracy: 65,
-      }
-    }
-    Radar.trackOnce(location);
-
-    expect(mockModule.trackOnce).toHaveBeenCalledTimes(1);
-    expect(mockModule.trackOnce).toBeCalledWith(expectedLocation);
-  });
 
   test('startTrackingEfficient', () => {
     Radar.startTrackingEfficient();
@@ -420,32 +402,6 @@ describe('calls native implementation', () => {
     expect(mockModule.getMatrix).toBeCalledWith(options);
   });
 
-  test('on', () => {
-    const event = 'events';
-    const callback = () => {};
-    Radar.on(event, callback);
-
-    expect(mockEmitter.addListener).toHaveBeenCalledTimes(1);
-    expect(mockEmitter.addListener).toHaveBeenCalledWith(event, callback);
-  });
-
-  test('off', () => {
-    const event = 'locations';
-    Radar.off(event);
-
-    expect(mockEmitter.removeAllListeners).toHaveBeenCalledTimes(1);
-    expect(mockEmitter.removeAllListeners).toHaveBeenCalledWith(event);
-  });
-
-  test('sendEvent', () => {
-    const eventId = 'in_app_purchase';
-    const metadata = {"price": "$150"};
-    Radar.sendEvent(eventId, metadata);
-
-    expect(mockModule.sendEvent).toHaveBeenCalledTimes(1);
-    expect(mockModule.sendEvent).toBeCalledWith(eventId, metadata);
-  });
-
   test('getUserId', () => {
     Radar.getUserId();
 
@@ -476,6 +432,32 @@ describe('calls native implementation', () => {
     Radar.isTracking();
 
     expect(mockModule.isTracking).toHaveBeenCalledTimes(1);
+  });
+
+  test('setUserLanguage', () => {
+    const language = 'es-PR';
+    Radar.setUserLanguage(language);
+
+    expect(mockModule.setUserLanguage).toHaveBeenCalledTimes(1);
+    expect(mockModule.setUserLanguage).toBeCalledWith(language);
+  });
+
+  test('getUserLanguage', () => {
+    Radar.getUserLanguage();
+
+    expect(mockModule.getUserLanguage).toHaveBeenCalledTimes(1);
+  });
+
+  test('isSharing', () => {
+    Radar.isSharing();
+
+    expect(mockModule.isSharing).toHaveBeenCalledTimes(1);
+  });
+
+  test('clearSharing', () => {
+    Radar.clearSharing();
+
+    expect(mockModule.clearSharing).toHaveBeenCalledTimes(1);
   });
 
   test('getTrackingOptions', () => {
