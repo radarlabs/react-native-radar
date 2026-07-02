@@ -478,6 +478,32 @@ describe('calls native implementation', () => {
     expect(mockModule.isTracking).toHaveBeenCalledTimes(1);
   });
 
+  test('setUserLanguage', () => {
+    const language = 'es-PR';
+    Radar.setUserLanguage(language);
+
+    expect(mockModule.setUserLanguage).toHaveBeenCalledTimes(1);
+    expect(mockModule.setUserLanguage).toBeCalledWith(language);
+  });
+
+  test('getUserLanguage', () => {
+    Radar.getUserLanguage();
+
+    expect(mockModule.getUserLanguage).toHaveBeenCalledTimes(1);
+  });
+
+  test('isSharing', () => {
+    Radar.isSharing();
+
+    expect(mockModule.isSharing).toHaveBeenCalledTimes(1);
+  });
+
+  test('clearSharing', () => {
+    Radar.clearSharing();
+
+    expect(mockModule.clearSharing).toHaveBeenCalledTimes(1);
+  });
+
   test('getTrackingOptions', () => {
     Radar.getTrackingOptions();
 

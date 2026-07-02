@@ -67,6 +67,10 @@ export interface RadarNativeInterface {
   removeTags: (tags: string[]) => void;
   setProduct(product: string): void;
   getProduct: () => Promise<string>;
+  setUserLanguage: (language: string | null) => void;
+  getUserLanguage: () => Promise<string | null>;
+  isSharing: () => Promise<boolean>;
+  clearSharing: () => void;
   setAnonymousTrackingEnabled: (enabled: boolean) => void;
   getPermissionsStatus: () => Promise<RadarPermissionsStatus>;
   requestPermissions: (background: boolean) => Promise<RadarPermissionsStatus>;

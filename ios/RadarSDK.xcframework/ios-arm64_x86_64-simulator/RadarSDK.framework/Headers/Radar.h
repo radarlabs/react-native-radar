@@ -1323,8 +1323,7 @@ typedef void (^_Nonnull RadarIndoorsScanCompletionHandler)(NSString *_Nullable r
 
  @see https://radar.com/documentation/api#ip-geocode
  */
-+ (void)ipGeocodeWithCompletionHandler:(RadarIPGeocodeCompletionHandler)completionHandler
-    __attribute__((deprecated("Use ipGeocodeWithErrorCompletionHandler: to also receive the underlying NSError on network/parse errors.")));
++ (void)ipGeocodeWithCompletionHandler:(RadarIPGeocodeCompletionHandler)completionHandler NS_SWIFT_NAME(ipGeocode(completionHandler:));
 
 /**
  Geocodes the device's current IP address, converting IP address to partial address. The completion handler also receives the underlying NSError when the failure originated from a caught network, parse, or exception error — forward it to an error collector (Sentry, Crashlytics, etc.) to capture diagnostics.
@@ -1333,8 +1332,8 @@ typedef void (^_Nonnull RadarIndoorsScanCompletionHandler)(NSString *_Nullable r
 
  @see https://radar.com/documentation/api#ip-geocode
  */
-+ (void)ipGeocodeWithErrorCompletionHandler:(RadarIPGeocodeWithErrorCompletionHandler)completionHandler NS_SWIFT_NAME(ipGeocode(completionHandler:));
-
++ (void)ipGeocodeWithErrorCompletionHandler:(RadarIPGeocodeWithErrorCompletionHandler)completionHandler
+    NS_SWIFT_NAME(ipGeocode(completionHandler:)) NS_SWIFT_DISABLE_ASYNC;
 
 /**
  Validates an address, attaching a verification status, property type, and ZIP+4.

@@ -102,7 +102,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "4.34.0");
+        editor.putString("x_platform_sdk_version", "4.35.0");
         editor.apply();
         Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, inAppMessageReceiver, getCurrentActivity());
         if (fraud) { 
@@ -115,7 +115,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "4.34.0");
+        editor.putString("x_platform_sdk_version", "4.35.0");
         editor.apply();
         
         io.radar.sdk.RadarInitializeOptions.Builder builder = io.radar.sdk.RadarInitializeOptions.builder()
@@ -287,6 +287,26 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     @ReactMethod
     public void getProduct(final Promise promise) throws JSONException {
         radarModuleImpl.getProduct(promise);
+    }
+
+    @ReactMethod
+    public void setUserLanguage(String userLanguage) {
+        radarModuleImpl.setUserLanguage(userLanguage);
+    }
+
+    @ReactMethod
+    public void getUserLanguage(final Promise promise) {
+        radarModuleImpl.getUserLanguage(promise);
+    }
+
+    @ReactMethod
+    public void isSharing(final Promise promise) {
+        radarModuleImpl.isSharing(promise);
+    }
+
+    @ReactMethod
+    public void clearSharing() {
+        radarModuleImpl.clearSharing();
     }
 
     @ReactMethod

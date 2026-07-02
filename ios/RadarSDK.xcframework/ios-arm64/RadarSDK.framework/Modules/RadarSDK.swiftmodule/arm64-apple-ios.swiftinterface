@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.3.2 (swiftlang-6.3.2.1.108 clang-2100.1.1.101)
+// swift-compiler-version: Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)
 // swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 6 -O -enable-experimental-feature DebugDescriptionMacro -module-name RadarSDK
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.2
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.3
 import CoreLocation
 import CoreTelephony
 import Foundation
@@ -58,8 +58,42 @@ extension RadarSDK.RadarLogType : Swift.Codable {
   @objc public static func rollbackSyncState()
   @objc public static func markDwellFired(_ geofenceId: Swift.String)
   @objc public static func getObjCBeacons(for location: _LocationEssentials.CLLocation) -> [RadarSDK.RadarBeacon]
+  public static func getSyncedRegion() -> CoreLocation.CLCircularRegion?
+  public static func getSyncedGeofences() -> [RadarSDK.RadarSyncedGeofenceSnapshot]
+  public static func getSyncedPlaces() -> [RadarSDK.RadarSyncedPlaceSnapshot]
+  public static func getSyncedBeacons() -> [RadarSDK.RadarSyncedBeaconSnapshot]
   @objc override dynamic public init()
   @objc deinit
+}
+public struct RadarSyncedGeofenceSnapshot {
+  public let id: Swift.String
+  public let description: Swift.String
+  public let tag: Swift.String?
+  public let externalId: Swift.String?
+  public let geometry: RadarSDK.RadarSyncedGeofenceSnapshot.Geometry
+  public enum Geometry {
+    case circle(center: _LocationEssentials.CLLocationCoordinate2D, radius: Swift.Double)
+    case polygon(coordinates: [_LocationEssentials.CLLocationCoordinate2D], center: _LocationEssentials.CLLocationCoordinate2D, radius: Swift.Double)
+    public var center: _LocationEssentials.CLLocationCoordinate2D {
+      get
+    }
+  }
+}
+public struct RadarSyncedPlaceSnapshot {
+  public let id: Swift.String
+  public let name: Swift.String
+  public let categories: [Swift.String]
+  public let group: Swift.String?
+  public let location: _LocationEssentials.CLLocationCoordinate2D
+}
+public struct RadarSyncedBeaconSnapshot {
+  public let id: Swift.String
+  public let description: Swift.String?
+  public let tag: Swift.String?
+  public let uuid: Swift.String
+  public let major: Swift.String
+  public let minor: Swift.String
+  public let location: _LocationEssentials.CLLocationCoordinate2D?
 }
 @objc(RadarInAppMessage_Swift) @objcMembers final public class RadarInAppMessage_Swift : RadarSDK.RadarInAppMessage {
   public struct Text : Swift.Sendable {
