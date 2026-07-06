@@ -139,6 +139,39 @@ export default function App() {
     }
   };
 
+  const setUserLanguage = () => {
+    Radar.setUserLanguage("es-PR");
+    populateText("setUserLanguage: set to 'es-PR'");
+  };
+
+  const getUserLanguage = async () => {
+    try {
+      const result = await Radar.getUserLanguage();
+      populateText("getUserLanguage: " + result);
+    } catch (err) {
+      populateText("getUserLanguage error: " + err);
+    }
+  };
+
+  const clearUserLanguage = () => {
+    Radar.setUserLanguage(null);
+    populateText("setUserLanguage: cleared (null)");
+  };
+
+  const isSharing = async () => {
+    try {
+      const result = await Radar.isSharing();
+      populateText("isSharing: " + result);
+    } catch (err) {
+      populateText("isSharing error: " + err);
+    }
+  };
+
+  const clearSharing = () => {
+    Radar.clearSharing();
+    populateText("clearSharing: done");
+  };
+
 
   const getPermissionsStatus = async () => {
     try {
@@ -945,6 +978,11 @@ export default function App() {
               <ExampleButton title="rnSdkVersion" onPress={rnSdkVersion} />
               <ExampleButton title="getHost" onPress={getHost} />
               <ExampleButton title="getPublishableKey" onPress={getPublishableKey} />
+              <ExampleButton title="setUserLanguage (es-PR)" onPress={setUserLanguage} />
+              <ExampleButton title="getUserLanguage" onPress={getUserLanguage} />
+              <ExampleButton title="clearUserLanguage" onPress={clearUserLanguage} />
+              <ExampleButton title="isSharing" onPress={isSharing} />
+              <ExampleButton title="clearSharing" onPress={clearSharing} />
             </ScrollView>
           </View>
         </View>
