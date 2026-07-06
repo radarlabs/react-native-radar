@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<RadarRemoteTrackingOptions *> *_Nullable)remoteTrackingOptions;
 - (instancetype)initWithDict:(NSDictionary *_Nullable)dict;
 - (NSDictionary *)dictionaryValue;
++ (RadarSdkConfiguration *_Nullable)current;
 @end
 
 /**

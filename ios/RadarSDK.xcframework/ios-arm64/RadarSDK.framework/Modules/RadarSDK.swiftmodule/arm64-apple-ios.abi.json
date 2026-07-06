@@ -1132,6 +1132,131 @@
             "funcSelfKind": "NonMutating"
           },
           {
+            "kind": "Function",
+            "name": "getSyncedRegion",
+            "printedName": "getSyncedRegion()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "CoreLocation.CLCircularRegion?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CLCircularRegion",
+                    "printedName": "CoreLocation.CLCircularRegion",
+                    "usr": "c:objc(cs)CLCircularRegion"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:8RadarSDK0A11SyncManagerC15getSyncedRegionSo010CLCircularG0CSgyFZ",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC15getSyncedRegionSo010CLCircularG0CSgyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getSyncedGeofences",
+            "printedName": "getSyncedGeofences()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[RadarSDK.RadarSyncedGeofenceSnapshot]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarSyncedGeofenceSnapshot",
+                    "printedName": "RadarSDK.RadarSyncedGeofenceSnapshot",
+                    "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:8RadarSDK0A11SyncManagerC18getSyncedGeofencesSayAA0aF16GeofenceSnapshotVGyFZ",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC18getSyncedGeofencesSayAA0aF16GeofenceSnapshotVGyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getSyncedPlaces",
+            "printedName": "getSyncedPlaces()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[RadarSDK.RadarSyncedPlaceSnapshot]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarSyncedPlaceSnapshot",
+                    "printedName": "RadarSDK.RadarSyncedPlaceSnapshot",
+                    "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:8RadarSDK0A11SyncManagerC15getSyncedPlacesSayAA0aF13PlaceSnapshotVGyFZ",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC15getSyncedPlacesSayAA0aF13PlaceSnapshotVGyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getSyncedBeacons",
+            "printedName": "getSyncedBeacons()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[RadarSDK.RadarSyncedBeaconSnapshot]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarSyncedBeaconSnapshot",
+                    "printedName": "RadarSDK.RadarSyncedBeaconSnapshot",
+                    "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:8RadarSDK0A11SyncManagerC16getSyncedBeaconsSayAA0aF14BeaconSnapshotVGyFZ",
+            "mangledName": "$s8RadarSDK0A11SyncManagerC16getSyncedBeaconsSayAA0aF14BeaconSnapshotVGyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
             "kind": "Constructor",
             "name": "init",
             "printedName": "init()",
@@ -1240,6 +1365,1167 @@
         ]
       },
       {
+        "kind": "TypeDecl",
+        "name": "RadarSyncedGeofenceSnapshot",
+        "printedName": "RadarSyncedGeofenceSnapshot",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "id",
+            "printedName": "id",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV2idSSvp",
+            "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV2idSSvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV2idSSvg",
+                "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV2idSSvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "description",
+            "printedName": "description",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV11descriptionSSvp",
+            "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV11descriptionSSvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV11descriptionSSvg",
+                "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV11descriptionSSvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "tag",
+            "printedName": "tag",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV3tagSSSgvp",
+            "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV3tagSSSgvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV3tagSSSgvg",
+                "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV3tagSSSgvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "externalId",
+            "printedName": "externalId",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV10externalIdSSSgvp",
+            "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV10externalIdSSSgvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV10externalIdSSSgvg",
+                "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV10externalIdSSSgvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "geometry",
+            "printedName": "geometry",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Geometry",
+                "printedName": "RadarSDK.RadarSyncedGeofenceSnapshot.Geometry",
+                "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8geometryAC8GeometryOvp",
+            "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV8geometryAC8GeometryOvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Geometry",
+                    "printedName": "RadarSDK.RadarSyncedGeofenceSnapshot.Geometry",
+                    "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8geometryAC8GeometryOvg",
+                "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV8geometryAC8GeometryOvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "TypeDecl",
+            "name": "Geometry",
+            "printedName": "Geometry",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "circle",
+                "printedName": "circle",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(RadarSDK.RadarSyncedGeofenceSnapshot.Geometry.Type) -> (_LocationEssentials.CLLocationCoordinate2D, Swift.Double) -> RadarSDK.RadarSyncedGeofenceSnapshot.Geometry",
+                    "children": [
+                      {
+                        "kind": "TypeFunc",
+                        "name": "Function",
+                        "printedName": "(_LocationEssentials.CLLocationCoordinate2D, Swift.Double) -> RadarSDK.RadarSyncedGeofenceSnapshot.Geometry",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Geometry",
+                            "printedName": "RadarSDK.RadarSyncedGeofenceSnapshot.Geometry",
+                            "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Tuple",
+                            "printedName": "(center: _LocationEssentials.CLLocationCoordinate2D, radius: Swift.Double)",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "CLLocationCoordinate2D",
+                                "printedName": "_LocationEssentials.CLLocationCoordinate2D",
+                                "usr": "c:@S@CLLocationCoordinate2D"
+                              },
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Double",
+                                "printedName": "Swift.Double",
+                                "usr": "s:Sd"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "RadarSDK.RadarSyncedGeofenceSnapshot.Geometry.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Geometry",
+                            "printedName": "RadarSDK.RadarSyncedGeofenceSnapshot.Geometry",
+                            "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO6circleyAESo22CLLocationCoordinate2DV_SdtcAEmF",
+                "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO6circleyAESo22CLLocationCoordinate2DV_SdtcAEmF",
+                "moduleName": "RadarSDK"
+              },
+              {
+                "kind": "Var",
+                "name": "polygon",
+                "printedName": "polygon",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(RadarSDK.RadarSyncedGeofenceSnapshot.Geometry.Type) -> ([_LocationEssentials.CLLocationCoordinate2D], _LocationEssentials.CLLocationCoordinate2D, Swift.Double) -> RadarSDK.RadarSyncedGeofenceSnapshot.Geometry",
+                    "children": [
+                      {
+                        "kind": "TypeFunc",
+                        "name": "Function",
+                        "printedName": "([_LocationEssentials.CLLocationCoordinate2D], _LocationEssentials.CLLocationCoordinate2D, Swift.Double) -> RadarSDK.RadarSyncedGeofenceSnapshot.Geometry",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Geometry",
+                            "printedName": "RadarSDK.RadarSyncedGeofenceSnapshot.Geometry",
+                            "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Tuple",
+                            "printedName": "(coordinates: [_LocationEssentials.CLLocationCoordinate2D], center: _LocationEssentials.CLLocationCoordinate2D, radius: Swift.Double)",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Array",
+                                "printedName": "[_LocationEssentials.CLLocationCoordinate2D]",
+                                "children": [
+                                  {
+                                    "kind": "TypeNominal",
+                                    "name": "CLLocationCoordinate2D",
+                                    "printedName": "_LocationEssentials.CLLocationCoordinate2D",
+                                    "usr": "c:@S@CLLocationCoordinate2D"
+                                  }
+                                ],
+                                "usr": "s:Sa"
+                              },
+                              {
+                                "kind": "TypeNominal",
+                                "name": "CLLocationCoordinate2D",
+                                "printedName": "_LocationEssentials.CLLocationCoordinate2D",
+                                "usr": "c:@S@CLLocationCoordinate2D"
+                              },
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Double",
+                                "printedName": "Swift.Double",
+                                "usr": "s:Sd"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "RadarSDK.RadarSyncedGeofenceSnapshot.Geometry.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Geometry",
+                            "printedName": "RadarSDK.RadarSyncedGeofenceSnapshot.Geometry",
+                            "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO7polygonyAESaySo22CLLocationCoordinate2DVG_AHSdtcAEmF",
+                "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO7polygonyAESaySo22CLLocationCoordinate2DVG_AHSdtcAEmF",
+                "moduleName": "RadarSDK"
+              },
+              {
+                "kind": "Var",
+                "name": "center",
+                "printedName": "center",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CLLocationCoordinate2D",
+                    "printedName": "_LocationEssentials.CLLocationCoordinate2D",
+                    "usr": "c:@S@CLLocationCoordinate2D"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO6centerSo22CLLocationCoordinate2DVvp",
+                "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO6centerSo22CLLocationCoordinate2DVvp",
+                "moduleName": "RadarSDK",
+                "declAttributes": [
+                  "AccessControl"
+                ],
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "CLLocationCoordinate2D",
+                        "printedName": "_LocationEssentials.CLLocationCoordinate2D",
+                        "usr": "c:@S@CLLocationCoordinate2D"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO6centerSo22CLLocationCoordinate2DVvg",
+                    "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO6centerSo22CLLocationCoordinate2DVvg",
+                    "moduleName": "RadarSDK",
+                    "accessorKind": "get"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Enum",
+            "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO",
+            "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV8GeometryO",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:8RadarSDK0A22SyncedGeofenceSnapshotV",
+        "mangledName": "$s8RadarSDK0A22SyncedGeofenceSnapshotV",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarSyncedPlaceSnapshot",
+        "printedName": "RadarSyncedPlaceSnapshot",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "id",
+            "printedName": "id",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV2idSSvp",
+            "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV2idSSvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV2idSSvg",
+                "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV2idSSvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "name",
+            "printedName": "name",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV4nameSSvp",
+            "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV4nameSSvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV4nameSSvg",
+                "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV4nameSSvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "categories",
+            "printedName": "categories",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[Swift.String]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV10categoriesSaySSGvp",
+            "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV10categoriesSaySSGvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Array",
+                    "printedName": "[Swift.String]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sa"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV10categoriesSaySSGvg",
+                "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV10categoriesSaySSGvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "group",
+            "printedName": "group",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV5groupSSSgvp",
+            "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV5groupSSSgvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV5groupSSSgvg",
+                "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV5groupSSSgvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "location",
+            "printedName": "location",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CLLocationCoordinate2D",
+                "printedName": "_LocationEssentials.CLLocationCoordinate2D",
+                "usr": "c:@S@CLLocationCoordinate2D"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV8locationSo22CLLocationCoordinate2DVvp",
+            "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV8locationSo22CLLocationCoordinate2DVvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CLLocationCoordinate2D",
+                    "printedName": "_LocationEssentials.CLLocationCoordinate2D",
+                    "usr": "c:@S@CLLocationCoordinate2D"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV8locationSo22CLLocationCoordinate2DVvg",
+                "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV8locationSo22CLLocationCoordinate2DVvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:8RadarSDK0A19SyncedPlaceSnapshotV",
+        "mangledName": "$s8RadarSDK0A19SyncedPlaceSnapshotV",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarSyncedBeaconSnapshot",
+        "printedName": "RadarSyncedBeaconSnapshot",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "id",
+            "printedName": "id",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV2idSSvp",
+            "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV2idSSvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV2idSSvg",
+                "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV2idSSvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "description",
+            "printedName": "description",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV11descriptionSSSgvp",
+            "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV11descriptionSSSgvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV11descriptionSSSgvg",
+                "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV11descriptionSSSgvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "tag",
+            "printedName": "tag",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV3tagSSSgvp",
+            "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV3tagSSSgvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV3tagSSSgvg",
+                "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV3tagSSSgvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "uuid",
+            "printedName": "uuid",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV4uuidSSvp",
+            "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV4uuidSSvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV4uuidSSvg",
+                "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV4uuidSSvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "major",
+            "printedName": "major",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV5majorSSvp",
+            "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV5majorSSvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV5majorSSvg",
+                "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV5majorSSvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "minor",
+            "printedName": "minor",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV5minorSSvp",
+            "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV5minorSSvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV5minorSSvg",
+                "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV5minorSSvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "location",
+            "printedName": "location",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "_LocationEssentials.CLLocationCoordinate2D?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CLLocationCoordinate2D",
+                    "printedName": "_LocationEssentials.CLLocationCoordinate2D",
+                    "usr": "c:@S@CLLocationCoordinate2D"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV8locationSo22CLLocationCoordinate2DVSgvp",
+            "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV8locationSo22CLLocationCoordinate2DVSgvp",
+            "moduleName": "RadarSDK",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "_LocationEssentials.CLLocationCoordinate2D?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "CLLocationCoordinate2D",
+                        "printedName": "_LocationEssentials.CLLocationCoordinate2D",
+                        "usr": "c:@S@CLLocationCoordinate2D"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV8locationSo22CLLocationCoordinate2DVSgvg",
+                "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV8locationSo22CLLocationCoordinate2DVSgvg",
+                "moduleName": "RadarSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:8RadarSDK0A20SyncedBeaconSnapshotV",
+        "mangledName": "$s8RadarSDK0A20SyncedBeaconSnapshotV",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
         "kind": "Import",
         "name": "Foundation",
         "printedName": "Foundation",
@@ -1329,6 +2615,16 @@
         "printedName": "OSLog",
         "declKind": "Import",
         "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
       },
       {
         "kind": "Import",
@@ -4296,7 +5592,7 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarGeofence.swift",
       "kind": "StringLiteral",
-      "offset": 1819,
+      "offset": 1865,
       "length": 5,
       "value": "\"_id\""
     },
@@ -4317,42 +5613,63 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4313,
+      "offset": 2309,
+      "length": 13,
+      "value": "\"en_US_POSIX\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "StringLiteral",
+      "offset": 2355,
+      "length": 27,
+      "value": "\"yyyy-MM-dd'T'HH:mm:ss.SSS\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2629,
+      "length": 2,
+      "value": "23"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
+      "kind": "StringLiteral",
+      "offset": 7744,
       "length": 8,
       "value": "\"denied\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4348,
+      "offset": 7779,
       "length": 12,
       "value": "\"authorized\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4390,
+      "offset": 7821,
       "length": 16,
       "value": "\"not_determined\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4432,
+      "offset": 7863,
       "length": 11,
       "value": "\"ephemeral\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4471,
+      "offset": 7902,
       "length": 13,
       "value": "\"provisional\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotification.swift",
       "kind": "StringLiteral",
-      "offset": 4508,
+      "offset": 7939,
       "length": 9,
       "value": "\"unknown\""
     },
@@ -4632,21 +5949,42 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarOfflineEventManager.swift",
       "kind": "IntegerLiteral",
-      "offset": 8533,
+      "offset": 8874,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
       "kind": "StringLiteral",
-      "offset": 1352,
+      "offset": 1342,
+      "length": 8,
+      "value": "\"radar_\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
+      "kind": "StringLiteral",
+      "offset": 1407,
+      "length": 15,
+      "value": "\"radar_bubble_\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
+      "kind": "StringLiteral",
+      "offset": 1477,
+      "length": 17,
+      "value": "\"radar_geofence_\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
+      "kind": "StringLiteral",
+      "offset": 1547,
       "length": 15,
       "value": "\"radar_beacon_\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
       "kind": "StringLiteral",
-      "offset": 1424,
+      "offset": 1619,
       "length": 13,
       "value": "\"radar_uuid_\""
     },
@@ -4854,11 +6192,32 @@
       "value": "true"
     },
     {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarOperatingHoursEvaluator.swift",
+      "kind": "Array",
+      "offset": 499,
+      "length": 49,
+      "value": "[\"Sun\", \"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\", \"Sat\"]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarOperatingHoursEvaluator.swift",
+      "kind": "IntegerLiteral",
+      "offset": 722,
+      "length": 1,
+      "value": "0"
+    },
+    {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotificationHelper.swift",
       "kind": "BooleanLiteral",
       "offset": 1080,
       "length": 5,
       "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotificationHelper.swift",
+      "kind": "StringLiteral",
+      "offset": 1577,
+      "length": 35,
+      "value": "\"radar_notification_geofences.json\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotificationHelper.swift",
@@ -5299,7 +6658,7 @@
       "kind": "StringLiteral",
       "offset": 1358,
       "length": 8,
-      "value": "\"3.35.0\""
+      "value": "\"3.37.1\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
@@ -5514,21 +6873,21 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 7525,
+      "offset": 7548,
       "length": 13,
       "value": "\"en_US_POSIX\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 7571,
+      "offset": 7594,
       "length": 28,
       "value": "\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "IntegerLiteral",
-      "offset": 7654,
+      "offset": 7677,
       "length": 1,
       "value": "0"
     }

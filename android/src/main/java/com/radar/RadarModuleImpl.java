@@ -165,6 +165,30 @@ public class RadarModuleImpl {
         promise.resolve(product);
     }
 
+    public void setUserLanguage(String userLanguage) {
+        Radar.setUserLanguage(userLanguage);
+    }
+
+    public void getUserLanguage(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(Radar.getUserLanguage());
+    }
+
+    public void isSharing(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(Radar.isSharing());
+    }
+
+    public void clearSharing() {
+        Radar.clearSharing();
+    }
+
 
     public void setAnonymousTrackingEnabled(boolean enabled) {
         Radar.setAnonymousTrackingEnabled(enabled);
@@ -1169,6 +1193,10 @@ public class RadarModuleImpl {
         Radar.ipGeocode(new Radar.RadarIpGeocodeCallback() {
 
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, boolean proxy) {
+                onComplete(status, address, proxy, null);
+            }
+
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, boolean proxy, @Nullable Throwable throwable) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
                         WritableMap map = Arguments.createMap();

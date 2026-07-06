@@ -387,6 +387,18 @@ const Radar: RadarNativeInterface = {
   getProduct: function (): Promise<string> {
     return NativeRadar.getProduct();
   },
+  setUserLanguage: function (language: string | null): void {
+    return NativeRadar.setUserLanguage(language);
+  },
+  getUserLanguage: function (): Promise<string | null> {
+    return NativeRadar.getUserLanguage();
+  },
+  isSharing: function (): Promise<boolean> {
+    return NativeRadar.isSharing();
+  },
+  clearSharing: function (): void {
+    return NativeRadar.clearSharing();
+  },
   setAnonymousTrackingEnabled: function (enabled: boolean): void {
     return NativeRadar.setAnonymousTrackingEnabled(enabled);
   },
