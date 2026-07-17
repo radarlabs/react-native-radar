@@ -347,6 +347,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
         radarModuleImpl.getVerifiedLocationToken(promise)
     }
 
+    override fun revealRisk(promise: Promise): Unit {
+        radarModuleImpl.revealRisk(promise)
+    }
+
     override fun clearVerifiedLocationToken(): Unit {
         radarModuleImpl.clearVerifiedLocationToken()
     }

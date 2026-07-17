@@ -42,3 +42,6 @@ lib/
 !ios/RadarSDK.xcframework/**
 !ios/RadarSDKMotion.xcframework/**
 !ios/RadarSDKFraud.xcframework/**
+
+# AI semantic search index
+.ai-index/

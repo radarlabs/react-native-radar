@@ -315,6 +315,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
+    public void revealRisk(final Promise promise) {
+        radarModuleImpl.revealRisk(promise);
+    }
+
+    @ReactMethod
     public void clearVerifiedLocationToken() {
         radarModuleImpl.clearVerifiedLocationToken();
     }

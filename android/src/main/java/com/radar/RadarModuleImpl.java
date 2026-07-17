@@ -41,6 +41,8 @@ import io.radar.sdk.model.RadarVerifiedLocationToken;
 import io.radar.sdk.model.RadarInAppMessage;
 import io.radar.sdk.RadarNotificationOptions;
 import io.radar.sdk.model.RadarTripLeg;
+import io.radar.sdk.model.RadarVerifiedLocationToken;
+import io.radar.sdk.model.RadarRevealRiskToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -332,7 +334,7 @@ public class RadarModuleImpl {
     private static final String FRAUD_MISSING_MESSAGE =
         "Radar fraud module is not on the classpath. Enable `androidFraud: true` " +
         "in the react-native-radar Expo plugin config, or add " +
-        "`implementation \"io.radar:sdk-fraud:1.1.0\"` to your android/app/build.gradle.";
+        "`implementation \"io.radar:sdk-fraud:1.2.0\"` to your android/app/build.gradle.";
 
     private static boolean isFraudModuleAvailable() {
         try {
@@ -443,6 +445,41 @@ public class RadarModuleImpl {
         };
 
         Radar.getVerifiedLocationToken(trackCallback);
+    }
+
+    public void revealRisk(final Promise promise) {
+        if (!isFraudModuleAvailable()) {
+            promise.reject(Radar.RadarStatus.ERROR_PLUGIN.toString(), FRAUD_MISSING_MESSAGE);
+            return;
+        }
+
+        Radar.RadarRevealRiskCallback callback = new Radar.RadarRevealRiskCallback() {
+
+            @Override
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarRevealRiskToken token) {
+                if (promise == null) {
+                    return;
+                }
+
+                try {
+                    if (status == Radar.RadarStatus.SUCCESS) {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("status", status.toString());
+                        if (token != null) {
+                            map.putMap("token", RadarUtils.mapForJson(token.toJson()));
+                        }
+                        promise.resolve(map);
+                    } else {
+                        promise.reject(status.toString(), status.toString());
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSONException", e);
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+                }
+            }
+        };
+
+        Radar.revealRisk(callback);
     }
 
 

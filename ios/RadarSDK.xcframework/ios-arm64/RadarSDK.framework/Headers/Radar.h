@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class RadarTripOptions;
 @class RadarInAppMessage;
+@class RadarRevealRiskToken;
 
 #pragma mark - Enums
 
@@ -98,6 +99,8 @@ typedef NS_ENUM(NSInteger, RadarLocationSource) {
     RadarLocationSourceBeaconEnter,
     /// Beacon exit
     RadarLocationSourceBeaconExit,
+    /// Location from RadarSDKIndoors
+    RadarLocationSourceIndoors,
     /// Unknown
     RadarLocationSourceUnknown
 };
@@ -220,6 +223,15 @@ typedef void (^_Nullable RadarFlushReplaysCompletionHandler)(RadarStatus status,
  @see https://radar.com/documentation/sdk/fraud
  */
 typedef void (^_Nullable RadarTrackVerifiedCompletionHandler)(RadarStatus status, RadarVerifiedLocationToken *_Nullable token);
+
+/**
+ Called when a reveal risk request succeeds, fails, or times out.
+
+ Receives the request status and, if successful, the reveal risk result.
+
+ @see https://radar.com/documentation/sdk/fraud
+ */
+typedef void (^_Nullable RadarRevealRiskCompletionHandler)(RadarStatus status, RadarRevealRiskToken *_Nullable revealRisk);
 
 /**
  Called when a trip update succeeds, fails, or times out.
@@ -591,6 +603,17 @@ typedef void (^_Nonnull RadarIndoorsScanCompletionHandler)(NSString *_Nullable r
  @see https://radar.com/documentation/fraud
  */
 + (void)trackVerifiedWithCompletionHandler:(RadarTrackVerifiedCompletionHandler _Nullable)completionHandler NS_SWIFT_NAME(trackVerified(completionHandler:));
+
+/**
+ Reveals device and network risk signals for this device.
+
+ @warning Note that you must configure SSL pinning before calling this method.
+
+ @param completionHandler An optional completion handler.
+
+ @see https://radar.com/documentation/fraud
+ */
++ (void)revealRiskWithCompletionHandler:(RadarRevealRiskCompletionHandler _Nullable)completionHandler NS_SWIFT_NAME(revealRisk(completionHandler:));
 
 /**
  Tracks the user's location with device integrity information for location verification use cases.

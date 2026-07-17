@@ -69,6 +69,7 @@ export interface Spec extends TurboModule {
   getLocation(desiredAccuracy: string | null): Promise<Object>;
   trackVerified(trackVerifiedOptions: Object | null): Promise<Object>;
   getVerifiedLocationToken(): Promise<Object>;
+  revealRisk(): Promise<Object>;
   clearVerifiedLocationToken(): void;
   startTrackingEfficient(): void;
   startTrackingResponsive(): void;

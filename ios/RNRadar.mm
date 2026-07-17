@@ -615,6 +615,28 @@ RCT_EXPORT_METHOD(getVerifiedLocationToken:(RCTPromiseResolveBlock)resolve rejec
     [Radar getVerifiedLocationToken:completionHandler];
 }
 
+RCT_EXPORT_METHOD(revealRisk:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    __block RCTPromiseResolveBlock resolver = resolve;
+    __block RCTPromiseRejectBlock rejecter = reject;
+
+    RadarRevealRiskCompletionHandler completionHandler = ^(RadarStatus status, RadarRevealRiskToken * _Nullable token) {
+        if (status == RadarStatusSuccess && resolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (token != nil) {
+                [dict setObject:[token dictionaryValue] forKey:@"token"];
+            }
+            resolver(dict);
+        } else if (rejecter) {
+            rejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        resolver = nil;
+        rejecter = nil;
+    };
+    
+    [Radar revealRiskWithCompletionHandler:completionHandler];
+}
+
 RCT_EXPORT_METHOD(clearVerifiedLocationToken) {
     [Radar clearVerifiedLocationToken];
 }

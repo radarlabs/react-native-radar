@@ -18,6 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
         withKnownLocation:(CLLocation *_Nullable)knownLocation
         completionHandler:(RadarIndoorsScanCompletionHandler)completionHandler;
 
++ (void)start;
+
++ (void)stop;
+
++ (void)setLocation:(CLLocation *_Nullable)location;
+
 @end
 
 NS_ASSUME_NONNULL_END
