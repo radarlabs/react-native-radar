@@ -271,6 +271,15 @@ export default function App() {
     }
   };
 
+  const revealRisk = async () => {
+    try {
+      const result = await Radar.revealRisk();
+      populateText("revealRisk: " + stringify(result));
+    } catch (err) {
+      populateText("revealRisk error: " + err);
+    }
+  };
+
   const clearVerifiedLocationToken = () => {
     Radar.clearVerifiedLocationToken();
     populateText("clearVerifiedLocationToken called");
@@ -922,6 +931,7 @@ export default function App() {
             </ScrollView>
             <ScrollView style={{ height: "55%" }}>
               <ExampleButton title="runAll" onPress={runAll} />
+              <ExampleButton title="revealRisk" onPress={revealRisk} />
               <ExampleButton title="getUserId" onPress={getUserId} />
               <ExampleButton title="getDescription" onPress={getDescription} />
               <ExampleButton title="getMetadata" onPress={getMetadata} />

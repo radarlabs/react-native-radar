@@ -48,7 +48,7 @@
           "iosFraud": true,
           "iosNSLocationAlwaysAndWhenInUseUsageDescription": "please allow location for background tracking",
           "iosBackgroundMode": true,
-          "androidFraud": false,
+          "androidFraud": true,
           "androidBackgroundPermission": true,
           "addRadarSDKMotion": false,
           "androidActivityRecognition": true,
