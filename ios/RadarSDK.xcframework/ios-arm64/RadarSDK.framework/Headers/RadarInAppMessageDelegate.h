@@ -42,7 +42,6 @@ NS_SWIFT_UI_ACTOR
 // you can override specific methods of this class instead of having to implement every method
 // of the protocol
 NS_SWIFT_NAME(RadarInAppMessageDelegate)
-API_AVAILABLE(ios(13.0))
 NS_SWIFT_UI_ACTOR
 @interface RadarInAppMessageDelegate : NSObject <RadarInAppMessageProtocol>
 

@@ -55,6 +55,7 @@ import type {
   RadarUpdateTripLegOptions,
   RadarReorderTripLegsOptions,
   RadarTripLegCallback,
+  RadarRevealRiskCallback,
 } from "./@types/types";
 import { NativeEventEmitter, NativeModules } from "react-native";
 import { VERSION } from "./version";
@@ -421,6 +422,9 @@ const Radar: RadarNativeInterface = {
   },
   getVerifiedLocationToken: function (): Promise<RadarTrackVerifiedCallback> {
     return NativeRadar.getVerifiedLocationToken() as Promise<RadarTrackVerifiedCallback>;
+  },
+  revealRisk: function (): Promise<RadarRevealRiskCallback> {
+    return NativeRadar.revealRisk() as Promise<RadarRevealRiskCallback>;
   },
   clearVerifiedLocationToken: function (): void {
     return NativeRadar.clearVerifiedLocationToken();

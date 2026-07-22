@@ -49,6 +49,7 @@ import type {
   RadarReorderTripLegsOptions,
   RadarUpdateTripLegOptions,
   RadarTripLegCallback,
+  RadarRevealRiskCallback,
 } from "./types";
 
 export interface RadarNativeInterface {
@@ -82,6 +83,7 @@ export interface RadarNativeInterface {
     options?: RadarTrackVerifiedOptions
   ) => Promise<RadarTrackVerifiedCallback>;
   getVerifiedLocationToken: () => Promise<RadarTrackVerifiedCallback>;
+  revealRisk: () => Promise<RadarRevealRiskCallback>;
   clearVerifiedLocationToken: () => void;
   startTrackingEfficient: () => void;
   startTrackingResponsive: () => void;

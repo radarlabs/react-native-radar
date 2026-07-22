@@ -373,6 +373,11 @@ extern "C" {
 
 #if defined(__OBJC__)
 
+SWIFT_CLASS_NAMED("RadarDelegateHolder")
+@interface RadarDelegateHolder_Swift : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
 @class NSString;
 @class UIImage;
 @class RadarInAppMessage;
@@ -816,6 +821,11 @@ extern "C" {
 #endif
 
 #if defined(__OBJC__)
+
+SWIFT_CLASS_NAMED("RadarDelegateHolder")
+@interface RadarDelegateHolder_Swift : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
 
 @class NSString;
 @class UIImage;

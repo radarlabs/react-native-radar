@@ -127,6 +127,11 @@ const getVerifiedLocationToken = () => {
   return new Promise((resolve, reject) => { reject("getVerifiedLocationToken() is not implemented on web") });
 };
 
+const revealRisk = () => {
+  if (throws) throw new Error("revealRisk() is not implemented on web");
+  return new Promise((resolve, reject) => { reject("revealRisk() is not implemented on web") });
+};
+
 const startTrackingEfficient = () => {  
   if (throws) throw new Error("startTrackingEfficient() is not implemented on web");
 };
@@ -496,6 +501,7 @@ const Radar = {
   trackOnce,
   trackVerified,
   getVerifiedLocationToken,
+  revealRisk,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,

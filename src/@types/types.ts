@@ -396,6 +396,93 @@ export interface RadarTrackVerifiedCallback {
   token?: RadarVerifiedLocationToken;
 }
 
+export type RadarRevealRiskLevel = "none" | "low" | "medium" | "high";
+
+export interface RadarRevealRiskTokenRisk {
+  level: RadarRevealRiskLevel;
+  reasons: string[];
+}
+
+export interface RadarRevealRiskTokenNetworkAsn {
+  asn?: string;
+  country?: string;
+  domain?: string;
+  name?: string;
+  network?: string;
+  type?: string;
+}
+
+export interface RadarRevealRiskTokenNetworkIpAddress {
+  countryCode?: string;
+  country?: string;
+  countryFlag?: string;
+  state?: string;
+  city?: string;
+  postalCode?: string;
+  latitude?: number;
+  longitude?: number;
+  connectionType?: string;
+  stateCode?: string;
+  stateConfidence?: string;
+  countryConfidence?: string;
+  dma?: string;
+  dmaCode?: string;
+  stateAllowed?: boolean;
+  countryAllowed?: boolean;
+  layer?: string;
+  geometry?: {
+    type: string;
+    coordinates: number[];
+  };
+}
+
+export interface RadarRevealRiskTokenNetworkPrivacy {
+  hosting?: boolean;
+  proxy?: boolean;
+  relay?: boolean;
+  service?: string;
+  tor?: boolean;
+  vpn?: boolean;
+  residentialProxy?: boolean;
+}
+
+export interface RadarRevealRiskTokenNetwork {
+  ipAddress?: RadarRevealRiskTokenNetworkIpAddress;
+  privacy?: RadarRevealRiskTokenNetworkPrivacy;
+  asn?: RadarRevealRiskTokenNetworkAsn;
+}
+
+export interface RadarRevealRiskTokenDevice {
+  deviceId?: string;
+  deviceType?: string;
+  deviceMake?: string;
+  deviceModel?: string;
+  deviceOSName?: string;
+  deviceOSVersion?: string;
+  sdkVersion?: string;
+  xPlatformType?: string;
+  installId?: string;
+  appId?: string;
+  appName?: string;
+  appVersion?: string;
+  appBuild?: string;
+}
+
+export interface RadarRevealRiskToken {
+  id: string;
+  risk: RadarRevealRiskTokenRisk;
+  network: RadarRevealRiskTokenNetwork;
+  device: RadarRevealRiskTokenDevice;
+  token?: string;
+  expiresAt?: Date;
+  expiresIn?: number;
+}
+
+export interface RadarRevealRiskCallback {
+  status: string;
+  token?: RadarRevealRiskToken;
+}
+
 export interface RadarEventUpdate {
   user?: RadarUser;
   events: RadarEvent[];

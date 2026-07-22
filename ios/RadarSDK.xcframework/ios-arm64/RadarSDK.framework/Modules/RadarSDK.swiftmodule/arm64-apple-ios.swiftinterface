@@ -25,6 +25,28 @@ import _SwiftConcurrencyShims
   @_Concurrency.MainActor @objc override dynamic public init()
   @objc deinit
 }
+@_hasMissingDesignatedInitializers @globalActor public actor RadarIndoorsActor {
+  public static let shared: RadarSDK.RadarIndoorsActor
+  public typealias ActorType = RadarSDK.RadarIndoorsActor
+  @objc deinit
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency.UnownedSerialExecutor {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers @globalActor public actor RadarDelegateActor {
+  public static let shared: RadarSDK.RadarDelegateActor
+  public typealias ActorType = RadarSDK.RadarDelegateActor
+  @objc deinit
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency.UnownedSerialExecutor {
+    get
+  }
+}
+@_inheritsConvenienceInitializers @RadarSDK.RadarDelegateActor @objc(RadarDelegateHolder_Swift) public class RadarDelegateHolder : ObjectiveC.NSObject {
+  @RadarSDK.RadarDelegateActor @objc override dynamic public init()
+  @objc deinit
+}
 @_hasMissingDesignatedInitializers final public class RadarAPIClient : Swift.Sendable {
   public static let shared: RadarSDK.RadarAPIClient
   @objc deinit
@@ -133,4 +155,7 @@ public struct RadarSyncedBeaconSnapshot {
   @objc deinit
 }
 extension RadarSDK.RadarInAppMessageDelegate : Swift.Sendable {}
+extension RadarSDK.RadarIndoorsActor : _Concurrency.GlobalActor {}
+extension RadarSDK.RadarDelegateActor : _Concurrency.GlobalActor {}
+extension RadarSDK.RadarDelegateHolder : Swift.Sendable {}
 extension RadarSDK.RadarInAppMessageManager : Swift.Sendable {}
