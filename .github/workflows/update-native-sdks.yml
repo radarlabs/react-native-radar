@@ -1,91 +1,401 @@
-# Bump Native SDK version numbers whenever a repository dispatch of a release
-# is received
-name: Bump Native SDKs
+name: Prepare iOS SDK update
+
 on:
   repository_dispatch:
-    types: ['ios-sdk-release', 'android-sdk-release']
+    types: [ios-sdk-release]
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Stable radar-sdk-ios release tag
+        required: true
+        type: string
+
+concurrency:
+  group: ios-sdk-update
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
 jobs:
-  update_android_sdk_version:
+  relay-manual-release:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    if: github.event.client_payload.platform == 'android'
+    timeout-minutes: 10
     steps:
-      - name: Event Information
-        run: echo ${{ github.event.client_payload.release }}
+      - name: Validate stable release input
+        env:
+          RELEASE: ${{ inputs.release }}
+        run: |
+          if [[ ! "$RELEASE" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "Release must be a stable MAJOR.MINOR.PATCH tag"
+            exit 1
+          fi
 
-      # checkout the repo
-      - uses: actions/checkout@v2
-
-      # copy the template file to its final destination
-      - name: Copy android/build.gradle template file
-        uses: canastro/copy-action@master
+      # The agent action supports repository dispatch, so manual recovery becomes a normal release event.
+      - name: Generate dispatch token
+        id: dispatch-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
         with:
-          source: 'android/build.gradle.template'
-          target: 'android/build.gradle'
+          app-id: ${{ secrets.SDK_SYNC_GH_APP_ID }}
+          private-key: ${{ secrets.SDK_SYNC_GH_APP_PRIVATE_KEY }}
+          owner: radarlabs
+          repositories: react-native-radar
+          permission-contents: write
 
-      # render the template using the input sdk version
-      - name: Render radar-sdk-android release version onto build.gradle
-        uses: jayamanikharyono/jinja-action@v0.1
+      - name: Dispatch manual recovery event
+        uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # v3
         with:
-          data: version=${{ github.event.client_payload.release }}
-          path: 'android/build.gradle'
+          token: ${{ steps.dispatch-token.outputs.token }}
+          repository: radarlabs/react-native-radar
+          event-type: ios-sdk-release
+          client-payload: '{"release":"${{ inputs.release }}"}'
 
-      # Update package.json to latest version
-      - name: Update package.json to latest
-        run: npm version ${{ github.event.client_payload.release }} --commit-hooks false --git-tag-version false
+  update-ios-sdk:
+    if: github.event_name == 'repository_dispatch'
+    runs-on: macos-15
+    timeout-minutes: 120
+    env:
+      AUTOMATION_BRANCH: automation/ios-sdk-update
 
-      # open a pull request with the new sdk version
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          title: Automated radar-sdk-android version bump to ${{ github.event.client_payload.release }}
-          reviewers: radarlabs/eng
-          token: ${{ secrets.GITHUB_TOKEN }}
-  update_ios_sdk_version:
-    runs-on: ubuntu-latest
-    if: github.event.client_payload.platform == 'ios'
     steps:
-      - name: Event Information
-        run: echo ${{ github.event.client_payload.release }}
-
-      # checkout the repo
-      - uses: actions/checkout@v2
-
-      # copy the podspec template to its final destination
-      - name: Copy the podspec template
-        uses: canastro/copy-action@master
+      - name: Checkout React Native
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          source: 'react-native-radar.podspec.template'
-          target: 'react-native-radar.podspec'
+          ref: master
+          fetch-depth: 0
+          persist-credentials: false
 
-      # render the podspec template with the sdk version
-      - name: Render radar-sdk-ios release version onto podspec template
-        uses: jayamanikharyono/jinja-action@v0.1
+      - name: Normalize release input
+        id: event
+        env:
+          DISPATCH_RELEASE: ${{ github.event.client_payload.release }}
+          DISPATCH_RELEASE_URL: ${{ github.event.client_payload.release_url }}
+          DISPATCH_SOURCE_SHA: ${{ github.event.client_payload.source_sha }}
+        run: |
+          set -euo pipefail
+          RELEASE="$DISPATCH_RELEASE"
+          if [[ ! "$RELEASE" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "Release must be a stable MAJOR.MINOR.PATCH tag"
+            exit 1
+          fi
+          SYNC_ROOT="$RUNNER_TEMP/radar-ios-sdk-sync"
+          mkdir -p "$SYNC_ROOT"
+          echo "SYNC_ROOT=$SYNC_ROOT" >> "$GITHUB_ENV"
+          {
+            echo "release=$RELEASE"
+            echo "dispatch_release_url=$DISPATCH_RELEASE_URL"
+            echo "dispatch_source_sha=$DISPATCH_SOURCE_SHA"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Checkout released iOS SDK
+        env:
+          RELEASE: ${{ steps.event.outputs.release }}
+        run: |
+          git clone --filter=blob:none https://github.com/radarlabs/radar-sdk-ios.git "$SYNC_ROOT/upstream-ios"
+          git -C "$SYNC_ROOT/upstream-ios" checkout --detach "$RELEASE"
+
+      - name: Verify published stable release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE: ${{ steps.event.outputs.release }}
+          DISPATCH_RELEASE_URL: ${{ steps.event.outputs.dispatch_release_url }}
+          DISPATCH_SOURCE_SHA: ${{ steps.event.outputs.dispatch_source_sha }}
+        run: |
+          set -euo pipefail
+          RELEASE_JSON=$(gh api "repos/radarlabs/radar-sdk-ios/releases/tags/$RELEASE")
+          IS_DRAFT=$(jq -r '.draft' <<< "$RELEASE_JSON")
+          IS_PRERELEASE=$(jq -r '.prerelease' <<< "$RELEASE_JSON")
+          RELEASE_URL=$(jq -r '.html_url' <<< "$RELEASE_JSON")
+          SOURCE_SHA=$(git -C "$SYNC_ROOT/upstream-ios" rev-parse 'HEAD^{commit}')
+          if [ "$IS_DRAFT" != "false" ] || [ "$IS_PRERELEASE" != "false" ]; then
+            echo "Release must be published and stable"
+            exit 1
+          fi
+          if [ -n "$DISPATCH_RELEASE_URL" ] && [ "$DISPATCH_RELEASE_URL" != "$RELEASE_URL" ]; then
+            echo "Dispatched release URL does not match GitHub"
+            exit 1
+          fi
+          if [ -n "$DISPATCH_SOURCE_SHA" ] && [ "$DISPATCH_SOURCE_SHA" != "$SOURCE_SHA" ]; then
+            echo "Dispatched source SHA does not match the release tag"
+            exit 1
+          fi
+          node scripts/ios-sdk-sync.mjs validate-payload \
+            --release "$RELEASE" \
+            --release-url "$RELEASE_URL" \
+            --source-sha "$SOURCE_SHA"
+          echo "release_url=$RELEASE_URL" >> "$GITHUB_OUTPUT"
+          echo "source_sha=$SOURCE_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Plan idempotent update
+        id: plan
+        env:
+          TARGET_IOS: ${{ steps.event.outputs.release }}
+        run: |
+          set -euo pipefail
+          BASE_IOS=$(node scripts/ios-sdk-sync.mjs framework-version \
+            --plist ios/RadarSDK.xcframework/ios-arm64/RadarSDK.framework/Info.plist)
+          BASE_RN=$(node scripts/ios-sdk-sync.mjs package-version --package-json package.json)
+          EFFECTIVE_IOS="$BASE_IOS"
+          WORKING_RN="$BASE_RN"
+          git fetch origin "$AUTOMATION_BRANCH" || true
+          if git show-ref --verify --quiet "refs/remotes/origin/$AUTOMATION_BRANCH"; then
+            git worktree add --detach "$SYNC_ROOT/existing-react-native" "origin/$AUTOMATION_BRANCH"
+            git show "origin/$AUTOMATION_BRANCH:ios/RadarSDK.xcframework/ios-arm64/RadarSDK.framework/Info.plist" > "$SYNC_ROOT/existing-info.plist"
+            git show "origin/$AUTOMATION_BRANCH:package.json" > "$SYNC_ROOT/existing-package.json"
+            EFFECTIVE_IOS=$(node scripts/ios-sdk-sync.mjs framework-version --plist "$SYNC_ROOT/existing-info.plist")
+            WORKING_RN=$(node scripts/ios-sdk-sync.mjs package-version --package-json "$SYNC_ROOT/existing-package.json")
+          fi
+          PLAN=$(node scripts/ios-sdk-sync.mjs plan \
+            --target-ios "$TARGET_IOS" \
+            --current-ios "$EFFECTIVE_IOS" \
+            --base-rn "$BASE_RN" \
+            --working-rn "$WORKING_RN")
+          {
+            echo "status=$(jq -r '.status' <<< "$PLAN")"
+            echo "base_ios=$BASE_IOS"
+            echo "rn_version=$(jq -r '.targetRnVersion // empty' <<< "$PLAN")"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Stop for a repeated or stale release
+        if: steps.plan.outputs.status != 'update'
+        env:
+          STATUS: ${{ steps.plan.outputs.status }}
+        run: echo "No update required; release status is $STATUS."
+
+      - name: Use release Xcode version
+        if: steps.plan.outputs.status == 'update'
+        run: sudo xcode-select -switch /Applications/Xcode_26.3.app
+
+      - name: Capture old API and update deterministic files
+        if: steps.plan.outputs.status == 'update'
+        env:
+          RN_VERSION: ${{ steps.plan.outputs.rn_version }}
+        run: |
+          set -euo pipefail
+          node scripts/ios-sdk-sync.mjs snapshot-api \
+            --framework ios/RadarSDK.xcframework \
+            --output "$SYNC_ROOT/old-api"
+          node scripts/ios-sdk-sync.mjs apply-rn-version \
+            --root "$GITHUB_WORKSPACE" \
+            --version "$RN_VERSION"
+
+      - name: Rebuild vendored iOS frameworks
+        if: steps.plan.outputs.status == 'update'
+        env:
+          TARGET_IOS: ${{ steps.event.outputs.release }}
+          SDK_SOURCE_DIR: ${{ runner.temp }}/radar-ios-sdk-sync/upstream-ios
+          SDK_SOURCE_SHA: ${{ steps.release.outputs.source_sha }}
+          SKIP_FRAUD: "true"
+        run: scripts/download-xcframeworks.sh "$TARGET_IOS"
+
+      - name: Generate public API report
+        if: steps.plan.outputs.status == 'update'
+        env:
+          OLD_IOS: ${{ steps.plan.outputs.base_ios }}
+          TARGET_IOS: ${{ steps.event.outputs.release }}
+        run: |
+          set -euo pipefail
+          git -C "$SYNC_ROOT/upstream-ios" diff "$OLD_IOS" "$TARGET_IOS" -- RadarSDK/Include > "$SYNC_ROOT/upstream-api.diff"
+          node scripts/ios-sdk-sync.mjs snapshot-api \
+            --framework ios/RadarSDK.xcframework \
+            --output "$SYNC_ROOT/new-api"
+          node scripts/ios-sdk-sync.mjs api-report \
+            --old-root "$SYNC_ROOT/old-api" \
+            --new-root "$SYNC_ROOT/new-api" \
+            --old-version "$OLD_IOS" \
+            --new-version "$TARGET_IOS" \
+            --upstream-diff "$SYNC_ROOT/upstream-api.diff" \
+            --output "$SYNC_ROOT/api-report.md"
+
+      - name: Read pinned Android SDK version
+        if: steps.plan.outputs.status == 'update'
+        id: android
+        run: echo "version=$(node scripts/ios-sdk-sync.mjs android-version --build-gradle android/build.gradle)" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout pinned Android SDK for parity analysis
+        if: steps.plan.outputs.status == 'update'
+        env:
+          ANDROID_VERSION: ${{ steps.android.outputs.version }}
+        run: git clone --depth 1 --branch "$ANDROID_VERSION" https://github.com/radarlabs/radar-sdk-android.git "$SYNC_ROOT/upstream-android"
+
+      - name: Adapt React Native APIs with Claude
+        if: steps.plan.outputs.status == 'update'
+        id: claude
+        continue-on-error: true
+        uses: anthropics/claude-code-action@ef8bb1e43bf303cff727a1dd0b8837029fe982a2 # v1
         with:
-          data: version=${{ github.event.client_payload.release }}
-          path: 'react-native-radar.podspec'
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
+          prompt: |
+            Update react-native-radar for Radar iOS ${{ steps.event.outputs.release }}.
 
-      # copy the Cartfile template to its final destination
-      - name: Copy ios/Cartfile.resolved template
-        uses: canastro/copy-action@master
+            Read the deterministic API report at ${{ runner.temp }}/radar-ios-sdk-sync/api-report.md,
+            the released iOS source at ${{ runner.temp }}/radar-ios-sdk-sync/upstream-ios, and the
+            React Native-pinned Android SDK ${{ steps.android.outputs.version }} at
+            ${{ runner.temp }}/radar-ios-sdk-sync/upstream-android. Do not change either upstream checkout.
+            If ${{ runner.temp }}/radar-ios-sdk-sync/existing-react-native exists, read it as context from
+            the current automation PR, but make all edits in the main workspace.
+
+            Expose a new shared API only when the pinned Android SDK has equivalent behavior. Otherwise,
+            defer it and report the parity gap. Do not remove or incompatibly change an existing React
+            Native API for a native removal, signature change, or deprecation. For exposed APIs, update
+            the iOS bridge, the React Native Android bridge if needed, TurboModule spec, public TypeScript
+            interface and implementation, shared types, web fallback, mocks, and focused tests. Add a
+            minimal Example app control for each new callable method or event, but not for type-only changes.
+
+            Do not change native SDK version pins, package versions, vendored frameworks, workflow files,
+            scripts, generated build output, or files outside ios/RNRadar.mm, android/src, src, test, and
+            example/App.tsx. Do not commit, push, create a pull request, or use GitHub write operations.
+            Manual test steps must be actions a reviewer performs in the Example app; do not include CI,
+            commands, builds, linting, unit tests, or automation in those steps.
+          claude_args: |
+            --max-turns 40
+            --allowedTools "Read,Write,Edit,Glob,Grep,Bash(git diff:*),Bash(git status:*),Bash(rg:*)"
+            --json-schema '{"type":"object","properties":{"summary":{"type":"string"},"exposed_apis":{"type":"array","items":{"type":"string"}},"deferred_apis":{"type":"array","items":{"type":"string"}},"files_changed":{"type":"array","items":{"type":"string"}},"validation_status":{"type":"string","enum":["not_run","passed","failed"]},"validation_failures":{"type":"array","items":{"type":"string"}},"manual_test_steps":{"type":"array","items":{"type":"string"}},"confidence":{"type":"string","enum":["high","medium","low"]}},"required":["summary","exposed_apis","deferred_apis","files_changed","validation_status","validation_failures","manual_test_steps","confidence"]}'
+
+      - name: Save initial agent result
+        if: steps.plan.outputs.status == 'update'
+        env:
+          AGENT_RESULT: ${{ steps.claude.outputs.structured_output }}
+        run: printf '%s' "${AGENT_RESULT:-{}}" > "$SYNC_ROOT/agent-result.json"
+
+      - name: Run first validation
+        if: steps.plan.outputs.status == 'update'
+        id: validation-one
+        continue-on-error: true
+        run: scripts/validate-ios-sdk-sync.sh 2>&1 | tee "$SYNC_ROOT/validation-one.log"
+
+      - name: Repair failed adaptation with Claude
+        if: steps.plan.outputs.status == 'update' && (steps.claude.outcome == 'failure' || steps.validation-one.outcome == 'failure')
+        id: repair
+        continue-on-error: true
+        uses: anthropics/claude-code-action@ef8bb1e43bf303cff727a1dd0b8837029fe982a2 # v1
         with:
-          source: 'ios/Cartfile.resolved.template'
-          target: 'ios/Cartfile.resolved'
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
+          prompt: |
+            Repair the attempted Radar iOS ${{ steps.event.outputs.release }} React Native adaptation.
+            Read ${{ runner.temp }}/radar-ios-sdk-sync/validation-one.log and fix the reported problems.
+            Preserve the same parity and file-scope rules from the initial attempt. Do not commit, push,
+            create a pull request, change deterministic version/framework files, or use GitHub writes.
+            Manual test steps must contain only actions performed by hand in the Example app.
+          claude_args: |
+            --max-turns 20
+            --allowedTools "Read,Write,Edit,Glob,Grep,Bash(git diff:*),Bash(git status:*),Bash(rg:*)"
+            --json-schema '{"type":"object","properties":{"summary":{"type":"string"},"exposed_apis":{"type":"array","items":{"type":"string"}},"deferred_apis":{"type":"array","items":{"type":"string"}},"files_changed":{"type":"array","items":{"type":"string"}},"validation_status":{"type":"string","enum":["not_run","passed","failed"]},"validation_failures":{"type":"array","items":{"type":"string"}},"manual_test_steps":{"type":"array","items":{"type":"string"}},"confidence":{"type":"string","enum":["high","medium","low"]}},"required":["summary","exposed_apis","deferred_apis","files_changed","validation_status","validation_failures","manual_test_steps","confidence"]}'
 
-      # render the Cartfile template with the sdk version
-      - name: Render radar-sdk-ios release version onto Cartfile template
-        uses: jayamanikharyono/jinja-action@v0.1
+      - name: Save repaired agent result
+        if: steps.plan.outputs.status == 'update' && steps.repair.outputs.structured_output != ''
+        env:
+          AGENT_RESULT: ${{ steps.repair.outputs.structured_output }}
+        run: printf '%s' "$AGENT_RESULT" > "$SYNC_ROOT/agent-result.json"
+
+      - name: Run final validation
+        if: steps.plan.outputs.status == 'update'
+        id: validation-final
+        continue-on-error: true
+        run: scripts/validate-ios-sdk-sync.sh 2>&1 | tee "$SYNC_ROOT/validation-final.log"
+
+      - name: Reject out-of-scope generated changes
+        if: steps.plan.outputs.status == 'update'
+        id: scope
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          UNEXPECTED=$(git status --short | awk '{print $2}' | grep -Ev '^(ios/RadarSDK(Motion)?\.xcframework/|ios/RNRadar\.mm$|android/src/|src/|test/|example/(App\.tsx|package-lock\.json)$|package(-lock)?\.json$)' || true)
+          if [ -n "$UNEXPECTED" ]; then
+            {
+              echo "Claude changed files outside the allowed publication scope:"
+              echo "$UNEXPECTED"
+            } | tee "$SYNC_ROOT/scope.log"
+            exit 1
+          fi
+        shell: bash
+
+      - name: Generate pull request body
+        if: steps.plan.outputs.status == 'update'
+        id: pr
+        env:
+          FINAL_VALIDATION: ${{ steps.validation-final.outcome }}
+          SCOPE_VALIDATION: ${{ steps.scope.outcome }}
+        run: |
+          set -euo pipefail
+          STATUS=passed
+          LABELS=ios-sdk-update
+          SUMMARY="Node, TypeScript, Jest, and the iOS Example build passed."
+          if [ "$FINAL_VALIDATION" != "success" ] || [ "$SCOPE_VALIDATION" != "success" ]; then
+            STATUS=failed
+            LABELS="ios-sdk-update,needs-human"
+            SUMMARY="One or more automated checks failed. Review the workflow logs and required checks before merging."
+            {
+              tail -n 200 "$SYNC_ROOT/validation-final.log"
+              if [ -f "$SYNC_ROOT/scope.log" ]; then
+                echo
+                tail -n 200 "$SYNC_ROOT/scope.log"
+              fi
+            } > "$SYNC_ROOT/publication-failures.log"
+          fi
+          VALIDATION_LOG_ARGS=()
+          if [ -f "$SYNC_ROOT/publication-failures.log" ]; then
+            VALIDATION_LOG_ARGS=(--validation-log "$SYNC_ROOT/publication-failures.log")
+          fi
+          node scripts/ios-sdk-sync.mjs render-pr-body \
+            --old-ios "${{ steps.plan.outputs.base_ios }}" \
+            --new-ios "${{ steps.event.outputs.release }}" \
+            --rn-version "${{ steps.plan.outputs.rn_version }}" \
+            --release-url "${{ steps.release.outputs.release_url }}" \
+            --agent-result "$SYNC_ROOT/agent-result.json" \
+            --validation-status "$STATUS" \
+            --validation-summary "$SUMMARY" \
+            "${VALIDATION_LOG_ARGS[@]}" \
+            --output "$SYNC_ROOT/pull-request.md"
+          echo "labels=$LABELS" >> "$GITHUB_OUTPUT"
+
+      - name: Generate publisher token
+        if: steps.plan.outputs.status == 'update'
+        id: publisher-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
         with:
-          data: version=${{ github.event.client_payload.release }}
-          path: 'ios/Cartfile.resolved'
+          app-id: ${{ secrets.SDK_SYNC_GH_APP_ID }}
+          private-key: ${{ secrets.SDK_SYNC_GH_APP_PRIVATE_KEY }}
+          owner: radarlabs
+          repositories: react-native-radar
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
 
-      # Update package.json to latest version
-      - name: Update package.json to latest
-        run: npm version ${{ github.event.client_payload.release }} --commit-hooks false --git-tag-version false
+      - name: Ensure automation labels exist
+        if: steps.plan.outputs.status == 'update'
+        env:
+          GH_TOKEN: ${{ steps.publisher-token.outputs.token }}
+        run: |
+          gh label create ios-sdk-update --color 1D76DB --description "Automated native SDK update" --force
+          gh label create needs-human --color D93F0B --description "Automation needs human help" --force
 
-      # open a pull request with the new sdk version
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+      - name: Create or update draft pull request
+        if: steps.plan.outputs.status == 'update'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
         with:
-          title: Automated radar-sdk-ios version bump to ${{ github.event.client_payload.release }}
-          reviewers: radarlabs/eng
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.publisher-token.outputs.token }}
+          base: master
+          branch: automation/ios-sdk-update
+          delete-branch: true
+          draft: true
+          commit-message: Prepare React Native ${{ steps.plan.outputs.rn_version }} for Radar iOS ${{ steps.event.outputs.release }}
+          title: Prepare React Native ${{ steps.plan.outputs.rn_version }} for Radar iOS ${{ steps.event.outputs.release }}
+          body-path: ${{ runner.temp }}/radar-ios-sdk-sync/pull-request.md
+          labels: ${{ steps.pr.outputs.labels }}
+          team-reviewers: eng
+          add-paths: |
+            ios/RadarSDK.xcframework/**
+            ios/RadarSDKMotion.xcframework/**
+            ios/RNRadar.mm
+            android/src/**
+            src/**
+            test/**
+            example/App.tsx
+            example/package-lock.json
+            package.json
+            package-lock.json

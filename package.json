@@ -39,6 +39,7 @@
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
     "build-plugin": "tsc --build plugin/",
     "build": "tsc",
+    "test:ios-sdk-sync": "node --test scripts/tests/ios-sdk-sync.test.mjs",
     "setup": "npm rebuild fsevents --ignore-scripts=false"
   },
   "jest": {
