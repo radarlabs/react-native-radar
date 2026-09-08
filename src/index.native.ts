@@ -91,6 +91,11 @@ const compatEventEmitter =
     ? new NativeEventEmitter(NativeModules.RNRadar)
     : null;
 const isNewArchitecture = compatEventEmitter == null;
+const tracksListeners =
+  isNewArchitecture &&
+  Platform.OS === "android" &&
+  typeof NativeRadar._setEventListenerCount === "function";
+const listenerCounts = new Map<string, number>();
 
 type Events =
   | "locationEmitter"
@@ -110,7 +115,25 @@ export function addListener<EventT extends Events>(
   if (compatEventEmitter != null) {
     return compatEventEmitter.addListener(event, handler);
   }
-  return NativeRadar[event](handler as any);
+  const subscription = NativeRadar[event](handler as any);
+  if (!tracksListeners) return subscription;
+
+  const updateCount = (change: number) => {
+    const count = (listenerCounts.get(event) ?? 0) + change;
+    listenerCounts.set(event, count);
+    NativeRadar._setEventListenerCount(event, count);
+  };
+  // Native can replay startup events only after the JS subscription exists.
+  updateCount(1);
+  let removed = false;
+  const remove = subscription.remove.bind(subscription);
+  subscription.remove = () => {
+    if (removed) return;
+    removed = true;
+    remove();
+    updateCount(-1);
+  };
+  return subscription;
 }
 
 let locationUpdateSubscription: EventSubscription | null = null;

@@ -76,6 +76,10 @@ RCT_EXPORT_MODULE()
     [super setEventEmitterCallback:eventEmitterCallbackWrapper];
     jsEventEmitterReady = YES;
 }
+
+- (void)_setEventListenerCount:(NSString *)eventName count:(NSInteger)count {
+    // Android needs this handshake; iOS keeps its existing event handling.
+}
 #endif
 
 - (void)onNewInAppMessage:(RadarInAppMessage *)inAppMessage {

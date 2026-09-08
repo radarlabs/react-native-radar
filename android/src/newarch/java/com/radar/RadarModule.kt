@@ -29,120 +29,153 @@ import io.radar.sdk.RadarNotificationOptions
 import io.radar.sdk.RadarInAppMessageReceiver
 import android.content.Context
 import android.location.Location
-import com.facebook.react.bridge.Arguments
-import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.CxxCallbackImpl
-import org.json.JSONException
 import org.json.JSONObject
 
 @ReactModule(name = RadarModule.NAME)
 class RadarModule(reactContext: ReactApplicationContext) :
     NativeRadarSpec(reactContext), PermissionListener {
-    private val receiverOwner = Any()
-
-    @Volatile
+    private val eventQueue = StartupEventQueue()
+    private val drainHandler = android.os.Handler(android.os.Looper.getMainLooper())
     private var isInvalidated = false
-    @Volatile
-    private var jsEventEmitterReady = false
-    private var receiverAttachmentPending = false
-    private var receiverAttachmentFraud = false
-    private var initializationInProgress = false
+    private var drainScheduled = false
+    private var lastOverflowWarning = Long.MIN_VALUE
+    private val drainRunnable = Runnable {
+        synchronized(eventQueue.lock) {
+            drainScheduled = false
+            eventQueue.drain { event ->
+                val payload = RadarUtils.mapForJson(EventPayload.restore(event.payload))
+                when (event.name) {
+                    "eventsEmitter" -> emitEventsEmitter(payload)
+                    "locationEmitter" -> emitLocationEmitter(payload)
+                    "clientLocationEmitter" -> emitClientLocationEmitter(payload)
+                    "errorEmitter" -> emitErrorEmitter(payload)
+                    "logEmitter" -> emitLogEmitter(payload)
+                    "newInAppMessageEmitter" -> emitNewInAppMessageEmitter(payload)
+                    "inAppMessageDismissedEmitter" -> emitInAppMessageDismissedEmitter(payload)
+                    "inAppMessageClickedEmitter" -> emitInAppMessageClickedEmitter(payload)
+                    "tokenEmitter" -> emitTokenEmitter(payload)
+                }
+            }
+        }
+    }
 
     override fun setEventEmitterCallback(eventEmitterCallback: CxxCallbackImpl) {
-        super.setEventEmitterCallback(eventEmitterCallback)
-        jsEventEmitterReady = true
-        synchronized(receiverLock) {
-            attachReceiversIfReadyLocked()
+        synchronized(eventQueue.lock) {
+            if (isInvalidated) return
+            super.setEventEmitterCallback(eventEmitterCallback)
+            eventQueue.emitterReady()
+            scheduleDrain()
+        }
+    }
+
+    override fun _setEventListenerCount(eventName: String, count: Double) {
+        synchronized(eventQueue.lock) {
+            if (isInvalidated) return
+            eventQueue.listenerCount(eventName, count.toInt())
+            scheduleDrain()
+        }
+    }
+
+    private fun scheduleDrain() {
+        if (!drainScheduled) {
+            drainScheduled = drainHandler.post(drainRunnable)
+        }
+    }
+
+    private fun submit(name: String, payload: JSONObject) {
+        synchronized(eventQueue.lock) {
+            if (isInvalidated) return
+            if (eventQueue.submit(name, EventPayload.snapshot(payload))) {
+                val now = android.os.SystemClock.elapsedRealtime()
+                if (lastOverflowWarning == Long.MIN_VALUE || now - lastOverflowWarning >= 60000) {
+                    lastOverflowWarning = now
+                    Log.w(TAG, "Startup event queue limit reached; some events were discarded")
+                }
+            }
+            scheduleDrain()
         }
     }
 
     private val radarReceiver = object : RadarReceiver() {
         override fun onEventsReceived(context: Context, events: Array<RadarEvent>, user: RadarUser?) {
-            if (isInvalidated || !jsEventEmitterReady) return
-            val eventBlob = Arguments.createMap().apply {
-                var eventsArray = Arguments.createArray()
+            val eventBlob = JSONObject().apply {
+                val eventsArray = org.json.JSONArray()
                 for (event in events) {
-                    eventsArray.pushMap(RadarUtils.mapForJson(event.toJson()))
+                    eventsArray.put(event.toJson())
                 }
-                putArray("events", eventsArray)
+                put("events", eventsArray)
                 if (user != null) {
-                    putMap("user", RadarUtils.mapForJson(user.toJson()))
+                    put("user", user.toJson())
                 }
             }
-            emitIfActive { emitEventsEmitter(eventBlob) }
+            submit("eventsEmitter", eventBlob)
         }
 
         override fun onLocationUpdated(context: Context, location: Location, user: RadarUser) {
-            if (isInvalidated || !jsEventEmitterReady) return
-            val eventBlob = Arguments.createMap().apply {
-                putString("location", Radar.jsonForLocation(location).toString())
-                putString("user", user.toJson().toString())
+            val eventBlob = JSONObject().apply {
+                put("location", Radar.jsonForLocation(location).toString())
+                put("user", user.toJson().toString())
             }
-            emitIfActive { emitLocationEmitter(eventBlob) }
+            submit("locationEmitter", eventBlob)
         }
 
         override fun onClientLocationUpdated(context: Context, location: Location, stopped: Boolean, source: Radar.RadarLocationSource) {
-            if (isInvalidated || !jsEventEmitterReady) return
-            val eventBlob = Arguments.createMap().apply {
-                putString("location", Radar.jsonForLocation(location).toString())
-                putBoolean("stopped", stopped)
-                putString("source", source.toString())
+            val eventBlob = JSONObject().apply {
+                put("location", Radar.jsonForLocation(location).toString())
+                put("stopped", stopped)
+                put("source", source.toString())
             }
-            emitIfActive { emitClientLocationEmitter(eventBlob) }
+            submit("clientLocationEmitter", eventBlob)
         }
 
         override fun onError(context: Context, status: Radar.RadarStatus) {
-            if (isInvalidated || !jsEventEmitterReady) return
-            val eventBlob = Arguments.createMap().apply {
-                putString("status", status.toString())
+            val eventBlob = JSONObject().apply {
+                put("status", status.toString())
             }
-            emitIfActive { emitErrorEmitter(eventBlob) }
+            submit("errorEmitter", eventBlob)
         }
 
         override fun onLog(context: Context, message: String) {
-            if (isInvalidated || !jsEventEmitterReady) return
-            val eventBlob = Arguments.createMap().apply {
-                putString("message", message)
+            val eventBlob = JSONObject().apply {
+                put("message", message)
             }
-            emitIfActive { emitLogEmitter(eventBlob) }
+            submit("logEmitter", eventBlob)
         }
     }
 
     private val radarInAppMessageReceiver = object : RadarInAppMessageReceiver {
         override fun onNewInAppMessage(message: RadarInAppMessage) {
-            if (isInvalidated || !jsEventEmitterReady) return
             try {
-                val eventBlob = Arguments.createMap().apply {
-                    putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
+                val eventBlob = JSONObject().apply {
+                    put("inAppMessage", JSONObject(message.toJson()))
                 }
-                emitIfActive { emitNewInAppMessageEmitter(eventBlob) }
+                submit("newInAppMessageEmitter", eventBlob)
             } catch (e: Exception) {
                 Log.e(TAG, "Exception", e)
             }
         }
 
         override fun onInAppMessageDismissed(message: RadarInAppMessage) {
-            if (isInvalidated || !jsEventEmitterReady) return
             try {
-                val eventBlob = Arguments.createMap().apply {
-                    putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
+                val eventBlob = JSONObject().apply {
+                    put("inAppMessage", JSONObject(message.toJson()))
                 }
-                emitIfActive { emitInAppMessageDismissedEmitter(eventBlob) }
+                submit("inAppMessageDismissedEmitter", eventBlob)
             } catch (e: Exception) {
                 Log.e(TAG, "Exception", e)
             }
         }
 
         override fun onInAppMessageButtonClicked(message: RadarInAppMessage) {
-            if (isInvalidated || !jsEventEmitterReady) return
             try {
-                val eventBlob = Arguments.createMap().apply {
-                    putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
+                val eventBlob = JSONObject().apply {
+                    put("inAppMessage", JSONObject(message.toJson()))
                 }
-                emitIfActive { emitInAppMessageClickedEmitter(eventBlob) }
+                submit("inAppMessageClickedEmitter", eventBlob)
             } catch (e: Exception) {
                 Log.e(TAG, "Exception", e)
             }
@@ -151,11 +184,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     private val radarVerifiedReceiver = object : RadarVerifiedReceiver() {
         override fun onTokenUpdated(context: Context, token: RadarVerifiedLocationToken) {
-            if (isInvalidated || !jsEventEmitterReady) return
-            val eventBlob = Arguments.createMap().apply {
-                putString("token", token.toJson().toString())
+            val eventBlob = JSONObject().apply {
+                put("token", token.toJson().toString())
             }
-            emitIfActive { emitTokenEmitter(eventBlob) }
+            submit("tokenEmitter", eventBlob)
         }
     }
 
@@ -167,19 +199,23 @@ class RadarModule(reactContext: ReactApplicationContext) :
         return NAME
     }
 
-    override fun invalidate() {
-        isInvalidated = true
-        jsEventEmitterReady = false
+    private fun closeQueue() {
+        synchronized(eventQueue.lock) {
+            isInvalidated = true
+            eventQueue.close()
+            drainHandler.removeCallbacks(drainRunnable)
+            drainScheduled = false
+        }
+    }
 
+    override fun invalidate() {
+        closeQueue()
         synchronized(receiverLock) {
-            receiverAttachmentPending = false
-            initializationInProgress = false
-            if (activeReceiverOwner === receiverOwner) {
+            if (activeReceiverOwner === this) {
                 detachReceiversLocked()
                 activeReceiverOwner = null
             }
         }
-
         super.invalidate()
     }
 
@@ -193,11 +229,11 @@ class RadarModule(reactContext: ReactApplicationContext) :
             Radar.initialize(
                 reactApplicationContext,
                 publishableKey,
-                null,
+                radarReceiver,
                 Radar.RadarLocationServicesProvider.GOOGLE,
                 fraud,
                 null,
-                null,
+                radarInAppMessageReceiver,
                 currentActivity
             )
         }
@@ -211,6 +247,8 @@ class RadarModule(reactContext: ReactApplicationContext) :
         
         val initOptions = io.radar.sdk.RadarInitializeOptions.builder()
             .authToken(authToken)
+            .radarReceiver(radarReceiver)
+            .inAppMessageReceiver(radarInAppMessageReceiver)
             .locationProvider(Radar.RadarLocationServicesProvider.GOOGLE)
             .fraud(fraud)
             .apply { currentActivity?.let { activity(it) } }
@@ -221,50 +259,53 @@ class RadarModule(reactContext: ReactApplicationContext) :
     }
 
     private fun initializeRadar(fraud: Boolean, initialize: () -> Unit) {
+        // SDK calls can send events from another thread, so they cannot hold the queue lock.
         synchronized(receiverLock) {
-            if (activeReceiverOwner != null) {
-                detachReceiversLocked()
+            synchronized(eventQueue.lock) {
+                if (isInvalidated) return
             }
-            activeReceiverOwner = receiverOwner
-            receiverAttachmentPending = true
-            receiverAttachmentFraud = fraud
-            initializationInProgress = true
-
+            if (activeReceiverOwner !== this) {
+                activeReceiverOwner?.closeQueue()
+                if (activeReceiverOwner != null) detachReceiversLocked()
+                activeReceiverOwner = this
+            }
+            eventQueue.claim()
+            eventQueue.beginInitialization()
             try {
                 initialize()
-                initializationInProgress = false
-                attachReceiversIfReadyLocked()
+                synchronized(eventQueue.lock) {
+                    if (isInvalidated) {
+                        detachReceiversLocked()
+                        activeReceiverOwner = null
+                        return
+                    }
+                }
+                Radar.setReceiver(radarReceiver)
+                Radar.setInAppMessageReceiver(radarInAppMessageReceiver)
+                try {
+                    Radar.setVerifiedReceiver(if (fraud) radarVerifiedReceiver else null)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error attaching verified receiver", e)
+                }
+                synchronized(eventQueue.lock) {
+                    if (!isInvalidated) {
+                        eventQueue.initialized()
+                        scheduleDrain()
+                    }
+                }
             } catch (e: Throwable) {
-                initializationInProgress = false
-                receiverAttachmentPending = false
-                if (activeReceiverOwner === receiverOwner) {
+                synchronized(eventQueue.lock) {
+                    eventQueue.abortInitialization()
+                    drainHandler.removeCallbacks(drainRunnable)
+                    drainScheduled = false
+                }
+                if (activeReceiverOwner === this) {
                     detachReceiversLocked()
                     activeReceiverOwner = null
                 }
                 throw e
             }
         }
-    }
-
-    private fun attachReceiversIfReadyLocked() {
-        if (
-            !receiverAttachmentPending ||
-            initializationInProgress ||
-            isInvalidated ||
-            !jsEventEmitterReady ||
-            activeReceiverOwner !== receiverOwner
-        ) {
-            return
-        }
-
-        Radar.setReceiver(radarReceiver)
-        Radar.setInAppMessageReceiver(radarInAppMessageReceiver)
-        try {
-            Radar.setVerifiedReceiver(if (receiverAttachmentFraud) radarVerifiedReceiver else null)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error attaching verified receiver", e)
-        }
-        receiverAttachmentPending = false
     }
 
     private fun detachReceiversLocked() {
@@ -282,14 +323,6 @@ class RadarModule(reactContext: ReactApplicationContext) :
             Radar.setInAppMessageReceiver(inactiveInAppMessageReceiver)
         } catch (e: Exception) {
             Log.e(TAG, "Error detaching in-app message receiver", e)
-        }
-    }
-
-    private fun emitIfActive(emit: () -> Unit) {
-        synchronized(receiverLock) {
-            if (!isInvalidated && jsEventEmitterReady && activeReceiverOwner === receiverOwner) {
-                emit()
-            }
         }
     }
 
@@ -627,7 +660,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         private const val TAG = "RadarModule"
         private val receiverLock = Any()
         @Volatile
-        private var activeReceiverOwner: Any? = null
+        private var activeReceiverOwner: RadarModule? = null
         private val inactiveInAppMessageReceiver = object : RadarInAppMessageReceiver {}
     }
 }
