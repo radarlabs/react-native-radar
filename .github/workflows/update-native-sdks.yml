@@ -138,6 +138,7 @@ jobs:
         continue-on-error: true
         run: |
           set -euo pipefail
+          npm run test:ios-sdk-sync
           npm ci
           npm run build-all
           npm test -- --runInBand
