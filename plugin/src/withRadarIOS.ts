@@ -192,7 +192,11 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
         args.iosNSLocationAlwaysAndWhenInUseUsageDescription; 
     }
     if (args.iosBackgroundMode) {
-      config.modResults.UIBackgroundModes = ["location", "fetch"];
+      config.modResults.UIBackgroundModes = Array.from(new Set([
+        ...(config.modResults.UIBackgroundModes ?? []),
+        "location",
+        "fetch",
+      ]));
     }
     if (args.iosFraud) {
       config.modResults.NSAppTransportSecurity = {

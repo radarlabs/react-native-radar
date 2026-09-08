@@ -38,6 +38,7 @@
     "check-latest-tag": "node ./scripts/check-latest-tag.cjs",
     "check-beta-tag": "node ./scripts/check-beta-tag.cjs",
     "build-plugin": "tsc --build plugin/",
+    "test:expo-background-modes": "npm run build-plugin && node --test scripts/tests/expo-background-modes.test.cjs",
     "build": "tsc",
     "setup": "npm rebuild fsevents --ignore-scripts=false"
   },
