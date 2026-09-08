@@ -17,7 +17,6 @@ rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
 if [ -n "${SDK_SOURCE_DIR:-}" ]; then
   git clone --local "$SDK_SOURCE_DIR" "$BUILD_DIR/radar-sdk-ios"
-  git -C "$BUILD_DIR/radar-sdk-ios" checkout --detach "${SDK_SOURCE_SHA:?SDK_SOURCE_SHA is required with SDK_SOURCE_DIR}"
 else
   git clone --depth 1 --branch "$VERSION" "$SDK_REPO" "$BUILD_DIR/radar-sdk-ios"
 fi

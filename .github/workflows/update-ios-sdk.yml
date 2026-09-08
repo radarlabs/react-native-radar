@@ -71,9 +71,7 @@ jobs:
           set -euo pipefail
           node scripts/ios-sdk-sync.mjs apply-version "$RN_VERSION" "$GITHUB_WORKSPACE"
           sudo xcode-select -switch /Applications/Xcode_26.3.app
-          SDK_SOURCE_SHA=$(git -C "$SYNC_ROOT/upstream-ios" rev-parse HEAD)
           SDK_SOURCE_DIR="$SYNC_ROOT/upstream-ios" \
-            SDK_SOURCE_SHA="$SDK_SOURCE_SHA" \
             SKIP_FRAUD=true \
             scripts/download-xcframeworks.sh "$TARGET_IOS"
 
@@ -116,41 +114,6 @@ jobs:
           npm run build-all
           npm test -- --runInBand
 
-      - name: Prepare draft pull request
-        if: steps.release.outputs.status == 'update'
-        id: pr
-        env:
-          AGENT_STATUS: ${{ steps.claude.outcome }}
-          VALIDATION_STATUS: ${{ steps.validation.outcome }}
-        run: |
-          set -euo pipefail
-          LABELS=ios-sdk-update
-          if [ "$AGENT_STATUS" != "success" ] || [ "$VALIDATION_STATUS" != "success" ]; then
-            LABELS="ios-sdk-update,needs-human"
-          fi
-          {
-            echo "## Summary"
-            echo
-            echo "- Updates the vendored Radar iOS SDK from \`${{ steps.release.outputs.old_ios }}\` to [\`${{ steps.release.outputs.target_ios }}\`](${{ steps.release.outputs.release_url }})."
-            echo "- Prepares React Native \`${{ steps.release.outputs.rn_version }}\` as a best-effort native API port."
-            echo "- Claude output may be incomplete; review the native diff and cross-platform parity before merging."
-            echo
-            echo "## Test Plan"
-            echo
-            echo "1. Install this branch in the Example app."
-            echo "2. Launch the Example app on iOS and Android."
-            echo "3. Confirm Radar initializes without an error on both platforms."
-            echo "4. Exercise any new Example app controls and confirm their result or event appears."
-            echo
-            echo "## Validation"
-            echo
-            echo "- Claude step: \`$AGENT_STATUS\`"
-            echo "- Node, TypeScript, and Jest validation: \`$VALIDATION_STATUS\`"
-            echo "- [Workflow run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
-            echo "- CircleCI Node, iOS, and Android jobs provide independent validation on this draft."
-          } > "$RUNNER_TEMP/pull-request.md"
-          echo "labels=$LABELS" >> "$GITHUB_OUTPUT"
-
       - name: Create or update draft pull request
         if: steps.release.outputs.status == 'update'
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
@@ -162,9 +125,29 @@ jobs:
           draft: always-true
           commit-message: Prepare React Native ${{ steps.release.outputs.rn_version }} for Radar iOS ${{ steps.release.outputs.target_ios }}
           title: Prepare React Native ${{ steps.release.outputs.rn_version }} for Radar iOS ${{ steps.release.outputs.target_ios }}
-          body-path: ${{ runner.temp }}/pull-request.md
-          labels: ${{ steps.pr.outputs.labels }}
-          team-reviewers: eng
+          body: |
+            ## Summary
+
+            - Updates the vendored Radar iOS SDK from `${{ steps.release.outputs.old_ios }}` to [`${{ steps.release.outputs.target_ios }}`](${{ steps.release.outputs.release_url }}).
+            - Prepares React Native `${{ steps.release.outputs.rn_version }}` as a best-effort native API port.
+            - Claude output may be incomplete; review the native diff and cross-platform parity before merging.
+
+            ## Test Plan
+
+            1. Install this branch in the Example app.
+            2. Launch the Example app on iOS and Android.
+            3. Confirm Radar initializes without an error on both platforms.
+            4. Exercise any new Example app controls and confirm their result or event appears.
+
+            ## Validation
+
+            - Claude step: `${{ steps.claude.outcome }}`
+            - Node, TypeScript, and Jest validation: `${{ steps.validation.outcome }}`
+            - [Workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            - CircleCI Node, iOS, and Android jobs provide independent validation on this draft.
+          labels: |
+            ios-sdk-update
+            needs-human
           add-paths: |
             ios/RadarSDK.xcframework/**
             ios/RadarSDKMotion.xcframework/**
