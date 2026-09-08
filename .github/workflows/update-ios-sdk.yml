@@ -148,14 +148,3 @@ jobs:
           labels: |
             ios-sdk-update
             needs-human
-          add-paths: |
-            ios/RadarSDK.xcframework/**
-            ios/RadarSDKMotion.xcframework/**
-            ios/RNRadar.mm
-            android/src/**
-            src/**
-            test/**
-            example/App.tsx
-            example/package-lock.json
-            package.json
-            package-lock.json
