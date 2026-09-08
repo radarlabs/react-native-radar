@@ -10,7 +10,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		h7zNgQ+/a1TkerLcbm1KyEoSUHg=
+		S2hjLvvLB2eYERzd5HMxLEpsPk8=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -21,6 +21,10 @@
 	<dict>
 		<key>Headers/RadarSDKMotion.h</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			9nr2XMcQxTMPkIrbihxMljqU3Ys=
+			</data>
 			<key>hash2</key>
 			<data>
 			1bHc1k6BqM2QXokjhQY0O+TdHExUAoqn1A4/pCB2LYY=
@@ -28,6 +32,10 @@
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
+			<key>hash</key>
+			<data>
+			HZMqWy3ZgLzyhQ/wPJivSiiA4wI=
+			</data>
 			<key>hash2</key>
 			<data>
 			2D996ZIO0LhB24DU/yB+j/LOU0fclGwuyZMKC9c0n+M=

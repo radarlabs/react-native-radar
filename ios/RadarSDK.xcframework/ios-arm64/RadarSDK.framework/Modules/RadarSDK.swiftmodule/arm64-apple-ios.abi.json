@@ -354,52 +354,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "_KeyValueCodingAndObservingPublishing",
-            "printedName": "_KeyValueCodingAndObservingPublishing",
-            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
-            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
-          },
-          {
-            "kind": "Conformance",
             "name": "Copyable",
             "printedName": "Copyable",
             "usr": "s:s8CopyableP",
             "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomDebugStringConvertible",
-            "printedName": "CustomDebugStringConvertible",
-            "usr": "s:s28CustomDebugStringConvertibleP",
-            "mangledName": "$ss28CustomDebugStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomStringConvertible",
-            "printedName": "CustomStringConvertible",
-            "usr": "s:s23CustomStringConvertibleP",
-            "mangledName": "$ss23CustomStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
           },
           {
             "kind": "Conformance",
@@ -410,10 +368,52 @@
           },
           {
             "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
             "name": "Hashable",
             "printedName": "Hashable",
             "usr": "s:SH",
             "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
           },
           {
             "kind": "Conformance",
@@ -440,6 +440,327 @@
         "printedName": "Foundation",
         "declKind": "Import",
         "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "UserNotifications",
+        "printedName": "UserNotifications",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "Preconcurrency"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarNotificationUtils",
+        "printedName": "RadarNotificationUtils",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "checkNotificationPermissions",
+            "printedName": "checkNotificationPermissions(completionHandler:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "((Swift.Bool) -> ())?",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Swift.Bool) -> ()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Bool",
+                        "printedName": "Swift.Bool",
+                        "usr": "s:Sb"
+                      }
+                    ]
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationUtils(cm)checkNotificationPermissionsWithCompletionHandler:",
+            "mangledName": "$s8RadarSDK0A17NotificationUtilsC05checkC11Permissions17completionHandleryySbYbcSg_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "checkNotificationPermissionsWithCompletionHandler:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "getNotificationDiff",
+            "printedName": "getNotificationDiff(completionHandler:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "([[Swift.String : Any]], [Any]) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "([[Swift.String : Any]], [Any])",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Array",
+                        "printedName": "[[Swift.String : Any]]",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Dictionary",
+                            "printedName": "[Swift.String : Any]",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "String",
+                                "printedName": "Swift.String",
+                                "usr": "s:SS"
+                              },
+                              {
+                                "kind": "TypeNominal",
+                                "name": "ProtocolComposition",
+                                "printedName": "Any"
+                              }
+                            ],
+                            "usr": "s:SD"
+                          }
+                        ],
+                        "usr": "s:Sa"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Array",
+                        "printedName": "[Any]",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "ProtocolComposition",
+                            "printedName": "Any"
+                          }
+                        ],
+                        "usr": "s:Sa"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationUtils(cm)getNotificationDiffWithCompletionHandler:",
+            "mangledName": "$s8RadarSDK0A17NotificationUtilsC03getC4Diff17completionHandleryySaySDySSypGG_SayypGtYbc_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "getNotificationDiffWithCompletionHandler:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "updateClientSideCampaigns",
+            "printedName": "updateClientSideCampaigns(withPrefix:notificationRequests:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[UserNotifications.UNNotificationRequest]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UNNotificationRequest",
+                    "printedName": "UserNotifications.UNNotificationRequest",
+                    "usr": "c:objc(cs)UNNotificationRequest"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationUtils(cm)updateClientSideCampaignsWithPrefix:notificationRequests:",
+            "mangledName": "$s8RadarSDK0A17NotificationUtilsC25updateClientSideCampaigns10withPrefix20notificationRequestsySS_SaySo21UNNotificationRequestCGtFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "updateClientSideCampaignsWithPrefix:notificationRequests:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarNotificationUtils",
+                "printedName": "RadarSDK.RadarNotificationUtils",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationUtils"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationUtils(im)init",
+            "mangledName": "$s8RadarSDK0A17NotificationUtilsCACycfc",
+            "moduleName": "RadarSDK",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationUtils",
+        "mangledName": "$s8RadarSDK0A17NotificationUtilsC",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
       },
       {
         "kind": "Import",
@@ -898,52 +1219,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "_KeyValueCodingAndObservingPublishing",
-            "printedName": "_KeyValueCodingAndObservingPublishing",
-            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
-            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
-          },
-          {
-            "kind": "Conformance",
             "name": "Copyable",
             "printedName": "Copyable",
             "usr": "s:s8CopyableP",
             "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomDebugStringConvertible",
-            "printedName": "CustomDebugStringConvertible",
-            "usr": "s:s28CustomDebugStringConvertibleP",
-            "mangledName": "$ss28CustomDebugStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomStringConvertible",
-            "printedName": "CustomStringConvertible",
-            "usr": "s:s23CustomStringConvertibleP",
-            "mangledName": "$ss23CustomStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
           },
           {
             "kind": "Conformance",
@@ -954,6 +1233,13 @@
           },
           {
             "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
             "name": "Hashable",
             "printedName": "Hashable",
             "usr": "s:SH",
@@ -961,10 +1247,267 @@
           },
           {
             "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
             "name": "Sendable",
             "printedName": "Sendable",
             "usr": "s:s8SendableP",
             "mangledName": "$ss8SendableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "ObjectiveC",
+        "printedName": "ObjectiveC",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "UserNotifications",
+        "printedName": "UserNotifications",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarNotificationSwizzling",
+        "printedName": "RadarNotificationSwizzling",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "swizzleNotificationCenterDelegate",
+            "printedName": "swizzleNotificationCenterDelegate()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationSwizzling(cm)swizzleNotificationCenterDelegate",
+            "mangledName": "$s8RadarSDK0A21NotificationSwizzlingC07swizzleC14CenterDelegateyyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "Custom"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "swizzleApplicationDelegate",
+            "printedName": "swizzleApplicationDelegate()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationSwizzling(cm)swizzleApplicationDelegate",
+            "mangledName": "$s8RadarSDK0A21NotificationSwizzlingC26swizzleApplicationDelegateyyFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "Custom"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "openURL",
+            "printedName": "openURL(from:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "UNNotification",
+                "printedName": "UserNotifications.UNNotification",
+                "usr": "c:objc(cs)UNNotification"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationSwizzling(cm)openURLFromNotification:",
+            "mangledName": "$s8RadarSDK0A21NotificationSwizzlingC7openURL4fromySo14UNNotificationC_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "openURLFromNotification:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarNotificationSwizzling",
+                "printedName": "RadarSDK.RadarNotificationSwizzling",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationSwizzling"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationSwizzling(im)init",
+            "mangledName": "$s8RadarSDK0A21NotificationSwizzlingCACycfc",
+            "moduleName": "RadarSDK",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@RadarSDK@objc(cs)RadarNotificationSwizzling",
+        "mangledName": "$s8RadarSDK0A21NotificationSwizzlingC",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
           }
         ]
       },
@@ -1107,6 +1650,16 @@
       },
       {
         "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
         "name": "OSLog",
         "printedName": "OSLog",
         "declKind": "Import",
@@ -1116,6 +1669,259 @@
         "kind": "Import",
         "name": "OSLog",
         "printedName": "OSLog",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "UserNotifications",
+        "printedName": "UserNotifications",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RadarEventNotifications",
+        "printedName": "RadarEventNotifications",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "showNotifications",
+            "printedName": "showNotifications(for:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[RadarSDK.RadarEvent]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "RadarEvent",
+                    "printedName": "RadarSDK.RadarEvent",
+                    "usr": "c:objc(cs)RadarEvent"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarEventNotifications(cm)showNotificationsFor:",
+            "mangledName": "$s8RadarSDK0A18EventNotificationsC04showD03forySaySo0aC0CG_tFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "showNotificationsFor:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "extractCampaignContent",
+            "printedName": "extractCampaignContent(from:identifier:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "UserNotifications.UNMutableNotificationContent?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UNMutableNotificationContent",
+                    "printedName": "UserNotifications.UNMutableNotificationContent",
+                    "usr": "c:objc(cs)UNMutableNotificationContent"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "[Swift.AnyHashable : Any]?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Dictionary",
+                    "printedName": "[Swift.AnyHashable : Any]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AnyHashable",
+                        "printedName": "Swift.AnyHashable",
+                        "usr": "s:s11AnyHashableV"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ProtocolComposition",
+                        "printedName": "Any"
+                      }
+                    ],
+                    "usr": "s:SD"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarEventNotifications(cm)extractCampaignContentFrom:identifier:",
+            "mangledName": "$s8RadarSDK0A18EventNotificationsC22extractCampaignContent4from10identifierSo021UNMutableNotificationG0CSgSDys11AnyHashableVypGSg_SSSgtFZ",
+            "moduleName": "RadarSDK",
+            "static": true,
+            "objc_name": "extractCampaignContentFrom:identifier:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RadarEventNotifications",
+                "printedName": "RadarSDK.RadarEventNotifications",
+                "usr": "c:@M@RadarSDK@objc(cs)RadarEventNotifications"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@RadarSDK@objc(cs)RadarEventNotifications(im)init",
+            "mangledName": "$s8RadarSDK0A18EventNotificationsCACycfc",
+            "moduleName": "RadarSDK",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@RadarSDK@objc(cs)RadarEventNotifications",
+        "mangledName": "$s8RadarSDK0A18EventNotificationsC",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
         "declKind": "Import",
         "moduleName": "RadarSDK",
         "declAttributes": [
@@ -1838,52 +2644,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "_KeyValueCodingAndObservingPublishing",
-            "printedName": "_KeyValueCodingAndObservingPublishing",
-            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
-            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
-          },
-          {
-            "kind": "Conformance",
             "name": "Copyable",
             "printedName": "Copyable",
             "usr": "s:s8CopyableP",
             "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomDebugStringConvertible",
-            "printedName": "CustomDebugStringConvertible",
-            "usr": "s:s28CustomDebugStringConvertibleP",
-            "mangledName": "$ss28CustomDebugStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomStringConvertible",
-            "printedName": "CustomStringConvertible",
-            "usr": "s:s23CustomStringConvertibleP",
-            "mangledName": "$ss23CustomStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
           },
           {
             "kind": "Conformance",
@@ -1894,10 +2658,52 @@
           },
           {
             "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
             "name": "Hashable",
             "printedName": "Hashable",
             "usr": "s:SH",
             "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
           }
         ]
       },
@@ -3084,6 +3890,60 @@
       },
       {
         "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
         "name": "CoreLocation",
         "printedName": "CoreLocation",
         "declKind": "Import",
@@ -3138,8 +3998,8 @@
       },
       {
         "kind": "Import",
-        "name": "Foundation",
-        "printedName": "Foundation",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
         "declKind": "Import",
         "moduleName": "RadarSDK",
         "declAttributes": [
@@ -3150,6 +4010,47 @@
         "kind": "Import",
         "name": "Foundation",
         "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "UserNotifications",
+        "printedName": "UserNotifications",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreLocation",
+        "printedName": "CoreLocation",
         "declKind": "Import",
         "moduleName": "RadarSDK",
         "declAttributes": [
@@ -3172,6 +4073,16 @@
         "printedName": "OSLog",
         "declKind": "Import",
         "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
       },
       {
         "kind": "Import",
@@ -4918,52 +5829,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "_KeyValueCodingAndObservingPublishing",
-            "printedName": "_KeyValueCodingAndObservingPublishing",
-            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
-            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
-          },
-          {
-            "kind": "Conformance",
             "name": "Copyable",
             "printedName": "Copyable",
             "usr": "s:s8CopyableP",
             "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomDebugStringConvertible",
-            "printedName": "CustomDebugStringConvertible",
-            "usr": "s:s28CustomDebugStringConvertibleP",
-            "mangledName": "$ss28CustomDebugStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomStringConvertible",
-            "printedName": "CustomStringConvertible",
-            "usr": "s:s23CustomStringConvertibleP",
-            "mangledName": "$ss23CustomStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
           },
           {
             "kind": "Conformance",
@@ -4974,10 +5843,52 @@
           },
           {
             "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
             "name": "Hashable",
             "printedName": "Hashable",
             "usr": "s:SH",
             "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
           }
         ]
       },
@@ -5004,6 +5915,16 @@
         "printedName": "UserNotifications",
         "declKind": "Import",
         "moduleName": "RadarSDK"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
       },
       {
         "kind": "Import",
@@ -5427,52 +6348,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "_KeyValueCodingAndObservingPublishing",
-            "printedName": "_KeyValueCodingAndObservingPublishing",
-            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
-            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
-          },
-          {
-            "kind": "Conformance",
             "name": "Copyable",
             "printedName": "Copyable",
             "usr": "s:s8CopyableP",
             "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomDebugStringConvertible",
-            "printedName": "CustomDebugStringConvertible",
-            "usr": "s:s28CustomDebugStringConvertibleP",
-            "mangledName": "$ss28CustomDebugStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomStringConvertible",
-            "printedName": "CustomStringConvertible",
-            "usr": "s:s23CustomStringConvertibleP",
-            "mangledName": "$ss23CustomStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
           },
           {
             "kind": "Conformance",
@@ -5483,10 +6362,52 @@
           },
           {
             "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
             "name": "Hashable",
             "printedName": "Hashable",
             "usr": "s:SH",
             "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
           },
           {
             "kind": "Conformance",
@@ -5565,24 +6486,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "_KeyValueCodingAndObservingPublishing",
-            "printedName": "_KeyValueCodingAndObservingPublishing",
-            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
-            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
           },
           {
             "kind": "Conformance",
@@ -5593,17 +6500,10 @@
           },
           {
             "kind": "Conformance",
-            "name": "CustomDebugStringConvertible",
-            "printedName": "CustomDebugStringConvertible",
-            "usr": "s:s28CustomDebugStringConvertibleP",
-            "mangledName": "$ss28CustomDebugStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomStringConvertible",
-            "printedName": "CustomStringConvertible",
-            "usr": "s:s23CustomStringConvertibleP",
-            "mangledName": "$ss23CustomStringConvertibleP"
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
           },
           {
             "kind": "Conformance",
@@ -5614,13 +6514,6 @@
           },
           {
             "kind": "Conformance",
-            "name": "Escapable",
-            "printedName": "Escapable",
-            "usr": "s:s9EscapableP",
-            "mangledName": "$ss9EscapableP"
-          },
-          {
-            "kind": "Conformance",
             "name": "Hashable",
             "printedName": "Hashable",
             "usr": "s:SH",
@@ -5628,17 +6521,45 @@
           },
           {
             "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
             "name": "SendableMetatype",
             "printedName": "SendableMetatype",
             "usr": "s:s16SendableMetatypeP",
             "mangledName": "$ss16SendableMetatypeP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Sendable",
-            "printedName": "Sendable",
-            "usr": "s:s8SendableP",
-            "mangledName": "$ss8SendableP"
           }
         ]
       },
@@ -5786,41 +6707,6 @@
           },
           {
             "kind": "Conformance",
-            "name": "Sendable",
-            "printedName": "Sendable",
-            "usr": "s:s8SendableP",
-            "mangledName": "$ss8SendableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
-          },
-          {
-            "kind": "Conformance",
-            "name": "SendableMetatype",
-            "printedName": "SendableMetatype",
-            "usr": "s:s16SendableMetatypeP",
-            "mangledName": "$ss16SendableMetatypeP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "BitwiseCopyable",
-            "printedName": "BitwiseCopyable",
-            "usr": "s:s15BitwiseCopyableP",
-            "mangledName": "$ss15BitwiseCopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Hashable",
-            "printedName": "Hashable",
-            "usr": "s:SH",
-            "mangledName": "$sSH"
-          },
-          {
-            "kind": "Conformance",
             "name": "RawRepresentable",
             "printedName": "RawRepresentable",
             "children": [
@@ -5840,6 +6726,41 @@
             ],
             "usr": "s:SY",
             "mangledName": "$sSY"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "BitwiseCopyable",
+            "printedName": "BitwiseCopyable",
+            "usr": "s:s15BitwiseCopyableP",
+            "mangledName": "$ss15BitwiseCopyableP"
           },
           {
             "kind": "Conformance",
@@ -5994,6 +6915,13 @@
           },
           {
             "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
             "name": "RawRepresentable",
             "printedName": "RawRepresentable",
             "children": [
@@ -6044,13 +6972,6 @@
           },
           {
             "kind": "Conformance",
-            "name": "Encodable",
-            "printedName": "Encodable",
-            "usr": "s:SE",
-            "mangledName": "$sSE"
-          },
-          {
-            "kind": "Conformance",
             "name": "Decodable",
             "printedName": "Decodable",
             "usr": "s:Se",
@@ -6058,10 +6979,10 @@
           },
           {
             "kind": "Conformance",
-            "name": "Escapable",
-            "printedName": "Escapable",
-            "usr": "s:s9EscapableP",
-            "mangledName": "$ss9EscapableP"
+            "name": "Encodable",
+            "printedName": "Encodable",
+            "usr": "s:SE",
+            "mangledName": "$sSE"
           }
         ]
       },
@@ -6089,52 +7010,10 @@
         "conformances": [
           {
             "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "_KeyValueCodingAndObservingPublishing",
-            "printedName": "_KeyValueCodingAndObservingPublishing",
-            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
-            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
-          },
-          {
-            "kind": "Conformance",
             "name": "Copyable",
             "printedName": "Copyable",
             "usr": "s:s8CopyableP",
             "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomDebugStringConvertible",
-            "printedName": "CustomDebugStringConvertible",
-            "usr": "s:s28CustomDebugStringConvertibleP",
-            "mangledName": "$ss28CustomDebugStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomStringConvertible",
-            "printedName": "CustomStringConvertible",
-            "usr": "s:s23CustomStringConvertibleP",
-            "mangledName": "$ss23CustomStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
           },
           {
             "kind": "Conformance",
@@ -6145,10 +7024,52 @@
           },
           {
             "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
             "name": "Hashable",
             "printedName": "Hashable",
             "usr": "s:SH",
             "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
           }
         ]
       }
@@ -6367,18 +7288,46 @@
       "value": "\"_id\""
     },
     {
-      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarIndoors.swift",
-      "kind": "BooleanLiteral",
-      "offset": 3431,
-      "length": 5,
-      "value": "false"
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarNotificationUtils.swift",
+      "kind": "IntegerLiteral",
+      "offset": 337,
+      "length": 1,
+      "value": "1"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarIndoors.swift",
       "kind": "StringLiteral",
-      "offset": 3493,
-      "length": 24,
-      "value": "\"indoor location update\""
+      "offset": 617,
+      "length": 39,
+      "value": "\"useModelWithConfig:completionHandler:\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarIndoors.swift",
+      "kind": "StringLiteral",
+      "offset": 728,
+      "length": 35,
+      "value": "\"getLocationWithCompletionHandler:\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarIndoors.swift",
+      "kind": "StringLiteral",
+      "offset": 829,
+      "length": 29,
+      "value": "\"startWithCompletionHandler:\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarIndoors.swift",
+      "kind": "StringLiteral",
+      "offset": 923,
+      "length": 28,
+      "value": "\"stopWithCompletionHandler:\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarIndoors.swift",
+      "kind": "StringLiteral",
+      "offset": 1031,
+      "length": 22,
+      "value": "\"setOnLocationUpdate:\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
@@ -6404,42 +7353,42 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
       "kind": "Dictionary",
-      "offset": 4147,
+      "offset": 4154,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
       "kind": "Dictionary",
-      "offset": 4180,
+      "offset": 4187,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
       "kind": "Dictionary",
-      "offset": 4208,
+      "offset": 4215,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
       "kind": "Dictionary",
-      "offset": 4610,
+      "offset": 4617,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
       "kind": "Dictionary",
-      "offset": 4643,
+      "offset": 4650,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarAPIHelper.swift",
       "kind": "Dictionary",
-      "offset": 4671,
+      "offset": 4678,
       "length": 3,
       "value": "[]"
     },
@@ -6487,31 +7436,101 @@
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogBuffer.swift",
+      "kind": "BooleanLiteral",
+      "offset": 323,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogBuffer.swift",
       "kind": "StringLiteral",
-      "offset": 411,
+      "offset": 739,
       "length": 4,
       "value": "\"\n\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogBuffer.swift",
       "kind": "StringLiteral",
-      "offset": 816,
+      "offset": 1144,
       "length": 21,
       "value": "\"persistent_logs.txt\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogBuffer.swift",
       "kind": "IntegerLiteral",
-      "offset": 854,
+      "offset": 1182,
       "length": 3,
       "value": "500"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogBuffer.swift",
       "kind": "IntegerLiteral",
-      "offset": 871,
+      "offset": 1199,
       "length": 3,
       "value": "250"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarEventNotifications.swift",
+      "kind": "StringLiteral",
+      "offset": 249,
+      "length": 27,
+      "value": "\"radar_event_notification_\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/CLLocation+Radar.swift",
+      "kind": "FloatLiteral",
+      "offset": 159,
+      "length": 10,
+      "value": "0.00000001"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/CLLocation+Radar.swift",
+      "kind": "FloatLiteral",
+      "offset": 339,
+      "length": 3,
+      "value": "0.0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/CLLocation+Radar.swift",
+      "kind": "FloatLiteral",
+      "offset": 370,
+      "length": 5,
+      "value": "-90.0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/CLLocation+Radar.swift",
+      "kind": "FloatLiteral",
+      "offset": 385,
+      "length": 4,
+      "value": "90.0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/CLLocation+Radar.swift",
+      "kind": "FloatLiteral",
+      "offset": 429,
+      "length": 3,
+      "value": "0.0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/CLLocation+Radar.swift",
+      "kind": "FloatLiteral",
+      "offset": 460,
+      "length": 6,
+      "value": "-180.0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/CLLocation+Radar.swift",
+      "kind": "FloatLiteral",
+      "offset": 476,
+      "length": 5,
+      "value": "180.0"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/CLLocation+Radar.swift",
+      "kind": "IntegerLiteral",
+      "offset": 541,
+      "length": 1,
+      "value": "0"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarPlace.swift",
@@ -6577,6 +7596,48 @@
       "value": "false"
     },
     {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInitializeOptions.swift",
+      "kind": "IntegerLiteral",
+      "offset": 288,
+      "length": 2,
+      "value": "10"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInitializeOptions.swift",
+      "kind": "IntegerLiteral",
+      "offset": 362,
+      "length": 2,
+      "value": "10"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInitializeOptions.swift",
+      "kind": "BooleanLiteral",
+      "offset": 407,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInitializeOptions.swift",
+      "kind": "BooleanLiteral",
+      "offset": 455,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInitializeOptions.swift",
+      "kind": "BooleanLiteral",
+      "offset": 482,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarInitializeOptions.swift",
+      "kind": "BooleanLiteral",
+      "offset": 524,
+      "length": 5,
+      "value": "false"
+    },
+    {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarOfflineEventManager.swift",
       "kind": "StringLiteral",
       "offset": 338,
@@ -6593,35 +7654,35 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
       "kind": "StringLiteral",
-      "offset": 1342,
+      "offset": 1334,
       "length": 8,
       "value": "\"radar_\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
       "kind": "StringLiteral",
-      "offset": 1407,
+      "offset": 1399,
       "length": 15,
       "value": "\"radar_bubble_\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
       "kind": "StringLiteral",
-      "offset": 1477,
+      "offset": 1469,
       "length": 17,
       "value": "\"radar_geofence_\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
       "kind": "StringLiteral",
-      "offset": 1547,
+      "offset": 1539,
       "length": 15,
       "value": "\"radar_beacon_\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLocationManager+Swift.swift",
       "kind": "StringLiteral",
-      "offset": 1619,
+      "offset": 1611,
       "length": 13,
       "value": "\"radar_uuid_\""
     },
@@ -6638,6 +7699,69 @@
       "offset": 2315,
       "length": 5,
       "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarBeaconManager.swift",
+      "kind": "BooleanLiteral",
+      "offset": 628,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarBeaconManager.swift",
+      "kind": "Array",
+      "offset": 695,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarBeaconManager.swift",
+      "kind": "Array",
+      "offset": 745,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarBeaconManager.swift",
+      "kind": "Array",
+      "offset": 795,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarBeaconManager.swift",
+      "kind": "Array",
+      "offset": 840,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarBeaconManager.swift",
+      "kind": "Array",
+      "offset": 876,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarBeaconManager.swift",
+      "kind": "Array",
+      "offset": 911,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarBeaconManager.swift",
+      "kind": "Dictionary",
+      "offset": 966,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarBeaconManager.swift",
+      "kind": "StringLiteral",
+      "offset": 1023,
+      "length": 28,
+      "value": "\"radar_beacon_notification_\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarReplayBuffer.swift",
@@ -6797,6 +7921,27 @@
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLogger.swift",
       "kind": "BooleanLiteral",
       "offset": 3051,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLifecycleMarker.swift",
+      "kind": "StringLiteral",
+      "offset": 262,
+      "length": 26,
+      "value": "\"radar-appLifecycleMarker\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLifecycleMarker.swift",
+      "kind": "StringLiteral",
+      "offset": 472,
+      "length": 17,
+      "value": "\"App terminating\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarLifecycleMarker.swift",
+      "kind": "BooleanLiteral",
+      "offset": 672,
       "length": 5,
       "value": "false"
     },
@@ -7328,14 +8473,21 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "StringLiteral",
-      "offset": 3763,
+      "offset": 2821,
+      "length": 35,
+      "value": "\"radar-locationAuthorizationStatus\""
+    },
+    {
+      "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
+      "kind": "StringLiteral",
+      "offset": 3842,
       "length": 29,
       "value": "\"io.radar.userdefaults.flush\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUserDefaults.swift",
       "kind": "Dictionary",
-      "offset": 3974,
+      "offset": 4053,
       "length": 3,
       "value": "[]"
     },
@@ -7405,238 +8557,238 @@
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 1358,
+      "offset": 1567,
       "length": 8,
-      "value": "\"3.38.0\""
+      "value": "\"3.40.0\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 1622,
+      "offset": 1831,
       "length": 5,
       "value": "\"iOS\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 1664,
+      "offset": 1873,
       "length": 7,
       "value": "\"Apple\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "Dictionary",
-      "offset": 3294,
+      "offset": 3503,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "Dictionary",
-      "offset": 3356,
+      "offset": 3565,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "Dictionary",
-      "offset": 3424,
+      "offset": 3633,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3460,
+      "offset": 3669,
       "length": 6,
       "value": "\"name\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3473,
+      "offset": 3682,
       "length": 21,
       "value": "\"CFBundleDisplayName\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3510,
+      "offset": 3719,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3530,
+      "offset": 3739,
       "length": 9,
       "value": "\"version\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3546,
+      "offset": 3755,
       "length": 28,
       "value": "\"CFBundleShortVersionString\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3590,
+      "offset": 3799,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3610,
+      "offset": 3819,
       "length": 7,
       "value": "\"build\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3624,
+      "offset": 3833,
       "length": 17,
       "value": "\"CFBundleVersion\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3657,
+      "offset": 3866,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3677,
+      "offset": 3886,
       "length": 11,
       "value": "\"namespace\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 3722,
+      "offset": 3931,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "BooleanLiteral",
-      "offset": 3877,
+      "offset": 4086,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 4035,
+      "offset": 4244,
       "length": 19,
       "value": "\"UIBackgroundModes\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "BooleanLiteral",
-      "offset": 4103,
+      "offset": 4312,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 4159,
+      "offset": 4368,
       "length": 10,
       "value": "\"location\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 4583,
+      "offset": 4828,
       "length": 20,
       "value": "\"GRANTED_FOREGROUND\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 4655,
+      "offset": 4900,
       "length": 20,
       "value": "\"GRANTED_BACKGROUND\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 4717,
+      "offset": 4962,
       "length": 8,
       "value": "\"DENIED\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 4771,
+      "offset": 5016,
       "length": 8,
       "value": "\"DENIED\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 4828,
+      "offset": 5073,
       "length": 16,
       "value": "\"NOT_DETERMINED\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 4890,
+      "offset": 5135,
       "length": 16,
       "value": "\"NOT_DETERMINED\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 5223,
+      "offset": 5418,
       "length": 9,
       "value": "\"REDUCED\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 5288,
+      "offset": 5483,
       "length": 6,
       "value": "\"FULL\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 5348,
+      "offset": 5543,
       "length": 6,
       "value": "\"FULL\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 5405,
+      "offset": 5600,
       "length": 6,
       "value": "\"FULL\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 7548,
+      "offset": 7743,
       "length": 13,
       "value": "\"en_US_POSIX\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "StringLiteral",
-      "offset": 7594,
+      "offset": 7789,
       "length": 28,
       "value": "\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\""
     },
     {
       "filePath": "\/tmp\/radar-static-build\/radar-sdk-ios\/RadarSDK\/RadarUtils.swift",
       "kind": "IntegerLiteral",
-      "offset": 7677,
+      "offset": 7872,
       "length": 1,
       "value": "0"
     }
