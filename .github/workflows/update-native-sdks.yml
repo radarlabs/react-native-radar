@@ -1,8 +1,6 @@
 name: Prepare latest iOS SDK update
 
 on:
-  repository_dispatch:
-    types: [ios-sdk-release]
   workflow_dispatch:
 
 concurrency:
@@ -10,35 +8,11 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
-  relay-manual-release:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      # The button sends the same event as an iOS release.
-      - name: Generate dispatch token
-        id: dispatch-token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
-        with:
-          app-id: ${{ secrets.SDK_SYNC_GH_APP_ID }}
-          private-key: ${{ secrets.SDK_SYNC_GH_APP_PRIVATE_KEY }}
-          owner: radarlabs
-          repositories: react-native-radar
-          permission-contents: write
-
-      - name: Dispatch recovery event
-        uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # v3
-        with:
-          token: ${{ steps.dispatch-token.outputs.token }}
-          repository: radarlabs/react-native-radar
-          event-type: ios-sdk-release
-          client-payload: '{}'
-
   update-ios-sdk:
-    if: github.event_name == 'repository_dispatch'
     runs-on: macos-15
     timeout-minutes: 120
 
@@ -107,10 +81,9 @@ jobs:
         if: steps.release.outputs.status == 'update'
         id: claude
         continue-on-error: true
-        uses: anthropics/claude-code-action@ef8bb1e43bf303cff727a1dd0b8837029fe982a2 # v1
+        uses: anthropics/claude-code-action/base-action@ef8bb1e43bf303cff727a1dd0b8837029fe982a2 # v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ github.token }}
           prompt: |
             Make a best-effort React Native port for Radar iOS ${{ steps.release.outputs.target_ios }}.
 
@@ -178,23 +151,11 @@ jobs:
           } > "$RUNNER_TEMP/pull-request.md"
           echo "labels=$LABELS" >> "$GITHUB_OUTPUT"
 
-      - name: Generate publisher token
-        if: steps.release.outputs.status == 'update'
-        id: publisher-token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
-        with:
-          app-id: ${{ secrets.SDK_SYNC_GH_APP_ID }}
-          private-key: ${{ secrets.SDK_SYNC_GH_APP_PRIVATE_KEY }}
-          owner: radarlabs
-          repositories: react-native-radar
-          permission-contents: write
-          permission-pull-requests: write
-
       - name: Create or update draft pull request
         if: steps.release.outputs.status == 'update'
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
         with:
-          token: ${{ steps.publisher-token.outputs.token }}
+          token: ${{ github.token }}
           base: master
           branch: automation/ios-sdk-update
           delete-branch: true
