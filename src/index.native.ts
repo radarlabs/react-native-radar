@@ -90,6 +90,7 @@ const compatEventEmitter =
   NativeRadar.locationEmitter == null
     ? new NativeEventEmitter(NativeModules.RNRadar)
     : null;
+const isNewArchitecture = compatEventEmitter == null;
 
 type Events =
   | "locationEmitter"
@@ -122,20 +123,40 @@ let newInAppMessageUpdateSubscription: EventSubscription | null = null;
 let inAppMessageDismissedUpdateSubscription: EventSubscription | null = null;
 let inAppMessageClickedUpdateSubscription: EventSubscription | null = null;
 
+const registerDefaultInAppMessageHandler = () => {
+  Radar.onNewInAppMessage((inAppMessage) => {
+    Radar.showInAppMessage(inAppMessage);
+  });
+};
+
 const Radar: RadarNativeInterface = {
-  initialize: (publishableKey: string, fraud?: boolean, options?: Object | null) => {
+  initialize: (
+    publishableKey: string,
+    fraud?: boolean,
+    options?: Object | null
+  ) => {
+    if (isNewArchitecture) {
+      registerDefaultInAppMessageHandler();
+    }
     NativeRadar.initialize(publishableKey, !!fraud, options || null);
-    Radar.onNewInAppMessage((inAppMessage) => {
-      Radar.showInAppMessage(inAppMessage);
-    });
+    if (!isNewArchitecture) {
+      registerDefaultInAppMessageHandler();
+    }
     return;
   },
 
-  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: Object | null) => {
+  initializeWithAuthToken: (
+    authToken: string,
+    fraud?: boolean,
+    options?: Object | null
+  ) => {
+    if (isNewArchitecture) {
+      registerDefaultInAppMessageHandler();
+    }
     NativeRadar.initializeWithAuthToken(authToken, !!fraud, options || null);
-    Radar.onNewInAppMessage((inAppMessage) => {
-      Radar.showInAppMessage(inAppMessage);
-    });
+    if (!isNewArchitecture) {
+      registerDefaultInAppMessageHandler();
+    }
     return;
   },
 

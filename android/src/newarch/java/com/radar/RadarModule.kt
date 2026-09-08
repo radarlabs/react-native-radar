@@ -41,14 +41,22 @@ import org.json.JSONObject
 @ReactModule(name = RadarModule.NAME)
 class RadarModule(reactContext: ReactApplicationContext) :
     NativeRadarSpec(reactContext), PermissionListener {
-        @Volatile
-        private var isInvalidated = false
-        @Volatile
-        private var jsEventEmitterReady = false
+    private val receiverOwner = Any()
+
+    @Volatile
+    private var isInvalidated = false
+    @Volatile
+    private var jsEventEmitterReady = false
+    private var receiverAttachmentPending = false
+    private var receiverAttachmentFraud = false
+    private var initializationInProgress = false
 
     override fun setEventEmitterCallback(eventEmitterCallback: CxxCallbackImpl) {
         super.setEventEmitterCallback(eventEmitterCallback)
         jsEventEmitterReady = true
+        synchronized(receiverLock) {
+            attachReceiversIfReadyLocked()
+        }
     }
 
     private val radarReceiver = object : RadarReceiver() {
@@ -64,7 +72,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
                     putMap("user", RadarUtils.mapForJson(user.toJson()))
                 }
             }
-            emitEventsEmitter(eventBlob)
+            emitIfActive { emitEventsEmitter(eventBlob) }
         }
 
         override fun onLocationUpdated(context: Context, location: Location, user: RadarUser) {
@@ -73,7 +81,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
                 putString("location", Radar.jsonForLocation(location).toString())
                 putString("user", user.toJson().toString())
             }
-            emitLocationEmitter(eventBlob)
+            emitIfActive { emitLocationEmitter(eventBlob) }
         }
 
         override fun onClientLocationUpdated(context: Context, location: Location, stopped: Boolean, source: Radar.RadarLocationSource) {
@@ -83,7 +91,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
                 putBoolean("stopped", stopped)
                 putString("source", source.toString())
             }
-            emitClientLocationEmitter(eventBlob)
+            emitIfActive { emitClientLocationEmitter(eventBlob) }
         }
 
         override fun onError(context: Context, status: Radar.RadarStatus) {
@@ -91,7 +99,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
             val eventBlob = Arguments.createMap().apply {
                 putString("status", status.toString())
             }
-            emitErrorEmitter(eventBlob)
+            emitIfActive { emitErrorEmitter(eventBlob) }
         }
 
         override fun onLog(context: Context, message: String) {
@@ -99,7 +107,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
             val eventBlob = Arguments.createMap().apply {
                 putString("message", message)
             }
-            emitLogEmitter(eventBlob)
+            emitIfActive { emitLogEmitter(eventBlob) }
         }
     }
 
@@ -107,10 +115,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
         override fun onNewInAppMessage(message: RadarInAppMessage) {
             if (isInvalidated || !jsEventEmitterReady) return
             try {
-            val eventBlob = Arguments.createMap().apply {
-                putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
-            }
-                emitNewInAppMessageEmitter(eventBlob)
+                val eventBlob = Arguments.createMap().apply {
+                    putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
+                }
+                emitIfActive { emitNewInAppMessageEmitter(eventBlob) }
             } catch (e: Exception) {
                 Log.e(TAG, "Exception", e)
             }
@@ -122,7 +130,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
                 val eventBlob = Arguments.createMap().apply {
                     putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
                 }
-                emitInAppMessageDismissedEmitter(eventBlob)
+                emitIfActive { emitInAppMessageDismissedEmitter(eventBlob) }
             } catch (e: Exception) {
                 Log.e(TAG, "Exception", e)
             }
@@ -134,7 +142,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
                 val eventBlob = Arguments.createMap().apply {
                     putMap("inAppMessage", RadarUtils.mapForJson(JSONObject(message.toJson())))
                 }
-                emitInAppMessageClickedEmitter(eventBlob)
+                emitIfActive { emitInAppMessageClickedEmitter(eventBlob) }
             } catch (e: Exception) {
                 Log.e(TAG, "Exception", e)
             }
@@ -147,7 +155,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
             val eventBlob = Arguments.createMap().apply {
                 putString("token", token.toJson().toString())
             }
-            emitTokenEmitter(eventBlob)
+            emitIfActive { emitTokenEmitter(eventBlob) }
         }
     }
 
@@ -163,14 +171,13 @@ class RadarModule(reactContext: ReactApplicationContext) :
         isInvalidated = true
         jsEventEmitterReady = false
 
-        // Detach from the process-level Radar singleton so this stale module
-        // instance stops receiving callbacks after its JS runtime is gone.
-        Radar.setReceiver(null)
-
-        try {
-            Radar.setVerifiedReceiver(null)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error detaching verified receiver", e)
+        synchronized(receiverLock) {
+            receiverAttachmentPending = false
+            initializationInProgress = false
+            if (activeReceiverOwner === receiverOwner) {
+                detachReceiversLocked()
+                activeReceiverOwner = null
+            }
         }
 
         super.invalidate()
@@ -182,10 +189,18 @@ class RadarModule(reactContext: ReactApplicationContext) :
         editor.putString("x_platform_sdk_version", "4.36.0")
         editor.apply()
 
-        Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, currentActivity)
-        if (fraud) {
-            Radar.setVerifiedReceiver(radarVerifiedReceiver)
-        } 
+        initializeRadar(fraud) {
+            Radar.initialize(
+                reactApplicationContext,
+                publishableKey,
+                null,
+                Radar.RadarLocationServicesProvider.GOOGLE,
+                fraud,
+                null,
+                null,
+                currentActivity
+            )
+        }
     }
 
     override fun initializeWithAuthToken(authToken: String, fraud: Boolean, options: ReadableMap?): Unit {
@@ -196,15 +211,85 @@ class RadarModule(reactContext: ReactApplicationContext) :
         
         val initOptions = io.radar.sdk.RadarInitializeOptions.builder()
             .authToken(authToken)
-            .radarReceiver(radarReceiver)
             .locationProvider(Radar.RadarLocationServicesProvider.GOOGLE)
             .fraud(fraud)
-            .inAppMessageReceiver(radarInAppMessageReceiver)
             .apply { currentActivity?.let { activity(it) } }
             .build()
-        Radar.initialize(reactApplicationContext, initOptions)
-        if (fraud) {
-            Radar.setVerifiedReceiver(radarVerifiedReceiver)
+        initializeRadar(fraud) {
+            Radar.initialize(reactApplicationContext, initOptions)
+        }
+    }
+
+    private fun initializeRadar(fraud: Boolean, initialize: () -> Unit) {
+        synchronized(receiverLock) {
+            if (activeReceiverOwner != null) {
+                detachReceiversLocked()
+            }
+            activeReceiverOwner = receiverOwner
+            receiverAttachmentPending = true
+            receiverAttachmentFraud = fraud
+            initializationInProgress = true
+
+            try {
+                initialize()
+                initializationInProgress = false
+                attachReceiversIfReadyLocked()
+            } catch (e: Throwable) {
+                initializationInProgress = false
+                receiverAttachmentPending = false
+                if (activeReceiverOwner === receiverOwner) {
+                    detachReceiversLocked()
+                    activeReceiverOwner = null
+                }
+                throw e
+            }
+        }
+    }
+
+    private fun attachReceiversIfReadyLocked() {
+        if (
+            !receiverAttachmentPending ||
+            initializationInProgress ||
+            isInvalidated ||
+            !jsEventEmitterReady ||
+            activeReceiverOwner !== receiverOwner
+        ) {
+            return
+        }
+
+        Radar.setReceiver(radarReceiver)
+        Radar.setInAppMessageReceiver(radarInAppMessageReceiver)
+        try {
+            Radar.setVerifiedReceiver(if (receiverAttachmentFraud) radarVerifiedReceiver else null)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error attaching verified receiver", e)
+        }
+        receiverAttachmentPending = false
+    }
+
+    private fun detachReceiversLocked() {
+        // Radar keeps these receivers on a process-wide singleton, so only the
+        // current owner may detach them during handoff or teardown.
+        Radar.setReceiver(null)
+
+        try {
+            Radar.setVerifiedReceiver(null)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error detaching verified receiver", e)
+        }
+
+        try {
+            Radar.setInAppMessageReceiver(inactiveInAppMessageReceiver)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error detaching in-app message receiver", e)
+        }
+    }
+
+    private fun emitIfActive(emit: () -> Unit) {
+        synchronized(receiverLock) {
+            if (!isInvalidated && jsEventEmitterReady && activeReceiverOwner === receiverOwner) {
+                emit()
+            }
         }
     }
 
@@ -540,5 +625,9 @@ class RadarModule(reactContext: ReactApplicationContext) :
         const val NAME = "RNRadar"
         private const val PERMISSIONS_REQUEST_CODE = 1
         private const val TAG = "RadarModule"
+        private val receiverLock = Any()
+        @Volatile
+        private var activeReceiverOwner: Any? = null
+        private val inactiveInAppMessageReceiver = object : RadarInAppMessageReceiver {}
     }
 }
