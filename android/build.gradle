@@ -80,6 +80,8 @@ repositories {
 def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {
+  testImplementation "junit:junit:4.13.2"
+  testImplementation "com.vaadin.external.google:android-json:0.0.20131108.vaadin1"
   // Expose React Native to consumers of this module
   api "com.facebook.react:react-android"
 

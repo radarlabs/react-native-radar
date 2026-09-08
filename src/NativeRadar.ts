@@ -1,6 +1,6 @@
 import type { TurboModule } from "react-native";
 import { TurboModuleRegistry } from "react-native";
-import type { EventEmitter } from "react-native/Libraries/Types/CodegenTypes";
+import type { EventEmitter, Int32 } from "react-native/Libraries/Types/CodegenTypes";
 
 export type LocationEmitter = {
   location: Object;
@@ -43,6 +43,7 @@ export type InAppMessageClickedEmitter = {
 };
 
 export interface Spec extends TurboModule {
+  _setEventListenerCount(eventName: string, count: Int32): void;
   initialize(publishableKey: string, fraud: boolean, options: Object | null): void;
   initializeWithAuthToken(authToken: string, fraud: boolean, options: Object | null): void;
   requestPermissions(background: boolean): Promise<string>;
