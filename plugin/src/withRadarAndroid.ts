@@ -172,7 +172,7 @@ function addCoreLibraryDesugaring(buildGradle: string) {
   const androidMatch = buildGradle.match(androidBlockRegex);
   if (androidMatch) {
     const androidBlock = androidMatch[0];
-    const androidBlockContent = androidMatch[1];
+    const androidBlockContent = androidMatch[1]!;
     
     const compileOptionsMatch = androidBlockContent.match(compileOptionsRegex);
     if (compileOptionsMatch) {
