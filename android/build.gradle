@@ -69,11 +69,13 @@ android {
   }
   sourceSets {
     main {
-      if (isNewArchitectureEnabled()) {
-        java.srcDirs += ['src/newarch']
-      } else {
-        java.srcDirs += ['src/oldarch']
-      }
+      def archSrcDir = isNewArchitectureEnabled() ? 'src/newarch' : 'src/oldarch'
+      java.srcDirs += [archSrcDir]
+      // Built-in Kotlin does not compile Kotlin sources that are only registered
+      // through `java.srcDirs`, and `src/newarch` holds RadarModule.kt. `main.kotlin`
+      // exists both with `kotlin-android` and with built-in Kotlin, so registering
+      // the directory there works on AGP 8 and 9 alike.
+      kotlin.srcDirs += [archSrcDir]
     }
   }
 }
