@@ -173,7 +173,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         editor.putString("x_platform_sdk_version", "4.36.0")
         editor.apply()
 
-        Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, currentActivity)
+        Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, reactApplicationContext.currentActivity)
         if (fraud) {
             Radar.setVerifiedReceiver(radarVerifiedReceiver)
         } 
@@ -191,7 +191,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
             .locationProvider(Radar.RadarLocationServicesProvider.GOOGLE)
             .fraud(fraud)
             .inAppMessageReceiver(radarInAppMessageReceiver)
-            .apply { currentActivity?.let { activity(it) } }
+            .apply { reactApplicationContext.currentActivity?.let { activity(it) } }
             .build()
         Radar.initialize(reactApplicationContext, initOptions)
         if (fraud) {
@@ -273,7 +273,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun requestPermissions(background: Boolean, promise: Promise): Unit {
         mPermissionsRequestPromise = promise
-        val activity = currentActivity as? PermissionAwareActivity
+        val activity = reactApplicationContext.currentActivity as? PermissionAwareActivity
         if (activity != null && Build.VERSION.SDK_INT >= 23) {
             if (background && Build.VERSION.SDK_INT >= 29) {
                 activity.requestPermissions(
@@ -296,7 +296,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
             return
         }
 
-        val activity = currentActivity
+        val activity = reactApplicationContext.currentActivity
 
         if (activity == null) {
             promise.resolve("UNKNOWN")
