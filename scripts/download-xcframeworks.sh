@@ -12,10 +12,14 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 echo "Building static xcframeworks from radar-sdk-ios v${VERSION}..."
 
-# Clone the SDK source at the specified version
+# Use the checked source so a changed tag cannot change this build.
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
-git clone --depth 1 --branch "$VERSION" "$SDK_REPO" "$BUILD_DIR/radar-sdk-ios"
+if [ -n "${SDK_SOURCE_DIR:-}" ]; then
+  git clone --local "$SDK_SOURCE_DIR" "$BUILD_DIR/radar-sdk-ios"
+else
+  git clone --depth 1 --branch "$VERSION" "$SDK_REPO" "$BUILD_DIR/radar-sdk-ios"
+fi
 
 # --- RadarSDK ---
 echo ""
@@ -83,27 +87,32 @@ xcodebuild -create-xcframework \
   -framework "$BUILD_DIR/RadarSDKMotion-device.xcarchive/Products/Library/Frameworks/RadarSDKMotion.framework" \
   -output "$PROJECT_ROOT/ios/RadarSDKMotion.xcframework"
 
-# --- RadarSDKFraud ---
-echo ""
-echo "=== Downloading RadarSDKFraud.xcframework v${FRAUD_VERSION} (prebuilt) ==="
-FRAUD_ZIP="$BUILD_DIR/RadarSDKFraud.xcframework.zip"
-FRAUD_URL="$FRAUD_REPO/releases/download/${FRAUD_VERSION}/RadarSDKFraud.xcframework.zip"
-echo "Downloading $FRAUD_URL ..."
-curl -fsSL -o "$FRAUD_ZIP" "$FRAUD_URL"
-echo "Verifying sha256..."
-ACTUAL_SHA=$(shasum -a 256 "$FRAUD_ZIP" | awk '{print $1}')
-if [ "$ACTUAL_SHA" != "$FRAUD_SHA256" ]; then
-  echo "ERROR: RadarSDKFraud.xcframework.zip sha256 mismatch"
-  echo "  expected: $FRAUD_SHA256"
-  echo "  actual:   $ACTUAL_SHA"
-  exit 1
+if [ "${SKIP_FRAUD:-false}" != "true" ]; then
+  # iOS release sync leaves Fraud alone because it has its own release cycle.
+  echo ""
+  echo "=== Downloading RadarSDKFraud.xcframework v${FRAUD_VERSION} (prebuilt) ==="
+  FRAUD_ZIP="$BUILD_DIR/RadarSDKFraud.xcframework.zip"
+  FRAUD_URL="$FRAUD_REPO/releases/download/${FRAUD_VERSION}/RadarSDKFraud.xcframework.zip"
+  echo "Downloading $FRAUD_URL ..."
+  curl -fsSL -o "$FRAUD_ZIP" "$FRAUD_URL"
+  echo "Verifying sha256..."
+  ACTUAL_SHA=$(shasum -a 256 "$FRAUD_ZIP" | awk '{print $1}')
+  if [ "$ACTUAL_SHA" != "$FRAUD_SHA256" ]; then
+    echo "ERROR: RadarSDKFraud.xcframework.zip sha256 mismatch"
+    echo "  expected: $FRAUD_SHA256"
+    echo "  actual:   $ACTUAL_SHA"
+    exit 1
+  fi
+  echo "Unzipping RadarSDKFraud.xcframework into ios/..."
+  rm -rf "$PROJECT_ROOT/ios/RadarSDKFraud.xcframework"
+  unzip -q "$FRAUD_ZIP" -d "$PROJECT_ROOT/ios/"
 fi
-echo "Unzipping RadarSDKFraud.xcframework into ios/..."
-rm -rf "$PROJECT_ROOT/ios/RadarSDKFraud.xcframework"
-unzip -q "$FRAUD_ZIP" -d "$PROJECT_ROOT/ios/"
 
 # Cleanup
 rm -rf "$BUILD_DIR"
 
 echo ""
-echo "Done! xcframeworks placed in ios/ (RadarSDK + RadarSDKMotion built from source @ ${VERSION}; RadarSDKFraud downloaded prebuilt @ ${FRAUD_VERSION})"
+echo "Done! RadarSDK + RadarSDKMotion were built from source @ ${VERSION}."
+if [ "${SKIP_FRAUD:-false}" != "true" ]; then
+  echo "RadarSDKFraud was downloaded prebuilt @ ${FRAUD_VERSION}."
+fi

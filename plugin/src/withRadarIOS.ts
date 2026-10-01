@@ -7,7 +7,6 @@ const {
 import type { RadarPluginProps } from "./types";
 const fs = require('fs/promises');
 const path = require('path');
-const pkg = require("../../package.json");
 
 const NATIVE_SETUP_SENTINEL = "@generated react-native-radar nativeSetup";
 
@@ -192,7 +191,11 @@ export const withRadarIOS = (config: any, args: RadarPluginProps) => {
         args.iosNSLocationAlwaysAndWhenInUseUsageDescription; 
     }
     if (args.iosBackgroundMode) {
-      config.modResults.UIBackgroundModes = ["location", "fetch"];
+      config.modResults.UIBackgroundModes = Array.from(new Set([
+        ...(config.modResults.UIBackgroundModes ?? []),
+        "location",
+        "fetch",
+      ]));
     }
     if (args.iosFraud) {
       config.modResults.NSAppTransportSecurity = {

@@ -37,7 +37,7 @@ declare global {
   var nativeFabricUIManager: any;
 }
 
-const globalAny = global as any;
+const globalAny = globalThis as any;
 const isNewArchitecture = (() => {
   if (globalAny.nativeFabricUIManager) {
     return true;
