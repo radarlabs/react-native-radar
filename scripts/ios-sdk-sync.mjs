@@ -91,10 +91,15 @@ export function applyReactNativeVersion(root, version) {
 
   const exampleLockPath = path.join(root, "example/package-lock.json");
   const exampleLock = JSON.parse(readFileSync(exampleLockPath, "utf8"));
-  for (const key of ["..", "node_modules/react-native-radar"]) {
-    if (!exampleLock.packages?.[key]) {
-      throw new Error(`Example lockfile is missing ${key}`);
-    }
+  // npm records the file:.. dependency as a link (".." plus a link entry) or
+  // as an installed copy (only node_modules/react-native-radar).
+  const exampleKeys = ["..", "node_modules/react-native-radar"].filter(
+    (key) => exampleLock.packages?.[key]
+  );
+  if (exampleKeys.length === 0) {
+    throw new Error("Example lockfile has no react-native-radar entry");
+  }
+  for (const key of exampleKeys) {
     exampleLock.packages[key].version = version;
   }
   writeFileSync(exampleLockPath, `${JSON.stringify(exampleLock, null, 2)}\n`);
