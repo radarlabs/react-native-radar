@@ -66,6 +66,23 @@ export function androidVersion(root) {
   return match[1];
 }
 
+// Concatenates the notes of every stable release after fromVersion, up to and
+// including toVersion, oldest first.
+export function releaseNotesBetween(releases, fromVersion, toVersion) {
+  return releases
+    .filter(
+      (release) =>
+        !release.draft &&
+        !release.prerelease &&
+        stableVersionPattern.test(release.tag_name) &&
+        compareStableVersions(release.tag_name, fromVersion) > 0 &&
+        compareStableVersions(release.tag_name, toVersion) <= 0
+    )
+    .sort((left, right) => compareStableVersions(left.tag_name, right.tag_name))
+    .map((release) => `## ${release.tag_name}\n\n${(release.body ?? "").trim()}\n`)
+    .join("\n");
+}
+
 function updateJsonVersion(filePath, version) {
   const json = JSON.parse(readFileSync(filePath, "utf8"));
   json.version = version;
@@ -136,6 +153,11 @@ function main() {
     process.stdout.write(androidVersion(value ?? process.cwd()));
   } else if (command === "apply-version") {
     applyReactNativeVersion(root, value);
+  } else if (command === "release-notes") {
+    // Reads the GitHub releases JSON array from stdin; the third argument is
+    // the target version rather than a root.
+    const releases = JSON.parse(readFileSync(0, "utf8"));
+    process.stdout.write(releaseNotesBetween(releases, value, root));
   } else {
     throw new Error(`Unknown command: ${command ?? "none"}`);
   }

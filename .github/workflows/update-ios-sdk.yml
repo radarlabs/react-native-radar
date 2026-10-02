@@ -24,6 +24,12 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          # Match CircleCI; older npm versions reject this lockfile in npm ci.
+          node-version: 24.14.1
+
       - name: Resolve latest stable iOS release
         id: release
         env:
@@ -75,6 +81,35 @@ jobs:
             SKIP_FRAUD=true \
             scripts/download-xcframeworks.sh "$TARGET_IOS"
 
+      - name: Collect iOS API changes
+        if: steps.release.outputs.status == 'update'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OLD_IOS: ${{ steps.release.outputs.old_ios }}
+          TARGET_IOS: ${{ steps.release.outputs.target_ios }}
+        run: |
+          set -euo pipefail
+          CHANGES="$SYNC_ROOT/api-changes"
+          mkdir -p "$CHANGES"
+          gh api --paginate --slurp repos/radarlabs/radar-sdk-ios/releases \
+            | jq 'add' \
+            | node scripts/ios-sdk-sync.mjs release-notes "$OLD_IOS" "$TARGET_IOS" \
+            > "$CHANGES/release-notes.md"
+          # Diff the vendored framework's public interface, which is exactly what
+          # RNRadar.mm can call. Intent-to-add makes new headers show up.
+          HEADERS=ios/RadarSDK.xcframework/ios-arm64/RadarSDK.framework/Headers
+          git add --intent-to-add "$HEADERS"
+          git diff -- "$HEADERS" ":(exclude)$HEADERS/RadarSDK-Swift.h" > "$CHANGES/objc-headers.diff"
+          git diff -- "$HEADERS/RadarSDK-Swift.h" > "$CHANGES/swift-header.diff"
+          git reset --quiet -- "$HEADERS"
+          wc -l "$CHANGES"/*
+
+      - name: Install JavaScript dependencies
+        if: steps.release.outputs.status == 'update'
+        id: install
+        continue-on-error: true
+        run: npm ci
+
       - name: Adapt React Native APIs with Claude
         if: steps.release.outputs.status == 'update'
         id: claude
@@ -83,25 +118,71 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
-            Make a best-effort React Native port for Radar iOS ${{ steps.release.outputs.target_ios }}.
+            Port the new public APIs in Radar iOS ${{ steps.release.outputs.target_ios }} to this
+            React Native wrapper. The vendored iOS framework has already been updated from
+            ${{ steps.release.outputs.old_ios }} and package versions are already bumped; your job
+            is the bridge and JavaScript code.
 
-            The released iOS source is at ${{ runner.temp }}/radar-ios-sdk-sync/upstream-ios.
-            Compare tag ${{ steps.release.outputs.old_ios }} with tag
-            ${{ steps.release.outputs.target_ios }} to find relevant public API changes. The React
-            Native-pinned Android SDK ${{ steps.native.outputs.android_version }} is at
-            ${{ runner.temp }}/radar-ios-sdk-sync/upstream-android.
+            ## Inputs
 
-            Expose useful new APIs when Android has equivalent behavior. If parity is missing, leave
-            the API unexposed. Update the iOS bridge, Android bridge when needed, TurboModule spec,
-            TypeScript implementation and types, web fallback, mocks, focused tests, and Example app
-            controls where useful. Do not remove existing React Native APIs. It is okay for this port
-            to be incomplete; produce the most useful reviewable draft you can.
+            Start with these files in ${{ runner.temp }}/radar-ios-sdk-sync/api-changes. Read them
+            before exploring anything else:
+            - release-notes.md: customer-facing notes for every iOS release in this range.
+            - objc-headers.diff: changes to the vendored framework's Objective-C headers.
+            - swift-header.diff: changes to the generated RadarSDK-Swift.h. Most of it is internal
+              Objective-C to Swift migration that keeps the same API; look only for new methods,
+              properties, and enum cases.
 
-            Do not change package versions, vendored frameworks, workflow files, or scripts. Do not
-            commit, push, create a pull request, or use GitHub write operations.
+            The full iOS source at the target tag is in
+            ${{ runner.temp }}/radar-ios-sdk-sync/upstream-ios. The Android SDK pinned by this repo
+            (${{ steps.native.outputs.android_version }}) is in
+            ${{ runner.temp }}/radar-ios-sdk-sync/upstream-android; its public API is
+            sdk/src/main/java/io/radar/sdk/Radar.kt and the models in sdk/src/main/java/io/radar/sdk/model.
+
+            ## What to port
+
+            - New `Radar` methods, when the pinned Android SDK has an equivalent method.
+            - New fields on models React Native already returns (for example RadarUser,
+              RadarEvent, RadarGeofence). The bridges pass native `dictionaryValue`/`toJson`
+              output straight to JavaScript, so these usually only need TypeScript types.
+            - New RadarEventType values, added to the `RadarEventType` union in src/@types/types.ts.
+
+            Skip an API when Android has no equivalent and note it in the summary. Skip internal
+            changes, bug fixes, and the Swift migration. Do not remove or rename existing APIs.
+
+            ## How to wire a method
+
+            Follow `setProduct` as the pattern; `git grep -n setProduct` shows every layer:
+            1. ios/RNRadar.mm: RCT_EXPORT_METHOD calling the iOS SDK.
+            2. src/NativeRadar.ts: the TurboModule spec.
+            3. src/@types/RadarNativeInterface.ts: the public interface.
+            4. src/index.native.ts: the implementation calling NativeRadar.
+            5. src/index.web.js: a web fallback if the surrounding methods have one.
+            6. android/src/main/java/com/radar/RadarModuleImpl.java: the call into the Android SDK.
+            7. android/src/newarch/java/com/radar/RadarModule.kt and
+               android/src/oldarch/java/com/radar/RadarModule.java: both arch wrappers.
+            8. The jest mocks and tests in src/__tests__ and test/, and an Example app control in
+               example/App.tsx.
+
+            ## Checks
+
+            Run `npx tsc --noEmit` and `npx jest --runInBand` after editing and fix what you broke.
+            Native code cannot be compiled here; CircleCI builds it on the pull request.
+
+            ## Rules
+
+            Do not change package versions, vendored frameworks, lockfiles, workflow files, or
+            scripts. Do not commit, push, create a pull request, or use GitHub write operations.
+
+            ## Summary
+
+            Finish by writing ${{ runner.temp }}/radar-ios-sdk-sync/claude-summary.md, a short
+            Markdown list for the pull request body: each API you ported, each API you skipped and
+            why, and anything a reviewer should check by hand.
           claude_args: |
-            --max-turns 40
-            --allowedTools "Read,Write,Edit,Glob,Grep,Bash(git -C:*),Bash(git diff:*),Bash(git status:*),Bash(rg:*)"
+            --max-turns 150
+            --add-dir ${{ runner.temp }}/radar-ios-sdk-sync
+            --allowedTools "Read,Write,Edit,Glob,Grep,Bash(git -C:*),Bash(git diff:*),Bash(git grep:*),Bash(git log:*),Bash(git show:*),Bash(git status:*),Bash(rg:*),Bash(ls:*),Bash(npx tsc:*),Bash(npx jest:*)"
 
       - name: Validate generated changes
         if: steps.release.outputs.status == 'update'
@@ -110,9 +191,41 @@ jobs:
         run: |
           set -euo pipefail
           npm run test:ios-sdk-sync
-          npm ci
+          npm run typecheck
           npm run build-all
           npm test -- --runInBand
+
+      - name: Summarize Claude run
+        if: steps.release.outputs.status == 'update'
+        id: summary
+        env:
+          EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+        run: |
+          set -euo pipefail
+          EXECUTION_FILE="${EXECUTION_FILE:-$RUNNER_TEMP/claude-execution-output.json}"
+          {
+            if [ -f "$EXECUTION_FILE" ]; then
+              jq -r '
+                [.[] | select(.type == "result")] | last // {} |
+                "- Claude result: `\(.subtype // "unknown")` after \(.num_turns // "?") turns",
+                (.permission_denials // [] | map(.tool_name + (if .tool_input.command then " `" + .tool_input.command + "`" else "" end)) | unique | .[] | "- Denied: " + .)
+              ' "$EXECUTION_FILE"
+            else
+              echo "- Claude did not produce an execution log."
+            fi
+            echo
+            if [ -s "$SYNC_ROOT/claude-summary.md" ]; then
+              cat "$SYNC_ROOT/claude-summary.md"
+            else
+              echo "Claude did not write a summary; the port is probably incomplete."
+            fi
+          } > "$SYNC_ROOT/pr-summary.md"
+          DELIMITER="EOF_$(openssl rand -hex 8)"
+          {
+            echo "body<<$DELIMITER"
+            cat "$SYNC_ROOT/pr-summary.md"
+            echo "$DELIMITER"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create or update draft pull request
         if: steps.release.outputs.status == 'update'
@@ -132,6 +245,10 @@ jobs:
             - Prepares React Native `${{ steps.release.outputs.rn_version }}` as a best-effort native API port.
             - Claude output may be incomplete; review the native diff and cross-platform parity before merging.
 
+            ## API Port
+
+            ${{ steps.summary.outputs.body }}
+
             ## Test Plan
 
             1. Install this branch in the Example app.
@@ -141,6 +258,7 @@ jobs:
 
             ## Validation
 
+            - npm ci: `${{ steps.install.outcome }}`
             - Claude step: `${{ steps.claude.outcome }}`
             - Node, TypeScript, and Jest validation: `${{ steps.validation.outcome }}`
             - [Workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
