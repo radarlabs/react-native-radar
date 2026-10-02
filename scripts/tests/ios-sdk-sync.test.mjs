@@ -11,7 +11,10 @@ import {
   planUpdate,
 } from "../ios-sdk-sync.mjs";
 
-function fixtureRoot() {
+const LINKED_EXAMPLE_LOCK =
+  '{"packages":{"..":{"version":"4.36.2"},"node_modules/react-native-radar":{"version":"4.36.2"}}}\n';
+
+function fixtureRoot(exampleLock = LINKED_EXAMPLE_LOCK) {
   const root = mkdtempSync(path.join(tmpdir(), "ios-sdk-sync-test-"));
   for (const directory of [
     "src",
@@ -29,7 +32,7 @@ function fixtureRoot() {
   );
   writeFileSync(
     path.join(root, "example/package-lock.json"),
-    '{"packages":{"..":{"version":"4.36.2"},"node_modules/react-native-radar":{"version":"4.36.2"}}}\n'
+    exampleLock
   );
   writeFileSync(
     path.join(
@@ -105,4 +108,28 @@ test("updates all React Native version markers", () => {
   ]) {
     assert.match(readFileSync(path.join(root, file), "utf8"), /4\.37\.0/);
   }
+});
+
+test("updates an installed (non-linked) example lockfile entry", () => {
+  const root = fixtureRoot(
+    '{"packages":{"node_modules/react-native-radar":{"version":"4.36.2","resolved":"file:.."}}}\n'
+  );
+  applyReactNativeVersion(root, "4.37.0");
+
+  const exampleLock = JSON.parse(
+    readFileSync(path.join(root, "example/package-lock.json"))
+  );
+  assert.equal(exampleLock.packages[".."], undefined);
+  assert.equal(
+    exampleLock.packages["node_modules/react-native-radar"].version,
+    "4.37.0"
+  );
+});
+
+test("rejects an example lockfile without react-native-radar", () => {
+  const root = fixtureRoot('{"packages":{}}\n');
+  assert.throws(
+    () => applyReactNativeVersion(root, "4.37.0"),
+    /no react-native-radar entry/
+  );
 });
