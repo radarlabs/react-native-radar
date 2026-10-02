@@ -2,27 +2,10 @@
 //  RadarRouteGeometry.h
 //  RadarSDK
 //
-//  Copyright © 2020 Radar Labs, Inc. All rights reserved.
+//  Copyright © 2026 Radar Labs, Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-#import "RadarCoordinate.h"
-
-NS_ASSUME_NONNULL_BEGIN
-
-/**
- Represents the geometry of a route.
- */
-@interface RadarRouteGeometry : NSObject
-
-/**
- The geometry of the route.
- */
-@property (nullable, copy, nonatomic, readonly) NSArray<RadarCoordinate *> *coordinates;
-
-- (NSDictionary *_Nonnull)dictionaryValue;
-
-@end
-
-NS_ASSUME_NONNULL_END
+// Compatibility header. RadarRouteGeometry is implemented in Swift and declared in the generated
+// RadarSDK-Swift.h, which the umbrella header imports. This file keeps existing
+// `#import <RadarSDK/RadarRouteGeometry.h>` statements compiling.
+#import <RadarSDK/RadarSDK.h>
