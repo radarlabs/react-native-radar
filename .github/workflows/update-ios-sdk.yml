@@ -161,8 +161,25 @@ jobs:
             6. android/src/main/java/com/radar/RadarModuleImpl.java: the call into the Android SDK.
             7. android/src/newarch/java/com/radar/RadarModule.kt and
                android/src/oldarch/java/com/radar/RadarModule.java: both arch wrappers.
-            8. The jest mocks and tests in src/__tests__ and test/, and an Example app control in
-               example/App.tsx.
+            8. The jest mocks and tests in src/__tests__ and test/.
+
+            ## Example app
+
+            Every ported API, including type-only changes, needs a way for a reviewer to see it
+            working in example/App.tsx. Add `ExampleButton`s next to related buttons and follow the
+            existing handlers (`getProduct`, `setUserLanguage`, `getUserLanguage`): call the API in
+            `try/catch` and show the result with `populateText("<name>: " + stringify(result))`.
+            Use the handler name as the button title so the test plan can refer to it.
+            - New methods: a button that calls the method. For a setter, add a matching getter
+              button, or a button whose response shows the effect.
+            - New fields on returned models: a button that calls an existing API returning that
+              model (for example `trackOnce`) and shows only the new field, such as
+              `stringify(result.user?.locationInsights)`. Showing the whole model is not enough;
+              the field gets lost in the output.
+            - New event types: a way to see them arrive, for example a button that registers
+              `Radar.onEventsReceived` and shows each event's `type`.
+            - iOS-only APIs: guard with `Platform.OS === "ios"` as src/index.native.ts does.
+            Do not change or remove existing buttons.
 
             ## Checks
 
@@ -178,7 +195,21 @@ jobs:
 
             Finish by writing ${{ runner.temp }}/radar-ios-sdk-sync/claude-summary.md, a short
             Markdown list for the pull request body: each API you ported, each API you skipped and
-            why, and anything a reviewer should check by hand.
+            why, and anything a reviewer should check by hand. Leave manual testing out of it.
+
+            ## Test plan
+
+            Also write ${{ runner.temp }}/radar-ios-sdk-sync/claude-test-plan.md: numbered Markdown
+            steps a reviewer follows in the Example app, grouped under a heading per ported API.
+            Each step names the exact button title to tap, the platform to run it on (iOS, Android,
+            or both, and what to expect on the platform without the API), any prerequisite (location
+            permission, tracking started, dashboard setup such as home and work places), the text
+            expected in the result area, and what a failure looks like. Base the expected output on
+            the native models and dictionaryValue/toJson code you read, not on guesses.
+
+            Start with a step to tap `nativeSdkVersion` on iOS and confirm it shows
+            `${{ steps.release.outputs.target_ios }}`. If nothing was ported, that step is the whole
+            plan. The pull request already includes build and setup steps; do not repeat them.
           claude_args: |
             --max-turns 150
             --add-dir ${{ runner.temp }}/radar-ios-sdk-sync
@@ -220,10 +251,23 @@ jobs:
               echo "Claude did not write a summary; the port is probably incomplete."
             fi
           } > "$SYNC_ROOT/pr-summary.md"
+          if [ -s "$SYNC_ROOT/claude-test-plan.md" ]; then
+            cp "$SYNC_ROOT/claude-test-plan.md" "$SYNC_ROOT/pr-test-plan.md"
+          else
+            cat > "$SYNC_ROOT/pr-test-plan.md" <<'PLAN'
+          Claude did not write a test plan.
+
+          1. Tap `nativeSdkVersion` on iOS and confirm it shows the new iOS SDK version.
+          2. Exercise any new Example app controls and confirm their result or event appears.
+          PLAN
+          fi
           DELIMITER="EOF_$(openssl rand -hex 8)"
           {
             echo "body<<$DELIMITER"
             cat "$SYNC_ROOT/pr-summary.md"
+            echo "$DELIMITER"
+            echo "test_plan<<$DELIMITER"
+            cat "$SYNC_ROOT/pr-test-plan.md"
             echo "$DELIMITER"
           } >> "$GITHUB_OUTPUT"
 
@@ -251,10 +295,16 @@ jobs:
 
             ## Test Plan
 
-            1. Install this branch in the Example app.
-            2. Launch the Example app on iOS and Android.
-            3. Confirm Radar initializes without an error on both platforms.
-            4. Exercise any new Example app controls and confirm their result or event appears.
+            ### Setup
+
+            1. Check out this branch and run `npm ci && npm run build-all`.
+            2. Run `cd example && npm ci && npm run install-radar-rebuild`.
+            3. Put a test publishable key in `Radar.initialize(...)` in `example/App.tsx`. Do not commit it.
+            4. Run `npx expo run:ios` and `npx expo run:android`, and confirm Radar initializes without an error on both.
+
+            ### Changes in this release
+
+            ${{ steps.summary.outputs.test_plan }}
 
             ## Validation
 
