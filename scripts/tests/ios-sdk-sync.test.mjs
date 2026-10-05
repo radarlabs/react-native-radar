@@ -9,6 +9,7 @@ import {
   compareStableVersions,
   nextMinorVersion,
   planUpdate,
+  releaseNotesBetween,
 } from "../ios-sdk-sync.mjs";
 
 const LINKED_EXAMPLE_LOCK =
@@ -131,5 +132,20 @@ test("rejects an example lockfile without react-native-radar", () => {
   assert.throws(
     () => applyReactNativeVersion(root, "4.37.0"),
     /no react-native-radar entry/
+  );
+});
+
+test("collects stable release notes after the vendored version", () => {
+  const releases = [
+    { tag_name: "3.42.0", body: "Adds setExpectedAddress." },
+    { tag_name: "3.38.0", body: "Already vendored." },
+    { tag_name: "3.43.0", body: "Newer than target." },
+    { tag_name: "3.40.0-beta.1", body: "Prerelease tag.", prerelease: true },
+    { tag_name: "3.39.0", body: "Draft.", draft: true },
+    { tag_name: "3.40.0", body: null },
+  ];
+  assert.equal(
+    releaseNotesBetween(releases, "3.38.0", "3.42.0"),
+    "## 3.40.0\n\n\n\n## 3.42.0\n\nAdds setExpectedAddress.\n"
   );
 });
