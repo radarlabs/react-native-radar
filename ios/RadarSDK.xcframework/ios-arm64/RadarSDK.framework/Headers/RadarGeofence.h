@@ -7,7 +7,8 @@
 
 #import "RadarGeofenceGeometry.h"
 #import <Foundation/Foundation.h>
-#import "RadarOperatingHours.h"
+
+@class RadarOperatingHours;
 
 /**
  Represents a geofence.
