@@ -247,6 +247,31 @@ export default function App() {
     }
   };
 
+  const trackOnceLocationInsights = async () => {
+    try {
+      const result = await Radar.trackOnce();
+      populateText(
+        "trackOnceLocationInsights: " + stringify(result.user?.locationInsights)
+      );
+    } catch (err) {
+      populateText("trackOnceLocationInsights error: " + err);
+    }
+  };
+
+  const listenForEventTypes = () => {
+    try {
+      Radar.onEventsReceived((result) => {
+        populateText(
+          "listenForEventTypes: " +
+            stringify(result.events.map((event) => event.type))
+        );
+      });
+      populateText("listenForEventTypes: listening for events");
+    } catch (err) {
+      populateText("listenForEventTypes error: " + err);
+    }
+  };
+
 
   const trackVerified = async () => {
     try {
@@ -947,6 +972,8 @@ export default function App() {
               <ExampleButton title="trackOnce" onPress={trackOnce} />
               <ExampleButton title="trackOnce manual" onPress={trackOnceManual} />
               <ExampleButton title="trackOnce manual with beacons" onPress={trackOnceManualWithBeacons} />
+              <ExampleButton title="trackOnceLocationInsights" onPress={trackOnceLocationInsights} />
+              <ExampleButton title="listenForEventTypes" onPress={listenForEventTypes} />
               <ExampleButton title="trackVerified" onPress={trackVerified} />
               <ExampleButton title="getVerifiedLocationToken" onPress={getVerifiedLocationToken} />
               <ExampleButton title="clearVerifiedLocationToken" onPress={clearVerifiedLocationToken} />

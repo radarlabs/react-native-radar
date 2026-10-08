@@ -2,30 +2,10 @@
 //  RadarRouteDistance.h
 //  RadarSDK
 //
-//  Copyright © 2020 Radar Labs, Inc. All rights reserved.
+//  Copyright © 2026 Radar Labs, Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-NS_ASSUME_NONNULL_BEGIN
-
-/**
- Represents the distance of a route.
- */
-@interface RadarRouteDistance : NSObject
-
-/**
- The distance in feet (for imperial units) or meters (for metric units).
- */
-@property (assign, nonatomic, readonly) double value;
-
-/**
- A display string for the distance.
- */
-@property (nonnull, copy, nonatomic, readonly) NSString *text;
-
-- (NSDictionary *_Nonnull)dictionaryValue;
-
-@end
-
-NS_ASSUME_NONNULL_END
+// Compatibility header. RadarRouteDistance is implemented in Swift and declared in the generated
+// RadarSDK-Swift.h, which the umbrella header imports. This file keeps existing
+// `#import <RadarSDK/RadarRouteDistance.h>` statements compiling.
+#import <RadarSDK/RadarSDK.h>

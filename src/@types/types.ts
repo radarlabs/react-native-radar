@@ -636,6 +636,14 @@ export interface RadarUser {
   trip?: RadarTrip;
   debug?: boolean;
   fraud?: RadarFraud;
+  locationInsights?: RadarUserLocationInsights;
+}
+
+export interface RadarUserLocationInsights {
+  atHome: boolean;
+  atWork: boolean;
+  traveling: boolean;
+  commuting?: boolean;
 }
 
 export interface RadarCoordinate {
@@ -794,7 +802,15 @@ export type RadarEventType =
   | "user.stopped_trip"
   | "user.arrived_at_wrong_trip_destination"
   | "user.delayed_during_trip"
-  | "user.failed_fraud";
+  | "user.failed_fraud"
+  | "user.entered_home"
+  | "user.exited_home"
+  | "user.entered_work"
+  | "user.exited_work"
+  | "user.started_traveling"
+  | "user.stopped_traveling"
+  | "user.started_commuting"
+  | "user.stopped_commuting";
 
 export type RadarTrackingOptionsDesiredAccuracy =
   | "high"

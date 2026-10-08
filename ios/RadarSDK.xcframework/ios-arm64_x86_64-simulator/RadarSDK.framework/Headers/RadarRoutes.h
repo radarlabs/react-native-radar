@@ -5,8 +5,10 @@
 //  Copyright © 2020 Radar Labs, Inc. All rights reserved.
 //
 
-#import "RadarRoute.h"
 #import <Foundation/Foundation.h>
+
+@class RadarRoute;
+@class RadarRouteDistance;
 
 NS_ASSUME_NONNULL_BEGIN
 

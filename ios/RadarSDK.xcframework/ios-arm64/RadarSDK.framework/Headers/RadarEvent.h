@@ -9,9 +9,10 @@
 #import "RadarPlace.h"
 #import "RadarRegion.h"
 #import "RadarUser.h"
-#import "RadarFraud.h"
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
+
+@class RadarFraud;
 
 /**
  Represents a change in user state.
@@ -73,7 +74,23 @@ typedef NS_ENUM(NSInteger, RadarEventType) {
     /// `user.failed_fraud`
     RadarEventTypeUserFailedFraud NS_SWIFT_NAME(userFailedFraud),
     /// `user.fired_trip_orders`
-    RadarEventTypeUserFiredTripOrders NS_SWIFT_NAME(userFiredTripOrders)
+    RadarEventTypeUserFiredTripOrders NS_SWIFT_NAME(userFiredTripOrders),
+    /// `user.entered_home`
+    RadarEventTypeUserEnteredHome NS_SWIFT_NAME(userEnteredHome),
+    /// `user.exited_home`
+    RadarEventTypeUserExitedHome NS_SWIFT_NAME(userExitedHome),
+    /// `user.entered_work`
+    RadarEventTypeUserEnteredWork NS_SWIFT_NAME(userEnteredWork),
+    /// `user.exited_work`
+    RadarEventTypeUserExitedWork NS_SWIFT_NAME(userExitedWork),
+    /// `user.started_traveling`
+    RadarEventTypeUserStartedTraveling NS_SWIFT_NAME(userStartedTraveling),
+    /// `user.stopped_traveling`
+    RadarEventTypeUserStoppedTraveling NS_SWIFT_NAME(userStoppedTraveling),
+    /// `user.started_commuting`
+    RadarEventTypeUserStartedCommuting NS_SWIFT_NAME(userStartedCommuting),
+    /// `user.stopped_commuting`
+    RadarEventTypeUserStoppedCommuting NS_SWIFT_NAME(userStoppedCommuting)
 };
 
 /**

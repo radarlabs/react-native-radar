@@ -2,26 +2,10 @@
 //  RadarCircleGeometry.h
 //  RadarSDK
 //
-//  Copyright © 2019 Radar Labs, Inc. All rights reserved.
+//  Copyright © 2026 Radar Labs, Inc. All rights reserved.
 //
 
-#import "RadarCoordinate.h"
-#import "RadarGeofenceGeometry.h"
-#import <UIKit/UIKit.h>
-
-/**
- Represents the geometry of a circle geofence.
- */
-@interface RadarCircleGeometry : RadarGeofenceGeometry
-
-/**
- The center of the circle geofence.
- */
-@property (nonnull, strong, nonatomic, readonly) RadarCoordinate *center;
-
-/**
- The radius of the circle geofence in meters.
- */
-@property (assign, nonatomic, readonly) double radius;
-
-@end
+// Compatibility header. RadarCircleGeometry is implemented in Swift and declared in the generated
+// RadarSDK-Swift.h, which the umbrella header imports. This file keeps existing
+// `#import <RadarSDK/RadarCircleGeometry.h>` statements compiling.
+#import <RadarSDK/RadarSDK.h>
