@@ -794,7 +794,8 @@ export type RadarEventType =
   | "user.stopped_trip"
   | "user.arrived_at_wrong_trip_destination"
   | "user.delayed_during_trip"
-  | "user.failed_fraud";
+  | "user.failed_fraud"
+  | "user.fired_trip_orders";
 
 export type RadarTrackingOptionsDesiredAccuracy =
   | "high"
