@@ -1,91 +1,413 @@
-# Bump Native SDK version numbers whenever a repository dispatch of a release
-# is received
-name: Bump Native SDKs
+name: Prepare native SDK update
+
+# Moves the vendored iOS SDK and the pinned Android SDK to their latest stable
+# releases together, so the API port checks parity against current SDKs on both
+# platforms. The release events from the SDK repos only trigger a run; the
+# versions always come from each repo's latest release.
 on:
+  workflow_dispatch:
   repository_dispatch:
-    types: ['ios-sdk-release', 'android-sdk-release']
+    types: [ios-sdk-release, android-sdk-release]
+
+concurrency:
+  group: native-sdk-update
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  update_android_sdk_version:
-    runs-on: ubuntu-latest
-    if: github.event.client_payload.platform == 'android'
+  update-native-sdks:
+    runs-on: macos-15
+    timeout-minutes: 120
+
     steps:
-      - name: Event Information
-        run: echo ${{ github.event.client_payload.release }}
-
-      # checkout the repo
-      - uses: actions/checkout@v2
-
-      # copy the template file to its final destination
-      - name: Copy android/build.gradle template file
-        uses: canastro/copy-action@master
+      - name: Checkout React Native
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          source: 'android/build.gradle.template'
-          target: 'android/build.gradle'
+          ref: master
+          fetch-depth: 0
+          persist-credentials: false
 
-      # render the template using the input sdk version
-      - name: Render radar-sdk-android release version onto build.gradle
-        uses: jayamanikharyono/jinja-action@v0.1
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          data: version=${{ github.event.client_payload.release }}
-          path: 'android/build.gradle'
+          # Match CircleCI; older npm versions reject this lockfile in npm ci.
+          node-version: 24.14.1
 
-      # Update package.json to latest version
-      - name: Update package.json to latest
-        run: npm version ${{ github.event.client_payload.release }} --commit-hooks false --git-tag-version false
+      - name: Resolve latest stable native releases
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          IOS_RELEASE=$(gh api repos/radarlabs/radar-sdk-ios/releases/latest)
+          ANDROID_RELEASE=$(gh api repos/radarlabs/radar-sdk-android/releases/latest)
+          TARGET_IOS=$(jq -r '.tag_name' <<< "$IOS_RELEASE")
+          TARGET_ANDROID=$(jq -r '.tag_name' <<< "$ANDROID_RELEASE")
+          PLAN=$(node scripts/native-sdk-sync.mjs plan "$TARGET_IOS" "$TARGET_ANDROID" "$GITHUB_WORKSPACE")
+          SYNC_ROOT="$RUNNER_TEMP/radar-native-sdk-sync"
+          mkdir -p "$SYNC_ROOT"
+          echo "SYNC_ROOT=$SYNC_ROOT" >> "$GITHUB_ENV"
 
-      # open a pull request with the new sdk version
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+          IOS_UPDATE=$(jq -r '.ios.update' <<< "$PLAN")
+          ANDROID_UPDATE=$(jq -r '.android.update' <<< "$PLAN")
+          # Names only the platforms this release moves, e.g. "iOS 3.43.0 / Android 3.38.0".
+          PLATFORMS=""
+          if [ "$IOS_UPDATE" = true ]; then PLATFORMS="iOS $TARGET_IOS"; fi
+          if [ "$ANDROID_UPDATE" = true ]; then
+            PLATFORMS="${PLATFORMS:+$PLATFORMS / }Android $TARGET_ANDROID"
+          fi
+          {
+            echo "status=$(jq -r '.status' <<< "$PLAN")"
+            echo "rn_version=$(jq -r '.targetRnVersion' <<< "$PLAN")"
+            echo "old_ios=$(jq -r '.ios.current' <<< "$PLAN")"
+            echo "target_ios=$TARGET_IOS"
+            echo "ios_update=$IOS_UPDATE"
+            echo "ios_release_url=$(jq -r '.html_url' <<< "$IOS_RELEASE")"
+            echo "old_android=$(jq -r '.android.current' <<< "$PLAN")"
+            echo "target_android=$TARGET_ANDROID"
+            echo "android_update=$ANDROID_UPDATE"
+            echo "android_release_url=$(jq -r '.html_url' <<< "$ANDROID_RELEASE")"
+            echo "platforms=$PLATFORMS"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Stop when both native SDKs are current
+        if: steps.release.outputs.status != 'update'
+        run: echo "The latest stable iOS and Android releases are not newer than the pinned versions."
+
+      - name: Checkout native SDK sources
+        if: steps.release.outputs.status == 'update'
+        env:
+          TARGET_IOS: ${{ steps.release.outputs.target_ios }}
+          TARGET_ANDROID: ${{ steps.release.outputs.target_android }}
+        run: |
+          set -euo pipefail
+          # Full history (without blobs) so the Android API diff can compare tags.
+          git clone --filter=blob:none https://github.com/radarlabs/radar-sdk-ios.git "$SYNC_ROOT/upstream-ios"
+          git -C "$SYNC_ROOT/upstream-ios" checkout --detach "$TARGET_IOS"
+          git clone --filter=blob:none https://github.com/radarlabs/radar-sdk-android.git "$SYNC_ROOT/upstream-android"
+          git -C "$SYNC_ROOT/upstream-android" checkout --detach "$TARGET_ANDROID"
+
+      - name: Update deterministic SDK files
+        if: steps.release.outputs.status == 'update'
+        env:
+          RN_VERSION: ${{ steps.release.outputs.rn_version }}
+          TARGET_IOS: ${{ steps.release.outputs.target_ios }}
+          IOS_UPDATE: ${{ steps.release.outputs.ios_update }}
+          TARGET_ANDROID: ${{ steps.release.outputs.target_android }}
+          ANDROID_UPDATE: ${{ steps.release.outputs.android_update }}
+        run: |
+          set -euo pipefail
+          node scripts/native-sdk-sync.mjs apply-version "$RN_VERSION" "$GITHUB_WORKSPACE"
+          if [ "$ANDROID_UPDATE" = true ]; then
+            node scripts/native-sdk-sync.mjs apply-android-version "$TARGET_ANDROID" "$GITHUB_WORKSPACE"
+          fi
+          if [ "$IOS_UPDATE" = true ]; then
+            sudo xcode-select -switch /Applications/Xcode_26.3.app
+            # Fraud has its own release cycle on both platforms.
+            SDK_SOURCE_DIR="$SYNC_ROOT/upstream-ios" \
+              SKIP_FRAUD=true \
+              scripts/download-xcframeworks.sh "$TARGET_IOS"
+          fi
+
+      - name: Collect native API changes
+        if: steps.release.outputs.status == 'update'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OLD_IOS: ${{ steps.release.outputs.old_ios }}
+          TARGET_IOS: ${{ steps.release.outputs.target_ios }}
+          OLD_ANDROID: ${{ steps.release.outputs.old_android }}
+          TARGET_ANDROID: ${{ steps.release.outputs.target_android }}
+        run: |
+          set -euo pipefail
+          CHANGES="$SYNC_ROOT/api-changes"
+          mkdir -p "$CHANGES"
+          # Each file is empty when that platform is not updated.
+          gh api --paginate --slurp repos/radarlabs/radar-sdk-ios/releases \
+            | jq 'add' \
+            | node scripts/native-sdk-sync.mjs release-notes "$OLD_IOS" "$TARGET_IOS" \
+            > "$CHANGES/ios-release-notes.md"
+          gh api --paginate --slurp repos/radarlabs/radar-sdk-android/releases \
+            | jq 'add' \
+            | node scripts/native-sdk-sync.mjs release-notes "$OLD_ANDROID" "$TARGET_ANDROID" \
+            > "$CHANGES/android-release-notes.md"
+          # Diff the vendored framework's public interface, which is exactly what
+          # RNRadar.mm can call. Intent-to-add makes new headers show up.
+          HEADERS=ios/RadarSDK.xcframework/ios-arm64/RadarSDK.framework/Headers
+          git add --intent-to-add "$HEADERS"
+          git diff -- "$HEADERS" ":(exclude)$HEADERS/RadarSDK-Swift.h" > "$CHANGES/objc-headers.diff"
+          git diff -- "$HEADERS/RadarSDK-Swift.h" > "$CHANGES/swift-header.diff"
+          git reset --quiet -- "$HEADERS"
+          # Android ships no headers; its public API is Radar.kt and the models.
+          git -C "$SYNC_ROOT/upstream-android" diff "$OLD_ANDROID" "$TARGET_ANDROID" -- \
+            sdk/src/main/java/io/radar/sdk/Radar.kt \
+            sdk/src/main/java/io/radar/sdk/model \
+            > "$CHANGES/android-api.diff"
+          wc -l "$CHANGES"/*
+
+      - name: Install JavaScript dependencies
+        if: steps.release.outputs.status == 'update'
+        id: install
+        continue-on-error: true
+        run: npm ci
+
+      - name: Adapt React Native APIs with Claude
+        if: steps.release.outputs.status == 'update'
+        id: claude
+        continue-on-error: true
+        uses: anthropics/claude-code-action/base-action@ef8bb1e43bf303cff727a1dd0b8837029fe982a2 # v1
         with:
-          title: Automated radar-sdk-android version bump to ${{ github.event.client_payload.release }}
-          reviewers: radarlabs/eng
-          token: ${{ secrets.GITHUB_TOKEN }}
-  update_ios_sdk_version:
-    runs-on: ubuntu-latest
-    if: github.event.client_payload.platform == 'ios'
-    steps:
-      - name: Event Information
-        run: echo ${{ github.event.client_payload.release }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Port the new public APIs in the Radar native SDKs to this React Native wrapper. The
+            native SDKs have already been moved to their latest stable releases and package
+            versions are already bumped; your job is the bridge and JavaScript code.
 
-      # checkout the repo
-      - uses: actions/checkout@v2
+            - iOS: ${{ steps.release.outputs.old_ios }} -> ${{ steps.release.outputs.target_ios }}
+            - Android: ${{ steps.release.outputs.old_android }} -> ${{ steps.release.outputs.target_android }}
 
-      # copy the podspec template to its final destination
-      - name: Copy the podspec template
-        uses: canastro/copy-action@master
+            When a platform's two versions are equal it was not updated, and its change files
+            below are empty.
+
+            ## Inputs
+
+            Start with these files in ${{ runner.temp }}/radar-native-sdk-sync/api-changes. Read
+            them before exploring anything else:
+            - ios-release-notes.md and android-release-notes.md: customer-facing notes for every
+              release in each range.
+            - objc-headers.diff: changes to the vendored iOS framework's Objective-C headers.
+            - swift-header.diff: changes to the generated RadarSDK-Swift.h. Most of it is internal
+              Objective-C to Swift migration that keeps the same API; look only for new methods,
+              properties, and enum cases.
+            - android-api.diff: changes to the Android SDK's Radar.kt and model classes.
+
+            The full sources at the new versions are in
+            ${{ runner.temp }}/radar-native-sdk-sync/upstream-ios and
+            ${{ runner.temp }}/radar-native-sdk-sync/upstream-android (public API:
+            sdk/src/main/java/io/radar/sdk/Radar.kt and sdk/src/main/java/io/radar/sdk/model).
+
+            ## What to port
+
+            Judge parity against the new versions of both SDKs, not the old ones.
+            - New `Radar` methods, when both SDKs have them.
+            - New fields on models React Native already returns (for example RadarUser,
+              RadarEvent, RadarGeofence). The bridges pass native `dictionaryValue`/`toJson`
+              output straight to JavaScript, so these usually only need TypeScript types.
+            - New RadarEventType values, added to the `RadarEventType` union in
+              src/@types/types.ts. Check both the iOS `RadarEventType` enum in RadarEvent.h and
+              the Android `RadarEventType` enum in RadarEvent.kt.
+
+            When only one SDK returns a field or event type, still add the type, with a JSDoc
+            comment on it such as `/** iOS only; Android SDK <version> does not return this. */`.
+            Skip a method that only one SDK has. List every one-sided API, ported or skipped,
+            under "Platform gaps" in the summary. Skip internal changes, bug fixes, and the Swift
+            migration. Do not remove or rename existing APIs.
+
+            ## How to wire a method
+
+            Follow `setProduct` as the pattern; `git grep -n setProduct` shows every layer:
+            1. ios/RNRadar.mm: RCT_EXPORT_METHOD calling the iOS SDK.
+            2. src/NativeRadar.ts: the TurboModule spec.
+            3. src/@types/RadarNativeInterface.ts: the public interface.
+            4. src/index.native.ts: the implementation calling NativeRadar.
+            5. src/index.web.js: a web fallback if the surrounding methods have one.
+            6. android/src/main/java/com/radar/RadarModuleImpl.java: the call into the Android SDK.
+            7. android/src/newarch/java/com/radar/RadarModule.kt and
+               android/src/oldarch/java/com/radar/RadarModule.java: both arch wrappers.
+            8. The jest mocks and tests in src/__tests__ and test/.
+
+            ## Example app
+
+            Every ported API, including type-only changes, needs a way for a reviewer to see it
+            working in example/App.tsx. Add `ExampleButton`s next to related buttons and follow the
+            existing handlers (`getProduct`, `setUserLanguage`, `getUserLanguage`): call the API in
+            `try/catch` and show the result with `populateText("<name>: " + stringify(result))`.
+            Use the handler name as the button title so the test plan can refer to it.
+            - New methods: a button that calls the method. For a setter, add a matching getter
+              button, or a button whose response shows the effect.
+            - New fields on returned models: a button that calls an existing API returning that
+              model (for example `trackOnce`) and shows only the new field, such as
+              `stringify(result.user?.locationInsights)`. Showing the whole model is not enough;
+              the field gets lost in the output.
+            - New event types: a way to see them arrive, for example a button that registers
+              `Radar.onEventsReceived` and shows each event's `type`. `onEventsReceived` keeps a
+              single subscription, so registering one replaces any existing listener; say so in
+              the button's result text.
+            - Platform-specific methods: guard with `Platform.OS` as src/index.native.ts does.
+            Do not change or remove existing buttons.
+
+            ## Checks
+
+            Run `npx tsc --noEmit` and `npx jest --runInBand` after editing and fix what you broke.
+            Native code cannot be compiled here; CircleCI builds it on the pull request.
+
+            ## Rules
+
+            Do not change package versions, vendored frameworks, android/build.gradle, lockfiles,
+            workflow files, or scripts. Do not commit, push, create a pull request, or use GitHub
+            write operations.
+
+            Each Bash call must be a single allowed command with absolute paths: no `cd`, `&&`,
+            `;`, or pipes. Use Read, Grep, and Glob to look at files.
+
+            ## Summary
+
+            Finish by writing ${{ runner.temp }}/radar-native-sdk-sync/claude-summary.md for the
+            pull request body, using these headings:
+            - `### Ported`, `### Skipped`, `### Platform gaps`: one line per API with the SDK
+              version that added it and, for skips and gaps, the reason.
+            - `### Check by hand`: at most five items a reviewer cannot confirm from CI.
+            Leave manual testing out of it.
+
+            ## Test plan
+
+            Also write ${{ runner.temp }}/radar-native-sdk-sync/claude-test-plan.md: numbered
+            Markdown steps a reviewer follows in the Example app, under a `###` heading per ported
+            API (never `#` or `##`). Each step names the exact button title to tap, the platform
+            to run it on (iOS, Android, or both, and what to expect on the platform without the
+            API), any prerequisite (location permission, tracking started, dashboard setup such
+            as home and work places), the text expected in the result area, and what a failure
+            looks like. Base the expected output on the native models and dictionaryValue/toJson
+            code you read, not on guesses.
+
+            Start with a `### Native SDK versions` section: tap `nativeSdkVersion` on iOS and
+            confirm it shows `${{ steps.release.outputs.target_ios }}`, then on Android and confirm
+            it shows `${{ steps.release.outputs.target_android }}`. If nothing was ported, that
+            section is the whole plan. The pull request already includes build and setup steps; do
+            not repeat them.
+          claude_args: |
+            --max-turns 150
+            --add-dir ${{ runner.temp }}/radar-native-sdk-sync
+            --allowedTools "Read,Write,Edit,Glob,Grep,Bash(git -C:*),Bash(git diff:*),Bash(git grep:*),Bash(git log:*),Bash(git show:*),Bash(git status:*),Bash(rg:*),Bash(ls:*),Bash(npx tsc:*),Bash(npx jest:*)"
+
+      - name: Validate generated changes
+        if: steps.release.outputs.status == 'update'
+        id: validation
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          npm run test:native-sdk-sync
+          node scripts/native-sdk-sync.mjs check-event-types "$GITHUB_WORKSPACE"
+          npm run typecheck
+          npm run build-all
+          npm test -- --runInBand
+
+      - name: Summarize Claude run
+        if: steps.release.outputs.status == 'update'
+        id: summary
+        env:
+          EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+          OLD_IOS: ${{ steps.release.outputs.old_ios }}
+          TARGET_IOS: ${{ steps.release.outputs.target_ios }}
+          IOS_UPDATE: ${{ steps.release.outputs.ios_update }}
+          IOS_RELEASE_URL: ${{ steps.release.outputs.ios_release_url }}
+          OLD_ANDROID: ${{ steps.release.outputs.old_android }}
+          TARGET_ANDROID: ${{ steps.release.outputs.target_android }}
+          ANDROID_UPDATE: ${{ steps.release.outputs.android_update }}
+          ANDROID_RELEASE_URL: ${{ steps.release.outputs.android_release_url }}
+        run: |
+          set -euo pipefail
+          {
+            if [ "$IOS_UPDATE" = true ]; then
+              echo "- Updates the vendored Radar iOS SDK from \`$OLD_IOS\` to [\`$TARGET_IOS\`]($IOS_RELEASE_URL)."
+            else
+              echo "- Radar iOS SDK stays at \`$OLD_IOS\` (latest stable release)."
+            fi
+            if [ "$ANDROID_UPDATE" = true ]; then
+              echo "- Updates the Radar Android SDK from \`$OLD_ANDROID\` to [\`$TARGET_ANDROID\`]($ANDROID_RELEASE_URL)."
+            else
+              echo "- Radar Android SDK stays at \`$OLD_ANDROID\` (latest stable release)."
+            fi
+          } > "$SYNC_ROOT/pr-versions.md"
+
+          EXECUTION_FILE="${EXECUTION_FILE:-$RUNNER_TEMP/claude-execution-output.json}"
+          {
+            if [ -f "$EXECUTION_FILE" ]; then
+              jq -r '
+                [.[] | select(.type == "result")] | last // {} |
+                "- Claude result: `\(.subtype // "unknown")` after \(.num_turns // "?") turns",
+                (.permission_denials // [] | map(.tool_name + (if .tool_input.command then " `" + .tool_input.command + "`" else "" end)) | unique | .[] | "- Denied: " + .)
+              ' "$EXECUTION_FILE"
+            else
+              echo "- Claude did not produce an execution log."
+            fi
+            echo
+            if [ -s "$SYNC_ROOT/claude-summary.md" ]; then
+              cat "$SYNC_ROOT/claude-summary.md"
+            else
+              echo "Claude did not write a summary; the port is probably incomplete."
+            fi
+          } > "$SYNC_ROOT/pr-summary.md"
+          if [ -s "$SYNC_ROOT/claude-test-plan.md" ]; then
+            # The test plan sits under "## Test Plan"; keep its headings below that level.
+            sed -E 's/^#{1,2} /### /' "$SYNC_ROOT/claude-test-plan.md" > "$SYNC_ROOT/pr-test-plan.md"
+          else
+            cat > "$SYNC_ROOT/pr-test-plan.md" <<PLAN
+          ### Native SDK versions
+
+          Claude did not write a test plan.
+
+          1. Tap \`nativeSdkVersion\` on iOS and confirm it shows \`$TARGET_IOS\`.
+          2. Tap \`nativeSdkVersion\` on Android and confirm it shows \`$TARGET_ANDROID\`.
+          3. Exercise any new Example app controls and confirm their result or event appears.
+          PLAN
+          fi
+          DELIMITER="EOF_$(openssl rand -hex 8)"
+          {
+            echo "versions<<$DELIMITER"
+            cat "$SYNC_ROOT/pr-versions.md"
+            echo "$DELIMITER"
+            echo "body<<$DELIMITER"
+            cat "$SYNC_ROOT/pr-summary.md"
+            echo "$DELIMITER"
+            echo "test_plan<<$DELIMITER"
+            cat "$SYNC_ROOT/pr-test-plan.md"
+            echo "$DELIMITER"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create or update draft pull request
+        if: steps.release.outputs.status == 'update'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
         with:
-          source: 'react-native-radar.podspec.template'
-          target: 'react-native-radar.podspec'
+          token: ${{ github.token }}
+          base: master
+          branch: automation/native-sdk-update
+          delete-branch: true
+          draft: always-true
+          commit-message: Prepare React Native ${{ steps.release.outputs.rn_version }} for Radar ${{ steps.release.outputs.platforms }}
+          title: Prepare React Native ${{ steps.release.outputs.rn_version }} for Radar ${{ steps.release.outputs.platforms }}
+          body: |
+            ## Summary
 
-      # render the podspec template with the sdk version
-      - name: Render radar-sdk-ios release version onto podspec template
-        uses: jayamanikharyono/jinja-action@v0.1
-        with:
-          data: version=${{ github.event.client_payload.release }}
-          path: 'react-native-radar.podspec'
+            ${{ steps.summary.outputs.versions }}
+            - Prepares React Native `${{ steps.release.outputs.rn_version }}` as a best-effort native API port.
+            - RadarSDKFraud (iOS) and `io.radar:sdk-fraud` (Android) have their own release cycle and are not updated here.
+            - Claude output may be incomplete; review the native diff and cross-platform parity before merging.
 
-      # copy the Cartfile template to its final destination
-      - name: Copy ios/Cartfile.resolved template
-        uses: canastro/copy-action@master
-        with:
-          source: 'ios/Cartfile.resolved.template'
-          target: 'ios/Cartfile.resolved'
+            ## API Port
 
-      # render the Cartfile template with the sdk version
-      - name: Render radar-sdk-ios release version onto Cartfile template
-        uses: jayamanikharyono/jinja-action@v0.1
-        with:
-          data: version=${{ github.event.client_payload.release }}
-          path: 'ios/Cartfile.resolved'
+            ${{ steps.summary.outputs.body }}
 
-      # Update package.json to latest version
-      - name: Update package.json to latest
-        run: npm version ${{ github.event.client_payload.release }} --commit-hooks false --git-tag-version false
+            ## Test Plan
 
-      # open a pull request with the new sdk version
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          title: Automated radar-sdk-ios version bump to ${{ github.event.client_payload.release }}
-          reviewers: radarlabs/eng
-          token: ${{ secrets.GITHUB_TOKEN }}
+            ### Setup
+
+            1. Check out this branch and run `npm ci && npm run build-all`.
+            2. Run `cd example && npm ci && npm run install-radar-rebuild`.
+            3. Put a test publishable key in `Radar.initialize(...)` in `example/App.tsx`. Do not commit it.
+            4. Run `npx expo run:ios` and `npx expo run:android`, and confirm Radar initializes without an error on both.
+
+            ${{ steps.summary.outputs.test_plan }}
+
+            ## Validation
+
+            - npm ci: `${{ steps.install.outcome }}`
+            - Claude step: `${{ steps.claude.outcome }}`
+            - Node, TypeScript, event type, and Jest validation: `${{ steps.validation.outcome }}`
+            - [Workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            - CircleCI Node, iOS, and Android jobs provide independent validation on this draft.
+          labels: |
+            native-sdk-update
+            needs-human
