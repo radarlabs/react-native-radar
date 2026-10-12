@@ -43,27 +43,36 @@ function frameworkVersion(root) {
   return version;
 }
 
-export function planUpdate(targetIosVersion, root) {
-  parseStableVersion(targetIosVersion);
-  const currentIosVersion = frameworkVersion(root);
-  const currentRnVersion = JSON.parse(
-    readFileSync(path.join(root, "package.json"), "utf8")
-  ).version;
-  return {
-    status:
-      compareStableVersions(targetIosVersion, currentIosVersion) > 0
-        ? "update"
-        : "noop",
-    currentIosVersion,
-    targetRnVersion: nextMinorVersion(currentRnVersion),
-  };
-}
-
-export function androidVersion(root) {
+function androidVersion(root) {
   const source = readFileSync(path.join(root, "android/build.gradle"), "utf8");
   const match = source.match(/def radar_sdk_version = '([^']+)'/);
   if (!match) throw new Error("Could not read the pinned Android SDK version");
   return match[1];
+}
+
+function platformPlan(current, target) {
+  parseStableVersion(target);
+  return {
+    current,
+    target,
+    update: compareStableVersions(target, current) > 0,
+  };
+}
+
+// Plans one release that moves each native SDK to its latest stable version.
+// A platform whose target is not newer keeps its current pin.
+export function planUpdate(targetIosVersion, targetAndroidVersion, root) {
+  const ios = platformPlan(frameworkVersion(root), targetIosVersion);
+  const android = platformPlan(androidVersion(root), targetAndroidVersion);
+  const currentRnVersion = JSON.parse(
+    readFileSync(path.join(root, "package.json"), "utf8")
+  ).version;
+  return {
+    status: ios.update || android.update ? "update" : "noop",
+    ios,
+    android,
+    targetRnVersion: nextMinorVersion(currentRnVersion),
+  };
 }
 
 // Concatenates the notes of every stable release after fromVersion, up to and
@@ -99,6 +108,37 @@ function replaceVersion(filePath, pattern, replacement, expectedCount) {
     );
   }
   writeFileSync(filePath, source.replace(pattern, replacement));
+}
+
+export function applyAndroidVersion(root, version) {
+  parseStableVersion(version);
+  replaceVersion(
+    path.join(root, "android/build.gradle"),
+    /def radar_sdk_version = '[^']+'/g,
+    `def radar_sdk_version = '${version}'`,
+    1
+  );
+}
+
+const eventTypeMarker = /`(user\.[a-z_]+)`/g;
+
+// Returns the event types documented in the iOS RadarEventType enum that the
+// RadarEventType union in src/@types/types.ts does not list.
+export function missingEventTypes(radarEventHeader, typesSource) {
+  const enumMatch = radarEventHeader.match(
+    /typedef NS_ENUM\(NSInteger, RadarEventType\) \{([\s\S]*?)\};/
+  );
+  if (!enumMatch) throw new Error("RadarEvent.h has no RadarEventType enum");
+  const unionMatch = typesSource.match(
+    /export type RadarEventType =([\s\S]*?);/
+  );
+  if (!unionMatch) throw new Error("types.ts has no RadarEventType union");
+  const known = new Set(
+    [...unionMatch[1].matchAll(/"([^"]+)"/g)].map((match) => match[1])
+  );
+  return [...enumMatch[1].matchAll(eventTypeMarker)]
+    .map((match) => match[1])
+    .filter((type) => !known.has(type));
 }
 
 export function applyReactNativeVersion(root, version) {
@@ -148,11 +188,30 @@ export function applyReactNativeVersion(root, version) {
 function main() {
   const [command, value, root = process.cwd()] = process.argv.slice(2);
   if (command === "plan") {
-    process.stdout.write(JSON.stringify(planUpdate(value, root)));
-  } else if (command === "android-version") {
-    process.stdout.write(androidVersion(value ?? process.cwd()));
+    // plan <ios version> <android version> [root]
+    const [, ios, android, planRoot = process.cwd()] = process.argv.slice(2);
+    process.stdout.write(JSON.stringify(planUpdate(ios, android, planRoot)));
   } else if (command === "apply-version") {
     applyReactNativeVersion(root, value);
+  } else if (command === "apply-android-version") {
+    applyAndroidVersion(root, value);
+  } else if (command === "check-event-types") {
+    const checkRoot = value ?? process.cwd();
+    const missing = missingEventTypes(
+      readFileSync(
+        path.join(
+          checkRoot,
+          "ios/RadarSDK.xcframework/ios-arm64/RadarSDK.framework/Headers/RadarEvent.h"
+        ),
+        "utf8"
+      ),
+      readFileSync(path.join(checkRoot, "src/@types/types.ts"), "utf8")
+    );
+    if (missing.length > 0) {
+      throw new Error(
+        `RadarEventType in src/@types/types.ts is missing: ${missing.join(", ")}`
+      );
+    }
   } else if (command === "release-notes") {
     // Reads the GitHub releases JSON array from stdin; the third argument is
     // the target version rather than a root.

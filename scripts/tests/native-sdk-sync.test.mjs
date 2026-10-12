@@ -5,18 +5,20 @@ import path from "node:path";
 import test from "node:test";
 
 import {
+  applyAndroidVersion,
   applyReactNativeVersion,
   compareStableVersions,
+  missingEventTypes,
   nextMinorVersion,
   planUpdate,
   releaseNotesBetween,
-} from "../ios-sdk-sync.mjs";
+} from "../native-sdk-sync.mjs";
 
 const LINKED_EXAMPLE_LOCK =
   '{"packages":{"..":{"version":"4.36.2"},"node_modules/react-native-radar":{"version":"4.36.2"}}}\n';
 
 function fixtureRoot(exampleLock = LINKED_EXAMPLE_LOCK) {
-  const root = mkdtempSync(path.join(tmpdir(), "ios-sdk-sync-test-"));
+  const root = mkdtempSync(path.join(tmpdir(), "native-sdk-sync-test-"));
   for (const directory of [
     "src",
     "ios/RadarSDK.xcframework/ios-arm64/RadarSDK.framework",
@@ -27,6 +29,10 @@ function fixtureRoot(exampleLock = LINKED_EXAMPLE_LOCK) {
     mkdirSync(path.join(root, directory), { recursive: true });
   }
   writeFileSync(path.join(root, "package.json"), '{"version":"4.36.2"}\n');
+  writeFileSync(
+    path.join(root, "android/build.gradle"),
+    "def radar_sdk_version = '3.35.0'\n\nbuildscript {}\n"
+  );
   writeFileSync(
     path.join(root, "package-lock.json"),
     '{"version":"4.36.2","packages":{"":{"version":"4.36.2"}}}\n'
@@ -73,12 +79,67 @@ test("rejects prerelease versions", () => {
   assert.throws(() => compareStableVersions("3.41.0-beta.1", "3.40.0"));
 });
 
-test("plans updates and resets the React Native patch", () => {
+test("plans updates for each platform and resets the React Native patch", () => {
   const root = fixtureRoot();
-  assert.equal(planUpdate("3.41.0", root).status, "update");
-  assert.equal(planUpdate("3.40.0", root).status, "noop");
-  assert.equal(planUpdate("3.39.0", root).status, "noop");
+
+  const both = planUpdate("3.41.0", "3.38.0", root);
+  assert.equal(both.status, "update");
+  assert.deepEqual(both.ios, { current: "3.40.0", target: "3.41.0", update: true });
+  assert.deepEqual(both.android, {
+    current: "3.35.0",
+    target: "3.38.0",
+    update: true,
+  });
+  assert.equal(both.targetRnVersion, "4.37.0");
+
+  const iosOnly = planUpdate("3.41.0", "3.35.0", root);
+  assert.equal(iosOnly.status, "update");
+  assert.equal(iosOnly.android.update, false);
+
+  const androidOnly = planUpdate("3.39.0", "3.36.0", root);
+  assert.equal(androidOnly.status, "update");
+  assert.equal(androidOnly.ios.update, false);
+
+  assert.equal(planUpdate("3.40.0", "3.35.0", root).status, "noop");
+  assert.throws(() => planUpdate("3.41.0", "3.38.0-beta.1", root));
   assert.equal(nextMinorVersion("4.36.2"), "4.37.0");
+});
+
+test("updates the pinned Android SDK version", () => {
+  const root = fixtureRoot();
+  applyAndroidVersion(root, "3.38.0");
+  assert.equal(
+    readFileSync(path.join(root, "android/build.gradle"), "utf8"),
+    "def radar_sdk_version = '3.38.0'\n\nbuildscript {}\n"
+  );
+
+  writeFileSync(path.join(root, "android/build.gradle"), "buildscript {}\n");
+  assert.throws(() => applyAndroidVersion(root, "3.38.0"), /0 markers/);
+});
+
+test("finds iOS event types missing from the TypeScript union", () => {
+  const header = `typedef NS_ENUM(NSInteger, RadarEventType) {
+    /// Unknown
+    RadarEventTypeUnknown NS_SWIFT_NAME(unknown),
+    /// \`user.entered_geofence\`
+    RadarEventTypeUserEnteredGeofence NS_SWIFT_NAME(userEnteredGeofence),
+    /// \`user.fired_trip_orders\`
+    RadarEventTypeUserFiredTripOrders NS_SWIFT_NAME(userFiredTripOrders)
+};
+
+/// \`user.not_in_the_enum\``;
+  const types = `export type RadarEventType =
+  | "unknown"
+  | "user.entered_geofence";
+`;
+  assert.deepEqual(missingEventTypes(header, types), ["user.fired_trip_orders"]);
+  assert.deepEqual(
+    missingEventTypes(
+      header,
+      types.replace(";", '\n  | "user.fired_trip_orders";')
+    ),
+    []
+  );
 });
 
 test("updates all React Native version markers", () => {
