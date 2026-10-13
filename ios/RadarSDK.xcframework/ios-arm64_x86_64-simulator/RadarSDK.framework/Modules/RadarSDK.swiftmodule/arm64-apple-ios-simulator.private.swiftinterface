@@ -1,11 +1,12 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)
-// swift-module-flags: -target arm64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -O -enable-experimental-feature DebugDescriptionMacro -module-name RadarSDK
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.3
+// swift-compiler-version: Apple Swift version 6.2.4 (swiftlang-6.2.4.1.4 clang-1700.6.4.2)
+// swift-module-flags: -target arm64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -module-name RadarSDK
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.4
 import CoreLocation
 import CoreTelephony
 import Foundation
 import OSLog
+import ObjectiveC
 @_exported import RadarSDK
 import Swift
 import SwiftUI
@@ -16,13 +17,85 @@ import _Concurrency
 import _StringProcessing
 import _SwiftConcurrencyShims
 
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarCoordinate) @objcMembers final public class RadarCoordinate : ObjectiveC.NSObject, Swift.Codable, Swift.Sendable {
+  @objc final public var coordinate: _LocationEssentials.CLLocationCoordinate2D {
+    @objc get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public init?(coordinate: _LocationEssentials.CLLocationCoordinate2D)
+  #endif
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  public init(from decoder: any Swift.Decoder) throws
+  final public func encode(to encoder: any Swift.Encoder) throws
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(RadarCircleGeometry) @objcMembers final public class RadarCircleGeometry : RadarSDK.RadarGeofenceGeometry {
+  @objc final public let center: RadarSDK.RadarCoordinate
+  @objc final public let radius: Swift.Double
+  @objc deinit
+}
 @_inheritsConvenienceInitializers @objc(RadarInAppMessageDelegate_Swift) @objcMembers @_Concurrency.MainActor open class RadarInAppMessageDelegate : ObjectiveC.NSObject, RadarSDK.RadarInAppMessageProtocol {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc @_Concurrency.MainActor public static func loadImage(_ url: Swift.String) async -> UIKit.UIImage?
+  #endif
   @_Concurrency.MainActor @preconcurrency @objc open func createInAppMessageView(_ message: RadarSDK.RadarInAppMessage, onDismiss: @escaping () -> Swift.Void, onInAppMessageClicked: @escaping () -> Swift.Void, completionHandler: @escaping (UIKit.UIViewController) -> Swift.Void)
   @_Concurrency.MainActor @preconcurrency @objc open func onInAppMessageButtonClicked(_ message: RadarSDK.RadarInAppMessage)
   @_Concurrency.MainActor @preconcurrency @objc open func onInAppMessageDismissed(_ message: RadarSDK.RadarInAppMessage)
   @_Concurrency.MainActor @preconcurrency @objc open func onNewInAppMessage(_ message: RadarSDK.RadarInAppMessage)
   @_Concurrency.MainActor @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarTripOptions) @objcMembers public class RadarTripOptions : ObjectiveC.NSObject {
+  @objc public var externalId: Swift.String {
+    @objc get
+    @objc set
+  }
+  @objc public var metadata: [Swift.AnyHashable : Any]?
+  @objc public var destinationGeofenceTag: Swift.String?
+  @objc public var destinationGeofenceExternalId: Swift.String?
+  @objc public var scheduledArrivalAt: Foundation.Date?
+  @objc public var mode: RadarSDK.RadarRouteMode
+  @objc public var approachingThreshold: Swift.UInt16
+  @objc public var startTracking: Swift.Bool
+  @objc public var legs: [RadarSDK.RadarTripLeg]?
+  @objc override convenience dynamic public init()
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(initWithExternalId:destinationGeofenceTag:destinationGeofenceExternalId:) convenience public init(externalId: Swift.String, destinationGeofenceTag: Swift.String?, destinationGeofenceExternalId: Swift.String?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(initWithExternalId:destinationGeofenceTag:destinationGeofenceExternalId:scheduledArrivalAt:) convenience public init(externalId: Swift.String, destinationGeofenceTag: Swift.String?, destinationGeofenceExternalId: Swift.String?, scheduledArrivalAt: Foundation.Date?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(initWithExternalId:destinationGeofenceTag:destinationGeofenceExternalId:scheduledArrivalAt:startTracking:) convenience public init(externalId: Swift.String, destinationGeofenceTag: Swift.String?, destinationGeofenceExternalId: Swift.String?, scheduledArrivalAt: Foundation.Date?, startTracking: Swift.Bool)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @nonobjc convenience public init?(from dictionary: [Swift.AnyHashable : Any]?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(tripOptionsFromDictionary:) public static func tripOptions(from dictionary: [Swift.AnyHashable : Any]?) -> RadarSDK.RadarTripOptions?
+  #endif
+  @objc public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  #endif
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(RadarOperatingHours) @objcMembers final public class RadarOperatingHours : ObjectiveC.NSObject {
+  @objc final public let hours: [Swift.String : [[Swift.String]]]!
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(RadarRouteModeUtils) @objcMembers final public class RadarRouteModeUtils : ObjectiveC.NSObject {
+  @objc(stringForMode:) public static func stringForMode(_ mode: RadarSDK.RadarRouteMode) -> Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc final public class RadarNotificationUtils : ObjectiveC.NSObject {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public static func checkNotificationPermissions(completionHandler: (@Sendable (Swift.Bool) -> Swift.Void)?)
+  #endif
+  @objc public static func getNotificationDiff(completionHandler: @escaping @Sendable ([[Swift.String : Any]], [Any]) -> Swift.Void)
+  @objc public static func updateClientSideCampaigns(withPrefix prefix: Swift.String, notificationRequests requests: [UserNotifications.UNNotificationRequest])
+  @objc override dynamic public init()
   @objc deinit
 }
 @_hasMissingDesignatedInitializers @globalActor public actor RadarIndoorsActor {
@@ -43,12 +116,44 @@ import _SwiftConcurrencyShims
     get
   }
 }
-@_inheritsConvenienceInitializers @RadarSDK.RadarDelegateActor @objc(RadarDelegateHolder_Swift) public class RadarDelegateHolder : ObjectiveC.NSObject {
+@_inheritsConvenienceInitializers @RadarSDK.RadarDelegateActor @objc(RadarDelegateHolder_Swift) @objcMembers public class RadarDelegateHolder : ObjectiveC.NSObject {
   @RadarSDK.RadarDelegateActor @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc final public class RadarNotificationSwizzling : ObjectiveC.NSObject {
+  @_Concurrency.MainActor @objc public static func swizzleNotificationCenterDelegate()
+  @_Concurrency.MainActor @objc public static func swizzleApplicationDelegate()
+  @objc(openURLFromNotification:) public static func openURL(from notification: UserNotifications.UNNotification)
+  @objc override dynamic public init()
   @objc deinit
 }
 @_hasMissingDesignatedInitializers final public class RadarAPIClient : Swift.Sendable {
   public static let shared: RadarSDK.RadarAPIClient
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(RadarTrip) @objcMembers final public class RadarTrip : ObjectiveC.NSObject {
+  @objc final public var _id: Swift.String {
+    @objc get
+  }
+  @objc final public let externalId: Swift.String?
+  @objc final public let metadata: [Swift.AnyHashable : Any]?
+  @objc final public let destinationGeofenceTag: Swift.String?
+  @objc final public let destinationGeofenceExternalId: Swift.String?
+  @objc final public let destinationLocation: RadarSDK.RadarCoordinate?
+  @objc final public let mode: RadarSDK.RadarRouteMode
+  @objc final public let etaDistance: Swift.Float
+  @objc final public let etaDuration: Swift.Float
+  @objc final public let status: RadarSDK.RadarTripStatus
+  @objc final public let orders: [RadarSDK.RadarTripOrder]?
+  @objc final public let legs: [RadarSDK.RadarTripLeg]?
+  @objc final public let currentLegId: Swift.String?
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(initWithObject:) convenience public init?(object: Any)
+  #endif
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarGeofenceGeometry) @objcMembers public class RadarGeofenceGeometry : ObjectiveC.NSObject {
   @objc deinit
 }
 extension RadarSDK.RadarLogLevel : Swift.Codable {
@@ -63,7 +168,33 @@ extension RadarSDK.RadarLogType : Swift.Codable {
   public func encode(to encoder: any Swift.Encoder) throws
   public init(from decoder: any Swift.Decoder) throws
 }
-@_inheritsConvenienceInitializers @objc(RadarSyncManager) final public class RadarSyncManager : ObjectiveC.NSObject {
+@_inheritsConvenienceInitializers @objc final public class RadarEventNotifications : ObjectiveC.NSObject {
+  @objc public static func showNotifications(for events: [RadarSDK.RadarEvent])
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public static func extractCampaignContent(from metadata: [Swift.AnyHashable : Any]?, identifier: Swift.String?) -> UserNotifications.UNMutableNotificationContent?
+  #endif
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarChain) @objcMembers final public class RadarChain : ObjectiveC.NSObject {
+  @objc final public let slug: Swift.String
+  @objc final public let name: Swift.String
+  @objc final public let externalId: Swift.String?
+  @objc final public let metadata: [Swift.AnyHashable : Any]?
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(arrayForChains:) public static func array(for chains: [RadarSDK.RadarChain]?) -> [[Swift.AnyHashable : Any]]?
+  #endif
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarRouteMatrix) @objcMembers final public class RadarRouteMatrix : ObjectiveC.NSObject {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(routeBetweenOriginIndex:destinationIndex:) final public func routeBetween(originIndex: Swift.Int, destinationIndex: Swift.Int) -> RadarSDK.RadarRoute?
+  #endif
+  @objc final public func arrayValue() -> [[[Swift.AnyHashable : Any]]]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(RadarSyncManager) @objcMembers final public class RadarSyncManager : ObjectiveC.NSObject {
   @objc public static func start(interval: Foundation.TimeInterval)
   @objc public static func stop()
   @objc public static func fetchSyncRegion()
@@ -80,7 +211,9 @@ extension RadarSDK.RadarLogType : Swift.Codable {
   @objc public static func rollbackSyncState()
   @objc public static func markDwellFired(_ geofenceId: Swift.String)
   @objc public static func getObjCBeacons(for location: _LocationEssentials.CLLocation) -> [RadarSDK.RadarBeacon]
-  public static func getSyncedRegion() -> CoreLocation.CLCircularRegion?
+  #if compiler(>=5.3) && $NonescapableTypes
+  @nonobjc public static func getSyncedRegion() -> CoreLocation.CLCircularRegion?
+  #endif
   public static func getSyncedGeofences() -> [RadarSDK.RadarSyncedGeofenceSnapshot]
   public static func getSyncedPlaces() -> [RadarSDK.RadarSyncedPlaceSnapshot]
   public static func getSyncedBeacons() -> [RadarSDK.RadarSyncedBeaconSnapshot]
@@ -117,6 +250,207 @@ public struct RadarSyncedBeaconSnapshot {
   public let minor: Swift.String
   public let location: _LocationEssentials.CLLocationCoordinate2D?
 }
+@_inheritsConvenienceInitializers @objc(RadarInitializeOptions) @objcMembers public class RadarInitializeOptions : ObjectiveC.NSObject {
+  @objc public var autoLogNotificationConversions: Swift.Bool
+  @objc public var autoHandleNotificationDeepLinks: Swift.Bool
+  @objc public var silentPush: Swift.Bool
+  @objc public var trackVerifiedAutoFailover: Swift.Bool
+  @objc public var networkTimeoutInterval: Foundation.TimeInterval
+  @objc public var ipChangeDebounceInterval: Foundation.TimeInterval
+  @objc override dynamic public init()
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public init(dict: [Swift.AnyHashable : Any]?)
+  #endif
+  @objc public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarFraud) @objcMembers final public class RadarFraud : ObjectiveC.NSObject {
+  @objc final public let passed: Swift.Bool
+  @objc final public let bypassed: Swift.Bool
+  @objc final public let verified: Swift.Bool
+  @objc final public let proxy: Swift.Bool
+  @objc final public let mocked: Swift.Bool
+  @objc final public let compromised: Swift.Bool
+  @objc final public let jumped: Swift.Bool
+  @objc final public let inaccurate: Swift.Bool
+  @objc final public let sharing: Swift.Bool
+  @objc final public let blocked: Swift.Bool
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarTimeZone) @objcMembers final public class RadarTimeZone : ObjectiveC.NSObject {
+  @objc final public var _id: Swift.String {
+    @objc get
+  }
+  @objc final public var name: Swift.String {
+    @objc get
+  }
+  @objc final public var code: Swift.String {
+    @objc get
+  }
+  @objc final public var currentTime: Foundation.Date {
+    @objc get
+  }
+  @objc final public let utcOffset: Swift.Int32
+  @objc final public let dstOffset: Swift.Int32
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@objc(RadarTripOrder) @objcMembers final public class RadarTripOrder : ObjectiveC.NSObject {
+  @objc final public let _id: Swift.String
+  @objc final public let guid: Swift.String?
+  @objc final public let handoffMode: Swift.String?
+  @objc final public let status: RadarSDK.RadarTripOrderStatus
+  @objc final public let firedAt: Foundation.Date?
+  @objc final public let firedAttempts: Foundation.NSNumber?
+  @objc final public let firedReason: Swift.String?
+  @objc final public let updatedAt: Foundation.Date
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc public init?(id: Swift.String, guid: Swift.String?, handoffMode: Swift.String?, status: RadarSDK.RadarTripOrderStatus, firedAt: Foundation.Date?, firedAttempts: Foundation.NSNumber?, firedReason: Swift.String?, updatedAt: Foundation.Date)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(initWithObject:) convenience public init?(object: Any)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(ordersFromObject:) public static func orders(from object: Any) -> [RadarSDK.RadarTripOrder]?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(arrayForOrders:) public static func array(for orders: [RadarSDK.RadarTripOrder]?) -> [[Swift.AnyHashable : Any]]?
+  #endif
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@objc public protocol RadarLocationManagerSwiftHost {
+  @objc func started() -> Swift.Bool
+  @objc func setStarted(_ started: Swift.Bool)
+  @objc func startedInterval() -> Swift.Int32
+  @objc func setStartedInterval(_ interval: Swift.Int32)
+  @objc func sending() -> Swift.Bool
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc func timer() -> Foundation.Timer?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc func setTimer(_ timer: Foundation.Timer?)
+  #endif
+  @objc func cancelPendingShutdown()
+  @objc func requestLocation()
+  @objc func scheduleShutdown(after delay: Foundation.TimeInterval)
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc func addCompletionHandler(_ completionHandler: RadarSDK.RadarLocationCompletionHandler?)
+  #endif
+  @objc var locationManager: CoreLocation.CLLocationManager { get }
+}
+extension RadarSDK.Radar {
+  @objc public static func startRangingBeacons()
+  @objc public static func stopRangingBeacons()
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarRouteDistance) @objcMembers final public class RadarRouteDistance : ObjectiveC.NSObject {
+  @objc final public var value: Swift.Double {
+    @objc get
+  }
+  @objc final public var text: Swift.String {
+    @objc get
+  }
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarRouteDuration) @objcMembers final public class RadarRouteDuration : ObjectiveC.NSObject {
+  @objc final public var value: Swift.Double {
+    @objc get
+  }
+  @objc final public var text: Swift.String {
+    @objc get
+  }
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarRouteGeometry) @objcMembers final public class RadarRouteGeometry : ObjectiveC.NSObject {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc final public var coordinates: [RadarSDK.RadarCoordinate]? {
+    @objc get
+  }
+  #endif
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarRoute) @objcMembers final public class RadarRoute : ObjectiveC.NSObject {
+  @objc final public let distance: RadarSDK.RadarRouteDistance
+  @objc final public let duration: RadarSDK.RadarRouteDuration
+  @objc final public let geometry: RadarSDK.RadarRouteGeometry
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(RadarPolygonGeometry) @objcMembers final public class RadarPolygonGeometry : RadarSDK.RadarGeofenceGeometry {
+  @objc final public let _coordinates: [RadarSDK.RadarCoordinate]?
+  @objc final public let center: RadarSDK.RadarCoordinate
+  @objc final public let radius: Swift.Double
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(RadarTripLeg) @objcMembers public class RadarTripLeg : ObjectiveC.NSObject {
+  @objc public var _id: Swift.String? {
+    get
+  }
+  @objc public var status: RadarSDK.RadarTripLegStatus {
+    get
+  }
+  @objc public var destinationType: RadarSDK.RadarTripLegDestinationType {
+    get
+  }
+  @objc public var createdAt: Foundation.Date? {
+    get
+  }
+  @objc public var updatedAt: Foundation.Date? {
+    get
+  }
+  @objc public var etaDuration: Swift.Float {
+    get
+  }
+  @objc public var etaDistance: Swift.Float {
+    get
+  }
+  @objc public var destinationGeofenceTag: Swift.String?
+  @objc public var destinationGeofenceExternalId: Swift.String?
+  @objc public var destinationGeofenceId: Swift.String?
+  @objc public var address: Swift.String?
+  @objc public var coordinates: _LocationEssentials.CLLocationCoordinate2D {
+    @objc get
+    @objc set
+  }
+  @objc public var hasCoordinates: Swift.Bool {
+    get
+  }
+  @objc public var arrivalRadius: Swift.Int
+  @objc public var stopDuration: Swift.Int
+  @objc public var metadata: [Swift.AnyHashable : Any]?
+  @objc override dynamic public init()
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(initWithDestinationGeofenceTag:destinationGeofenceExternalId:) convenience public init(destinationGeofenceTag: Swift.String?, destinationGeofenceExternalId: Swift.String?)
+  #endif
+  @objc(initWithDestinationGeofenceId:) convenience public init(destinationGeofenceId: Swift.String)
+  @objc(initWithAddress:) convenience public init(address: Swift.String)
+  @objc(initWithCoordinates:) convenience public init(coordinates: _LocationEssentials.CLLocationCoordinate2D)
+  @objc(stringForStatus:) public static func string(for status: RadarSDK.RadarTripLegStatus) -> Swift.String
+  @objc(statusForString:) public static func status(for string: Swift.String) -> RadarSDK.RadarTripLegStatus
+  @objc(stringForDestinationType:) public static func string(for destinationType: RadarSDK.RadarTripLegDestinationType) -> Swift.String
+  @objc(destinationTypeForString:) public static func destinationType(for string: Swift.String) -> RadarSDK.RadarTripLegDestinationType
+  #if compiler(>=5.3) && $NonescapableTypes
+  @nonobjc convenience public init?(from dictionary: [Swift.AnyHashable : Any]?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(legFromDictionary:) public static func leg(fromDictionary object: Any?) -> RadarSDK.RadarTripLeg?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(legsFromArray:) public static func legs(from array: [Any]?) -> [RadarSDK.RadarTripLeg]?
+  #endif
+  @objc public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(arrayForLegs:) public static func array(for legs: [RadarSDK.RadarTripLeg]?) -> [[Swift.AnyHashable : Any]]?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  #endif
+  @objc deinit
+}
 @objc(RadarInAppMessage_Swift) @objcMembers final public class RadarInAppMessage_Swift : RadarSDK.RadarInAppMessage {
   public struct Text : Swift.Sendable {
     public var text: Swift.String
@@ -137,25 +471,206 @@ public struct RadarSyncedBeaconSnapshot {
   final public var button: RadarSDK.RadarInAppMessage_Swift.Button?
   final public var image: RadarSDK.RadarInAppMessage_Swift.Image?
   @objc final public var metadata: [Swift.String : any Swift.Sendable]
+  #if compiler(>=5.3) && $NonescapableTypes
   public init(title: RadarSDK.RadarInAppMessage_Swift.Text, body: RadarSDK.RadarInAppMessage_Swift.Text, button: RadarSDK.RadarInAppMessage_Swift.Button?, image: RadarSDK.RadarInAppMessage_Swift.Image?, metadata: [Swift.String : any Swift.Sendable])
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc override public static func fromDictionary(_ dict: [Swift.String : Any]) -> RadarSDK.RadarInAppMessage?
+  #endif
   @objc override public static func fromArray(_ array: Any) -> [RadarSDK.RadarInAppMessage]
   @objc override final public func toDictionary() -> [Swift.String : Any]
   @objc public static func toDictionary(_ message: RadarSDK.RadarInAppMessage) -> [Swift.String : Any]
   @objc deinit
 }
-@_inheritsConvenienceInitializers @_Concurrency.MainActor @objc public class RadarInAppMessageManager : ObjectiveC.NSObject {
-  @objc @_Concurrency.MainActor public static let shared: RadarSDK.RadarInAppMessageManager
-  @_Concurrency.MainActor public var delegate: any RadarSDK.RadarInAppMessageProtocol
-  @_Concurrency.MainActor public var view: UIKit.UIView?
-  @objc @_Concurrency.MainActor public func showInAppMessage(_ message: RadarSDK.RadarInAppMessage) async
-  @objc @_Concurrency.MainActor public func onInAppMessageReceived(messages: [RadarSDK.RadarInAppMessage])
-  @objc @_Concurrency.MainActor public func setDelegate(_ delegate: any RadarSDK.RadarInAppMessageProtocol)
-  @_Concurrency.MainActor @objc override dynamic public init()
+@objc(RadarRevealRiskToken) @objcMembers final public class RadarRevealRiskToken : ObjectiveC.NSObject, Swift.Decodable, @unchecked Swift.Sendable {
+  @objc final public let _id: Swift.String
+  @objc final public let token: Swift.String?
+  @objc final public let expiresAt: Foundation.Date?
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc final public var expiresIn: Foundation.NSNumber? {
+    @objc get
+  }
+  #endif
+  @objc final public let risk: RadarSDK.RadarRevealRiskTokenRisk
+  @objc final public let network: RadarSDK.RadarRevealRiskTokenNetwork
+  @objc final public let device: RadarSDK.RadarRevealRiskTokenDevice
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc(RadarRevealRiskLevel) public enum RadarRevealRiskLevel : Swift.Int, Swift.Sendable, Swift.Decodable {
+  case none
+  case low
+  case medium
+  case high
+  public init(from decoder: any Swift.Decoder) throws
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.Int)
+  #endif
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc(RadarRevealRiskTokenRisk) @objcMembers final public class RadarRevealRiskTokenRisk : ObjectiveC.NSObject, Swift.Decodable, Swift.Sendable {
+  @objc final public let level: RadarSDK.RadarRevealRiskLevel
+  @objc final public let reasons: [Swift.String]
+  @objc deinit
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc(RadarRevealRiskTokenNetwork) @objcMembers final public class RadarRevealRiskTokenNetwork : ObjectiveC.NSObject, Swift.Decodable, Swift.Sendable {
+  @objc final public let ipAddress: RadarSDK.RadarRevealRiskTokenNetworkIpAddress?
+  @objc final public let privacy: RadarSDK.RadarRevealRiskTokenNetworkPrivacy?
+  @objc final public let asn: RadarSDK.RadarRevealRiskTokenNetworkAsn?
+  @objc deinit
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc(RadarRevealRiskTokenNetworkAsn) @objcMembers final public class RadarRevealRiskTokenNetworkAsn : ObjectiveC.NSObject, Swift.Decodable, Swift.Sendable {
+  @objc final public let asn: Swift.String?
+  @objc final public let country: Swift.String?
+  @objc final public let domain: Swift.String?
+  @objc final public let name: Swift.String?
+  @objc final public let network: Swift.String?
+  @objc final public let type: Swift.String?
+  @objc deinit
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc(RadarRevealRiskTokenNetworkIpAddress) @objcMembers final public class RadarRevealRiskTokenNetworkIpAddress : ObjectiveC.NSObject, Swift.Decodable, Swift.Sendable {
+  @objc final public let countryCode: Swift.String?
+  @objc final public let country: Swift.String?
+  @objc final public let countryFlag: Swift.String?
+  @objc final public let state: Swift.String?
+  @objc final public let city: Swift.String?
+  @objc final public let postalCode: Swift.String?
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc final public var latitude: Foundation.NSNumber? {
+    @objc get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc final public var longitude: Foundation.NSNumber? {
+    @objc get
+  }
+  #endif
+  @objc final public let connectionType: Swift.String?
+  @objc final public let stateCode: Swift.String?
+  @objc final public let stateConfidence: Swift.String?
+  @objc final public let countryConfidence: Swift.String?
+  @objc final public let dma: Swift.String?
+  @objc final public let dmaCode: Swift.String?
+  @objc final public var stateAllowed: Swift.Bool {
+    @objc get
+  }
+  @objc final public var countryAllowed: Swift.Bool {
+    @objc get
+  }
+  @objc final public let layer: Swift.String?
+  @objc final public let geometry: RadarSDK.RadarRevealRiskIpGeometry?
+  @objc deinit
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc(RadarRevealRiskIpGeometry) @objcMembers final public class RadarRevealRiskIpGeometry : ObjectiveC.NSObject, Swift.Decodable, Swift.Sendable {
+  @objc final public let type: Swift.String
+  @objc final public var coordinates: [Foundation.NSNumber] {
+    @objc get
+  }
+  @objc deinit
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc(RadarRevealRiskTokenNetworkPrivacy) @objcMembers final public class RadarRevealRiskTokenNetworkPrivacy : ObjectiveC.NSObject, Swift.Decodable, Swift.Sendable {
+  @objc final public var hosting: Swift.Bool {
+    @objc get
+  }
+  @objc final public var proxy: Swift.Bool {
+    @objc get
+  }
+  @objc final public var relay: Swift.Bool {
+    @objc get
+  }
+  @objc final public let service: Swift.String?
+  @objc final public var tor: Swift.Bool {
+    @objc get
+  }
+  @objc final public var vpn: Swift.Bool {
+    @objc get
+  }
+  @objc final public var residentialProxy: Swift.Bool {
+    @objc get
+  }
+  @objc deinit
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc(RadarRevealRiskTokenDevice) @objcMembers final public class RadarRevealRiskTokenDevice : ObjectiveC.NSObject, Swift.Decodable, Swift.Sendable {
+  @objc final public let deviceId: Swift.String?
+  @objc final public let deviceType: Swift.String?
+  @objc final public let deviceMake: Swift.String?
+  @objc final public let deviceModel: Swift.String?
+  @objc final public let deviceOSName: Swift.String?
+  @objc final public let deviceOSVersion: Swift.String?
+  @objc final public let sdkVersion: Swift.String?
+  @objc final public let xPlatformType: Swift.String?
+  @objc final public let installId: Swift.String?
+  @objc final public let appId: Swift.String?
+  @objc final public let appName: Swift.String?
+  @objc final public let appVersion: Swift.String?
+  @objc final public let appBuild: Swift.String?
+  @objc deinit
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc(RadarExpectedAddressConfidence) public enum RadarExpectedAddressConfidence : Swift.Int {
+  case unknown = 0
+  case low = 1
+  case medium = 2
+  case high = 3
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.Int)
+  #endif
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarExpectedAddress) final public class RadarExpectedAddress : ObjectiveC.NSObject {
+  @objc final public var expectedAddress: Swift.String {
+    @objc get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc final public var formattedAddress: Swift.String? {
+    @objc get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc final public var latitude: Foundation.NSNumber? {
+    @objc get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc final public var longitude: Foundation.NSNumber? {
+    @objc get
+  }
+  #endif
+  @objc final public var atAddress: Swift.Bool {
+    @objc get
+  }
+  @objc final public var confidence: RadarSDK.RadarExpectedAddressConfidence {
+    @objc get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc final public var distance: Foundation.NSNumber? {
+    @objc get
+  }
+  #endif
+  @objc override dynamic public init()
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
   @objc deinit
 }
 extension RadarSDK.RadarInAppMessageDelegate : Swift.Sendable {}
 extension RadarSDK.RadarIndoorsActor : _Concurrency.GlobalActor {}
 extension RadarSDK.RadarDelegateActor : _Concurrency.GlobalActor {}
 extension RadarSDK.RadarDelegateHolder : Swift.Sendable {}
-extension RadarSDK.RadarInAppMessageManager : Swift.Sendable {}
+extension RadarSDK.RadarRevealRiskLevel : Swift.Equatable {}
+extension RadarSDK.RadarRevealRiskLevel : Swift.Hashable {}
+extension RadarSDK.RadarRevealRiskLevel : Swift.RawRepresentable {}
+extension RadarSDK.RadarExpectedAddressConfidence : Swift.Equatable {}
+extension RadarSDK.RadarExpectedAddressConfidence : Swift.Hashable {}
+extension RadarSDK.RadarExpectedAddressConfidence : Swift.RawRepresentable {}

@@ -285,6 +285,81 @@ export default function App() {
     populateText("clearVerifiedLocationToken called");
   };
 
+  const setExpectedAddress = () => {
+    try {
+      Radar.setExpectedAddress("841 Broadway, New York, NY 10003");
+      populateText(
+        "setExpectedAddress: set to '841 Broadway, New York, NY 10003'"
+      );
+    } catch (err) {
+      populateText("setExpectedAddress error: " + err);
+    }
+  };
+
+  const clearExpectedAddress = () => {
+    try {
+      Radar.setExpectedAddress(null);
+      populateText("clearExpectedAddress: cleared (null)");
+    } catch (err) {
+      populateText("clearExpectedAddress error: " + err);
+    }
+  };
+
+  const trackOnceExpectedAddress = async () => {
+    try {
+      const result = await Radar.trackOnce();
+      populateText(
+        "trackOnceExpectedAddress: " + stringify(result.user?.expectedAddress)
+      );
+    } catch (err) {
+      populateText("trackOnceExpectedAddress error: " + err);
+    }
+  };
+
+  const trackOnceLocationInsights = async () => {
+    try {
+      const result = await Radar.trackOnce();
+      populateText(
+        "trackOnceLocationInsights: " + stringify(result.user?.locationInsights)
+      );
+    } catch (err) {
+      populateText("trackOnceLocationInsights error: " + err);
+    }
+  };
+
+  const startRangingBeacons = () => {
+    try {
+      Radar.startRangingBeacons();
+      populateText("startRangingBeacons called");
+    } catch (err) {
+      populateText("startRangingBeacons error: " + err);
+    }
+  };
+
+  const stopRangingBeacons = () => {
+    try {
+      Radar.stopRangingBeacons();
+      populateText("stopRangingBeacons called");
+    } catch (err) {
+      populateText("stopRangingBeacons error: " + err);
+    }
+  };
+
+  const listenForEventTypes = () => {
+    try {
+      Radar.onEventsReceived(({ events }) => {
+        populateText(
+          "listenForEventTypes: " + stringify(events.map((event) => event.type))
+        );
+      });
+      populateText(
+        "listenForEventTypes: listening, replaced any existing onEventsReceived listener"
+      );
+    } catch (err) {
+      populateText("listenForEventTypes error: " + err);
+    }
+  };
+
   const startTrackingEfficient = () => {
     Radar.startTrackingEfficient();
     populateText("startTrackingEfficient called");
@@ -947,9 +1022,16 @@ export default function App() {
               <ExampleButton title="trackOnce" onPress={trackOnce} />
               <ExampleButton title="trackOnce manual" onPress={trackOnceManual} />
               <ExampleButton title="trackOnce manual with beacons" onPress={trackOnceManualWithBeacons} />
+              <ExampleButton title="trackOnceExpectedAddress" onPress={trackOnceExpectedAddress} />
+              <ExampleButton title="trackOnceLocationInsights" onPress={trackOnceLocationInsights} />
+              <ExampleButton title="listenForEventTypes" onPress={listenForEventTypes} />
               <ExampleButton title="trackVerified" onPress={trackVerified} />
               <ExampleButton title="getVerifiedLocationToken" onPress={getVerifiedLocationToken} />
               <ExampleButton title="clearVerifiedLocationToken" onPress={clearVerifiedLocationToken} />
+              <ExampleButton title="setExpectedAddress" onPress={setExpectedAddress} />
+              <ExampleButton title="clearExpectedAddress" onPress={clearExpectedAddress} />
+              <ExampleButton title="startRangingBeacons" onPress={startRangingBeacons} />
+              <ExampleButton title="stopRangingBeacons" onPress={stopRangingBeacons} />
               <ExampleButton title="startTrackingEfficient" onPress={startTrackingEfficient} />
               <ExampleButton title="startTrackingResponsive" onPress={startTrackingResponsive} />
               <ExampleButton title="startTrackingContinuous" onPress={startTrackingContinuous} />

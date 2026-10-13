@@ -538,4 +538,31 @@ describe('calls native implementation', () => {
     expect(mockModule.reorderTripLegs).toHaveBeenCalledTimes(1);
     expect(mockModule.reorderTripLegs).toBeCalledWith(options);
   });
+
+  test('setExpectedAddress', () => {
+    const address = '841 Broadway, New York, NY 10003';
+    Radar.setExpectedAddress(address);
+
+    expect(mockModule.setExpectedAddress).toHaveBeenCalledTimes(1);
+    expect(mockModule.setExpectedAddress).toBeCalledWith(address);
+  });
+
+  test('setExpectedAddress clears with null', () => {
+    Radar.setExpectedAddress(null);
+
+    expect(mockModule.setExpectedAddress).toHaveBeenCalledTimes(1);
+    expect(mockModule.setExpectedAddress).toBeCalledWith(null);
+  });
+
+  test('startRangingBeacons', () => {
+    Radar.startRangingBeacons();
+
+    expect(mockModule.startRangingBeacons).toHaveBeenCalledTimes(1);
+  });
+
+  test('stopRangingBeacons', () => {
+    Radar.stopRangingBeacons();
+
+    expect(mockModule.stopRangingBeacons).toHaveBeenCalledTimes(1);
+  });
 });
