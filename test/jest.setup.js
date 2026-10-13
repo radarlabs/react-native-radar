@@ -70,6 +70,9 @@ jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter', () => {
         logConversion: jest.fn(),
         getLocationPermissionStatus: jest.fn(),
         openAppSettings: jest.fn(),
+        setExpectedAddress: jest.fn(),
+        startRangingBeacons: jest.fn(),
+        stopRangingBeacons: jest.fn(),
       },
     },
   }));

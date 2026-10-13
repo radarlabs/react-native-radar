@@ -636,6 +636,33 @@ export interface RadarUser {
   trip?: RadarTrip;
   debug?: boolean;
   fraud?: RadarFraud;
+  expectedAddress?: RadarExpectedAddress;
+  /** iOS only; Android SDK 3.38.0 does not return this. */
+  locationInsights?: RadarUserLocationInsights;
+}
+
+export type RadarExpectedAddressConfidence =
+  | "high"
+  | "medium"
+  | "low"
+  | "unknown";
+
+export interface RadarExpectedAddress {
+  expectedAddress: string;
+  formattedAddress?: string;
+  latitude?: number;
+  longitude?: number;
+  atAddress: boolean;
+  confidence: RadarExpectedAddressConfidence;
+  distance?: number;
+}
+
+/** iOS only; Android SDK 3.38.0 does not return this. */
+export interface RadarUserLocationInsights {
+  atHome: boolean;
+  atWork: boolean;
+  traveling: boolean;
+  commuting?: boolean;
 }
 
 export interface RadarCoordinate {
@@ -795,7 +822,15 @@ export type RadarEventType =
   | "user.arrived_at_wrong_trip_destination"
   | "user.delayed_during_trip"
   | "user.failed_fraud"
-  | "user.fired_trip_orders";
+  | "user.fired_trip_orders"
+  | "user.entered_home"
+  | "user.exited_home"
+  | "user.entered_work"
+  | "user.exited_work"
+  | "user.started_traveling"
+  | "user.stopped_traveling"
+  | "user.started_commuting"
+  | "user.stopped_commuting";
 
 export type RadarTrackingOptionsDesiredAccuracy =
   | "high"

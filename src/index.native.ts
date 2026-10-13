@@ -429,6 +429,15 @@ const Radar: RadarNativeInterface = {
   clearVerifiedLocationToken: function (): void {
     return NativeRadar.clearVerifiedLocationToken();
   },
+  setExpectedAddress: function (address: string | null): void {
+    return NativeRadar.setExpectedAddress(address);
+  },
+  startRangingBeacons: function (): void {
+    return NativeRadar.startRangingBeacons();
+  },
+  stopRangingBeacons: function (): void {
+    return NativeRadar.stopRangingBeacons();
+  },
   startTrackingEfficient: function (): void {
     return NativeRadar.startTrackingEfficient();
   },

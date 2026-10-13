@@ -6,8 +6,6 @@
 //
 
 #import "RadarBeacon.h"
-#import "RadarChain.h"
-#import "RadarFraud.h"
 #import "RadarGeofence.h"
 #import "RadarPlace.h"
 #import "RadarRegion.h"
@@ -15,8 +13,43 @@
 #import "RadarTrip.h"
 #import <Foundation/Foundation.h>
 
+@class RadarExpectedAddress;
+@class RadarChain;
+@class RadarFraud;
+@class RadarTrip;
+
 typedef NS_ENUM(NSInteger, RadarLocationSource);
 typedef NS_ENUM(NSInteger, RadarActivityType);
+
+/**
+ Represents learned home, work, and travel state returned with a track response.
+ */
+@interface RadarUserLocationInsights : NSObject
+
+/**
+ A boolean indicating whether the user is currently at their learned home location.
+ */
+@property (assign, nonatomic, readonly) BOOL atHome;
+
+/**
+ A boolean indicating whether the user is currently at their learned work location.
+ */
+@property (assign, nonatomic, readonly) BOOL atWork;
+
+/**
+ A boolean indicating whether the user is currently traveling away from home.
+ */
+@property (assign, nonatomic, readonly) BOOL traveling;
+
+/**
+ A nullable boolean indicating whether the user is currently commuting.
+ */
+@property (nullable, strong, nonatomic, readonly) NSNumber *commuting;
+
+- (NSDictionary *_Nonnull)dictionaryValue;
+- (instancetype _Nullable)initWithObject:(id _Nonnull)object;
+
+@end
 
 /**
  Represents the current user state.
@@ -158,6 +191,15 @@ typedef NS_ENUM(NSInteger, RadarActivityType);
  */
 @property (nullable, copy, nonatomic, readonly) RadarFraud *fraud;
 
+/**
+ The user's learned home, work, and travel state. May be `nil` if location insights are not enabled.
+ */
+@property (nullable, strong, nonatomic, readonly) RadarUserLocationInsights *locationInsights;
+
+/**
+ The user's expected address state. May be `nil` if an expected address has not been set with `setExpectedAddress:`.
+ */
+@property (nullable, strong, nonatomic, readonly) RadarExpectedAddress *expectedAddress;
 
 @property (assign, nonatomic, readonly) double altitude;
 
