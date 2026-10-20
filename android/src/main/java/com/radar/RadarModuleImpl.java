@@ -1128,7 +1128,7 @@ public class RadarModuleImpl {
 
         boolean mailable = optionsMap.hasKey("mailable") ? optionsMap.getBoolean("mailable") : false;
 
-        Radar.autocomplete(query, near, layers, limit, country, true, mailable, new Radar.RadarGeocodeCallback() {
+        Radar.autocomplete(query, near, layers, limit, country, mailable, new Radar.RadarGeocodeCallback() {
 
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
