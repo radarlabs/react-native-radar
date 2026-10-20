@@ -3,8 +3,8 @@ set -e
 
 VERSION="${1:-3.33.1}"
 SDK_REPO="https://github.com/radarlabs/radar-sdk-ios.git"
-FRAUD_VERSION="${2:-1.2.0}"
-FRAUD_SHA256="97b83e62bcec8f42954838dcbfa6a7450a56ad181e974ba17db19454f49e2515"
+FRAUD_VERSION="${2:-1.6.0}"
+FRAUD_SHA256="44346d9a8e67b473c7042750a122f29b55b0d03c0f5291948239d833c36e7bf4"
 FRAUD_REPO="https://github.com/radarlabs/radar-sdk-ios-fraud-spm"
 BUILD_DIR="/tmp/radar-static-build"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"

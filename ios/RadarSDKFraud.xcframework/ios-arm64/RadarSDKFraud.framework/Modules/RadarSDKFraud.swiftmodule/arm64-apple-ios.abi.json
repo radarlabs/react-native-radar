@@ -33,6 +33,1039 @@
       },
       {
         "kind": "Import",
+        "name": "CryptoKit",
+        "printedName": "CryptoKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "OSLog",
+        "printedName": "OSLog",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "MachO",
+        "printedName": "MachO",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "AVFoundation",
+        "printedName": "AVFoundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CryptoKit",
+        "printedName": "CryptoKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "FraudPayloadEnvelope",
+        "printedName": "FraudPayloadEnvelope",
+        "children": [
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(encv:kv:encryptionAttemptId:issuedAt:enc:ct:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadEnvelope",
+                "printedName": "RadarSDKFraud.FraudPayloadEnvelope",
+                "usr": "s:13RadarSDKFraud20FraudPayloadEnvelopeV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:13RadarSDKFraud20FraudPayloadEnvelopeV4encv2kv19encryptionAttemptId8issuedAt3enc2ctACSi_SiSSSiS2Stcfc",
+            "mangledName": "$s13RadarSDKFraud20FraudPayloadEnvelopeV4encv2kv19encryptionAttemptId8issuedAt3enc2ctACSi_SiSSSiS2Stcfc",
+            "moduleName": "RadarSDKFraud",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(from:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadEnvelope",
+                "printedName": "RadarSDKFraud.FraudPayloadEnvelope",
+                "usr": "s:13RadarSDKFraud20FraudPayloadEnvelopeV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Decoder",
+                "printedName": "any Swift.Decoder",
+                "usr": "s:s7DecoderP"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:13RadarSDKFraud20FraudPayloadEnvelopeV4fromACs7Decoder_p_tKcfc",
+            "mangledName": "$s13RadarSDKFraud20FraudPayloadEnvelopeV4fromACs7Decoder_p_tKcfc",
+            "moduleName": "RadarSDKFraud",
+            "implicit": true,
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "encode",
+            "printedName": "encode(to:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Encoder",
+                "printedName": "any Swift.Encoder",
+                "usr": "s:s7EncoderP"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13RadarSDKFraud20FraudPayloadEnvelopeV6encode2toys7Encoder_p_tKF",
+            "mangledName": "$s13RadarSDKFraud20FraudPayloadEnvelopeV6encode2toys7Encoder_p_tKF",
+            "moduleName": "RadarSDKFraud",
+            "implicit": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadEnvelope",
+                "printedName": "RadarSDKFraud.FraudPayloadEnvelope",
+                "usr": "s:13RadarSDKFraud20FraudPayloadEnvelopeV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadEnvelope",
+                "printedName": "RadarSDKFraud.FraudPayloadEnvelope",
+                "usr": "s:13RadarSDKFraud20FraudPayloadEnvelopeV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13RadarSDKFraud20FraudPayloadEnvelopeV2eeoiySbAC_ACtFZ",
+            "mangledName": "$s13RadarSDKFraud20FraudPayloadEnvelopeV2eeoiySbAC_ACtFZ",
+            "moduleName": "RadarSDKFraud",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:13RadarSDKFraud20FraudPayloadEnvelopeV",
+        "mangledName": "$s13RadarSDKFraud20FraudPayloadEnvelopeV",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Decodable",
+            "printedName": "Decodable",
+            "usr": "s:Se",
+            "mangledName": "$sSe"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Encodable",
+            "printedName": "Encodable",
+            "usr": "s:SE",
+            "mangledName": "$sSE"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "FraudPayloadRequestContext",
+        "printedName": "FraudPayloadRequestContext",
+        "children": [
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(method:canonicalRoute:logicalAudience:encryptionAttemptId:issuedAt:origin:product:sdkVersion:authorization:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadRequestContext",
+                "printedName": "RadarSDKFraud.FraudPayloadRequestContext",
+                "usr": "s:13RadarSDKFraud26FraudPayloadRequestContextV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:13RadarSDKFraud26FraudPayloadRequestContextV6method14canonicalRoute15logicalAudience19encryptionAttemptId8issuedAt6origin7product10sdkVersion13authorizationACSS_S3SSiSSSgA3Mtcfc",
+            "mangledName": "$s13RadarSDKFraud26FraudPayloadRequestContextV6method14canonicalRoute15logicalAudience19encryptionAttemptId8issuedAt6origin7product10sdkVersion13authorizationACSS_S3SSiSSSgA3Mtcfc",
+            "moduleName": "RadarSDKFraud",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:13RadarSDKFraud26FraudPayloadRequestContextV",
+        "mangledName": "$s13RadarSDKFraud26FraudPayloadRequestContextV",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "FraudPayloadAAD",
+        "printedName": "FraudPayloadAAD",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "build",
+            "printedName": "build(envelopeVersion:keyVersion:context:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadRequestContext",
+                "printedName": "RadarSDKFraud.FraudPayloadRequestContext",
+                "usr": "s:13RadarSDKFraud26FraudPayloadRequestContextV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13RadarSDKFraud15FraudPayloadAADO5build15envelopeVersion03keyH07context10Foundation4DataVSi_SiAA0cD14RequestContextVtFZ",
+            "mangledName": "$s13RadarSDKFraud15FraudPayloadAADO5build15envelopeVersion03keyH07context10Foundation4DataVSi_SiAA0cD14RequestContextVtFZ",
+            "moduleName": "RadarSDKFraud",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:13RadarSDKFraud15FraudPayloadAADO",
+        "mangledName": "$s13RadarSDKFraud15FraudPayloadAADO",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "FraudPayloadEncryptor",
+        "printedName": "FraudPayloadEncryptor",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "encrypt",
+            "printedName": "encrypt(payload:recipientPublicKey:envelopeVersion:keyVersion:context:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadRequestContext",
+                "printedName": "RadarSDKFraud.FraudPayloadRequestContext",
+                "usr": "s:13RadarSDKFraud26FraudPayloadRequestContextV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13RadarSDKFraud21FraudPayloadEncryptorO7encrypt7payload18recipientPublicKey15envelopeVersion03keyL07contextS2S_10Foundation4DataVS2iAA0cD14RequestContextVtKFZ",
+            "mangledName": "$s13RadarSDKFraud21FraudPayloadEncryptorO7encrypt7payload18recipientPublicKey15envelopeVersion03keyL07contextS2S_10Foundation4DataVS2iAA0cD14RequestContextVtKFZ",
+            "moduleName": "RadarSDKFraud",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "encrypt",
+            "printedName": "encrypt(payload:configuration:envelopeVersion:context:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadEncryptionConfiguration",
+                "printedName": "RadarSDKFraud.FraudPayloadEncryptionConfiguration",
+                "usr": "s:13RadarSDKFraud35FraudPayloadEncryptionConfigurationV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadRequestContext",
+                "printedName": "RadarSDKFraud.FraudPayloadRequestContext",
+                "usr": "s:13RadarSDKFraud26FraudPayloadRequestContextV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13RadarSDKFraud21FraudPayloadEncryptorO7encrypt7payload13configuration15envelopeVersion7contextS2S_AA0cD23EncryptionConfigurationVSiAA0cD14RequestContextVtKFZ",
+            "mangledName": "$s13RadarSDKFraud21FraudPayloadEncryptorO7encrypt7payload13configuration15envelopeVersion7contextS2S_AA0cD23EncryptionConfigurationVSiAA0cD14RequestContextVtKFZ",
+            "moduleName": "RadarSDKFraud",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:13RadarSDKFraud21FraudPayloadEncryptorO",
+        "mangledName": "$s13RadarSDKFraud21FraudPayloadEncryptorO",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "FraudPayloadEncryptionConfigurationError",
+        "printedName": "FraudPayloadEncryptionConfigurationError",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "invalidPublicKey",
+            "printedName": "invalidPublicKey",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(RadarSDKFraud.FraudPayloadEncryptionConfigurationError.Type) -> RadarSDKFraud.FraudPayloadEncryptionConfigurationError",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "FraudPayloadEncryptionConfigurationError",
+                    "printedName": "RadarSDKFraud.FraudPayloadEncryptionConfigurationError",
+                    "usr": "s:13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "RadarSDKFraud.FraudPayloadEncryptionConfigurationError.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "FraudPayloadEncryptionConfigurationError",
+                        "printedName": "RadarSDKFraud.FraudPayloadEncryptionConfigurationError",
+                        "usr": "s:13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO16invalidPublicKeyyA2CmF",
+            "mangledName": "$s13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO16invalidPublicKeyyA2CmF",
+            "moduleName": "RadarSDKFraud"
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadEncryptionConfigurationError",
+                "printedName": "RadarSDKFraud.FraudPayloadEncryptionConfigurationError",
+                "usr": "s:13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadEncryptionConfigurationError",
+                "printedName": "RadarSDKFraud.FraudPayloadEncryptionConfigurationError",
+                "usr": "s:13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO2eeoiySbAC_ACtFZ",
+            "mangledName": "$s13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO2eeoiySbAC_ACtFZ",
+            "moduleName": "RadarSDKFraud",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Var",
+            "name": "hashValue",
+            "printedName": "hashValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO9hashValueSivp",
+            "mangledName": "$s13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO9hashValueSivp",
+            "moduleName": "RadarSDKFraud",
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO9hashValueSivg",
+                "mangledName": "$s13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO9hashValueSivg",
+                "moduleName": "RadarSDKFraud",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "hash",
+            "printedName": "hash(into:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Hasher",
+                "printedName": "Swift.Hasher",
+                "paramValueOwnership": "InOut",
+                "usr": "s:s6HasherV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO4hash4intoys6HasherVz_tF",
+            "mangledName": "$s13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO4hash4intoys6HasherVz_tF",
+            "moduleName": "RadarSDKFraud",
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO",
+        "mangledName": "$s13RadarSDKFraud40FraudPayloadEncryptionConfigurationErrorO",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Error",
+            "printedName": "Error",
+            "usr": "s:s5ErrorP",
+            "mangledName": "$ss5ErrorP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "FraudPayloadEncryptionConfiguration",
+        "printedName": "FraudPayloadEncryptionConfiguration",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "keyVersion",
+            "printedName": "keyVersion",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:13RadarSDKFraud35FraudPayloadEncryptionConfigurationV10keyVersionSivp",
+            "mangledName": "$s13RadarSDKFraud35FraudPayloadEncryptionConfigurationV10keyVersionSivp",
+            "moduleName": "RadarSDKFraud",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13RadarSDKFraud35FraudPayloadEncryptionConfigurationV10keyVersionSivg",
+                "mangledName": "$s13RadarSDKFraud35FraudPayloadEncryptionConfigurationV10keyVersionSivg",
+                "moduleName": "RadarSDKFraud",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "recipientPublicKey",
+            "printedName": "recipientPublicKey",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:13RadarSDKFraud35FraudPayloadEncryptionConfigurationV18recipientPublicKey10Foundation4DataVvp",
+            "mangledName": "$s13RadarSDKFraud35FraudPayloadEncryptionConfigurationV18recipientPublicKey10Foundation4DataVvp",
+            "moduleName": "RadarSDKFraud",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Data",
+                    "printedName": "Foundation.Data",
+                    "usr": "s:10Foundation4DataV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:13RadarSDKFraud35FraudPayloadEncryptionConfigurationV18recipientPublicKey10Foundation4DataVvg",
+                "mangledName": "$s13RadarSDKFraud35FraudPayloadEncryptionConfigurationV18recipientPublicKey10Foundation4DataVvg",
+                "moduleName": "RadarSDKFraud",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(keyVersion:recipientPublicKeyBase64:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadEncryptionConfiguration",
+                "printedName": "RadarSDKFraud.FraudPayloadEncryptionConfiguration",
+                "usr": "s:13RadarSDKFraud35FraudPayloadEncryptionConfigurationV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:13RadarSDKFraud35FraudPayloadEncryptionConfigurationV10keyVersion24recipientPublicKeyBase64ACSi_SStKcfc",
+            "mangledName": "$s13RadarSDKFraud35FraudPayloadEncryptionConfigurationV10keyVersion24recipientPublicKeyBase64ACSi_SStKcfc",
+            "moduleName": "RadarSDKFraud",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "throwing": true,
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:13RadarSDKFraud35FraudPayloadEncryptionConfigurationV",
+        "mangledName": "$s13RadarSDKFraud35FraudPayloadEncryptionConfigurationV",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "FraudPayloadKeyRing",
+        "printedName": "FraudPayloadKeyRing",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "configuration",
+            "printedName": "configuration()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "FraudPayloadEncryptionConfiguration",
+                "printedName": "RadarSDKFraud.FraudPayloadEncryptionConfiguration",
+                "usr": "s:13RadarSDKFraud35FraudPayloadEncryptionConfigurationV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:13RadarSDKFraud19FraudPayloadKeyRingO13configurationAA0cD23EncryptionConfigurationVyKFZ",
+            "mangledName": "$s13RadarSDKFraud19FraudPayloadKeyRingO13configurationAA0cD23EncryptionConfigurationVyKFZ",
+            "moduleName": "RadarSDKFraud",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:13RadarSDKFraud19FraudPayloadKeyRingO",
+        "mangledName": "$s13RadarSDKFraud19FraudPayloadKeyRingO",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CryptoKit",
+        "printedName": "CryptoKit",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "RadarSDKFraud",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
         "name": "CoreLocation",
         "printedName": "CoreLocation",
         "declKind": "Import",
@@ -68,42 +1101,8 @@
       },
       {
         "kind": "Import",
-        "name": "Foundation",
-        "printedName": "Foundation",
-        "declKind": "Import",
-        "moduleName": "RadarSDKFraud",
-        "declAttributes": [
-          "RawDocComment"
-        ]
-      },
-      {
-        "kind": "Import",
-        "name": "UIKit",
-        "printedName": "UIKit",
-        "declKind": "Import",
-        "moduleName": "RadarSDKFraud"
-      },
-      {
-        "kind": "Import",
-        "name": "MachO",
-        "printedName": "MachO",
-        "declKind": "Import",
-        "moduleName": "RadarSDKFraud"
-      },
-      {
-        "kind": "Import",
-        "name": "Foundation",
-        "printedName": "Foundation",
-        "declKind": "Import",
-        "moduleName": "RadarSDKFraud",
-        "declAttributes": [
-          "RawDocComment"
-        ]
-      },
-      {
-        "kind": "Import",
-        "name": "CryptoKit",
-        "printedName": "CryptoKit",
+        "name": "CallKit",
+        "printedName": "CallKit",
         "declKind": "Import",
         "moduleName": "RadarSDKFraud"
       }
@@ -112,228 +1111,333 @@
   },
   "ConstValues": [
     {
-      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
-      "kind": "StringLiteral",
-      "offset": 254,
-      "length": 7,
-      "value": "\"1.2.0\""
-    },
-    {
-      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
-      "kind": "BooleanLiteral",
-      "offset": 1177,
-      "length": 5,
-      "value": "false"
-    },
-    {
-      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
-      "kind": "BooleanLiteral",
-      "offset": 1263,
-      "length": 5,
-      "value": "false"
-    },
-    {
-      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
-      "kind": "BooleanLiteral",
-      "offset": 1304,
-      "length": 5,
-      "value": "false"
-    },
-    {
-      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
-      "kind": "Dictionary",
-      "offset": 10949,
-      "length": 3,
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FeatureA.swift",
+      "kind": "Array",
+      "offset": 1307,
+      "length": 2,
       "value": "[]"
-    },
-    {
-      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
-      "kind": "BooleanLiteral",
-      "offset": 10979,
-      "length": 5,
-      "value": "false"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "Array",
-      "offset": 276,
+      "offset": 296,
       "length": 109,
       "value": "[\"undecimus:\/\/\", \"sileo:\/\/\", \"zbra:\/\/\", \"filza:\/\/\"]"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "BooleanLiteral",
-      "offset": 580,
+      "offset": 600,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "Array",
-      "offset": 759,
+      "offset": 779,
       "length": 232,
       "value": "[\"\/bin\/bash\", \"\/usr\/sbin\/sshd\", \"\/usr\/libexec\/ssh-keysign\", \"\/bin\/sh\", \"\/etc\/ssh\/sshd_config\", \"\/usr\/libexec\/sftp-server\", \"\/usr\/bin\/ssh\"]"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "StringLiteral",
-      "offset": 1262,
+      "offset": 1282,
       "length": 6,
       "value": "\"fork\""
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "IntegerLiteral",
-      "offset": 1463,
+      "offset": 1483,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "IntegerLiteral",
-      "offset": 1503,
+      "offset": 1523,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "IntegerLiteral",
-      "offset": 1761,
+      "offset": 1781,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "BooleanLiteral",
-      "offset": 1813,
+      "offset": 1833,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "Array",
-      "offset": 1967,
+      "offset": 1987,
       "length": 3235,
       "value": "[\"\/var\/mobile\/Library\/Preferences\/ABPattern\", \"\/usr\/lib\/ABDYLD.dylib\", \"\/usr\/lib\/ABSubLoader.dylib\", \"\/usr\/sbin\/frida-server\", \"\/etc\/apt\/sources.list.d\/electra.list\", \"\/etc\/apt\/sources.list.d\/sileo.sources\", \"\/.bootstrapped_electra\", \"\/usr\/lib\/libjailbreak.dylib\", \"\/jb\/lzma\", \"\/.cydia_no_stash\", \"\/.installed_unc0ver\", \"\/jb\/offsets.plist\", \"\/usr\/share\/jailbreak\/injectme.plist\", \"\/etc\/apt\/undecimus\/undecimus.list\", \"\/var\/lib\/dpkg\/info\/mobilesubstrate.md5sums\", \"\/Library\/MobileSubstrate\/MobileSubstrate.dylib\", \"\/jb\/jailbreakd.plist\", \"\/jb\/amfid_payload.dylib\", \"\/jb\/libjailbreak.dylib\", \"\/usr\/libexec\/cydia\/firmware.sh\", \"\/var\/lib\/cydia\", \"\/etc\/apt\", \"\/private\/var\/lib\/apt\", \"\/private\/var\/Users\/\", \"\/var\/log\/apt\", \"\/Applications\/Cydia.app\", \"\/private\/var\/stash\", \"\/private\/var\/lib\/apt\/\", \"\/private\/var\/lib\/cydia\", \"\/private\/var\/cache\/apt\/\", \"\/private\/var\/log\/syslog\", \"\/private\/var\/tmp\/cydia.log\", \"\/Applications\/Icy.app\", \"\/Applications\/MxTube.app\", \"\/Applications\/RockApp.app\", \"\/Applications\/blackra1n.app\", \"\/Applications\/SBSettings.app\", \"\/Applications\/FakeCarrier.app\", \"\/Applications\/WinterBoard.app\", \"\/Applications\/IntelliScreen.app\", \"\/private\/var\/mobile\/Library\/SBSettings\/Themes\", \"\/Library\/MobileSubstrate\/CydiaSubstrate.dylib\", \"\/System\/Library\/LaunchDaemons\/com.ikey.bbot.plist\", \"\/Library\/MobileSubstrate\/DynamicLibraries\/Veency.plist\", \"\/Library\/MobileSubstrate\/DynamicLibraries\/LiveClock.plist\", \"\/System\/Library\/LaunchDaemons\/com.saurik.Cydia.Startup.plist\", \"\/Applications\/Sileo.app\", \"\/var\/binpack\", \"\/Library\/PreferenceBundles\/LibertyPref.bundle\", \"\/Library\/PreferenceBundles\/ShadowPreferences.bundle\", \"\/Library\/PreferenceBundles\/ABypassPrefs.bundle\", \"\/Library\/PreferenceBundles\/FlyJBPrefs.bundle\", \"\/Library\/PreferenceBundles\/Cephei.bundle\", \"\/Library\/PreferenceBundles\/SubstitutePrefs.bundle\", \"\/Library\/PreferenceBundles\/libhbangprefs.bundle\", \"\/usr\/lib\/libhooker.dylib\", \"\/usr\/lib\/libsubstitute.dylib\", \"\/usr\/lib\/substrate\", \"\/usr\/lib\/TweakInject\", \"\/var\/binpack\/Applications\/loader.app\", \"\/Applications\/FlyJB.app\", \"\/Applications\/Zebra.app\", \"\/Library\/BawAppie\/ABypass\", \"\/Library\/MobileSubstrate\/DynamicLibraries\/SSLKillSwitch2.plist\", \"\/Library\/MobileSubstrate\/DynamicLibraries\/PreferenceLoader.plist\", \"\/Library\/MobileSubstrate\/DynamicLibraries\/PreferenceLoader.dylib\", \"\/Library\/MobileSubstrate\/DynamicLibraries\", \"\/var\/mobile\/Library\/Preferences\/me.jjolano.shadow.plist\"]"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "BooleanLiteral",
-      "offset": 5403,
+      "offset": 5423,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "IntegerLiteral",
-      "offset": 5500,
+      "offset": 5520,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "BooleanLiteral",
-      "offset": 5527,
+      "offset": 5547,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "Array",
-      "offset": 5621,
+      "offset": 5641,
       "length": 94,
       "value": "[\"\/\", \"\/root\/\", \"\/private\/\", \"\/jb\/\"]"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "StringLiteral",
-      "offset": 5884,
+      "offset": 5904,
       "length": 10,
       "value": "\"RadarSDK\""
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "BooleanLiteral",
-      "offset": 5922,
+      "offset": 5942,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "BooleanLiteral",
-      "offset": 6195,
+      "offset": 6215,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "Array",
-      "offset": 6402,
+      "offset": 6422,
       "length": 265,
       "value": "[\"\/var\/lib\/undecimus\/apt\", \"\/Applications\", \"\/Library\/Ringtones\", \"\/Library\/Wallpaper\", \"\/usr\/arm-apple-darwin9\", \"\/usr\/include\", \"\/usr\/libexec\", \"\/usr\/share\"]"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "BooleanLiteral",
-      "offset": 6926,
+      "offset": 6946,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "Array",
-      "offset": 7114,
+      "offset": 7134,
       "length": 734,
       "value": "[\"SubstrateLoader.dylib\", \"SSLKillSwitch2.dylib\", \"SSLKillSwitch.dylib\", \"MobileSubstrate.dylib\", \"TweakInject.dylib\", \"CydiaSubstrate\", \"cynject\", \"CustomWidgetIcons\", \"PreferenceLoader\", \"RocketBootstrap\", \"WeeLoader\", \"\/.file\", \"libhooker\", \"SubstrateInserter\", \"SubstrateBootstrap\", \"ABypass\", \"FlyJB\", \"Substitute\", \"Cephei\", \"Electra\", \"AppSyncUnified-FrontBoard.dylib\", \"Shadow\", \"FridaGadget\", \"frida\", \"libcycript\"]"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "IntegerLiteral",
-      "offset": 7866,
+      "offset": 7886,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "BooleanLiteral",
-      "offset": 8217,
+      "offset": 8237,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "StringLiteral",
-      "offset": 8346,
+      "offset": 8366,
       "length": 15,
       "value": "\"ShadowRuleset\""
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "StringLiteral",
-      "offset": 8453,
+      "offset": 8473,
       "length": 20,
       "value": "\"internalDictionary\""
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "BooleanLiteral",
-      "offset": 8504,
+      "offset": 8524,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
       "kind": "BooleanLiteral",
-      "offset": 8543,
+      "offset": 8563,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FeatureA.swift",
-      "kind": "Array",
-      "offset": 303,
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "StringLiteral",
+      "offset": 10025,
+      "length": 13,
+      "value": "\"HTTPSEnable\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "StringLiteral",
+      "offset": 10048,
+      "length": 13,
+      "value": "\"SOCKSEnable\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudDetection.swift",
+      "kind": "StringLiteral",
+      "offset": 10129,
+      "length": 26,
+      "value": "\"ProxyAutoDiscoveryEnable\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudPayloadEncryption.swift",
+      "kind": "StringLiteral",
+      "offset": 1810,
+      "length": 28,
+      "value": "\"radar-fraud-payload-aad:v1\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudPayloadKeyRing.swift",
+      "kind": "IntegerLiteral",
+      "offset": 246,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/FraudPayloadKeyRing.swift",
+      "kind": "StringLiteral",
+      "offset": 289,
+      "length": 90,
+      "value": "\"BFE7hPiR8cILsYzalO5eWygLonz6Spf47x2S10+JvVKs0MMFw6fcGDDBvoG0fdYe8e\/tdHHC7vEmNDHl8\/H6KqY=\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/Hpke.swift",
+      "kind": "IntegerLiteral",
+      "offset": 372,
+      "length": 6,
+      "value": "0x0010"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/Hpke.swift",
+      "kind": "IntegerLiteral",
+      "offset": 423,
       "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/Hpke.swift",
+      "kind": "IntegerLiteral",
+      "offset": 462,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/Hpke.swift",
+      "kind": "IntegerLiteral",
+      "offset": 504,
+      "length": 6,
+      "value": "0x0001"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/Hpke.swift",
+      "kind": "IntegerLiteral",
+      "offset": 551,
+      "length": 6,
+      "value": "0x0001"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/Hpke.swift",
+      "kind": "IntegerLiteral",
+      "offset": 599,
+      "length": 4,
+      "value": "0x00"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/Hpke.swift",
+      "kind": "IntegerLiteral",
+      "offset": 642,
+      "length": 2,
+      "value": "16"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/Hpke.swift",
+      "kind": "IntegerLiteral",
+      "offset": 682,
+      "length": 2,
+      "value": "12"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "StringLiteral",
+      "offset": 269,
+      "length": 7,
+      "value": "\"1.6.0\""
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1573,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1659,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1700,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1853,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "Dictionary",
+      "offset": 13162,
+      "length": 3,
       "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/runner\/work\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud-spm\/radar-sdk-ios-fraud\/RadarSDKFraud\/RadarSDKFraud.swift",
+      "kind": "BooleanLiteral",
+      "offset": 13192,
+      "length": 5,
+      "value": "false"
     }
   ]
 }
