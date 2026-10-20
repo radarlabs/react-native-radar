@@ -6,7 +6,8 @@ import {
   Platform,
   ScrollView,
   Settings,
-  NativeModules
+  NativeModules,
+  PermissionsAndroid
 } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Radar, { Map, Autocomplete } from "react-native-radar";
@@ -315,6 +316,21 @@ export default function App() {
       );
     } catch (err) {
       populateText("trackOnceLocationInsights error: " + err);
+    }
+  };
+
+  const requestBluetoothPermissions = async () => {
+    if (Platform.OS !== "android") {
+      populateText("requestBluetoothPermissions: Android only");
+      return;
+    }
+    try {
+      const result = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN
+      );
+      populateText("requestBluetoothPermissions: " + result);
+    } catch (err) {
+      populateText("requestBluetoothPermissions error: " + err);
     }
   };
 
@@ -1008,6 +1024,7 @@ export default function App() {
               <ExampleButton title="clearExpectedAddress" onPress={clearExpectedAddress} />
               <ExampleButton title="trackVerifiedExpectedAddress" onPress={trackVerifiedExpectedAddress} />
               <ExampleButton title="trackOnceLocationInsights" onPress={trackOnceLocationInsights} />
+              <ExampleButton title="requestBluetoothPermissions" onPress={requestBluetoothPermissions} />
               <ExampleButton title="startRangingBeacons" onPress={startRangingBeacons} />
               <ExampleButton title="stopRangingBeacons" onPress={stopRangingBeacons} />
               <ExampleButton title="listenForEventTypes" onPress={listenForEventTypes} />
