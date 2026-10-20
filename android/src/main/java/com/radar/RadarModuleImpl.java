@@ -334,7 +334,7 @@ public class RadarModuleImpl {
     private static final String FRAUD_MISSING_MESSAGE =
         "Radar fraud module is not on the classpath. Enable `androidFraud: true` " +
         "in the react-native-radar Expo plugin config, or add " +
-        "`implementation \"io.radar:sdk-fraud:1.2.0\"` to your android/app/build.gradle.";
+        "`implementation \"io.radar:sdk-fraud:1.3.0\"` to your android/app/build.gradle.";
 
     private static boolean isFraudModuleAvailable() {
         try {
