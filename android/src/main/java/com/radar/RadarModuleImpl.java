@@ -1244,10 +1244,6 @@ public class RadarModuleImpl {
 
         Radar.ipGeocode(new Radar.RadarIpGeocodeCallback() {
 
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, boolean proxy) {
-                onComplete(status, address, proxy, null);
-            }
-
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, boolean proxy, @Nullable Throwable throwable) {
                 if (status == Radar.RadarStatus.SUCCESS) {
                     try {
