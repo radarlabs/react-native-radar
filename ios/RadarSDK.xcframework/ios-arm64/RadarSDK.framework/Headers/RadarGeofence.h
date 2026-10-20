@@ -5,9 +5,10 @@
 //  Copyright © 2019 Radar Labs, Inc. All rights reserved.
 //
 
-#import "RadarGeofenceGeometry.h"
 #import <Foundation/Foundation.h>
-#import "RadarOperatingHours.h"
+
+@class RadarGeofenceGeometry;
+@class RadarOperatingHours;
 
 /**
  Represents a geofence.
