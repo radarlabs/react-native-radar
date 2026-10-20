@@ -29,10 +29,10 @@ export function nextMinorVersion(version) {
   return `${major}.${minor + 1}.0`;
 }
 
-function frameworkVersion(root) {
+function frameworkVersion(root, name = "RadarSDK") {
   const plistPath = path.join(
     root,
-    "ios/RadarSDK.xcframework/ios-arm64/RadarSDK.framework/Info.plist"
+    `ios/${name}.xcframework/ios-arm64/${name}.framework/Info.plist`
   );
   const version = execFileSync(
     "/usr/bin/plutil",
@@ -120,7 +120,179 @@ export function applyAndroidVersion(root, version) {
   );
 }
 
-const eventTypeMarker = /`(user\.[a-z_]+)`/g;
+function maxStableVersion(versions) {
+  return versions
+    .filter((version) => stableVersionPattern.test(version))
+    .sort(compareStableVersions)
+    .at(-1);
+}
+
+const fraudAssetName = "RadarSDKFraud.xcframework.zip";
+
+// Picks the newest stable radar-sdk-ios-fraud-spm release and the sha256 of its
+// xcframework zip, which is the checksum the spm Package.swift pins.
+export function latestIosFraudRelease(releases) {
+  const stable = releases.filter(
+    (release) =>
+      !release.draft &&
+      !release.prerelease &&
+      stableVersionPattern.test(release.tag_name)
+  );
+  const version = maxStableVersion(stable.map((release) => release.tag_name));
+  if (!version) throw new Error("radar-sdk-ios-fraud-spm has no stable release");
+  const release = stable.find((candidate) => candidate.tag_name === version);
+  const digest = release.assets?.find(
+    (asset) => asset.name === fraudAssetName
+  )?.digest;
+  const match = /^sha256:([0-9a-f]{64})$/.exec(digest ?? "");
+  if (!match) {
+    throw new Error(`RadarSDKFraud ${version} has no ${fraudAssetName} sha256`);
+  }
+  return { version, sha256: match[1], url: release.html_url };
+}
+
+// Picks the newest stable version from Maven Central's maven-metadata.xml.
+export function latestMavenVersion(metadataXml) {
+  const version = maxStableVersion(
+    [...metadataXml.matchAll(/<version>([^<]+)<\/version>/g)].map(
+      (match) => match[1]
+    )
+  );
+  if (!version) throw new Error("io.radar:sdk-fraud has no stable version");
+  return version;
+}
+
+// Returns the highest Fraud SDK version that native release notes name, for
+// example "require Radar Fraud SDK `1.6.0`", or null when they name none.
+export function requiredFraudVersion(releaseNotes) {
+  return (
+    maxStableVersion(
+      [
+        ...(releaseNotes ?? "").matchAll(
+          /(?:Fraud SDK|RadarSDKFraud|sdk-fraud)[\s`:]*(?:version\s+)?[`v]*(\d+\.\d+\.\d+)\b/gi
+        ),
+      ].map((match) => match[1])
+    ) ?? null
+  );
+}
+
+// Moves a platform's Fraud SDK to its latest stable release whenever that
+// platform's native SDK is updated, and fails when the native release notes
+// require a Fraud version that has not been released yet.
+function fraudPlatformPlan(platformUpdate, current, latest, releaseNotes) {
+  const required = platformUpdate ? requiredFraudVersion(releaseNotes) : null;
+  if (required && compareStableVersions(required, latest) > 0) {
+    throw new Error(
+      `The native release notes require Fraud SDK ${required}, but the latest release is ${latest}`
+    );
+  }
+  const update = platformUpdate && compareStableVersions(latest, current) > 0;
+  return { current, target: update ? latest : current, update, required };
+}
+
+function androidFraudVersion(root) {
+  const source = readFileSync(
+    path.join(root, "plugin/src/withRadarAndroid.ts"),
+    "utf8"
+  );
+  const match = source.match(/io\.radar:sdk-fraud:(\d+\.\d+\.\d+)/);
+  if (!match) throw new Error("Could not read the pinned Android Fraud SDK version");
+  return match[1];
+}
+
+export function planFraudUpdate(inputs, root) {
+  const iosLatest = latestIosFraudRelease(inputs.iosFraudReleases);
+  const androidLatest = latestMavenVersion(inputs.androidFraudMetadata);
+  const ios = fraudPlatformPlan(
+    inputs.iosUpdate,
+    frameworkVersion(root, "RadarSDKFraud"),
+    iosLatest.version,
+    inputs.iosReleaseNotes
+  );
+  const android = fraudPlatformPlan(
+    inputs.androidUpdate,
+    androidFraudVersion(root),
+    androidLatest,
+    inputs.androidReleaseNotes
+  );
+  return {
+    ios: {
+      ...ios,
+      platformUpdate: inputs.iosUpdate,
+      sha256: ios.update ? iosLatest.sha256 : null,
+      url: ios.update ? iosLatest.url : null,
+    },
+    android: {
+      ...android,
+      platformUpdate: inputs.androidUpdate,
+      url: android.update
+        ? `https://central.sonatype.com/artifact/io.radar/sdk-fraud/${android.target}`
+        : null,
+    },
+  };
+}
+
+function describeFraudPlatform(name, platform, plan) {
+  const requirement = plan.required
+    ? `the Radar ${platform} SDK release notes require \`${plan.required}\``
+    : `the Radar ${platform} SDK release notes name no required version`;
+  if (plan.update) {
+    return `- Updates ${name} from \`${plan.current}\` to [\`${plan.target}\`](${plan.url}), its latest stable release; ${requirement}.`;
+  }
+  if (!plan.platformUpdate) {
+    return `- ${name} stays at \`${plan.current}\` because the Radar ${platform} SDK is not updated.`;
+  }
+  return `- ${name} stays at \`${plan.current}\`, its latest stable release; ${requirement}.`;
+}
+
+// Describes the Fraud SDK changes for the pull request summary.
+export function describeFraudUpdate(fraudPlan) {
+  return [
+    describeFraudPlatform("RadarSDKFraud (iOS)", "iOS", fraudPlan.ios),
+    describeFraudPlatform(
+      "`io.radar:sdk-fraud` (Android)",
+      "Android",
+      fraudPlan.android
+    ),
+  ].join("\n");
+}
+
+export function applyIosFraudVersion(root, version, sha256) {
+  parseStableVersion(version);
+  if (!/^[0-9a-f]{64}$/.test(sha256 ?? "")) {
+    throw new Error(`${sha256} is not a sha256 digest`);
+  }
+  const scriptPath = path.join(root, "scripts/download-xcframeworks.sh");
+  replaceVersion(
+    scriptPath,
+    /^DEFAULT_FRAUD_VERSION="[^"]+"$/gm,
+    `DEFAULT_FRAUD_VERSION="${version}"`,
+    1
+  );
+  replaceVersion(
+    scriptPath,
+    /^DEFAULT_FRAUD_SHA256="[^"]+"$/gm,
+    `DEFAULT_FRAUD_SHA256="${sha256}"`,
+    1
+  );
+}
+
+export function applyAndroidFraudVersion(root, version) {
+  parseStableVersion(version);
+  for (const file of [
+    "plugin/src/withRadarAndroid.ts",
+    "android/src/main/java/com/radar/RadarModuleImpl.java",
+  ]) {
+    replaceVersion(
+      path.join(root, file),
+      /io\.radar:sdk-fraud:\d+\.\d+\.\d+/g,
+      `io.radar:sdk-fraud:${version}`,
+      1
+    );
+  }
+}
+
+const eventTypeMarker =/`(user\.[a-z_]+)`/g;
 
 // Returns the event types documented in the iOS RadarEventType enum that the
 // RadarEventType union in src/@types/types.ts does not list.
@@ -195,6 +367,19 @@ function main() {
     applyReactNativeVersion(root, value);
   } else if (command === "apply-android-version") {
     applyAndroidVersion(root, value);
+  } else if (command === "plan-fraud") {
+    // Reads the planFraudUpdate inputs as JSON from stdin.
+    const inputs = JSON.parse(readFileSync(0, "utf8"));
+    process.stdout.write(JSON.stringify(planFraudUpdate(inputs, value ?? process.cwd())));
+  } else if (command === "describe-fraud") {
+    // Reads the plan-fraud output from stdin.
+    process.stdout.write(`${describeFraudUpdate(JSON.parse(readFileSync(0, "utf8")))}\n`);
+  } else if (command === "apply-ios-fraud-version") {
+    // apply-ios-fraud-version <version> <sha256> [root]
+    const [, version, sha256, fraudRoot = process.cwd()] = process.argv.slice(2);
+    applyIosFraudVersion(fraudRoot, version, sha256);
+  } else if (command === "apply-android-fraud-version") {
+    applyAndroidFraudVersion(root, value);
   } else if (command === "check-event-types") {
     const checkRoot = value ?? process.cwd();
     const missing = missingEventTypes(
