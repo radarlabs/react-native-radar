@@ -150,7 +150,7 @@ function modifyAppBuildGradle(buildGradle: string, androidFraud: boolean) {
 
   if (androidFraud && !hasSdkFraud) {
     replacementString +=
-      "\n\n" + '    implementation "io.radar:sdk-fraud:1.2.0"';
+      "\n\n" + '    implementation "io.radar:sdk-fraud:1.3.0"';
   }
 
   buildGradle = buildGradle.replace(
