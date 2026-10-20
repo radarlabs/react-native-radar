@@ -488,6 +488,21 @@ public class RadarModuleImpl {
     }
 
 
+    public void setExpectedAddress(String address) {
+        Radar.setExpectedAddress(address);
+    }
+
+
+    public void startRangingBeacons() {
+        Radar.startRangingBeacons();
+    }
+
+
+    public void stopRangingBeacons() {
+        Radar.stopRangingBeacons();
+    }
+
+
     public void startTrackingEfficient() {
         Radar.startTracking(RadarTrackingOptions.EFFICIENT);
     }

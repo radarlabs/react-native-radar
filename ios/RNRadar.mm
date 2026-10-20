@@ -233,7 +233,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.36.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.37.0" forKey:@"radar-xPlatformSDKVersion"];
     
     RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
     if (options != nil) {
@@ -256,7 +256,7 @@ RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud option
 RCT_EXPORT_METHOD(initializeWithAuthToken:(NSString *)authToken fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = nil;
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.36.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.37.0" forKey:@"radar-xPlatformSDKVersion"];
     RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
     if (options != nil) {
         id silentPushValue = options[@"silentPush"];
@@ -639,6 +639,18 @@ RCT_EXPORT_METHOD(revealRisk:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseR
 
 RCT_EXPORT_METHOD(clearVerifiedLocationToken) {
     [Radar clearVerifiedLocationToken];
+}
+
+RCT_EXPORT_METHOD(setExpectedAddress:(NSString *)address) {
+    [Radar setExpectedAddress:address];
+}
+
+RCT_EXPORT_METHOD(startRangingBeacons) {
+    [Radar startRangingBeacons];
+}
+
+RCT_EXPORT_METHOD(stopRangingBeacons) {
+    [Radar stopRangingBeacons];
 }
 
 RCT_EXPORT_METHOD(startTrackingEfficient) {

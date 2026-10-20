@@ -5,8 +5,9 @@
 //  Copyright © 2020 Radar Labs, Inc. All rights reserved.
 //
 
-#import "RadarCoordinate.h"
 #import <CoreLocation/CoreLocation.h>
+
+@class RadarCoordinate;
 
 NS_ASSUME_NONNULL_BEGIN
 
