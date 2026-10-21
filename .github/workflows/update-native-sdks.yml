@@ -3,7 +3,9 @@ name: Prepare native SDK update
 # Moves the vendored iOS SDK and the pinned Android SDK to their latest stable
 # releases together, so the API port checks parity against current SDKs on both
 # platforms. The release events from the SDK repos only trigger a run; the
-# versions always come from each repo's latest release.
+# versions always come from each repo's latest release. Each updated platform's
+# Fraud SDK also moves to its latest stable release, because new native SDKs can
+# require a newer Fraud SDK for trackVerified() and revealRisk().
 on:
   workflow_dispatch:
   repository_dispatch:
@@ -48,11 +50,46 @@ jobs:
           TARGET_ANDROID=$(jq -r '.tag_name' <<< "$ANDROID_RELEASE")
           PLAN=$(node scripts/native-sdk-sync.mjs plan "$TARGET_IOS" "$TARGET_ANDROID" "$GITHUB_WORKSPACE")
           SYNC_ROOT="$RUNNER_TEMP/radar-native-sdk-sync"
-          mkdir -p "$SYNC_ROOT"
+          CHANGES="$SYNC_ROOT/api-changes"
+          mkdir -p "$CHANGES"
           echo "SYNC_ROOT=$SYNC_ROOT" >> "$GITHUB_ENV"
 
           IOS_UPDATE=$(jq -r '.ios.update' <<< "$PLAN")
           ANDROID_UPDATE=$(jq -r '.android.update' <<< "$PLAN")
+
+          # Each file is empty when that platform is not updated.
+          gh api --paginate --slurp repos/radarlabs/radar-sdk-ios/releases \
+            | jq 'add' \
+            | node scripts/native-sdk-sync.mjs release-notes "$(jq -r '.ios.current' <<< "$PLAN")" "$TARGET_IOS" \
+            > "$CHANGES/ios-release-notes.md"
+          gh api --paginate --slurp repos/radarlabs/radar-sdk-android/releases \
+            | jq 'add' \
+            | node scripts/native-sdk-sync.mjs release-notes "$(jq -r '.android.current' <<< "$PLAN")" "$TARGET_ANDROID" \
+            > "$CHANGES/android-release-notes.md"
+
+          # Fraud SDK releases: GitHub release assets on iOS (their digest is the
+          # spm checksum) and Maven Central on Android.
+          gh api --paginate --slurp repos/radarlabs/radar-sdk-ios-fraud-spm/releases \
+            | jq 'add' > "$SYNC_ROOT/ios-fraud-releases.json"
+          curl -fsSL https://repo1.maven.org/maven2/io/radar/sdk-fraud/maven-metadata.xml \
+            > "$SYNC_ROOT/android-fraud-metadata.xml"
+          jq -n \
+            --argjson plan "$PLAN" \
+            --slurpfile iosFraudReleases "$SYNC_ROOT/ios-fraud-releases.json" \
+            --rawfile androidFraudMetadata "$SYNC_ROOT/android-fraud-metadata.xml" \
+            --rawfile iosReleaseNotes "$CHANGES/ios-release-notes.md" \
+            --rawfile androidReleaseNotes "$CHANGES/android-release-notes.md" \
+            '{
+              iosUpdate: $plan.ios.update,
+              androidUpdate: $plan.android.update,
+              iosFraudReleases: $iosFraudReleases[0],
+              androidFraudMetadata: $androidFraudMetadata,
+              iosReleaseNotes: $iosReleaseNotes,
+              androidReleaseNotes: $androidReleaseNotes
+            }' \
+            | node scripts/native-sdk-sync.mjs plan-fraud "$GITHUB_WORKSPACE" \
+            > "$SYNC_ROOT/fraud-plan.json"
+          FRAUD_PLAN=$(cat "$SYNC_ROOT/fraud-plan.json")
           # Names only the platforms this release moves, e.g. "iOS 3.43.0 / Android 3.38.0".
           PLATFORMS=""
           if [ "$IOS_UPDATE" = true ]; then PLATFORMS="iOS $TARGET_IOS"; fi
@@ -71,6 +108,13 @@ jobs:
             echo "android_update=$ANDROID_UPDATE"
             echo "android_release_url=$(jq -r '.html_url' <<< "$ANDROID_RELEASE")"
             echo "platforms=$PLATFORMS"
+            echo "old_ios_fraud=$(jq -r '.ios.current' <<< "$FRAUD_PLAN")"
+            echo "target_ios_fraud=$(jq -r '.ios.target' <<< "$FRAUD_PLAN")"
+            echo "ios_fraud_update=$(jq -r '.ios.update' <<< "$FRAUD_PLAN")"
+            echo "ios_fraud_sha256=$(jq -r '.ios.sha256 // ""' <<< "$FRAUD_PLAN")"
+            echo "old_android_fraud=$(jq -r '.android.current' <<< "$FRAUD_PLAN")"
+            echo "target_android_fraud=$(jq -r '.android.target' <<< "$FRAUD_PLAN")"
+            echo "android_fraud_update=$(jq -r '.android.update' <<< "$FRAUD_PLAN")"
           } >> "$GITHUB_OUTPUT"
 
       - name: Stop when both native SDKs are current
@@ -98,41 +142,42 @@ jobs:
           IOS_UPDATE: ${{ steps.release.outputs.ios_update }}
           TARGET_ANDROID: ${{ steps.release.outputs.target_android }}
           ANDROID_UPDATE: ${{ steps.release.outputs.android_update }}
+          TARGET_IOS_FRAUD: ${{ steps.release.outputs.target_ios_fraud }}
+          IOS_FRAUD_UPDATE: ${{ steps.release.outputs.ios_fraud_update }}
+          IOS_FRAUD_SHA256: ${{ steps.release.outputs.ios_fraud_sha256 }}
+          TARGET_ANDROID_FRAUD: ${{ steps.release.outputs.target_android_fraud }}
+          ANDROID_FRAUD_UPDATE: ${{ steps.release.outputs.android_fraud_update }}
         run: |
           set -euo pipefail
           node scripts/native-sdk-sync.mjs apply-version "$RN_VERSION" "$GITHUB_WORKSPACE"
           if [ "$ANDROID_UPDATE" = true ]; then
             node scripts/native-sdk-sync.mjs apply-android-version "$TARGET_ANDROID" "$GITHUB_WORKSPACE"
           fi
+          if [ "$ANDROID_FRAUD_UPDATE" = true ]; then
+            node scripts/native-sdk-sync.mjs apply-android-fraud-version "$TARGET_ANDROID_FRAUD" "$GITHUB_WORKSPACE"
+          fi
           if [ "$IOS_UPDATE" = true ]; then
             sudo xcode-select -switch /Applications/Xcode_26.3.app
-            # Fraud has its own release cycle on both platforms.
+            SKIP_FRAUD=true
+            if [ "$IOS_FRAUD_UPDATE" = true ]; then
+              # Moves the download script's default pin, which the download below uses.
+              node scripts/native-sdk-sync.mjs apply-ios-fraud-version "$TARGET_IOS_FRAUD" "$IOS_FRAUD_SHA256" "$GITHUB_WORKSPACE"
+              SKIP_FRAUD=false
+            fi
             SDK_SOURCE_DIR="$SYNC_ROOT/upstream-ios" \
-              SKIP_FRAUD=true \
+              SKIP_FRAUD="$SKIP_FRAUD" \
               scripts/download-xcframeworks.sh "$TARGET_IOS"
           fi
 
       - name: Collect native API changes
         if: steps.release.outputs.status == 'update'
         env:
-          GH_TOKEN: ${{ github.token }}
-          OLD_IOS: ${{ steps.release.outputs.old_ios }}
-          TARGET_IOS: ${{ steps.release.outputs.target_ios }}
           OLD_ANDROID: ${{ steps.release.outputs.old_android }}
           TARGET_ANDROID: ${{ steps.release.outputs.target_android }}
         run: |
           set -euo pipefail
+          # The release notes were collected while resolving the releases.
           CHANGES="$SYNC_ROOT/api-changes"
-          mkdir -p "$CHANGES"
-          # Each file is empty when that platform is not updated.
-          gh api --paginate --slurp repos/radarlabs/radar-sdk-ios/releases \
-            | jq 'add' \
-            | node scripts/native-sdk-sync.mjs release-notes "$OLD_IOS" "$TARGET_IOS" \
-            > "$CHANGES/ios-release-notes.md"
-          gh api --paginate --slurp repos/radarlabs/radar-sdk-android/releases \
-            | jq 'add' \
-            | node scripts/native-sdk-sync.mjs release-notes "$OLD_ANDROID" "$TARGET_ANDROID" \
-            > "$CHANGES/android-release-notes.md"
           # Diff the vendored framework's public interface, which is exactly what
           # RNRadar.mm can call. Intent-to-add makes new headers show up.
           HEADERS=ios/RadarSDK.xcframework/ios-arm64/RadarSDK.framework/Headers
@@ -166,7 +211,9 @@ jobs:
             versions are already bumped; your job is the bridge and JavaScript code.
 
             - iOS: ${{ steps.release.outputs.old_ios }} -> ${{ steps.release.outputs.target_ios }}
+              (RadarSDKFraud ${{ steps.release.outputs.old_ios_fraud }} -> ${{ steps.release.outputs.target_ios_fraud }})
             - Android: ${{ steps.release.outputs.old_android }} -> ${{ steps.release.outputs.target_android }}
+              (io.radar:sdk-fraud ${{ steps.release.outputs.old_android_fraud }} -> ${{ steps.release.outputs.target_android_fraud }})
 
             When a platform's two versions are equal it was not updated, and its change files
             below are empty.
@@ -245,8 +292,8 @@ jobs:
 
             ## Rules
 
-            Do not change package versions, vendored frameworks, android/build.gradle, lockfiles,
-            workflow files, or scripts. Do not commit, push, create a pull request, or use GitHub
+            Do not change package versions, vendored frameworks, android/build.gradle, Fraud SDK
+            pins, lockfiles, workflow files, or scripts. Do not commit, push, create a pull request, or use GitHub
             write operations.
 
             Each Bash call must be a single allowed command with absolute paths: no `cd`, `&&`,
@@ -320,6 +367,7 @@ jobs:
             else
               echo "- Radar Android SDK stays at \`$OLD_ANDROID\` (latest stable release)."
             fi
+            node scripts/native-sdk-sync.mjs describe-fraud < "$SYNC_ROOT/fraud-plan.json"
           } > "$SYNC_ROOT/pr-versions.md"
 
           EXECUTION_FILE="${EXECUTION_FILE:-$RUNNER_TEMP/claude-execution-output.json}"
@@ -383,7 +431,6 @@ jobs:
 
             ${{ steps.summary.outputs.versions }}
             - Prepares React Native `${{ steps.release.outputs.rn_version }}` as a best-effort native API port.
-            - RadarSDKFraud (iOS) and `io.radar:sdk-fraud` (Android) have their own release cycle and are not updated here.
             - Claude output may be incomplete; review the native diff and cross-platform parity before merging.
 
             ## API Port
@@ -398,6 +445,7 @@ jobs:
             2. Run `cd example && npm ci && npm run install-radar-rebuild`.
             3. Put a test publishable key in `Radar.initialize(...)` in `example/App.tsx`. Do not commit it.
             4. Run `npx expo run:ios` and `npx expo run:android`, and confirm Radar initializes without an error on both.
+            5. Tap `trackVerified` on iOS and Android and confirm neither returns `ERROR_PLUGIN`, which means the Fraud SDK does not match the native SDK.
 
             ${{ steps.summary.outputs.test_plan }}
 
