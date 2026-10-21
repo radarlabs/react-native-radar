@@ -3,8 +3,10 @@ set -e
 
 VERSION="${1:-3.33.1}"
 SDK_REPO="https://github.com/radarlabs/radar-sdk-ios.git"
-FRAUD_VERSION="${2:-1.6.0}"
-FRAUD_SHA256="44346d9a8e67b473c7042750a122f29b55b0d03c0f5291948239d833c36e7bf4"
+# The vendored RadarSDKFraud pin; scripts/native-sdk-sync.mjs updates both lines.
+DEFAULT_FRAUD_VERSION="1.6.0"
+DEFAULT_FRAUD_SHA256="44346d9a8e67b473c7042750a122f29b55b0d03c0f5291948239d833c36e7bf4"
+FRAUD_VERSION="${2:-$DEFAULT_FRAUD_VERSION}"
 FRAUD_REPO="https://github.com/radarlabs/radar-sdk-ios-fraud-spm"
 BUILD_DIR="/tmp/radar-static-build"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -88,7 +90,14 @@ xcodebuild -create-xcframework \
   -output "$PROJECT_ROOT/ios/RadarSDKMotion.xcframework"
 
 if [ "${SKIP_FRAUD:-false}" != "true" ]; then
-  # iOS release sync leaves Fraud alone because it has its own release cycle.
+  # The built-in checksum only covers the default version.
+  if [ -z "${FRAUD_SHA256:-}" ]; then
+    if [ "$FRAUD_VERSION" != "$DEFAULT_FRAUD_VERSION" ]; then
+      echo "ERROR: set FRAUD_SHA256 to download RadarSDKFraud ${FRAUD_VERSION}; the built-in checksum is for ${DEFAULT_FRAUD_VERSION}"
+      exit 1
+    fi
+    FRAUD_SHA256="$DEFAULT_FRAUD_SHA256"
+  fi
   echo ""
   echo "=== Downloading RadarSDKFraud.xcframework v${FRAUD_VERSION} (prebuilt) ==="
   FRAUD_ZIP="$BUILD_DIR/RadarSDKFraud.xcframework.zip"
