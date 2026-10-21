@@ -33,9 +33,6 @@ const stringify = (obj: unknown) => JSON.stringify(obj, null, 2);
 const formatCoordinate = (latitude: number, longitude: number) =>
   `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
 
-// The Android new-architecture bridge emits location and user as JSON strings, not objects.
-const asObject = <T,>(value: T | string): T => (typeof value === "string" ? JSON.parse(value) : value);
-
 const eventSubject = (event: RadarEvent) =>
   event.geofence?.externalId ||
   event.geofence?.description ||
@@ -88,9 +85,7 @@ export function LogStoreProvider({ children }: { children: React.ReactNode }) {
     if (typeof Radar.onLocationUpdated !== "function") {
       return;
     }
-    Radar.onLocationUpdated((update) => {
-      const location = asObject(update.location);
-      const user = asObject(update.user);
+    Radar.onLocationUpdated(({ location, user }) => {
       const accuracy = location.accuracy != null ? ` ±${Math.round(location.accuracy)} m` : "";
       write(
         "location",
@@ -98,8 +93,7 @@ export function LogStoreProvider({ children }: { children: React.ReactNode }) {
         stringify({ location, user })
       );
     });
-    Radar.onClientLocationUpdated(({ location: rawLocation, stopped, source }) => {
-      const location = asObject(rawLocation);
+    Radar.onClientLocationUpdated(({ location, stopped, source }) => {
       write(
         "location",
         `${stopped ? "stopped" : "moving"} ${formatCoordinate(location.latitude, location.longitude)}`,
