@@ -62,8 +62,8 @@ class RadarModule(reactContext: ReactApplicationContext) :
         override fun onLocationUpdated(context: Context, location: Location, user: RadarUser) {
             if (isInvalidated) return
             val eventBlob = Arguments.createMap().apply {
-                putString("location", Radar.jsonForLocation(location).toString())
-                putString("user", user.toJson().toString())
+                putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)))
+                putMap("user", RadarUtils.mapForJson(user.toJson()))
             }
             emitLocationEmitter(eventBlob)
         }
@@ -71,7 +71,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         override fun onClientLocationUpdated(context: Context, location: Location, stopped: Boolean, source: Radar.RadarLocationSource) {
             if (isInvalidated) return
             val eventBlob = Arguments.createMap().apply {
-                putString("location", Radar.jsonForLocation(location).toString())
+                putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)))
                 putBoolean("stopped", stopped)
                 putString("source", source.toString())
             }
@@ -137,7 +137,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         override fun onTokenUpdated(context: Context, token: RadarVerifiedLocationToken) {
             if (isInvalidated) return
             val eventBlob = Arguments.createMap().apply {
-                putString("token", token.toJson().toString())
+                putMap("token", RadarUtils.mapForJson(token.toJson()))
             }
             emitTokenEmitter(eventBlob)
         }
