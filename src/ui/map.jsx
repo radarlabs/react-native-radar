@@ -4,25 +4,6 @@ import Radar from '../index.native';
 import { getHost, getPublishableKey, getMobileOrigin } from '../helpers';
 import styles from './styles';
 
-let MapLibreGL;
-let MapLibreMap;
-let GeoJSONSource;
-let Layer;
-let TransformRequestManager;
-try {
-  MapLibreGL = require('@maplibre/maplibre-react-native');
-  MapLibreMap = MapLibreGL.Map;
-  GeoJSONSource = MapLibreGL.GeoJSONSource;
-  Layer = MapLibreGL.Layer;
-  TransformRequestManager = MapLibreGL.TransformRequestManager;
-} catch (e) {
-  MapLibreGL = null;
-  MapLibreMap = null;
-  GeoJSONSource = null;
-  Layer = null;
-  TransformRequestManager = null;
-}
-
 const DEFAULT_STYLE = 'radar-default-v1';
 
 const createStyleURL = async (style = DEFAULT_STYLE) => {
@@ -48,11 +29,27 @@ const createStyleURL = async (style = DEFAULT_STYLE) => {
  */
 
 const RadarMap = ({ mapOptions, children }) => {
+  const [mapLibre, setMapLibre] = useState(null);
   const [styleURL, setStyleURL] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
+    let cancelled = false;
     const setup = async () => {
+      let MapLibreGL;
+      try {
+        // Match consumers' ESM imports without making MapLibre mandatory.
+        // Loading its CommonJS build as well registers native views twice.
+        MapLibreGL = await import('@maplibre/maplibre-react-native');
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn(`Radar SDK: Failed to load MapLibre: ${err}`);
+        return;
+      }
+      if (cancelled) {
+        return;
+      }
+      const { TransformRequestManager } = MapLibreGL;
       const host = await getHost();
 
       if (TransformRequestManager) {
@@ -76,10 +73,16 @@ const RadarMap = ({ mapOptions, children }) => {
       }
 
       const result = await createStyleURL(mapOptions?.mapStyle || DEFAULT_STYLE);
-      setStyleURL(result);
+      if (!cancelled) {
+        setMapLibre(MapLibreGL);
+        setStyleURL(result);
+      }
     };
 
     setup();
+    return () => {
+      cancelled = true;
+    };
   }, [mapOptions?.mapStyle]);
 
   useEffect(() => {
@@ -100,9 +103,11 @@ const RadarMap = ({ mapOptions, children }) => {
     return null;
   }
 
-  if (!MapLibreGL) {
+  if (!mapLibre) {
     return null;
   }
+
+  const { Map: MapLibreMap, GeoJSONSource, Layer } = mapLibre;
 
   const geoJSONUserLocation = {
     type: 'FeatureCollection',
