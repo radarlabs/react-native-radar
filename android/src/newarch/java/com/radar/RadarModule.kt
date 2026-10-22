@@ -186,7 +186,14 @@ class RadarModule(reactContext: ReactApplicationContext) :
         editor.putString("x_platform_sdk_version", "4.37.0")
         editor.apply()
 
-        Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, reactApplicationContext.currentActivity)
+        val initOptionsBuilder = io.radar.sdk.RadarInitializeOptions.builder()
+            .radarReceiver(radarReceiver)
+            .locationProvider(Radar.RadarLocationServicesProvider.GOOGLE)
+            .fraud(fraud)
+            .inAppMessageReceiver(radarInAppMessageReceiver)
+            .apply { reactApplicationContext.currentActivity?.let { activity(it) } }
+        val initOptions = RadarInitializeOptionsUtils.applyOptions(initOptionsBuilder, options).build()
+        Radar.initialize(reactApplicationContext, publishableKey, initOptions)
         if (fraud) {
             Radar.setVerifiedReceiver(radarVerifiedReceiver)
         } 
@@ -205,6 +212,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
             .fraud(fraud)
             .inAppMessageReceiver(radarInAppMessageReceiver)
             .apply { reactApplicationContext.currentActivity?.let { activity(it) } }
+            .let { RadarInitializeOptionsUtils.applyOptions(it, options) }
             .build()
         Radar.initialize(reactApplicationContext, initOptions)
         if (fraud) {

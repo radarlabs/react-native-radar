@@ -13,6 +13,7 @@ import type {
   RadarTokenUpdateCallback,
   RadarSharingChangedCallback,
   RadarIpChangedCallback,
+  RadarInitializeOptions,
   RadarEventUpdateCallback,
   RadarLogLevel,
   RadarMetadata,
@@ -130,7 +131,7 @@ let inAppMessageDismissedUpdateSubscription: EventSubscription | null = null;
 let inAppMessageClickedUpdateSubscription: EventSubscription | null = null;
 
 const Radar: RadarNativeInterface = {
-  initialize: (publishableKey: string, fraud?: boolean, options?: Object | null) => {
+  initialize: (publishableKey: string, fraud?: boolean, options?: RadarInitializeOptions | null) => {
     NativeRadar.initialize(publishableKey, !!fraud, options || null);
     Radar.onNewInAppMessage((inAppMessage) => {
       Radar.showInAppMessage(inAppMessage);
@@ -138,7 +139,7 @@ const Radar: RadarNativeInterface = {
     return;
   },
 
-  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: Object | null) => {
+  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: RadarInitializeOptions | null) => {
     NativeRadar.initializeWithAuthToken(authToken, !!fraud, options || null);
     Radar.onNewInAppMessage((inAppMessage) => {
       Radar.showInAppMessage(inAppMessage);

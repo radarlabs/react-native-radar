@@ -10,6 +10,7 @@ import type {
   RadarTokenUpdateCallback,
   RadarSharingChangedCallback,
   RadarIpChangedCallback,
+  RadarInitializeOptions,
   RadarLogLevel,
   RadarMetadata,
   RadarTrackingOptionsDesiredAccuracy,
@@ -55,8 +56,8 @@ import type {
 } from "./types";
 
 export interface RadarNativeInterface {
-  initialize: (publishableKey: string, fraud?: boolean, options?: Object | null) => void;
-  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: Object | null) => void;
+  initialize: (publishableKey: string, fraud?: boolean, options?: RadarInitializeOptions | null) => void;
+  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: RadarInitializeOptions | null) => void;
   setLogLevel: (level: RadarLogLevel) => void;
   setUserId: (userId: string) => void;
   getUserId: () => Promise<string>;

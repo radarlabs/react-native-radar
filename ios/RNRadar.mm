@@ -257,26 +257,44 @@ RCT_EXPORT_MODULE()
     #endif
 }
 
+- (RadarInitializeOptions *)radarInitializeOptionsFromDictionary:(NSDictionary *)options {
+    RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
+    if (options == nil) {
+        return radarOptions;
+    }
+    id silentPushValue = options[@"silentPush"];
+    if (silentPushValue && silentPushValue != [NSNull null]) {
+        radarOptions.silentPush = [silentPushValue boolValue];
+    }
+    id autoLogValue = options[@"autoLogNotificationConversions"];
+    if (autoLogValue && autoLogValue != [NSNull null]) {
+        radarOptions.autoLogNotificationConversions = [autoLogValue boolValue];
+    }
+    id autoHandleValue = options[@"autoHandleNotificationDeepLinks"];
+    if (autoHandleValue && autoHandleValue != [NSNull null]) {
+        radarOptions.autoHandleNotificationDeepLinks = [autoHandleValue boolValue];
+    }
+    id autoFailoverValue = options[@"trackVerifiedAutoFailover"];
+    if (autoFailoverValue && autoFailoverValue != [NSNull null]) {
+        radarOptions.trackVerifiedAutoFailover = [autoFailoverValue boolValue];
+    }
+    id networkTimeoutValue = options[@"networkTimeoutInterval"];
+    if (networkTimeoutValue && networkTimeoutValue != [NSNull null]) {
+        radarOptions.networkTimeoutInterval = [networkTimeoutValue doubleValue];
+    }
+    id ipChangeDebounceValue = options[@"ipChangeDebounceInterval"];
+    if (ipChangeDebounceValue && ipChangeDebounceValue != [NSNull null]) {
+        radarOptions.ipChangeDebounceInterval = [ipChangeDebounceValue doubleValue];
+    }
+    return radarOptions;
+}
+
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
     [[NSUserDefaults standardUserDefaults] setObject:@"4.37.0" forKey:@"radar-xPlatformSDKVersion"];
     
-    RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
-    if (options != nil) {
-        id silentPushValue = options[@"silentPush"];
-        if (silentPushValue && silentPushValue != [NSNull null]) {
-            radarOptions.silentPush = [silentPushValue boolValue];
-        }
-        id autoLogValue = options[@"autoLogNotificationConversions"];
-        if (autoLogValue && autoLogValue != [NSNull null]) {
-            radarOptions.autoLogNotificationConversions = [autoLogValue boolValue];
-        }
-        id autoHandleValue = options[@"autoHandleNotificationDeepLinks"];
-        if (autoHandleValue && autoHandleValue != [NSNull null]) {
-            radarOptions.autoHandleNotificationDeepLinks = [autoHandleValue boolValue];
-        }
-    }
+    RadarInitializeOptions *radarOptions = [self radarInitializeOptionsFromDictionary:options];
     [Radar initializeWithPublishableKey:publishableKey options:radarOptions];
 }
 
@@ -284,21 +302,7 @@ RCT_EXPORT_METHOD(initializeWithAuthToken:(NSString *)authToken fraud:(BOOL)frau
     _publishableKey = nil;
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
     [[NSUserDefaults standardUserDefaults] setObject:@"4.37.0" forKey:@"radar-xPlatformSDKVersion"];
-    RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
-    if (options != nil) {
-        id silentPushValue = options[@"silentPush"];
-        if (silentPushValue && silentPushValue != [NSNull null]) {
-            radarOptions.silentPush = [silentPushValue boolValue];
-        }
-        id autoLogValue = options[@"autoLogNotificationConversions"];
-        if (autoLogValue && autoLogValue != [NSNull null]) {
-            radarOptions.autoLogNotificationConversions = [autoLogValue boolValue];
-        }
-        id autoHandleValue = options[@"autoHandleNotificationDeepLinks"];
-        if (autoHandleValue && autoHandleValue != [NSNull null]) {
-            radarOptions.autoHandleNotificationDeepLinks = [autoHandleValue boolValue];
-        }
-    }
+    RadarInitializeOptions *radarOptions = [self radarInitializeOptionsFromDictionary:options];
     [Radar initializeWithAuthToken:authToken options:radarOptions];
 }
 
