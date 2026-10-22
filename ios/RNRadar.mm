@@ -676,6 +676,10 @@ RCT_EXPORT_METHOD(setExpectedAddress:(NSString *)address) {
     [Radar setExpectedAddress:address];
 }
 
+RCT_EXPORT_METHOD(setExpectedJurisdiction:(NSString *)countryCode stateCode:(NSString *)stateCode) {
+    [Radar setExpectedJurisdictionWithCountryCode:countryCode stateCode:stateCode];
+}
+
 RCT_EXPORT_METHOD(startRangingBeacons) {
     [Radar startRangingBeacons];
 }

@@ -380,6 +380,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
         radarModuleImpl.setExpectedAddress(address)
     }
 
+    override fun setExpectedJurisdiction(countryCode: String?, stateCode: String?): Unit {
+        radarModuleImpl.setExpectedJurisdiction(countryCode, stateCode)
+    }
+
     override fun startRangingBeacons(): Unit {
         radarModuleImpl.startRangingBeacons()
     }

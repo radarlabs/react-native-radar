@@ -340,6 +340,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
+    public void setExpectedJurisdiction(String countryCode, String stateCode) {
+        radarModuleImpl.setExpectedJurisdiction(countryCode, stateCode);
+    }
+
+    @ReactMethod
     public void startRangingBeacons() {
         radarModuleImpl.startRangingBeacons();
     }

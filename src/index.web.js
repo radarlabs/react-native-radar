@@ -136,6 +136,10 @@ const setExpectedAddress = (address) => {
   if (throws) throw new Error("setExpectedAddress() is not implemented on web");
 };
 
+const setExpectedJurisdiction = (countryCode, stateCode) => {
+  if (throws) throw new Error("setExpectedJurisdiction() is not implemented on web");
+};
+
 const startRangingBeacons = () => {
   if (throws) throw new Error("startRangingBeacons() is not implemented on web");
 };
@@ -515,6 +519,7 @@ const Radar = {
   getVerifiedLocationToken,
   revealRisk,
   setExpectedAddress,
+  setExpectedJurisdiction,
   startRangingBeacons,
   stopRangingBeacons,
   startTrackingEfficient,

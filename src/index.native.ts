@@ -473,6 +473,9 @@ const Radar: RadarNativeInterface = {
   setExpectedAddress: function (address: string | null): void {
     return NativeRadar.setExpectedAddress(address);
   },
+  setExpectedJurisdiction: function (countryCode: string | null, stateCode: string | null): void {
+    return NativeRadar.setExpectedJurisdiction(countryCode, stateCode);
+  },
   startRangingBeacons: function (): void {
     return NativeRadar.startRangingBeacons();
   },

@@ -89,6 +89,7 @@ export interface RadarNativeInterface {
   revealRisk: () => Promise<RadarRevealRiskCallback>;
   clearVerifiedLocationToken: () => void;
   setExpectedAddress: (address: string | null) => void;
+  setExpectedJurisdiction: (countryCode: string | null, stateCode: string | null) => void;
   startRangingBeacons: () => void;
   stopRangingBeacons: () => void;
   startTrackingEfficient: () => void;

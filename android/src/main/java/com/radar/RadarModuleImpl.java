@@ -492,6 +492,10 @@ public class RadarModuleImpl {
         Radar.setExpectedAddress(address);
     }
 
+    public void setExpectedJurisdiction(String countryCode, String stateCode) {
+        Radar.setExpectedJurisdiction(countryCode, stateCode);
+    }
+
 
     public void startRangingBeacons() {
         Radar.startRangingBeacons();

@@ -76,6 +76,7 @@ export interface Spec extends TurboModule {
   revealRisk(): Promise<Object>;
   clearVerifiedLocationToken(): void;
   setExpectedAddress(address: string | null): void;
+  setExpectedJurisdiction(countryCode: string | null, stateCode: string | null): void;
   startRangingBeacons(): void;
   stopRangingBeacons(): void;
   startTrackingEfficient(): void;
