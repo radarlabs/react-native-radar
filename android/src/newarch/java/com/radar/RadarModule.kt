@@ -62,8 +62,8 @@ class RadarModule(reactContext: ReactApplicationContext) :
         override fun onLocationUpdated(context: Context, location: Location, user: RadarUser) {
             if (isInvalidated) return
             val eventBlob = Arguments.createMap().apply {
-                putString("location", Radar.jsonForLocation(location).toString())
-                putString("user", user.toJson().toString())
+                putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)))
+                putMap("user", RadarUtils.mapForJson(user.toJson()))
             }
             emitLocationEmitter(eventBlob)
         }
@@ -71,7 +71,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         override fun onClientLocationUpdated(context: Context, location: Location, stopped: Boolean, source: Radar.RadarLocationSource) {
             if (isInvalidated) return
             val eventBlob = Arguments.createMap().apply {
-                putString("location", Radar.jsonForLocation(location).toString())
+                putMap("location", RadarUtils.mapForJson(Radar.jsonForLocation(location)))
                 putBoolean("stopped", stopped)
                 putString("source", source.toString())
             }
@@ -137,7 +137,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
         override fun onTokenUpdated(context: Context, token: RadarVerifiedLocationToken) {
             if (isInvalidated) return
             val eventBlob = Arguments.createMap().apply {
-                putString("token", token.toJson().toString())
+                putMap("token", RadarUtils.mapForJson(token.toJson()))
             }
             emitTokenEmitter(eventBlob)
         }
@@ -170,7 +170,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun initialize(publishableKey: String, fraud: Boolean, options: ReadableMap?): Unit {
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "4.36.0")
+        editor.putString("x_platform_sdk_version", "4.37.0")
         editor.apply()
 
         Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, reactApplicationContext.currentActivity)
@@ -182,7 +182,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun initializeWithAuthToken(authToken: String, fraud: Boolean, options: ReadableMap?): Unit {
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "4.36.0")
+        editor.putString("x_platform_sdk_version", "4.37.0")
         editor.apply()
         
         val initOptions = io.radar.sdk.RadarInitializeOptions.builder()
@@ -353,6 +353,18 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun clearVerifiedLocationToken(): Unit {
         radarModuleImpl.clearVerifiedLocationToken()
+    }
+
+    override fun setExpectedAddress(address: String?): Unit {
+        radarModuleImpl.setExpectedAddress(address)
+    }
+
+    override fun startRangingBeacons(): Unit {
+        radarModuleImpl.startRangingBeacons()
+    }
+
+    override fun stopRangingBeacons(): Unit {
+        radarModuleImpl.stopRangingBeacons()
     }
 
     override fun startTrackingEfficient(): Unit {

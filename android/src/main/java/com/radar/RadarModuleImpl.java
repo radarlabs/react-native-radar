@@ -334,7 +334,7 @@ public class RadarModuleImpl {
     private static final String FRAUD_MISSING_MESSAGE =
         "Radar fraud module is not on the classpath. Enable `androidFraud: true` " +
         "in the react-native-radar Expo plugin config, or add " +
-        "`implementation \"io.radar:sdk-fraud:1.2.0\"` to your android/app/build.gradle.";
+        "`implementation \"io.radar:sdk-fraud:1.3.0\"` to your android/app/build.gradle.";
 
     private static boolean isFraudModuleAvailable() {
         try {
@@ -485,6 +485,21 @@ public class RadarModuleImpl {
 
     public void clearVerifiedLocationToken() {
         Radar.clearVerifiedLocationToken();
+    }
+
+
+    public void setExpectedAddress(String address) {
+        Radar.setExpectedAddress(address);
+    }
+
+
+    public void startRangingBeacons() {
+        Radar.startRangingBeacons();
+    }
+
+
+    public void stopRangingBeacons() {
+        Radar.stopRangingBeacons();
     }
 
 
@@ -1113,7 +1128,7 @@ public class RadarModuleImpl {
 
         boolean mailable = optionsMap.hasKey("mailable") ? optionsMap.getBoolean("mailable") : false;
 
-        Radar.autocomplete(query, near, layers, limit, country, true, mailable, new Radar.RadarGeocodeCallback() {
+        Radar.autocomplete(query, near, layers, limit, country, mailable, new Radar.RadarGeocodeCallback() {
 
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
@@ -1228,10 +1243,6 @@ public class RadarModuleImpl {
         }
 
         Radar.ipGeocode(new Radar.RadarIpGeocodeCallback() {
-
-            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, boolean proxy) {
-                onComplete(status, address, proxy, null);
-            }
 
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress address, boolean proxy, @Nullable Throwable throwable) {
                 if (status == Radar.RadarStatus.SUCCESS) {

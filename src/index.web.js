@@ -132,7 +132,19 @@ const revealRisk = () => {
   return new Promise((resolve, reject) => { reject("revealRisk() is not implemented on web") });
 };
 
-const startTrackingEfficient = () => {  
+const setExpectedAddress = (address) => {
+  if (throws) throw new Error("setExpectedAddress() is not implemented on web");
+};
+
+const startRangingBeacons = () => {
+  if (throws) throw new Error("startRangingBeacons() is not implemented on web");
+};
+
+const stopRangingBeacons = () => {
+  if (throws) throw new Error("stopRangingBeacons() is not implemented on web");
+};
+
+const startTrackingEfficient = () => {
   if (throws) throw new Error("startTrackingEfficient() is not implemented on web");
 };
 
@@ -502,6 +514,9 @@ const Radar = {
   trackVerified,
   getVerifiedLocationToken,
   revealRisk,
+  setExpectedAddress,
+  startRangingBeacons,
+  stopRangingBeacons,
   startTrackingEfficient,
   startTrackingResponsive,
   startTrackingContinuous,

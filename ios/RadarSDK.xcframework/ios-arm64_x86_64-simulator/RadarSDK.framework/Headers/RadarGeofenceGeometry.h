@@ -5,11 +5,7 @@
 //  Copyright © 2019 Radar Labs, Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-/**
- Represents the geometry of a geofence.
- */
-@interface RadarGeofenceGeometry : NSObject
-
-@end
+// Compatibility header. RadarGeofenceGeometry is implemented in Swift and declared in the generated
+// RadarSDK-Swift.h, which the umbrella header imports. This file keeps existing
+// `#import <RadarSDK/RadarGeofenceGeometry.h>` statements compiling.
+#import <RadarSDK/RadarSDK.h>

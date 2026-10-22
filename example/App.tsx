@@ -6,7 +6,8 @@ import {
   Platform,
   ScrollView,
   Settings,
-  NativeModules
+  NativeModules,
+  PermissionsAndroid
 } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Radar, { Map, Autocomplete } from "react-native-radar";
@@ -283,6 +284,75 @@ export default function App() {
   const clearVerifiedLocationToken = () => {
     Radar.clearVerifiedLocationToken();
     populateText("clearVerifiedLocationToken called");
+  };
+
+  const setExpectedAddress = () => {
+    Radar.setExpectedAddress("841 Broadway, New York, NY 10003");
+    populateText("setExpectedAddress: set to '841 Broadway, New York, NY 10003'");
+  };
+
+  const clearExpectedAddress = () => {
+    Radar.setExpectedAddress(null);
+    populateText("clearExpectedAddress: cleared (null)");
+  };
+
+  const trackVerifiedExpectedAddress = async () => {
+    try {
+      const result = await Radar.trackVerified();
+      populateText(
+        "trackVerifiedExpectedAddress: " +
+          stringify(result.token?.user?.expectedAddress)
+      );
+    } catch (err) {
+      populateText("trackVerifiedExpectedAddress error: " + err);
+    }
+  };
+
+  const trackOnceLocationInsights = async () => {
+    try {
+      const result = await Radar.trackOnce();
+      populateText(
+        "trackOnceLocationInsights: " + stringify(result.user?.locationInsights)
+      );
+    } catch (err) {
+      populateText("trackOnceLocationInsights error: " + err);
+    }
+  };
+
+  const requestBluetoothPermissions = async () => {
+    if (Platform.OS !== "android") {
+      populateText("requestBluetoothPermissions: Android only");
+      return;
+    }
+    try {
+      const result = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN
+      );
+      populateText("requestBluetoothPermissions: " + result);
+    } catch (err) {
+      populateText("requestBluetoothPermissions error: " + err);
+    }
+  };
+
+  const startRangingBeacons = () => {
+    Radar.startRangingBeacons();
+    populateText("startRangingBeacons called");
+  };
+
+  const stopRangingBeacons = () => {
+    Radar.stopRangingBeacons();
+    populateText("stopRangingBeacons called");
+  };
+
+  const listenForEventTypes = () => {
+    Radar.onEventsReceived(({ events }) => {
+      populateText(
+        "listenForEventTypes: " + stringify(events.map((event) => event.type))
+      );
+    });
+    populateText(
+      "listenForEventTypes: listening for events. This replaces any existing onEventsReceived listener. Event types appear here as events arrive."
+    );
   };
 
   const startTrackingEfficient = () => {
@@ -950,6 +1020,14 @@ export default function App() {
               <ExampleButton title="trackVerified" onPress={trackVerified} />
               <ExampleButton title="getVerifiedLocationToken" onPress={getVerifiedLocationToken} />
               <ExampleButton title="clearVerifiedLocationToken" onPress={clearVerifiedLocationToken} />
+              <ExampleButton title="setExpectedAddress" onPress={setExpectedAddress} />
+              <ExampleButton title="clearExpectedAddress" onPress={clearExpectedAddress} />
+              <ExampleButton title="trackVerifiedExpectedAddress" onPress={trackVerifiedExpectedAddress} />
+              <ExampleButton title="trackOnceLocationInsights" onPress={trackOnceLocationInsights} />
+              <ExampleButton title="requestBluetoothPermissions" onPress={requestBluetoothPermissions} />
+              <ExampleButton title="startRangingBeacons" onPress={startRangingBeacons} />
+              <ExampleButton title="stopRangingBeacons" onPress={stopRangingBeacons} />
+              <ExampleButton title="listenForEventTypes" onPress={listenForEventTypes} />
               <ExampleButton title="startTrackingEfficient" onPress={startTrackingEfficient} />
               <ExampleButton title="startTrackingResponsive" onPress={startTrackingResponsive} />
               <ExampleButton title="startTrackingContinuous" onPress={startTrackingContinuous} />
