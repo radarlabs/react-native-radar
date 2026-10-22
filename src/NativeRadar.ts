@@ -128,6 +128,7 @@ export interface Spec extends TurboModule {
   readonly eventsEmitter: EventEmitter<EventsEmitter>;
   readonly tokenEmitter: EventEmitter<TokenEmitter>;
   readonly sharingEmitter: EventEmitter<SharingEmitter>;
+  readonly ipChangeEmitter: EventEmitter<void>;
   readonly newInAppMessageEmitter: EventEmitter<NewInAppMessageEmitter>;
   readonly inAppMessageDismissedEmitter: EventEmitter<InAppMessageDismissedEmitter>;
   readonly inAppMessageClickedEmitter: EventEmitter<InAppMessageClickedEmitter>;

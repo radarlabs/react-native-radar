@@ -149,6 +149,11 @@ class RadarModule(reactContext: ReactApplicationContext) :
             }
             emitSharingEmitter(eventBlob)
         }
+
+        override fun onIpChanged(context: Context) {
+            if (isInvalidated) return
+            emitIpChangeEmitter()
+        }
     }
 
     private val radarModuleImpl = RadarModuleImpl()

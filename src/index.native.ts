@@ -12,6 +12,7 @@ import type {
   RadarLogUpdateCallback,
   RadarTokenUpdateCallback,
   RadarSharingChangedCallback,
+  RadarIpChangedCallback,
   RadarEventUpdateCallback,
   RadarLogLevel,
   RadarMetadata,
@@ -101,6 +102,7 @@ type Events =
   | "eventsEmitter"
   | "tokenEmitter"
   | "sharingEmitter"
+  | "ipChangeEmitter"
   | "newInAppMessageEmitter"
   | "inAppMessageDismissedEmitter"
   | "inAppMessageClickedEmitter";
@@ -122,6 +124,7 @@ let logUpdateSubscription: EventSubscription | null = null;
 let eventsUpdateSubscription: EventSubscription | null = null;
 let tokenUpdateSubscription: EventSubscription | null = null;
 let sharingChangedSubscription: EventSubscription | null = null;
+let ipChangeSubscription: EventSubscription | null = null;
 let newInAppMessageUpdateSubscription: EventSubscription | null = null;
 let inAppMessageDismissedUpdateSubscription: EventSubscription | null = null;
 let inAppMessageClickedUpdateSubscription: EventSubscription | null = null;
@@ -292,6 +295,21 @@ const Radar: RadarNativeInterface = {
         callback(event.sharing);
       }
     );
+  },
+
+  onIpChanged: (callback: RadarIpChangedCallback | null) => {
+    if (ipChangeSubscription) {
+      ipChangeSubscription.remove();
+      ipChangeSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    ipChangeSubscription = addListener("ipChangeEmitter", () => {
+      callback();
+    });
   },
 
   onNewInAppMessage: (callback: RadarNewInAppMessageCallback | null) => {

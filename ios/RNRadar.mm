@@ -44,7 +44,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter", @"sharingEmitter", @"newInAppMessageEmitter", @"inAppMessageDismissedEmitter", @"inAppMessageClickedEmitter"];
+    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter", @"sharingEmitter", @"ipChangeEmitter", @"newInAppMessageEmitter", @"inAppMessageDismissedEmitter", @"inAppMessageClickedEmitter"];
 }
 
 - (void)startObserving {
@@ -241,6 +241,18 @@ RCT_EXPORT_MODULE()
     #else
     if (hasListeners) {
         [self sendEventWithName:@"sharingEmitter" body:body];
+    }
+    #endif
+}
+
+- (void)didChangeIP {
+    #ifdef RCT_NEW_ARCH_ENABLED
+    if (jsEventEmitterReady) {
+        [self emitIpChangeEmitter];
+    }
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"ipChangeEmitter" body:nil];
     }
     #endif
 }

@@ -60,4 +60,16 @@ public class RadarOldArchVerifiedReceiver extends RadarVerifiedReceiver {
         }
     }
 
+    @Override
+    public void onIpChanged(@NonNull Context context) {
+        try {
+            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            reactNativeHost = reactApplication.getReactNativeHost();
+
+            sendEvent("ipChangeEmitter", null);
+        } catch (Exception e) {
+            Log.e(TAG, "Exception", e);
+        }
+    }
+
 }
