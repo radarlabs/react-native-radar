@@ -30,6 +30,7 @@ import type {
   RadarTrackingOptionsForegroundService,
   RadarTripCallback,
   RadarTripOptions,
+  RadarTrip,
   RadarUpdateTripOptions,
   RadarAddress,
   RadarAddressCallback,
@@ -530,6 +531,9 @@ const Radar: RadarNativeInterface = {
   },
   getTripOptions: function (): Promise<RadarTripOptions> {
     return NativeRadar.getTripOptions() as Promise<RadarTripOptions>;
+  },
+  getTrip: function (): Promise<RadarTrip | null> {
+    return NativeRadar.getTrip() as Promise<RadarTrip | null>;
   },
   startTrip: function (
     options: RadarStartTripOptions

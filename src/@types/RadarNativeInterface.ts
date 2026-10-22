@@ -23,6 +23,7 @@ import type {
   RadarTrackingOptionsForegroundService,
   RadarNotificationOptions,
   RadarTripOptions,
+  RadarTrip,
   RadarStartTripOptions,
   RadarTripCallback,
   RadarUpdateTripOptions,
@@ -109,6 +110,7 @@ export interface RadarNativeInterface {
   ) => void;
   setNotificationOptions: (options: RadarNotificationOptions) => void;
   getTripOptions: () => Promise<RadarTripOptions>;
+  getTrip: () => Promise<RadarTrip | null>;
   startTrip: (options: RadarStartTripOptions) => Promise<RadarTripCallback>;
   completeTrip: () => Promise<RadarTripCallback>;
   cancelTrip: () => Promise<RadarTripCallback>;

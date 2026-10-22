@@ -452,6 +452,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
         radarModuleImpl.getTripOptions(promise)
     }
 
+    override fun getTrip(promise: Promise): Unit {
+        radarModuleImpl.getTrip(promise)
+    }
+
     override fun startTrip(options: ReadableMap, promise: Promise): Unit {
         radarModuleImpl.startTrip(options, promise)
     }

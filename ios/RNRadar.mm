@@ -820,6 +820,19 @@ RCT_EXPORT_METHOD(getTripOptions:(RCTPromiseResolveBlock)resolve reject:(RCTProm
     }
 }
 
+RCT_EXPORT_METHOD(getTrip:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (resolve == nil) {
+        return;
+    }
+
+    RadarTrip* trip = [Radar getTrip];
+    if (trip != nil) {
+        resolve([trip dictionaryValue]);
+    } else {
+        resolve(nil);
+    }
+}
+
 RCT_EXPORT_METHOD(startTrip:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
     // { tripOptions, trackingOptions } is the new req format.
     // fallback to reading trip options from the top level options.

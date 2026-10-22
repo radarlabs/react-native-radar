@@ -208,6 +208,11 @@ const getTripOptions = () => {
   return new Promise((resolve, reject) => { reject("getTripOptions() is not implemented on web") });
 }
 
+const getTrip = () => {
+  if (throws) throw new Error("getTrip() is not implemented on web");
+  return new Promise((resolve, reject) => { reject("getTrip() is not implemented on web") });
+}
+
 const startTrip = (options) => {
   if (options.tripOptions) {
     options = options.tripOptions;
@@ -536,6 +541,7 @@ const Radar = {
   setForegroundServiceOptions,
   setNotificationOptions,
   getTripOptions,
+  getTrip,
   startTrip,
   completeTrip,
   cancelTrip,

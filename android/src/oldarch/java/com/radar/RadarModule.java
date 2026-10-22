@@ -435,6 +435,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
+    public void getTrip(final Promise promise) {
+        radarModuleImpl.getTrip(promise);
+    }
+
+    @ReactMethod
     public void startTrip(ReadableMap optionsMap, final Promise promise) {
         radarModuleImpl.startTrip(optionsMap, promise);
     }

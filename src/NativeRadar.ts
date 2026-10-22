@@ -94,6 +94,7 @@ export interface Spec extends TurboModule {
   setForegroundServiceOptions(options: Object): void;
   setNotificationOptions(options: Object): void;
   getTripOptions(): Promise<Object>;
+  getTrip(): Promise<Object | null>;
   startTrip(options: Object): Promise<Object>;
   completeTrip(): Promise<Object>;
   cancelTrip(): Promise<Object>;
