@@ -3,8 +3,9 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Radar from "react-native-radar";
 import React, { useEffect, useMemo, useState } from "react";
 import { Settings as RNSettings } from "react-native";
-// this import is only here to ensure extending maplibre works as expceted
-import { Camera, Images, GeoJSONSource, Layer } from "@maplibre/maplibre-react-native";
+// Load MapLibre independently of RadarMap to exercise shared native registration.
+// Unused named imports are removed by the TypeScript transform.
+import "@maplibre/maplibre-react-native";
 import { createActions } from "./src/actions";
 import TabBar, { type Tab } from "./src/components/TabBar";
 import { LogStoreProvider, useLogStore } from "./src/console/logStore";
