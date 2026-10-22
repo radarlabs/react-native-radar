@@ -8,6 +8,7 @@ import type {
   RadarLogUpdateCallback,
   RadarEventUpdateCallback,
   RadarTokenUpdateCallback,
+  RadarSharingChangedCallback,
   RadarLogLevel,
   RadarMetadata,
   RadarTrackingOptionsDesiredAccuracy,
@@ -151,6 +152,7 @@ export interface RadarNativeInterface {
   onLog: (callback: RadarLogUpdateCallback | null) => void;
   onEventsReceived: (callback: RadarEventUpdateCallback | null) => void;
   onTokenUpdated: (callback: RadarTokenUpdateCallback | null) => void;
+  onSharingChanged: (callback: RadarSharingChangedCallback | null) => void;
   onNewInAppMessage: (callback: RadarNewInAppMessageCallback | null) => void;
   onInAppMessageDismissed: (callback: RadarInAppMessageDismissedCallback | null) => void;
   onInAppMessageClicked: (callback: RadarInAppMessageClickedCallback | null) => void;

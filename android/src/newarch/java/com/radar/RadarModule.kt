@@ -141,6 +141,14 @@ class RadarModule(reactContext: ReactApplicationContext) :
             }
             emitTokenEmitter(eventBlob)
         }
+
+        override fun onSharingChanged(context: Context, sharing: Boolean) {
+            if (isInvalidated) return
+            val eventBlob = Arguments.createMap().apply {
+                putBoolean("sharing", sharing)
+            }
+            emitSharingEmitter(eventBlob)
+        }
     }
 
     private val radarModuleImpl = RadarModuleImpl()

@@ -46,4 +46,18 @@ public class RadarOldArchVerifiedReceiver extends RadarVerifiedReceiver {
         }
     }
 
+    @Override
+    public void onSharingChanged(@NonNull Context context, boolean sharing) {
+        try {
+            ReactApplication reactApplication = ((ReactApplication)context.getApplicationContext());
+            reactNativeHost = reactApplication.getReactNativeHost();
+
+            WritableMap map = Arguments.createMap();
+            map.putBoolean("sharing", sharing);
+            sendEvent("sharingEmitter", map);
+        } catch (Exception e) {
+            Log.e(TAG, "Exception", e);
+        }
+    }
+
 }

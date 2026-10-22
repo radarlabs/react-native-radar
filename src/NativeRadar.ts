@@ -30,6 +30,10 @@ export type TokenEmitter = {
   token: Object;
 };
 
+export type SharingEmitter = {
+  sharing: boolean;
+};
+
 export type NewInAppMessageEmitter = {
   inAppMessage: Object;
 };
@@ -123,6 +127,7 @@ export interface Spec extends TurboModule {
   readonly logEmitter: EventEmitter<LogEmitter>;
   readonly eventsEmitter: EventEmitter<EventsEmitter>;
   readonly tokenEmitter: EventEmitter<TokenEmitter>;
+  readonly sharingEmitter: EventEmitter<SharingEmitter>;
   readonly newInAppMessageEmitter: EventEmitter<NewInAppMessageEmitter>;
   readonly inAppMessageDismissedEmitter: EventEmitter<InAppMessageDismissedEmitter>;
   readonly inAppMessageClickedEmitter: EventEmitter<InAppMessageClickedEmitter>;

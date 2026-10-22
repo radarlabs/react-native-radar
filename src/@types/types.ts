@@ -523,6 +523,10 @@ export interface RadarTokenUpdateCallback {
   (token: Object): void;
 }
 
+export interface RadarSharingChangedCallback {
+  (sharing: boolean): void;
+}
+
 export interface RadarInAppMessage {
   title: {
     text: string;
@@ -562,7 +566,8 @@ export type RadarListenerCallback =
   | RadarClientLocationUpdateCallback
   | RadarErrorCallback
   | RadarLogUpdateCallback
-  | RadarTokenUpdateCallback;
+  | RadarTokenUpdateCallback
+  | RadarSharingChangedCallback;
 
 export type RadarPermissionsStatus =
   | "GRANTED_FOREGROUND"
@@ -591,7 +596,8 @@ export type RadarEventChannel =
   | "error"
   | "events"
   | "log"
-  | "token";
+  | "token"
+  | "sharing";
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 

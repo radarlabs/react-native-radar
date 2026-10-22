@@ -44,7 +44,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter", @"newInAppMessageEmitter", @"inAppMessageDismissedEmitter", @"inAppMessageClickedEmitter"];
+    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter", @"sharingEmitter", @"newInAppMessageEmitter", @"inAppMessageDismissedEmitter", @"inAppMessageClickedEmitter"];
 }
 
 - (void)startObserving {
@@ -226,6 +226,21 @@ RCT_EXPORT_MODULE()
     #else
     if (hasListeners) {
         [self sendEventWithName:@"tokenEmitter" body:body];
+    }
+    #endif
+}
+
+- (void)didChangeSharing:(BOOL)sharing {
+    NSDictionary *body = @{
+        @"sharing": @(sharing)
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    if (jsEventEmitterReady) {
+        [self emitSharingEmitter:body];
+    }
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"sharingEmitter" body:body];
     }
     #endif
 }

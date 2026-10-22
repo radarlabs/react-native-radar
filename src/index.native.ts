@@ -11,6 +11,7 @@ import type {
   RadarErrorCallback,
   RadarLogUpdateCallback,
   RadarTokenUpdateCallback,
+  RadarSharingChangedCallback,
   RadarEventUpdateCallback,
   RadarLogLevel,
   RadarMetadata,
@@ -69,6 +70,7 @@ import NativeRadarMod, {
   InAppMessageDismissedEmitter,
   NewInAppMessageEmitter,
   TokenEmitter,
+  SharingEmitter,
 } from "./NativeRadar";
 
 const NativeRadar = NativeRadarMod;
@@ -98,6 +100,7 @@ type Events =
   | "logEmitter"
   | "eventsEmitter"
   | "tokenEmitter"
+  | "sharingEmitter"
   | "newInAppMessageEmitter"
   | "inAppMessageDismissedEmitter"
   | "inAppMessageClickedEmitter";
@@ -118,6 +121,7 @@ let errorUpdateSubscription: EventSubscription | null = null;
 let logUpdateSubscription: EventSubscription | null = null;
 let eventsUpdateSubscription: EventSubscription | null = null;
 let tokenUpdateSubscription: EventSubscription | null = null;
+let sharingChangedSubscription: EventSubscription | null = null;
 let newInAppMessageUpdateSubscription: EventSubscription | null = null;
 let inAppMessageDismissedUpdateSubscription: EventSubscription | null = null;
 let inAppMessageClickedUpdateSubscription: EventSubscription | null = null;
@@ -268,6 +272,24 @@ const Radar: RadarNativeInterface = {
       "tokenEmitter",
       (event: TokenEmitter) => {
         callback(event.token);
+      }
+    );
+  },
+
+  onSharingChanged: (callback: RadarSharingChangedCallback | null) => {
+    if (sharingChangedSubscription) {
+      sharingChangedSubscription.remove();
+      sharingChangedSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    sharingChangedSubscription = addListener(
+      "sharingEmitter",
+      (event: SharingEmitter) => {
+        callback(event.sharing);
       }
     );
   },
