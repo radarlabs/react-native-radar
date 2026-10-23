@@ -141,6 +141,19 @@ class RadarModule(reactContext: ReactApplicationContext) :
             }
             emitTokenEmitter(eventBlob)
         }
+
+        override fun onSharingChanged(context: Context, sharing: Boolean) {
+            if (isInvalidated) return
+            val eventBlob = Arguments.createMap().apply {
+                putBoolean("sharing", sharing)
+            }
+            emitSharingEmitter(eventBlob)
+        }
+
+        override fun onIpChanged(context: Context) {
+            if (isInvalidated) return
+            emitIpChangeEmitter()
+        }
     }
 
     private val radarModuleImpl = RadarModuleImpl()
@@ -173,7 +186,14 @@ class RadarModule(reactContext: ReactApplicationContext) :
         editor.putString("x_platform_sdk_version", "4.37.0")
         editor.apply()
 
-        Radar.initialize(reactApplicationContext, publishableKey, radarReceiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, radarInAppMessageReceiver, reactApplicationContext.currentActivity)
+        val initOptionsBuilder = io.radar.sdk.RadarInitializeOptions.builder()
+            .radarReceiver(radarReceiver)
+            .locationProvider(Radar.RadarLocationServicesProvider.GOOGLE)
+            .fraud(fraud)
+            .inAppMessageReceiver(radarInAppMessageReceiver)
+            .apply { reactApplicationContext.currentActivity?.let { activity(it) } }
+        val initOptions = RadarInitializeOptionsUtils.applyOptions(initOptionsBuilder, options).build()
+        Radar.initialize(reactApplicationContext, publishableKey, initOptions)
         if (fraud) {
             Radar.setVerifiedReceiver(radarVerifiedReceiver)
         } 
@@ -192,6 +212,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
             .fraud(fraud)
             .inAppMessageReceiver(radarInAppMessageReceiver)
             .apply { reactApplicationContext.currentActivity?.let { activity(it) } }
+            .let { RadarInitializeOptionsUtils.applyOptions(it, options) }
             .build()
         Radar.initialize(reactApplicationContext, initOptions)
         if (fraud) {
@@ -359,6 +380,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
         radarModuleImpl.setExpectedAddress(address)
     }
 
+    override fun setExpectedJurisdiction(countryCode: String?, stateCode: String?): Unit {
+        radarModuleImpl.setExpectedJurisdiction(countryCode, stateCode)
+    }
+
     override fun startRangingBeacons(): Unit {
         radarModuleImpl.startRangingBeacons()
     }
@@ -425,6 +450,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun getTripOptions(promise: Promise): Unit {
         radarModuleImpl.getTripOptions(promise)
+    }
+
+    override fun getTrip(promise: Promise): Unit {
+        radarModuleImpl.getTrip(promise)
     }
 
     override fun startTrip(options: ReadableMap, promise: Promise): Unit {

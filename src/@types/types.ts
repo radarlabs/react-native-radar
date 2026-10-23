@@ -523,6 +523,26 @@ export interface RadarTokenUpdateCallback {
   (token: Object): void;
 }
 
+export interface RadarInitializeOptions {
+  silentPush?: boolean;
+  autoLogNotificationConversions?: boolean;
+  autoHandleNotificationDeepLinks?: boolean;
+  /** Enables automatic failover for trackVerified requests. */
+  trackVerifiedAutoFailover?: boolean;
+  /** Request timeout in seconds for standard API calls. */
+  networkTimeoutInterval?: number;
+  /** Minimum interval in seconds between IP-change callbacks. 0 delivers every change. */
+  ipChangeDebounceInterval?: number;
+}
+
+export interface RadarSharingChangedCallback {
+  (sharing: boolean): void;
+}
+
+export interface RadarIpChangedCallback {
+  (): void;
+}
+
 export interface RadarInAppMessage {
   title: {
     text: string;
@@ -562,7 +582,9 @@ export type RadarListenerCallback =
   | RadarClientLocationUpdateCallback
   | RadarErrorCallback
   | RadarLogUpdateCallback
-  | RadarTokenUpdateCallback;
+  | RadarTokenUpdateCallback
+  | RadarSharingChangedCallback
+  | RadarIpChangedCallback;
 
 export type RadarPermissionsStatus =
   | "GRANTED_FOREGROUND"
@@ -591,7 +613,9 @@ export type RadarEventChannel =
   | "error"
   | "events"
   | "log"
-  | "token";
+  | "token"
+  | "sharing"
+  | "ipChange";
 
 export type RadarLogLevel = "info" | "debug" | "warning" | "error" | "none";
 

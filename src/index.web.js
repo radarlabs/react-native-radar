@@ -136,6 +136,10 @@ const setExpectedAddress = (address) => {
   if (throws) throw new Error("setExpectedAddress() is not implemented on web");
 };
 
+const setExpectedJurisdiction = (countryCode, stateCode) => {
+  if (throws) throw new Error("setExpectedJurisdiction() is not implemented on web");
+};
+
 const startRangingBeacons = () => {
   if (throws) throw new Error("startRangingBeacons() is not implemented on web");
 };
@@ -202,6 +206,11 @@ const setNotificationOptions = (options) => {
 const getTripOptions = () => {
   if (throws) throw new Error("getTripOptions() is not implemented on web");
   return new Promise((resolve, reject) => { reject("getTripOptions() is not implemented on web") });
+}
+
+const getTrip = () => {
+  if (throws) throw new Error("getTrip() is not implemented on web");
+  return new Promise((resolve, reject) => { reject("getTrip() is not implemented on web") });
 }
 
 const startTrip = (options) => {
@@ -515,6 +524,7 @@ const Radar = {
   getVerifiedLocationToken,
   revealRisk,
   setExpectedAddress,
+  setExpectedJurisdiction,
   startRangingBeacons,
   stopRangingBeacons,
   startTrackingEfficient,
@@ -531,6 +541,7 @@ const Radar = {
   setForegroundServiceOptions,
   setNotificationOptions,
   getTripOptions,
+  getTrip,
   startTrip,
   completeTrip,
   cancelTrip,

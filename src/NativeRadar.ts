@@ -30,6 +30,10 @@ export type TokenEmitter = {
   token: Object;
 };
 
+export type SharingEmitter = {
+  sharing: boolean;
+};
+
 export type NewInAppMessageEmitter = {
   inAppMessage: Object;
 };
@@ -72,6 +76,7 @@ export interface Spec extends TurboModule {
   revealRisk(): Promise<Object>;
   clearVerifiedLocationToken(): void;
   setExpectedAddress(address: string | null): void;
+  setExpectedJurisdiction(countryCode: string | null, stateCode: string | null): void;
   startRangingBeacons(): void;
   stopRangingBeacons(): void;
   startTrackingEfficient(): void;
@@ -89,6 +94,7 @@ export interface Spec extends TurboModule {
   setForegroundServiceOptions(options: Object): void;
   setNotificationOptions(options: Object): void;
   getTripOptions(): Promise<Object>;
+  getTrip(): Promise<Object | null>;
   startTrip(options: Object): Promise<Object>;
   completeTrip(): Promise<Object>;
   cancelTrip(): Promise<Object>;
@@ -123,6 +129,8 @@ export interface Spec extends TurboModule {
   readonly logEmitter: EventEmitter<LogEmitter>;
   readonly eventsEmitter: EventEmitter<EventsEmitter>;
   readonly tokenEmitter: EventEmitter<TokenEmitter>;
+  readonly sharingEmitter: EventEmitter<SharingEmitter>;
+  readonly ipChangeEmitter: EventEmitter<void>;
   readonly newInAppMessageEmitter: EventEmitter<NewInAppMessageEmitter>;
   readonly inAppMessageDismissedEmitter: EventEmitter<InAppMessageDismissedEmitter>;
   readonly inAppMessageClickedEmitter: EventEmitter<InAppMessageClickedEmitter>;

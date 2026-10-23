@@ -8,6 +8,9 @@ import type {
   RadarLogUpdateCallback,
   RadarEventUpdateCallback,
   RadarTokenUpdateCallback,
+  RadarSharingChangedCallback,
+  RadarIpChangedCallback,
+  RadarInitializeOptions,
   RadarLogLevel,
   RadarMetadata,
   RadarTrackingOptionsDesiredAccuracy,
@@ -20,6 +23,7 @@ import type {
   RadarTrackingOptionsForegroundService,
   RadarNotificationOptions,
   RadarTripOptions,
+  RadarTrip,
   RadarStartTripOptions,
   RadarTripCallback,
   RadarUpdateTripOptions,
@@ -53,8 +57,8 @@ import type {
 } from "./types";
 
 export interface RadarNativeInterface {
-  initialize: (publishableKey: string, fraud?: boolean, options?: Object | null) => void;
-  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: Object | null) => void;
+  initialize: (publishableKey: string, fraud?: boolean, options?: RadarInitializeOptions | null) => void;
+  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: RadarInitializeOptions | null) => void;
   setLogLevel: (level: RadarLogLevel) => void;
   setUserId: (userId: string) => void;
   getUserId: () => Promise<string>;
@@ -86,6 +90,7 @@ export interface RadarNativeInterface {
   revealRisk: () => Promise<RadarRevealRiskCallback>;
   clearVerifiedLocationToken: () => void;
   setExpectedAddress: (address: string | null) => void;
+  setExpectedJurisdiction: (countryCode: string | null, stateCode: string | null) => void;
   startRangingBeacons: () => void;
   stopRangingBeacons: () => void;
   startTrackingEfficient: () => void;
@@ -105,6 +110,7 @@ export interface RadarNativeInterface {
   ) => void;
   setNotificationOptions: (options: RadarNotificationOptions) => void;
   getTripOptions: () => Promise<RadarTripOptions>;
+  getTrip: () => Promise<RadarTrip | null>;
   startTrip: (options: RadarStartTripOptions) => Promise<RadarTripCallback>;
   completeTrip: () => Promise<RadarTripCallback>;
   cancelTrip: () => Promise<RadarTripCallback>;
@@ -151,6 +157,8 @@ export interface RadarNativeInterface {
   onLog: (callback: RadarLogUpdateCallback | null) => void;
   onEventsReceived: (callback: RadarEventUpdateCallback | null) => void;
   onTokenUpdated: (callback: RadarTokenUpdateCallback | null) => void;
+  onSharingChanged: (callback: RadarSharingChangedCallback | null) => void;
+  onIpChanged: (callback: RadarIpChangedCallback | null) => void;
   onNewInAppMessage: (callback: RadarNewInAppMessageCallback | null) => void;
   onInAppMessageDismissed: (callback: RadarInAppMessageDismissedCallback | null) => void;
   onInAppMessageClicked: (callback: RadarInAppMessageClickedCallback | null) => void;

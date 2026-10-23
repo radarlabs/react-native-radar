@@ -104,7 +104,16 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         editor.putString("x_platform_sdk_type", "ReactNative");
         editor.putString("x_platform_sdk_version", "4.37.0");
         editor.apply();
-        Radar.initialize(getReactApplicationContext(), publishableKey, receiver, Radar.RadarLocationServicesProvider.GOOGLE, fraud, null, inAppMessageReceiver, getCurrentActivity());
+        io.radar.sdk.RadarInitializeOptions.Builder builder = io.radar.sdk.RadarInitializeOptions.builder()
+            .radarReceiver(receiver)
+            .locationProvider(Radar.RadarLocationServicesProvider.GOOGLE)
+            .fraud(fraud)
+            .inAppMessageReceiver(inAppMessageReceiver);
+        if (getCurrentActivity() != null) {
+            builder.activity(getCurrentActivity());
+        }
+        RadarInitializeOptionsUtils.applyOptions(builder, options);
+        Radar.initialize(getReactApplicationContext(), publishableKey, builder.build());
         if (fraud) { 
             Radar.setVerifiedReceiver(verifiedReceiver);
         }
@@ -127,6 +136,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         if (getCurrentActivity() != null) {
             builder.activity(getCurrentActivity());
         }
+        RadarInitializeOptionsUtils.applyOptions(builder, options);
         io.radar.sdk.RadarInitializeOptions initOptions = builder.build();
 
         Radar.initialize(getReactApplicationContext(), initOptions);
@@ -330,6 +340,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
+    public void setExpectedJurisdiction(String countryCode, String stateCode) {
+        radarModuleImpl.setExpectedJurisdiction(countryCode, stateCode);
+    }
+
+    @ReactMethod
     public void startRangingBeacons() {
         radarModuleImpl.startRangingBeacons();
     }
@@ -417,6 +432,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     @ReactMethod
     public void getTripOptions(final Promise promise) {
         radarModuleImpl.getTripOptions(promise);
+    }
+
+    @ReactMethod
+    public void getTrip(final Promise promise) {
+        radarModuleImpl.getTrip(promise);
     }
 
     @ReactMethod

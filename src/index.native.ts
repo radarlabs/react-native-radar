@@ -11,6 +11,9 @@ import type {
   RadarErrorCallback,
   RadarLogUpdateCallback,
   RadarTokenUpdateCallback,
+  RadarSharingChangedCallback,
+  RadarIpChangedCallback,
+  RadarInitializeOptions,
   RadarEventUpdateCallback,
   RadarLogLevel,
   RadarMetadata,
@@ -27,6 +30,7 @@ import type {
   RadarTrackingOptionsForegroundService,
   RadarTripCallback,
   RadarTripOptions,
+  RadarTrip,
   RadarUpdateTripOptions,
   RadarAddress,
   RadarAddressCallback,
@@ -69,6 +73,7 @@ import NativeRadarMod, {
   InAppMessageDismissedEmitter,
   NewInAppMessageEmitter,
   TokenEmitter,
+  SharingEmitter,
 } from "./NativeRadar";
 
 const NativeRadar = NativeRadarMod;
@@ -98,6 +103,8 @@ type Events =
   | "logEmitter"
   | "eventsEmitter"
   | "tokenEmitter"
+  | "sharingEmitter"
+  | "ipChangeEmitter"
   | "newInAppMessageEmitter"
   | "inAppMessageDismissedEmitter"
   | "inAppMessageClickedEmitter";
@@ -118,12 +125,14 @@ let errorUpdateSubscription: EventSubscription | null = null;
 let logUpdateSubscription: EventSubscription | null = null;
 let eventsUpdateSubscription: EventSubscription | null = null;
 let tokenUpdateSubscription: EventSubscription | null = null;
+let sharingChangedSubscription: EventSubscription | null = null;
+let ipChangeSubscription: EventSubscription | null = null;
 let newInAppMessageUpdateSubscription: EventSubscription | null = null;
 let inAppMessageDismissedUpdateSubscription: EventSubscription | null = null;
 let inAppMessageClickedUpdateSubscription: EventSubscription | null = null;
 
 const Radar: RadarNativeInterface = {
-  initialize: (publishableKey: string, fraud?: boolean, options?: Object | null) => {
+  initialize: (publishableKey: string, fraud?: boolean, options?: RadarInitializeOptions | null) => {
     NativeRadar.initialize(publishableKey, !!fraud, options || null);
     Radar.onNewInAppMessage((inAppMessage) => {
       Radar.showInAppMessage(inAppMessage);
@@ -131,7 +140,7 @@ const Radar: RadarNativeInterface = {
     return;
   },
 
-  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: Object | null) => {
+  initializeWithAuthToken: (authToken: string, fraud?: boolean, options?: RadarInitializeOptions | null) => {
     NativeRadar.initializeWithAuthToken(authToken, !!fraud, options || null);
     Radar.onNewInAppMessage((inAppMessage) => {
       Radar.showInAppMessage(inAppMessage);
@@ -270,6 +279,39 @@ const Radar: RadarNativeInterface = {
         callback(event.token);
       }
     );
+  },
+
+  onSharingChanged: (callback: RadarSharingChangedCallback | null) => {
+    if (sharingChangedSubscription) {
+      sharingChangedSubscription.remove();
+      sharingChangedSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    sharingChangedSubscription = addListener(
+      "sharingEmitter",
+      (event: SharingEmitter) => {
+        callback(event.sharing);
+      }
+    );
+  },
+
+  onIpChanged: (callback: RadarIpChangedCallback | null) => {
+    if (ipChangeSubscription) {
+      ipChangeSubscription.remove();
+      ipChangeSubscription = null;
+    }
+
+    if (!callback) {
+      return;
+    }
+
+    ipChangeSubscription = addListener("ipChangeEmitter", () => {
+      callback();
+    });
   },
 
   onNewInAppMessage: (callback: RadarNewInAppMessageCallback | null) => {
@@ -432,6 +474,9 @@ const Radar: RadarNativeInterface = {
   setExpectedAddress: function (address: string | null): void {
     return NativeRadar.setExpectedAddress(address);
   },
+  setExpectedJurisdiction: function (countryCode: string | null, stateCode: string | null): void {
+    return NativeRadar.setExpectedJurisdiction(countryCode, stateCode);
+  },
   startRangingBeacons: function (): void {
     return NativeRadar.startRangingBeacons();
   },
@@ -486,6 +531,9 @@ const Radar: RadarNativeInterface = {
   },
   getTripOptions: function (): Promise<RadarTripOptions> {
     return NativeRadar.getTripOptions() as Promise<RadarTripOptions>;
+  },
+  getTrip: function (): Promise<RadarTrip | null> {
+    return NativeRadar.getTrip() as Promise<RadarTrip | null>;
   },
   startTrip: function (
     options: RadarStartTripOptions

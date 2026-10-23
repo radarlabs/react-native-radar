@@ -44,7 +44,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter", @"newInAppMessageEmitter", @"inAppMessageDismissedEmitter", @"inAppMessageClickedEmitter"];
+    return @[@"eventsEmitter", @"locationEmitter", @"clientLocationEmitter", @"errorEmitter", @"logEmitter", @"tokenEmitter", @"sharingEmitter", @"ipChangeEmitter", @"newInAppMessageEmitter", @"inAppMessageDismissedEmitter", @"inAppMessageClickedEmitter"];
 }
 
 - (void)startObserving {
@@ -230,26 +230,71 @@ RCT_EXPORT_MODULE()
     #endif
 }
 
+- (void)didChangeSharing:(BOOL)sharing {
+    NSDictionary *body = @{
+        @"sharing": @(sharing)
+    };
+    #ifdef RCT_NEW_ARCH_ENABLED
+    if (jsEventEmitterReady) {
+        [self emitSharingEmitter:body];
+    }
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"sharingEmitter" body:body];
+    }
+    #endif
+}
+
+- (void)didChangeIP {
+    #ifdef RCT_NEW_ARCH_ENABLED
+    if (jsEventEmitterReady) {
+        [self emitIpChangeEmitter];
+    }
+    #else
+    if (hasListeners) {
+        [self sendEventWithName:@"ipChangeEmitter" body:nil];
+    }
+    #endif
+}
+
+- (RadarInitializeOptions *)radarInitializeOptionsFromDictionary:(NSDictionary *)options {
+    RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
+    if (options == nil) {
+        return radarOptions;
+    }
+    id silentPushValue = options[@"silentPush"];
+    if (silentPushValue && silentPushValue != [NSNull null]) {
+        radarOptions.silentPush = [silentPushValue boolValue];
+    }
+    id autoLogValue = options[@"autoLogNotificationConversions"];
+    if (autoLogValue && autoLogValue != [NSNull null]) {
+        radarOptions.autoLogNotificationConversions = [autoLogValue boolValue];
+    }
+    id autoHandleValue = options[@"autoHandleNotificationDeepLinks"];
+    if (autoHandleValue && autoHandleValue != [NSNull null]) {
+        radarOptions.autoHandleNotificationDeepLinks = [autoHandleValue boolValue];
+    }
+    id autoFailoverValue = options[@"trackVerifiedAutoFailover"];
+    if (autoFailoverValue && autoFailoverValue != [NSNull null]) {
+        radarOptions.trackVerifiedAutoFailover = [autoFailoverValue boolValue];
+    }
+    id networkTimeoutValue = options[@"networkTimeoutInterval"];
+    if (networkTimeoutValue && networkTimeoutValue != [NSNull null]) {
+        radarOptions.networkTimeoutInterval = [networkTimeoutValue doubleValue];
+    }
+    id ipChangeDebounceValue = options[@"ipChangeDebounceInterval"];
+    if (ipChangeDebounceValue && ipChangeDebounceValue != [NSNull null]) {
+        radarOptions.ipChangeDebounceInterval = [ipChangeDebounceValue doubleValue];
+    }
+    return radarOptions;
+}
+
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
     [[NSUserDefaults standardUserDefaults] setObject:@"4.37.0" forKey:@"radar-xPlatformSDKVersion"];
     
-    RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
-    if (options != nil) {
-        id silentPushValue = options[@"silentPush"];
-        if (silentPushValue && silentPushValue != [NSNull null]) {
-            radarOptions.silentPush = [silentPushValue boolValue];
-        }
-        id autoLogValue = options[@"autoLogNotificationConversions"];
-        if (autoLogValue && autoLogValue != [NSNull null]) {
-            radarOptions.autoLogNotificationConversions = [autoLogValue boolValue];
-        }
-        id autoHandleValue = options[@"autoHandleNotificationDeepLinks"];
-        if (autoHandleValue && autoHandleValue != [NSNull null]) {
-            radarOptions.autoHandleNotificationDeepLinks = [autoHandleValue boolValue];
-        }
-    }
+    RadarInitializeOptions *radarOptions = [self radarInitializeOptionsFromDictionary:options];
     [Radar initializeWithPublishableKey:publishableKey options:radarOptions];
 }
 
@@ -257,21 +302,7 @@ RCT_EXPORT_METHOD(initializeWithAuthToken:(NSString *)authToken fraud:(BOOL)frau
     _publishableKey = nil;
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
     [[NSUserDefaults standardUserDefaults] setObject:@"4.37.0" forKey:@"radar-xPlatformSDKVersion"];
-    RadarInitializeOptions *radarOptions = [[RadarInitializeOptions alloc] init];
-    if (options != nil) {
-        id silentPushValue = options[@"silentPush"];
-        if (silentPushValue && silentPushValue != [NSNull null]) {
-            radarOptions.silentPush = [silentPushValue boolValue];
-        }
-        id autoLogValue = options[@"autoLogNotificationConversions"];
-        if (autoLogValue && autoLogValue != [NSNull null]) {
-            radarOptions.autoLogNotificationConversions = [autoLogValue boolValue];
-        }
-        id autoHandleValue = options[@"autoHandleNotificationDeepLinks"];
-        if (autoHandleValue && autoHandleValue != [NSNull null]) {
-            radarOptions.autoHandleNotificationDeepLinks = [autoHandleValue boolValue];
-        }
-    }
+    RadarInitializeOptions *radarOptions = [self radarInitializeOptionsFromDictionary:options];
     [Radar initializeWithAuthToken:authToken options:radarOptions];
 }
 
@@ -645,6 +676,10 @@ RCT_EXPORT_METHOD(setExpectedAddress:(NSString *)address) {
     [Radar setExpectedAddress:address];
 }
 
+RCT_EXPORT_METHOD(setExpectedJurisdiction:(NSString *)countryCode stateCode:(NSString *)stateCode) {
+    [Radar setExpectedJurisdictionWithCountryCode:countryCode stateCode:stateCode];
+}
+
 RCT_EXPORT_METHOD(startRangingBeacons) {
     [Radar startRangingBeacons];
 }
@@ -780,6 +815,19 @@ RCT_EXPORT_METHOD(getTripOptions:(RCTPromiseResolveBlock)resolve reject:(RCTProm
     RadarTripOptions* options = [Radar getTripOptions];
     if (options != nil) {
         resolve([options dictionaryValue]);
+    } else {
+        resolve(nil);
+    }
+}
+
+RCT_EXPORT_METHOD(getTrip:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (resolve == nil) {
+        return;
+    }
+
+    RadarTrip* trip = [Radar getTrip];
+    if (trip != nil) {
+        resolve([trip dictionaryValue]);
     } else {
         resolve(nil);
     }

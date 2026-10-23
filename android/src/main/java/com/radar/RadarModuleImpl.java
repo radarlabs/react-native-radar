@@ -492,6 +492,10 @@ public class RadarModuleImpl {
         Radar.setExpectedAddress(address);
     }
 
+    public void setExpectedJurisdiction(String countryCode, String stateCode) {
+        Radar.setExpectedJurisdiction(countryCode, stateCode);
+    }
+
 
     public void startRangingBeacons() {
         Radar.startRangingBeacons();
@@ -670,6 +674,19 @@ public class RadarModuleImpl {
         }
     }
 
+
+    public void getTrip(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+        try {
+            RadarTrip trip = Radar.getTrip();
+            promise.resolve(trip != null ? RadarUtils.mapForJson(trip.toJson()) : null);
+        } catch(JSONException e) {
+            Log.e(TAG, "JSONException", e);
+            promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
+        }
+    }
 
     public void startTrip(ReadableMap optionsMap, final Promise promise) {
         try {
