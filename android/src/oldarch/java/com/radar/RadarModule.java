@@ -102,7 +102,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "4.37.0");
+        editor.putString("x_platform_sdk_version", "4.38.0");
         editor.apply();
         io.radar.sdk.RadarInitializeOptions.Builder builder = io.radar.sdk.RadarInitializeOptions.builder()
             .radarReceiver(receiver)
@@ -124,7 +124,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "4.37.0");
+        editor.putString("x_platform_sdk_version", "4.38.0");
         editor.apply();
         
         io.radar.sdk.RadarInitializeOptions.Builder builder = io.radar.sdk.RadarInitializeOptions.builder()
