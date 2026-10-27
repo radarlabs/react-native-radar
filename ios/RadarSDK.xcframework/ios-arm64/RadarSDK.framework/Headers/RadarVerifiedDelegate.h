@@ -8,7 +8,8 @@
 #import <Foundation/Foundation.h>
 
 #import "Radar.h"
-#import "RadarVerifiedLocationToken.h"
+
+@class RadarVerifiedLocationToken;
 
 NS_ASSUME_NONNULL_BEGIN
 
