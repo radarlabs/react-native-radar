@@ -40,7 +40,7 @@
     "build-plugin": "tsc --build plugin/",
     "test:expo-background-modes": "npm run build-plugin && node --test scripts/tests/expo-background-modes.test.cjs",
     "build": "tsc",
-    "test:native-sdk-sync": "node --test scripts/tests/native-sdk-sync.test.mjs",
+    "test:native-sdk-sync": "node --test scripts/tests/native-sdk-sync.test.mjs scripts/tests/ios-notification-bridges.test.mjs",
     "test:map-loading": "node --test scripts/tests/map-loading.test.cjs",
     "setup": "npm rebuild fsevents --ignore-scripts=false"
   },
