@@ -21,7 +21,8 @@ permissions:
 
 jobs:
   update-native-sdks:
-    runs-on: macos-15
+    # Xcode 26.6 requires macOS Tahoe; keep the runner and Xcode pin together.
+    runs-on: macos-26
     timeout-minutes: 120
 
     steps:
@@ -157,7 +158,11 @@ jobs:
             node scripts/native-sdk-sync.mjs apply-android-fraud-version "$TARGET_ANDROID_FRAUD" "$GITHUB_WORKSPACE"
           fi
           if [ "$IOS_UPDATE" = true ]; then
-            sudo xcode-select -switch /Applications/Xcode_26.3.app
+            # Match the compiler used for the 4.35/4.36 bundles. Swift 6.2.4
+            # emits colliding checked/unsafe notification continuation symbols.
+            sudo xcode-select -switch /Applications/Xcode_26.6.app
+            xcodebuild -version
+            xcrun swiftc --version
             SKIP_FRAUD=true
             if [ "$IOS_FRAUD_UPDATE" = true ]; then
               # Moves the download script's default pin, which the download below uses.
@@ -167,6 +172,7 @@ jobs:
             SDK_SOURCE_DIR="$SYNC_ROOT/upstream-ios" \
               SKIP_FRAUD="$SKIP_FRAUD" \
               scripts/download-xcframeworks.sh "$TARGET_IOS"
+            node scripts/check-ios-notification-bridges.mjs "$GITHUB_WORKSPACE"
           fi
 
       - name: Collect native API changes

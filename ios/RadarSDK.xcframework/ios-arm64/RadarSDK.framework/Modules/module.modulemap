@@ -7,5 +7,4 @@ framework module RadarSDK {
 
 module RadarSDK.Swift {
   header "RadarSDK-Swift.h"
-  requires objc
 }
