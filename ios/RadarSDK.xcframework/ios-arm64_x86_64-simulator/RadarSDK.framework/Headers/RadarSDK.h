@@ -43,6 +43,7 @@ FOUNDATION_EXPORT const unsigned char RadarSDKVersionString[];
 // umbrella covers every public header; each one only re-imports this file.
 #import "RadarChain.h"
 #import "RadarCircleGeometry.h"
+#import "RadarContext.h"
 #import "RadarCoordinate.h"
 #import "RadarFraud.h"
 #import "RadarGeofenceGeometry.h"
@@ -58,3 +59,4 @@ FOUNDATION_EXPORT const unsigned char RadarSDKVersionString[];
 #import "RadarRoutes.h"
 #import "RadarTimeZone.h"
 #import "RadarTripOptions.h"
+#import "RadarVerifiedLocationToken.h"
