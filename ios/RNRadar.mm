@@ -292,7 +292,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.39.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.40.0" forKey:@"radar-xPlatformSDKVersion"];
     
     RadarInitializeOptions *radarOptions = [self radarInitializeOptionsFromDictionary:options];
     [Radar initializeWithPublishableKey:publishableKey options:radarOptions];
@@ -301,7 +301,7 @@ RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud option
 RCT_EXPORT_METHOD(initializeWithAuthToken:(NSString *)authToken fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = nil;
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.39.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.40.0" forKey:@"radar-xPlatformSDKVersion"];
     RadarInitializeOptions *radarOptions = [self radarInitializeOptionsFromDictionary:options];
     [Radar initializeWithAuthToken:authToken options:radarOptions];
 }
