@@ -527,7 +527,7 @@ export interface RadarInitializeOptions {
   silentPush?: boolean;
   autoLogNotificationConversions?: boolean;
   autoHandleNotificationDeepLinks?: boolean;
-  /** Enables automatic failover for trackVerified requests. */
+  /** Enables automatic failover for trackVerified requests. Defaults to true. */
   trackVerifiedAutoFailover?: boolean;
   /** Request timeout in seconds for standard API calls. */
   networkTimeoutInterval?: number;
