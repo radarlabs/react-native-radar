@@ -13,6 +13,11 @@ export function parseStableVersion(value) {
   return match.slice(1).map(Number);
 }
 
+export function nextPatchVersion(version) {
+  const [major, minor, patch] = parseStableVersion(version);
+  return `${major}.${minor}.${patch + 1}`;
+}
+
 export function compareStableVersions(left, right) {
   const leftParts = parseStableVersion(left);
   const rightParts = parseStableVersion(right);
@@ -178,16 +183,30 @@ export function requiredFraudVersion(releaseNotes) {
 
 // Moves a platform's Fraud SDK to its latest stable release whenever that
 // platform's native SDK is updated, and fails when the native release notes
-// require a Fraud version that has not been released yet.
-function fraudPlatformPlan(platformUpdate, current, latest, releaseNotes) {
+// require a Fraud version that has not been released yet. With allowStandalone,
+// a newer release of the same major version also moves it without a native
+// update; a new major version still waits for a native update.
+function fraudPlatformPlan(
+  platformUpdate,
+  current,
+  latest,
+  releaseNotes,
+  allowStandalone = false
+) {
   const required = platformUpdate ? requiredFraudVersion(releaseNotes) : null;
   if (required && compareStableVersions(required, latest) > 0) {
     throw new Error(
       `The native release notes require Fraud SDK ${required}, but the latest release is ${latest}`
     );
   }
-  const update = platformUpdate && compareStableVersions(latest, current) > 0;
-  return { current, target: update ? latest : current, update, required };
+  const newer = compareStableVersions(latest, current) > 0;
+  const standalone =
+    !platformUpdate &&
+    allowStandalone &&
+    newer &&
+    parseStableVersion(latest)[0] === parseStableVersion(current)[0];
+  const update = (platformUpdate && newer) || standalone;
+  return { current, target: update ? latest : current, update, required, standalone };
 }
 
 function androidFraudVersion(root) {
@@ -213,9 +232,21 @@ export function planFraudUpdate(inputs, root) {
     inputs.androidUpdate,
     androidFraudVersion(root),
     androidLatest,
-    inputs.androidReleaseNotes
+    inputs.androidReleaseNotes,
+    true
   );
+  // Only Android Fraud moves on its own, so a run that changes nothing else is a
+  // small patch release of the React Native package.
+  const fraudOnly = !inputs.iosUpdate && !inputs.androidUpdate && android.update;
+  const currentRnVersion = JSON.parse(
+    readFileSync(path.join(root, "package.json"), "utf8")
+  ).version;
   return {
+    fraudOnly,
+    anyUpdate: inputs.iosUpdate || inputs.androidUpdate || android.update,
+    targetRnVersion: fraudOnly
+      ? nextPatchVersion(currentRnVersion)
+      : nextMinorVersion(currentRnVersion),
     ios: {
       ...ios,
       platformUpdate: inputs.iosUpdate,
@@ -236,6 +267,9 @@ function describeFraudPlatform(name, platform, plan) {
   const requirement = plan.required
     ? `the Radar ${platform} SDK release notes require \`${plan.required}\``
     : `the Radar ${platform} SDK release notes name no required version`;
+  if (plan.update && plan.standalone) {
+    return `- Updates ${name} from \`${plan.current}\` to [\`${plan.target}\`](${plan.url}), its latest stable release, which is released independently of the Radar ${platform} SDK.`;
+  }
   if (plan.update) {
     return `- Updates ${name} from \`${plan.current}\` to [\`${plan.target}\`](${plan.url}), its latest stable release; ${requirement}.`;
   }
