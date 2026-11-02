@@ -1310,7 +1310,6 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
-            [dict setObject:session.sessionToken forKey:@"sessionToken"];
             if (addresses) {
                 [dict setObject:[RadarAddress arrayForAddresses:addresses] forKey:@"addresses"];
             }
@@ -1323,6 +1322,12 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     };
 
     [session autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:autocompleteCompletionHandler];
+}
+
+RCT_EXPORT_METHOD(createAutocompleteSessionToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (resolve) {
+        resolve([RadarAutocompleteSession new].sessionToken);
+    }
 }
 
 RCT_EXPORT_METHOD(selectAutocompleteAddress:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {

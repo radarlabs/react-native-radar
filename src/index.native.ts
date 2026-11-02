@@ -593,6 +593,9 @@ const Radar: RadarNativeInterface = {
   ): Promise<RadarAddressCallback> {
     return NativeRadar.autocomplete(options) as Promise<RadarAddressCallback>;
   },
+  createAutocompleteSessionToken: function (): Promise<string> {
+    return NativeRadar.createAutocompleteSessionToken() as Promise<string>;
+  },
   selectAutocompleteAddress: function (
     options: RadarSelectAutocompleteAddressOptions
   ): Promise<RadarAutocompleteSelectCallback> {

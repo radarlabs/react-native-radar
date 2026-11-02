@@ -131,6 +131,7 @@ export interface RadarNativeInterface {
   autocomplete: (
     options: RadarAutocompleteOptions
   ) => Promise<RadarAddressCallback>;
+  createAutocompleteSessionToken: () => Promise<string>;
   selectAutocompleteAddress: (
     options: RadarSelectAutocompleteAddressOptions
   ) => Promise<RadarAutocompleteSelectCallback>;

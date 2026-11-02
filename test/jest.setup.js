@@ -50,6 +50,7 @@ jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter', () => {
         searchPlaces: jest.fn(),
         searchGeofences: jest.fn(),
         autocomplete: jest.fn(),
+        createAutocompleteSessionToken: jest.fn(),
         selectAutocompleteAddress: jest.fn(),
         geocode: jest.fn(),
         reverseGeocode: jest.fn(),

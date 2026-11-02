@@ -1159,7 +1159,6 @@ public class RadarModuleImpl {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
-                        map.putString("sessionToken", session.getSessionToken());
                         if (addresses != null) {
                             map.putArray("addresses", RadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
                         }
@@ -1175,6 +1174,14 @@ public class RadarModuleImpl {
         };
 
         session.autocomplete(query, near, layers, limit, country, mailable, autocompleteCallback);
+    }
+
+    public void createAutocompleteSessionToken(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(new RadarAutocompleteSession().getSessionToken());
     }
 
     public void selectAutocompleteAddress(ReadableMap optionsMap, final Promise promise) {

@@ -15,46 +15,35 @@ const platformModule = () =>
 /**
  * An autocomplete search field and the selection a user makes in it.
  *
- * Create one session per address field.
+ * Create one session per address field with {@link AutocompleteSession.create}.
  */
 export class AutocompleteSession {
-  private token?: string;
+  /** the token this session sends */
+  public readonly sessionToken: string;
 
-  /** in flight while the first call establishes the token */
-  private opening?: Promise<RadarAddressCallback>;
+  private constructor(sessionToken: string) {
+    this.sessionToken = sessionToken;
+  }
 
-  /** the token this session sends, once the first autocomplete has returned it */
-  public get sessionToken(): string | undefined {
-    return this.token;
+  /** opens a session. The token is minted natively, so this is async. */
+  public static async create(): Promise<AutocompleteSession> {
+    const sessionToken: string =
+      await platformModule().createAutocompleteSessionToken();
+
+    return new AutocompleteSession(sessionToken);
   }
 
   /**
    * autocomplete partial addresses and place names within this session
    * @returns matching addresses, each selectable via {@link AutocompleteSession.select}
    */
-  public async autocomplete(
+  public autocomplete(
     options: Omit<RadarAutocompleteOptions, "sessionToken">,
   ): Promise<RadarAddressCallback> {
-    // The native side mints the token. Hold concurrent first calls behind the one that opens the
-    // session, or each would open its own and the field would be split across several.
-    if (this.token === undefined && this.opening) {
-      await this.opening.catch(() => undefined);
-    }
-
-    const call = platformModule().autocomplete(
-      this.token === undefined ? options : { ...options, sessionToken: this.token },
-    ) as Promise<RadarAddressCallback>;
-
-    if (this.token === undefined) {
-      this.opening = call;
-    }
-
-    const result = await call;
-    if (this.token === undefined && result?.sessionToken) {
-      this.token = result.sessionToken;
-    }
-
-    return result;
+    return platformModule().autocomplete({
+      ...options,
+      sessionToken: this.sessionToken,
+    });
   }
 
   /**

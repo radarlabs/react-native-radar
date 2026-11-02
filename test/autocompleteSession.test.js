@@ -9,71 +9,58 @@ const TOKEN = 'ffbcb2ca-1d1c-4f96-9b91-fd0b0b0e1b7f';
 describe('AutocompleteSession', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockModule.autocomplete.mockResolvedValue({
-      status: 'SUCCESS',
-      addresses: [],
-      sessionToken: TOKEN,
-    });
+    mockModule.createAutocompleteSessionToken.mockResolvedValue(TOKEN);
+    mockModule.autocomplete.mockResolvedValue({ status: 'SUCCESS', addresses: [] });
   });
 
-  test('has no token until the first call returns one', async () => {
-    const session = new AutocompleteSession();
+  test('opens with a natively minted token', async () => {
+    const session = await AutocompleteSession.create();
 
-    expect(session.sessionToken).toBeUndefined();
-
-    await session.autocomplete({ query: '841 bro', limit: 10 });
-
+    expect(mockModule.createAutocompleteSessionToken).toBeCalledTimes(1);
     expect(session.sessionToken).toEqual(TOKEN);
   });
 
-  test('opens the session without sending a token', async () => {
-    await new AutocompleteSession().autocomplete({ query: '841 bro', limit: 10 });
-
-    expect(mockModule.autocomplete).toBeCalledWith({ query: '841 bro', limit: 10 });
-  });
-
-  test('sends the minted token on later calls', async () => {
-    const session = new AutocompleteSession();
+  test('sends its token on every call, including the first', async () => {
+    const session = await AutocompleteSession.create();
 
     await session.autocomplete({ query: '841', limit: 10 });
     await session.autocomplete({ query: '841 bro', limit: 10 });
 
-    expect(mockModule.autocomplete).toHaveBeenLastCalledWith({
-      query: '841 bro',
-      limit: 10,
-      sessionToken: TOKEN,
-    });
+    for (const [options] of mockModule.autocomplete.mock.calls) {
+      expect(options.sessionToken).toEqual(TOKEN);
+    }
   });
 
-  test('concurrent first calls open only one session', async () => {
-    const session = new AutocompleteSession();
+  test('concurrent calls share the one token', async () => {
+    // autocomplete fires per keystroke; the token exists before any of them run
+    const session = await AutocompleteSession.create();
 
-    // autocomplete fires per keystroke, so two can race before either has returned a token
     await Promise.all([
       session.autocomplete({ query: '8', limit: 10 }),
       session.autocomplete({ query: '84', limit: 10 }),
     ]);
 
-    const opened = mockModule.autocomplete.mock.calls.filter(
-      ([options]) => options.sessionToken === undefined,
-    );
-    expect(opened).toHaveLength(1);
+    expect(mockModule.createAutocompleteSessionToken).toBeCalledTimes(1);
+    const tokens = mockModule.autocomplete.mock.calls.map(([o]) => o.sessionToken);
+    expect(new Set(tokens).size).toEqual(1);
   });
 
-  test('keeps working when the native side returns no token', async () => {
-    mockModule.autocomplete.mockResolvedValue({ status: 'SUCCESS', addresses: [] });
-    const session = new AutocompleteSession();
+  test('gives each session its own token', async () => {
+    mockModule.createAutocompleteSessionToken
+      .mockResolvedValueOnce('aaaaaaaa-1d1c-4f96-9b91-fd0b0b0e1b7f')
+      .mockResolvedValueOnce('bbbbbbbb-1d1c-4f96-9b91-fd0b0b0e1b7f');
 
-    const result = await session.autocomplete({ query: '841 bro', limit: 10 });
+    const billing = await AutocompleteSession.create();
+    const shipping = await AutocompleteSession.create();
 
-    expect(result.status).toEqual('SUCCESS');
-    expect(session.sessionToken).toBeUndefined();
+    expect(billing.sessionToken).not.toEqual(shipping.sessionToken);
   });
 
-  test('selects by passing the address back', () => {
+  test('selects by passing the address back', async () => {
+    const session = await AutocompleteSession.create();
     const address = { formattedAddress: '841 Broadway', resultId: 'v1_abc' };
 
-    new AutocompleteSession().select(address);
+    session.select(address);
 
     expect(mockModule.selectAutocompleteAddress).toBeCalledWith({ address });
   });

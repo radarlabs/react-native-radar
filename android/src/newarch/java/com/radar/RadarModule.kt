@@ -504,6 +504,10 @@ class RadarModule(reactContext: ReactApplicationContext) :
         radarModuleImpl.autocomplete(options, promise)
     }
 
+    override fun createAutocompleteSessionToken(promise: Promise): Unit {
+        radarModuleImpl.createAutocompleteSessionToken(promise)
+    }
+
     override fun selectAutocompleteAddress(options: ReadableMap, promise: Promise): Unit {
         radarModuleImpl.selectAutocompleteAddress(options, promise)
     }

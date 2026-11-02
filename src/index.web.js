@@ -376,6 +376,11 @@ const autocomplete = (options) => {
   });
 };
 
+const createAutocompleteSessionToken = () => {
+  if (throws) throw new Error("createAutocompleteSessionToken() is not implemented on web");
+  return Promise.reject(new Error("autocomplete sessions are not implemented on web"));
+};
+
 const selectAutocompleteAddress = () => {
   if (throws) throw new Error("selectAutocompleteAddress() is not implemented on web");
   return Promise.resolve({ status: "ERROR_UNIMPLEMENTED" });
@@ -559,6 +564,7 @@ const Radar = {
   searchPlaces,
   searchGeofences,
   autocomplete,
+  createAutocompleteSessionToken,
   selectAutocompleteAddress,
   geocode,
   reverseGeocode,
