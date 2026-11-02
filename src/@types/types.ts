@@ -281,6 +281,37 @@ export interface RadarAutocompleteOptions {
   /** @deprecated this is always true, regardless of the value passed here */
   expandUnits?: boolean;
   mailable?: boolean;
+  /** set by AutocompleteSession; results carry a resultId only when this is present */
+  sessionToken?: string;
+}
+
+/** a place on the grounds of an enriched address */
+export interface RadarAddressPlace {
+  name: string;
+  categories: string[];
+}
+
+/** what address enrichment knows about a location */
+export interface RadarAddressLocationDetails {
+  usage: string;
+  dwelling: string;
+  grounds: string[];
+  places: RadarAddressPlace[];
+}
+
+/** the enriched form of a selected address; carries only these two fields */
+export interface RadarAutocompleteEnrichedAddress {
+  formattedAddress?: string;
+  locationDetails: RadarAddressLocationDetails;
+}
+
+export interface RadarSelectAutocompleteAddressOptions {
+  address: RadarAddress;
+}
+
+export interface RadarAutocompleteSelectCallback {
+  status: string;
+  address?: RadarAutocompleteEnrichedAddress;
 }
 
 export interface RadarGeocodeOptions {
@@ -948,6 +979,8 @@ export interface RadarRegion {
 }
 
 export interface RadarAddress {
+  /** identifies this result within the session that returned it, not the address itself */
+  resultId?: string;
   addressLabel?: string;
   borough?: string;
   categories?: string[];

@@ -490,6 +490,11 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     }
 
     @ReactMethod
+    public void selectAutocompleteAddress(ReadableMap optionsMap, final Promise promise) {
+        radarModuleImpl.selectAutocompleteAddress(optionsMap, promise);
+    }
+
+    @ReactMethod
     public void geocode(ReadableMap optionsMap, final Promise promise) {
         radarModuleImpl.geocode(optionsMap, promise);
     }

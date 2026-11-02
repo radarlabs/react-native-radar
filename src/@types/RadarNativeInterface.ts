@@ -33,6 +33,8 @@ import type {
   RadarSearchGeofencesCallback,
   RadarSearchGeofencesOptions,
   RadarAutocompleteOptions,
+  RadarAutocompleteSelectCallback,
+  RadarSelectAutocompleteAddressOptions,
   RadarAddressCallback,
   RadarReverseGeocodeOptions,
   RadarGeocodeOptions,
@@ -129,6 +131,9 @@ export interface RadarNativeInterface {
   autocomplete: (
     options: RadarAutocompleteOptions
   ) => Promise<RadarAddressCallback>;
+  selectAutocompleteAddress: (
+    options: RadarSelectAutocompleteAddressOptions
+  ) => Promise<RadarAutocompleteSelectCallback>;
   geocode: (options: RadarGeocodeOptions) => Promise<RadarAddressCallback>;
   reverseGeocode: (
     options?: RadarReverseGeocodeOptions

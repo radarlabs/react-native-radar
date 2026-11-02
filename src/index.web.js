@@ -376,6 +376,11 @@ const autocomplete = (options) => {
   });
 };
 
+const selectAutocompleteAddress = () => {
+  if (throws) throw new Error("selectAutocompleteAddress() is not implemented on web");
+  return Promise.resolve({ status: "ERROR_UNIMPLEMENTED" });
+};
+
 const geocode = (options) => {
   return new Promise((resolve, reject) => {
     let newOptions = options;
@@ -554,6 +559,7 @@ const Radar = {
   searchPlaces,
   searchGeofences,
   autocomplete,
+  selectAutocompleteAddress,
   geocode,
   reverseGeocode,
   ipGeocode,

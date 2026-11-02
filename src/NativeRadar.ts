@@ -107,6 +107,7 @@ export interface Spec extends TurboModule {
   searchPlaces(options: Object): Promise<Object>;
   searchGeofences(options: Object): Promise<Object>;
   autocomplete(options: Object): Promise<Object>;
+  selectAutocompleteAddress(options: Object): Promise<Object>;
   geocode(options: Object): Promise<Object>;
   reverseGeocode(options: Object | null): Promise<Object>;
   ipGeocode(): Promise<Object>;

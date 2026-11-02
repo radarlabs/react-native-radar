@@ -35,6 +35,8 @@ import type {
   RadarAddress,
   RadarAddressCallback,
   RadarAutocompleteOptions,
+  RadarAutocompleteSelectCallback,
+  RadarSelectAutocompleteAddressOptions,
   RadarGeocodeOptions,
   RadarGetDistanceOptions,
   RadarGetMatrixOptions,
@@ -590,6 +592,13 @@ const Radar: RadarNativeInterface = {
     options: RadarAutocompleteOptions
   ): Promise<RadarAddressCallback> {
     return NativeRadar.autocomplete(options) as Promise<RadarAddressCallback>;
+  },
+  selectAutocompleteAddress: function (
+    options: RadarSelectAutocompleteAddressOptions
+  ): Promise<RadarAutocompleteSelectCallback> {
+    return NativeRadar.selectAutocompleteAddress(
+      options
+    ) as Promise<RadarAutocompleteSelectCallback>;
   },
   geocode: function (
     options: RadarGeocodeOptions
