@@ -7,17 +7,6 @@ import type {
   RadarAutocompleteSelectCallback,
 } from "./@types/types";
 
-/** v4 UUID, from crypto where available and Math.random otherwise */
-const generateUUID = (): string =>
-  "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-
-const UUID_PATTERN =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
 const platformModule = () =>
   Platform.OS === "web"
     ? require("./index.web").default
@@ -29,32 +18,43 @@ const platformModule = () =>
  * Create one session per address field.
  */
 export class AutocompleteSession {
-  /** the token this session sends */
-  public readonly sessionToken: string;
+  private token?: string;
 
-  /**
-   * @param sessionToken resumes a session from a token minted elsewhere; omit it to mint a new one.
-   * @throws if `sessionToken` is given and is not a UUID
-   */
-  constructor(sessionToken?: string) {
-    if (sessionToken !== undefined && !UUID_PATTERN.test(sessionToken)) {
-      throw new Error("sessionToken: must be a UUID.");
-    }
+  /** in flight while the first call establishes the token */
+  private opening?: Promise<RadarAddressCallback>;
 
-    this.sessionToken = sessionToken ?? generateUUID();
+  /** the token this session sends, once the first autocomplete has returned it */
+  public get sessionToken(): string | undefined {
+    return this.token;
   }
 
   /**
    * autocomplete partial addresses and place names within this session
    * @returns matching addresses, each selectable via {@link AutocompleteSession.select}
    */
-  public autocomplete(
+  public async autocomplete(
     options: Omit<RadarAutocompleteOptions, "sessionToken">,
   ): Promise<RadarAddressCallback> {
-    return platformModule().autocomplete({
-      ...options,
-      sessionToken: this.sessionToken,
-    });
+    // The native side mints the token. Hold concurrent first calls behind the one that opens the
+    // session, or each would open its own and the field would be split across several.
+    if (this.token === undefined && this.opening) {
+      await this.opening.catch(() => undefined);
+    }
+
+    const call = platformModule().autocomplete(
+      this.token === undefined ? options : { ...options, sessionToken: this.token },
+    ) as Promise<RadarAddressCallback>;
+
+    if (this.token === undefined) {
+      this.opening = call;
+    }
+
+    const result = await call;
+    if (this.token === undefined && result?.sessionToken) {
+      this.token = result.sessionToken;
+    }
+
+    return result;
   }
 
   /**
@@ -62,7 +62,9 @@ export class AutocompleteSession {
    * @param address the selected result, as returned by {@link AutocompleteSession.autocomplete}
    * @returns the enriched address, where available
    */
-  public select(address: RadarAddress): Promise<RadarAutocompleteSelectCallback> {
+  public select(
+    address: RadarAddress,
+  ): Promise<RadarAutocompleteSelectCallback> {
     return platformModule().selectAutocompleteAddress({ address });
   }
 }

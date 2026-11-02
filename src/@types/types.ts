@@ -392,6 +392,8 @@ export interface RadarSearchGeofencesCallback {
 export interface RadarAddressCallback {
   status: string;
   addresses?: RadarAddress[];
+  /** the session the results belong to, returned when the request opened one */
+  sessionToken?: string;
 }
 
 export interface RadarIPGeocodeCallback {

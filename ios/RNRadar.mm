@@ -1301,10 +1301,16 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
+    NSString *requestedToken = optionsDict[@"sessionToken"];
+    RadarAutocompleteSession *session = requestedToken
+        ? [[RadarAutocompleteSession alloc] initWithSessionToken:requestedToken]
+        : [RadarAutocompleteSession new];
+
     void (^autocompleteCompletionHandler)(RadarStatus, NSArray<RadarAddress *> * _Nullable) = ^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            [dict setObject:session.sessionToken forKey:@"sessionToken"];
             if (addresses) {
                 [dict setObject:[RadarAddress arrayForAddresses:addresses] forKey:@"addresses"];
             }
@@ -1316,14 +1322,7 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         rejecter = nil;
     };
 
-    NSString *sessionToken = optionsDict[@"sessionToken"];
-    RadarAutocompleteSession *session = sessionToken ? [[RadarAutocompleteSession alloc] initWithSessionToken:sessionToken] : nil;
-
-    if (session) {
-        [session autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:autocompleteCompletionHandler];
-    } else {
-        [Radar autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:autocompleteCompletionHandler];
-    }
+    [session autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:autocompleteCompletionHandler];
 }
 
 RCT_EXPORT_METHOD(selectAutocompleteAddress:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {

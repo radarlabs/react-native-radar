@@ -1147,7 +1147,10 @@ public class RadarModuleImpl {
 
         boolean mailable = optionsMap.hasKey("mailable") ? optionsMap.getBoolean("mailable") : false;
 
-        String sessionToken = optionsMap.hasKey("sessionToken") ? optionsMap.getString("sessionToken") : null;
+        String requestedToken = optionsMap.hasKey("sessionToken") ? optionsMap.getString("sessionToken") : null;
+        final RadarAutocompleteSession session = requestedToken == null
+            ? new RadarAutocompleteSession()
+            : new RadarAutocompleteSession(requestedToken);
 
         Radar.RadarGeocodeCallback autocompleteCallback = new Radar.RadarGeocodeCallback() {
 
@@ -1156,6 +1159,7 @@ public class RadarModuleImpl {
                     try {
                         WritableMap map = Arguments.createMap();
                         map.putString("status", status.toString());
+                        map.putString("sessionToken", session.getSessionToken());
                         if (addresses != null) {
                             map.putArray("addresses", RadarUtils.arrayForJson(RadarAddress.toJson(addresses)));
                         }
@@ -1170,12 +1174,7 @@ public class RadarModuleImpl {
             }
         };
 
-        if (sessionToken == null) {
-            Radar.autocomplete(query, near, layers, limit, country, mailable, autocompleteCallback);
-        } else {
-            new RadarAutocompleteSession(sessionToken)
-                .autocomplete(query, near, layers, limit, country, mailable, autocompleteCallback);
-        }
+        session.autocomplete(query, near, layers, limit, country, mailable, autocompleteCallback);
     }
 
     public void selectAutocompleteAddress(ReadableMap optionsMap, final Promise promise) {
