@@ -1340,7 +1340,7 @@ RCT_EXPORT_METHOD(selectAutocompleteAddress:(NSDictionary *)optionsDict resolve:
         return;
     }
 
-    RadarAddress *address = [[RadarAddress alloc] initWithObject:addressDict];
+    RadarAddress *address = [RadarAddress addressFromObject:addressDict];
     if (address == nil) {
         if (reject) {
             reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
