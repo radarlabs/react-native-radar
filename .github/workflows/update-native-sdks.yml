@@ -5,7 +5,10 @@ name: Prepare native SDK update
 # platforms. The release events from the SDK repos only trigger a run; the
 # versions always come from each repo's latest release. Each updated platform's
 # Fraud SDK also moves to its latest stable release, because new native SDKs can
-# require a newer Fraud SDK for trackVerified() and revealRisk().
+# require a newer Fraud SDK for trackVerified() and revealRisk(). A newer Android
+# Fraud SDK of the same major version also opens a small patch-release PR on its
+# own, without the native API port. iOS Fraud is vendored, so it only moves with
+# the iOS SDK.
 on:
   workflow_dispatch:
   repository_dispatch:
@@ -98,8 +101,9 @@ jobs:
             PLATFORMS="${PLATFORMS:+$PLATFORMS / }Android $TARGET_ANDROID"
           fi
           {
-            echo "status=$(jq -r '.status' <<< "$PLAN")"
-            echo "rn_version=$(jq -r '.targetRnVersion' <<< "$PLAN")"
+            echo "status=$(jq -r 'if .anyUpdate then "update" else "noop" end' <<< "$FRAUD_PLAN")"
+            echo "fraud_only=$(jq -r '.fraudOnly' <<< "$FRAUD_PLAN")"
+            echo "rn_version=$(jq -r '.targetRnVersion' <<< "$FRAUD_PLAN")"
             echo "old_ios=$(jq -r '.ios.current' <<< "$PLAN")"
             echo "target_ios=$TARGET_IOS"
             echo "ios_update=$IOS_UPDATE"
@@ -120,10 +124,10 @@ jobs:
 
       - name: Stop when both native SDKs are current
         if: steps.release.outputs.status != 'update'
-        run: echo "The latest stable iOS and Android releases are not newer than the pinned versions."
+        run: echo "The latest stable iOS, Android, and Android Fraud releases are not newer than the pinned versions."
 
       - name: Checkout native SDK sources
-        if: steps.release.outputs.status == 'update'
+        if: steps.release.outputs.status == 'update' && steps.release.outputs.fraud_only != 'true'
         env:
           TARGET_IOS: ${{ steps.release.outputs.target_ios }}
           TARGET_ANDROID: ${{ steps.release.outputs.target_android }}
@@ -176,7 +180,7 @@ jobs:
           fi
 
       - name: Collect native API changes
-        if: steps.release.outputs.status == 'update'
+        if: steps.release.outputs.status == 'update' && steps.release.outputs.fraud_only != 'true'
         env:
           OLD_ANDROID: ${{ steps.release.outputs.old_android }}
           TARGET_ANDROID: ${{ steps.release.outputs.target_android }}
@@ -205,7 +209,7 @@ jobs:
         run: npm ci
 
       - name: Adapt React Native APIs with Claude
-        if: steps.release.outputs.status == 'update'
+        if: steps.release.outputs.status == 'update' && steps.release.outputs.fraud_only != 'true'
         id: claude
         continue-on-error: true
         uses: anthropics/claude-code-action/base-action@ef8bb1e43bf303cff727a1dd0b8837029fe982a2 # v1
@@ -360,6 +364,7 @@ jobs:
           TARGET_ANDROID: ${{ steps.release.outputs.target_android }}
           ANDROID_UPDATE: ${{ steps.release.outputs.android_update }}
           ANDROID_RELEASE_URL: ${{ steps.release.outputs.android_release_url }}
+          FRAUD_ONLY: ${{ steps.release.outputs.fraud_only }}
         run: |
           set -euo pipefail
           {
@@ -377,6 +382,10 @@ jobs:
           } > "$SYNC_ROOT/pr-versions.md"
 
           EXECUTION_FILE="${EXECUTION_FILE:-$RUNNER_TEMP/claude-execution-output.json}"
+          if [ "$FRAUD_ONLY" = true ]; then
+            # No native SDK moved, so there is no API to port and no Claude run.
+            echo "- Fraud-only update; there are no native API changes to port." > "$SYNC_ROOT/pr-summary.md"
+          else
           {
             if [ -f "$EXECUTION_FILE" ]; then
               jq -r '
@@ -394,7 +403,10 @@ jobs:
               echo "Claude did not write a summary; the port is probably incomplete."
             fi
           } > "$SYNC_ROOT/pr-summary.md"
-          if [ -s "$SYNC_ROOT/claude-test-plan.md" ]; then
+          fi
+          if [ "$FRAUD_ONLY" = true ]; then
+            echo "Run \`npx expo prebuild --clean\` in the example app and confirm \`android/app/build.gradle\` gets the new \`io.radar:sdk-fraud\` version." > "$SYNC_ROOT/pr-test-plan.md"
+          elif [ -s "$SYNC_ROOT/claude-test-plan.md" ]; then
             # The test plan sits under "## Test Plan"; keep its headings below that level.
             sed -E 's/^#{1,2} /### /' "$SYNC_ROOT/claude-test-plan.md" > "$SYNC_ROOT/pr-test-plan.md"
           else
@@ -430,14 +442,14 @@ jobs:
           branch: automation/native-sdk-update
           delete-branch: true
           draft: always-true
-          commit-message: Prepare React Native ${{ steps.release.outputs.rn_version }} for Radar ${{ steps.release.outputs.platforms }}
-          title: Prepare React Native ${{ steps.release.outputs.rn_version }} for Radar ${{ steps.release.outputs.platforms }}
+          commit-message: ${{ steps.release.outputs.fraud_only == 'true' && format('Prepare React Native {0} for Android Fraud SDK {1}', steps.release.outputs.rn_version, steps.release.outputs.target_android_fraud) || format('Prepare React Native {0} for Radar {1}', steps.release.outputs.rn_version, steps.release.outputs.platforms) }}
+          title: ${{ steps.release.outputs.fraud_only == 'true' && format('Prepare React Native {0} for Android Fraud SDK {1}', steps.release.outputs.rn_version, steps.release.outputs.target_android_fraud) || format('Prepare React Native {0} for Radar {1}', steps.release.outputs.rn_version, steps.release.outputs.platforms) }}
           body: |
             ## Summary
 
             ${{ steps.summary.outputs.versions }}
-            - Prepares React Native `${{ steps.release.outputs.rn_version }}` as a best-effort native API port.
-            - Claude output may be incomplete; review the native diff and cross-platform parity before merging.
+            - Prepares React Native `${{ steps.release.outputs.rn_version }}`${{ steps.release.outputs.fraud_only == 'true' && ' as a Fraud-only patch release.' || ' as a best-effort native API port.' }}
+            ${{ steps.release.outputs.fraud_only != 'true' && '- Claude output may be incomplete; review the native diff and cross-platform parity before merging.' || '' }}
 
             ## API Port
 
