@@ -24,11 +24,13 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import io.radar.sdk.Radar;
+import io.radar.sdk.RadarAutocompleteSession;
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.RadarTrackingOptions.RadarTrackingOptionsForegroundService;
 import io.radar.sdk.RadarTripOptions;
 import io.radar.sdk.RadarVerifiedReceiver;
 import io.radar.sdk.model.RadarAddress;
+import io.radar.sdk.model.RadarAutocompleteEnrichedAddress;
 import io.radar.sdk.model.RadarContext;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarGeofence;
@@ -1145,7 +1147,12 @@ public class RadarModuleImpl {
 
         boolean mailable = optionsMap.hasKey("mailable") ? optionsMap.getBoolean("mailable") : false;
 
-        Radar.autocomplete(query, near, layers, limit, country, mailable, new Radar.RadarGeocodeCallback() {
+        String requestedToken = optionsMap.hasKey("sessionToken") ? optionsMap.getString("sessionToken") : null;
+        final RadarAutocompleteSession session = requestedToken == null
+            ? new RadarAutocompleteSession()
+            : new RadarAutocompleteSession(requestedToken);
+
+        Radar.RadarGeocodeCallback autocompleteCallback = new Radar.RadarGeocodeCallback() {
 
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
@@ -1162,6 +1169,59 @@ public class RadarModuleImpl {
                     }
                 } else {
                     promise.reject(status.toString(), status.toString());
+                }
+            }
+        };
+
+        session.autocomplete(query, near, layers, limit, country, mailable, autocompleteCallback);
+    }
+
+    public void createAutocompleteSessionToken(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(new RadarAutocompleteSession().getSessionToken());
+    }
+
+    public void selectAutocompleteAddress(ReadableMap optionsMap, final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        if (optionsMap == null || !optionsMap.hasKey("address")) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+
+            return;
+        }
+
+        RadarAddress address;
+        try {
+            address = RadarAddress.fromJson(RadarUtils.jsonForMap(optionsMap.getMap("address")));
+        } catch (JSONException e) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+
+            return;
+        }
+
+        new RadarAutocompleteSession().select(address, new Radar.RadarAutocompleteSelectCallback() {
+
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAutocompleteEnrichedAddress address) {
+                if (status != Radar.RadarStatus.SUCCESS) {
+                    promise.reject(status.toString(), status.toString());
+
+                    return;
+                }
+
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (address != null) {
+                        map.putMap("address", RadarUtils.mapForJson(address.toJson()));
+                    }
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             }
         });
