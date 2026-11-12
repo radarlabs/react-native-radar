@@ -1147,10 +1147,17 @@ public class RadarModuleImpl {
 
         boolean mailable = optionsMap.hasKey("mailable") ? optionsMap.getBoolean("mailable") : false;
 
-        String requestedToken = optionsMap.hasKey("sessionToken") ? optionsMap.getString("sessionToken") : null;
-        final RadarAutocompleteSession session = requestedToken == null
-            ? new RadarAutocompleteSession()
-            : new RadarAutocompleteSession(requestedToken);
+        String sessionToken = optionsMap.hasKey("sessionToken") ? optionsMap.getString("sessionToken") : null;
+        RadarAutocompleteSession session = null;
+        if (sessionToken != null) {
+            try {
+                session = new RadarAutocompleteSession(sessionToken);
+            } catch (IllegalArgumentException e) {
+                promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), e.getMessage());
+
+                return;
+            }
+        }
 
         Radar.RadarGeocodeCallback autocompleteCallback = new Radar.RadarGeocodeCallback() {
 
@@ -1173,7 +1180,11 @@ public class RadarModuleImpl {
             }
         };
 
-        session.autocomplete(query, near, layers, limit, country, mailable, autocompleteCallback);
+        if (session != null) {
+            session.autocomplete(query, near, layers, limit, country, mailable, autocompleteCallback);
+        } else {
+            Radar.autocomplete(query, near, layers, limit, country, mailable, autocompleteCallback);
+        }
     }
 
     public void createAutocompleteSessionToken(final Promise promise) {
@@ -1199,6 +1210,9 @@ public class RadarModuleImpl {
         try {
             address = RadarAddress.fromJson(RadarUtils.jsonForMap(optionsMap.getMap("address")));
         } catch (JSONException e) {
+            address = null;
+        }
+        if (address == null) {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
 
             return;

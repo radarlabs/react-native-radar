@@ -1301,10 +1301,18 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    NSString *requestedToken = optionsDict[@"sessionToken"];
-    RadarAutocompleteSession *session = requestedToken
-        ? [[RadarAutocompleteSession alloc] initWithSessionToken:requestedToken]
-        : [RadarAutocompleteSession new];
+    RadarAutocompleteSession *session = nil;
+    id sessionToken = optionsDict[@"sessionToken"];
+    if (sessionToken != nil && sessionToken != [NSNull null]) {
+        session = [sessionToken isKindOfClass:[NSString class]] ? [[RadarAutocompleteSession alloc] initWithSessionToken:sessionToken] : nil;
+        if (session == nil) {
+            if (reject) {
+                reject([Radar stringForStatus:RadarStatusErrorBadRequest], @"sessionToken must be a UUID", nil);
+            }
+
+            return;
+        }
+    }
 
     void (^autocompleteCompletionHandler)(RadarStatus, NSArray<RadarAddress *> * _Nullable) = ^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
         if (status == RadarStatusSuccess && resolver) {
@@ -1321,7 +1329,11 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         rejecter = nil;
     };
 
-    [session autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:autocompleteCompletionHandler];
+    if (session) {
+        [session autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:autocompleteCompletionHandler];
+    } else {
+        [Radar autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:autocompleteCompletionHandler];
+    }
 }
 
 RCT_EXPORT_METHOD(createAutocompleteSessionToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
