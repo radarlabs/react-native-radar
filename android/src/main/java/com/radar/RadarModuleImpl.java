@@ -20,6 +20,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
@@ -1147,7 +1148,15 @@ public class RadarModuleImpl {
 
         boolean mailable = optionsMap.hasKey("mailable") ? optionsMap.getBoolean("mailable") : false;
 
-        String sessionToken = optionsMap.hasKey("sessionToken") ? optionsMap.getString("sessionToken") : null;
+        String sessionToken = null;
+        if (optionsMap.hasKey("sessionToken") && !optionsMap.isNull("sessionToken")) {
+            if (optionsMap.getType("sessionToken") != ReadableType.String) {
+                promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), "sessionToken must be a UUID");
+
+                return;
+            }
+            sessionToken = optionsMap.getString("sessionToken");
+        }
         RadarAutocompleteSession session = null;
         if (sessionToken != null) {
             try {
@@ -1200,7 +1209,7 @@ public class RadarModuleImpl {
             return;
         }
 
-        if (optionsMap == null || !optionsMap.hasKey("address")) {
+        if (optionsMap == null || !optionsMap.hasKey("address") || optionsMap.getType("address") != ReadableType.Map) {
             promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
 
             return;
