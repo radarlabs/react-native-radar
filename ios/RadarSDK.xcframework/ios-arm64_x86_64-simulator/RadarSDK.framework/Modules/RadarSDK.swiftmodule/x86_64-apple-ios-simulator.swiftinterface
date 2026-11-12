@@ -3,7 +3,9 @@
 // swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -O -enable-experimental-feature DebugDescriptionMacro -module-name RadarSDK
 // swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.3
 import CoreLocation
+import CoreMotion
 import CoreTelephony
+import CryptoKit
 import Foundation
 import OSLog
 import ObjectiveC
@@ -373,19 +375,27 @@ public struct RadarSyncedBeaconSnapshot {
   @objc func startedInterval() -> Swift.Int32
   @objc func setStartedInterval(_ interval: Swift.Int32)
   @objc func sending() -> Swift.Bool
+  @objc func setSending(_ sending: Swift.Bool)
   @objc func timer() -> Foundation.Timer?
   @objc func setTimer(_ timer: Foundation.Timer?)
   @objc func cancelPendingShutdown()
   @objc func requestLocation()
   @objc func scheduleShutdown(after delay: Foundation.TimeInterval)
-  @objc func addCompletionHandler(_ completionHandler: RadarSDK.RadarLocationCompletionHandler?)
+  @objc(updateTracking:) func updateTracking(_ location: _LocationEssentials.CLLocation?)
+  @objc(replaceSyncedGeofences:) func replaceSyncedGeofences(_ geofences: [RadarSDK.RadarGeofence]?)
   @objc var locationManager: CoreLocation.CLLocationManager { get }
   @objc var lowPowerLocationManager: CoreLocation.CLLocationManager { get }
-  @objc(startMotionUpdatesWithOptions:) func startMotionUpdates(options: RadarSDK.RadarTrackingOptions)
+  @objc(startActivityUpdatesWithHandler:) func startActivityUpdates(handler: @escaping (CoreMotion.CMMotionActivity) -> Swift.Void)
+  @objc(startRelativeAltitudeWithHandler:) func startRelativeAltitude(handler: @escaping (CoreMotion.CMAltitudeData?) -> Swift.Void)
+  @objc(startAbsoluteAltitudeWithHandler:) func startAbsoluteAltitude(handler: @escaping (CoreMotion.CMAbsoluteAltitudeData?) -> Swift.Void)
 }
 extension RadarSDK.Radar {
   @objc public static func startRangingBeacons()
   @objc public static func stopRangingBeacons()
+}
+extension RadarSDK.Radar {
+  @objc public static func validateAddress(street: Swift.String, number: Swift.String, unit: Swift.String? = nil, city: Swift.String, stateCode: Swift.String, postalCode: Swift.String, countryCode: Swift.String, completionHandler: @escaping @Sendable (RadarSDK.RadarStatus, RadarSDK.RadarAddress?, RadarSDK.RadarAddressVerificationStatus) -> Swift.Void)
+  @objc public static func validateAddress(addressLabel: Swift.String, unit: Swift.String? = nil, city: Swift.String, stateCode: Swift.String, postalCode: Swift.String, countryCode: Swift.String, completionHandler: @escaping @Sendable (RadarSDK.RadarStatus, RadarSDK.RadarAddress?, RadarSDK.RadarAddressVerificationStatus) -> Swift.Void)
 }
 @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarRouteDistance) @objcMembers final public class RadarRouteDistance : ObjectiveC.NSObject {
   @objc final public var value: Swift.Double {
@@ -478,6 +488,138 @@ extension RadarSDK.Radar {
   @objc public func dictionaryValue() -> [Swift.AnyHashable : Any]
   @objc(arrayForLegs:) public static func array(for legs: [RadarSDK.RadarTripLeg]?) -> [[Swift.AnyHashable : Any]]?
   @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc deinit
+}
+@objc(RadarAddressConfidence) public enum RadarAddressConfidence : Swift.Int, Swift.Sendable {
+  case none = 0
+  case exact = 1
+  case interpolated = 2
+  case fallback = 3
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarAddress) @objcMembers final public class RadarAddress : ObjectiveC.NSObject {
+  @objc final public let coordinate: _LocationEssentials.CLLocationCoordinate2D
+  @objc final public let formattedAddress: Swift.String?
+  @objc final public let country: Swift.String?
+  @objc final public let countryCode: Swift.String?
+  @objc final public let countryFlag: Swift.String?
+  @objc final public let dma: Swift.String?
+  @objc final public let dmaCode: Swift.String?
+  @objc final public let state: Swift.String?
+  @objc final public let stateCode: Swift.String?
+  @objc final public let postalCode: Swift.String?
+  @objc final public let city: Swift.String?
+  @objc final public let borough: Swift.String?
+  @objc final public let county: Swift.String?
+  @objc final public let neighborhood: Swift.String?
+  @objc final public let number: Swift.String?
+  @objc final public let street: Swift.String?
+  @objc final public let addressLabel: Swift.String?
+  @objc final public let placeLabel: Swift.String?
+  @objc final public let unit: Swift.String?
+  @objc final public let plus4: Swift.String?
+  @objc final public let distance: Foundation.NSNumber?
+  @objc final public let layer: Swift.String?
+  @objc final public let metadata: [Swift.AnyHashable : Any]?
+  @objc final public var confidence: RadarSDK.RadarAddressConfidence
+  @objc final public let timeZone: RadarSDK.RadarTimeZone?
+  @objc final public let categories: [Swift.String]?
+  @objc final public let resultId: Swift.String?
+  @objc override dynamic public init()
+  @nonobjc convenience public init?(from object: Any)
+  @available(swift, obsoleted: 1.0, message: "Use init(from:) instead.")
+  @objc(addressFromObject:) public static func address(fromObject object: Any) -> RadarSDK.RadarAddress?
+  @objc(arrayForAddresses:) public static func array(forAddresses addresses: [RadarSDK.RadarAddress]?) -> [[Swift.AnyHashable : Any]]?
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarUserLocationInsights) @objcMembers final public class RadarUserLocationInsights : ObjectiveC.NSObject {
+  @objc final public let atHome: Swift.Bool
+  @objc final public let atWork: Swift.Bool
+  @objc final public let traveling: Swift.Bool
+  @objc final public let commuting: Foundation.NSNumber?
+  @objc override convenience dynamic public init()
+  @objc convenience public init?(object: Any)
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(RadarUser) @objcMembers final public class RadarUser : ObjectiveC.NSObject {
+  @objc final public let _id: Swift.String
+  @objc final public let userId: Swift.String?
+  @objc final public let deviceId: Swift.String?
+  @objc final public let __description: Swift.String?
+  @objc final public let metadata: [Swift.AnyHashable : Any]?
+  @objc final public let location: _LocationEssentials.CLLocation
+  @objc final public let activityType: RadarSDK.RadarActivityType
+  @objc final public let geofences: [RadarSDK.RadarGeofence]?
+  @objc final public let place: RadarSDK.RadarPlace?
+  @objc final public let beacons: [RadarSDK.RadarBeacon]?
+  @objc final public let stopped: Swift.Bool
+  @objc final public let foreground: Swift.Bool
+  @objc final public let country: RadarSDK.RadarRegion?
+  @objc final public let state: RadarSDK.RadarRegion?
+  @objc final public let dma: RadarSDK.RadarRegion?
+  @objc final public let postalCode: RadarSDK.RadarRegion?
+  @objc final public let nearbyPlaceChains: [RadarSDK.RadarChain]?
+  @objc final public let segments: [RadarSDK.RadarSegment]?
+  @objc final public let topChains: [RadarSDK.RadarChain]?
+  @objc final public let source: RadarSDK.RadarLocationSource
+  @objc final public let trip: RadarSDK.RadarTrip?
+  @objc final public let debug: Swift.Bool
+  @objc final public let fraud: RadarSDK.RadarFraud?
+  @objc final public let locationInsights: RadarSDK.RadarUserLocationInsights?
+  @objc final public let expectedAddress: RadarSDK.RadarExpectedAddress?
+  @objc final public let altitude: Swift.Double
+  @objc override dynamic public init()
+  @objc public init?(object: Any)
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(RadarAutocompleteSession) @objcMembers final public class RadarAutocompleteSession : ObjectiveC.NSObject, Swift.Sendable {
+  @objc final public let sessionToken: Swift.String
+  @objc override dynamic public init()
+  @objc(initWithSessionToken:) public init?(sessionToken: Swift.String)
+  @objc(autocompleteQuery:near:layers:limit:country:mailable:completionHandler:) final public func autocomplete(query: Swift.String, near: _LocationEssentials.CLLocation?, layers: [Swift.String]?, limit: Swift.Int32, country: Swift.String?, mailable: Swift.Bool, completionHandler: @escaping @Sendable (RadarSDK.RadarStatus, [RadarSDK.RadarAddress]?) -> Swift.Void)
+  @objc(selectAddress:completionHandler:) final public func select(address: RadarSDK.RadarAddress, completionHandler: (@Sendable (RadarSDK.RadarStatus, RadarSDK.RadarAutocompleteEnrichedAddress?) -> Swift.Void)? = nil)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(RadarAutocompleteEnrichedAddress) @objcMembers final public class RadarAutocompleteEnrichedAddress : ObjectiveC.NSObject, Swift.Sendable {
+  @objc final public let formattedAddress: Swift.String?
+  @objc final public let locationDetails: RadarSDK.RadarAddressLocationDetails
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(RadarAddressLocationDetails) @objcMembers final public class RadarAddressLocationDetails : ObjectiveC.NSObject, Swift.Sendable {
+  @objc final public let usage: Swift.String
+  @objc final public let dwelling: Swift.String
+  @objc final public let grounds: [Swift.String]
+  @objc final public let places: [RadarSDK.RadarAddressPlace]
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(RadarAddressPlace) @objcMembers final public class RadarAddressPlace : ObjectiveC.NSObject, Swift.Sendable {
+  @objc final public let name: Swift.String
+  @objc final public let categories: [Swift.String]
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(RadarRegion) @objcMembers final public class RadarRegion : ObjectiveC.NSObject {
+  @objc final public let _id: Swift.String
+  @objc final public let name: Swift.String
+  @objc final public let code: Swift.String
+  @objc final public let type: Swift.String
+  @objc final public let flag: Swift.String?
+  @objc final public let allowed: Swift.Bool
+  @objc final public let passed: Swift.Bool
+  @objc final public let inExclusionZone: Swift.Bool
+  @objc final public let inBufferZone: Swift.Bool
+  @objc final public let distanceToBorder: Swift.Double
+  @objc final public let expected: Swift.Bool
+  @objc final public func dictionaryValue() -> [Swift.AnyHashable : Any]
   @objc deinit
 }
 @objc(RadarInAppMessage_Swift) @objcMembers final public class RadarInAppMessage_Swift : RadarSDK.RadarInAppMessage {
@@ -675,6 +817,9 @@ extension RadarSDK.RadarInAppMessageDelegate : Swift.Sendable {}
 extension RadarSDK.RadarIndoorsActor : _Concurrency.GlobalActor {}
 extension RadarSDK.RadarDelegateActor : _Concurrency.GlobalActor {}
 extension RadarSDK.RadarDelegateHolder : Swift.Sendable {}
+extension RadarSDK.RadarAddressConfidence : Swift.Equatable {}
+extension RadarSDK.RadarAddressConfidence : Swift.Hashable {}
+extension RadarSDK.RadarAddressConfidence : Swift.RawRepresentable {}
 extension RadarSDK.RadarRevealRiskLevel : Swift.Equatable {}
 extension RadarSDK.RadarRevealRiskLevel : Swift.Hashable {}
 extension RadarSDK.RadarRevealRiskLevel : Swift.RawRepresentable {}
