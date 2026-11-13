@@ -603,6 +603,33 @@ export function createActions(
     }
   };
 
+  const autocompleteSession = async () => {
+    try {
+      const session = await Radar.AutocompleteSession.create();
+      const { addresses } = await session.autocomplete({
+        query: "841 broadway",
+        near: { latitude: 40.7342, longitude: -73.9911 },
+        limit: 5,
+      });
+      const chosen = addresses?.[0];
+      if (!chosen) {
+        populateText("autocompleteSession: no results");
+        return;
+      }
+      const selected = await session.select(chosen);
+      populateText(
+        "autocompleteSession: " +
+          stringify({
+            sessionToken: session.sessionToken,
+            resultId: chosen.resultId,
+            selected,
+          })
+      );
+    } catch (err) {
+      populateText("autocompleteSession error: " + err);
+    }
+  };
+
   const geocode = async () => {
     try {
       const result = await Radar.geocode({ address: "20 jay st brooklyn", layers: ["address"], countries: ["US"] });
@@ -785,6 +812,7 @@ export function createActions(
       searchPlaces,
       searchGeofences,
       autocomplete,
+      autocompleteSession,
       geocode,
       reverseGeocode,
       ipGeocode,
@@ -871,6 +899,7 @@ export function createActions(
     searchPlaces,
     searchGeofences,
     autocomplete,
+    autocompleteSession,
     geocode,
     reverseGeocode,
     ipGeocode,

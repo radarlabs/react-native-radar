@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION="${1:-3.33.1}"
+VERSION="${1:-3.46.0}"
 SDK_REPO="https://github.com/radarlabs/radar-sdk-ios.git"
 # The vendored RadarSDKFraud pin; scripts/native-sdk-sync.mjs updates both lines.
 DEFAULT_FRAUD_VERSION="1.6.0"

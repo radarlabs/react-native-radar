@@ -102,7 +102,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "4.40.0");
+        editor.putString("x_platform_sdk_version", "4.41.0");
         editor.apply();
         io.radar.sdk.RadarInitializeOptions.Builder builder = io.radar.sdk.RadarInitializeOptions.builder()
             .radarReceiver(receiver)
@@ -124,7 +124,7 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
         this.fraud = fraud;
         SharedPreferences.Editor editor = getReactApplicationContext().getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit();
         editor.putString("x_platform_sdk_type", "ReactNative");
-        editor.putString("x_platform_sdk_version", "4.40.0");
+        editor.putString("x_platform_sdk_version", "4.41.0");
         editor.apply();
         
         io.radar.sdk.RadarInitializeOptions.Builder builder = io.radar.sdk.RadarInitializeOptions.builder()
@@ -487,6 +487,16 @@ public class RadarModule extends ReactContextBaseJavaModule implements Permissio
     @ReactMethod
     public void autocomplete(ReadableMap optionsMap, final Promise promise) {
         radarModuleImpl.autocomplete(optionsMap, promise);
+    }
+
+    @ReactMethod
+    public void createAutocompleteSessionToken(final Promise promise) {
+        radarModuleImpl.createAutocompleteSessionToken(promise);
+    }
+
+    @ReactMethod
+    public void selectAutocompleteAddress(ReadableMap optionsMap, final Promise promise) {
+        radarModuleImpl.selectAutocompleteAddress(optionsMap, promise);
     }
 
     @ReactMethod

@@ -63,6 +63,7 @@ import type {
 } from "./@types/types";
 import { NativeEventEmitter, NativeModules } from "react-native";
 import { VERSION } from "./version";
+import { AutocompleteSession } from "./autocompleteSession";
 import NativeRadarMod, {
   ClientLocationEmitter,
   ErrorEmitter,
@@ -591,6 +592,7 @@ const Radar: RadarNativeInterface = {
   ): Promise<RadarAddressCallback> {
     return NativeRadar.autocomplete(options) as Promise<RadarAddressCallback>;
   },
+  AutocompleteSession,
   geocode: function (
     options: RadarGeocodeOptions
   ): Promise<RadarAddressCallback> {

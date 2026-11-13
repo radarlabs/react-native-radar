@@ -1,5 +1,6 @@
 import RadarJS from 'radar-sdk-js';
 import { VERSION } from './version';
+import { AutocompleteSession } from './autocompleteSession';
 
 let throws = false;
 const throwOnUnimplemented = (value) => {
@@ -554,6 +555,7 @@ const Radar = {
   searchPlaces,
   searchGeofences,
   autocomplete,
+  AutocompleteSession,
   geocode,
   reverseGeocode,
   ipGeocode,

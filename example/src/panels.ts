@@ -95,6 +95,7 @@ export const PANELS: Panel[] = [
       { title: "searchPlaces", action: "searchPlaces" },
       { title: "searchGeofences", action: "searchGeofences" },
       { title: "autocomplete", action: "autocomplete" },
+      { title: "autocompleteSession", action: "autocompleteSession" },
       { title: "geocode", action: "geocode" },
       { title: "reverseGeocode", action: "reverseGeocode" },
       { title: "ipGeocode", action: "ipGeocode" },
