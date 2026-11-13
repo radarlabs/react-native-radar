@@ -15,6 +15,7 @@ import {
   latestMavenVersion,
   missingEventTypes,
   nextMinorVersion,
+  nextPatchVersion,
   planFraudUpdate,
   planUpdate,
   releaseNotesBetween,
@@ -309,11 +310,15 @@ test("plans Fraud SDK updates for updated platforms", () => {
   const root = fixtureRoot();
   const plan = planFraudUpdate(fraudInputs(), root);
   assert.deepEqual(plan, {
+    fraudOnly: false,
+    anyUpdate: true,
+    targetRnVersion: "4.37.0",
     ios: {
       current: "1.2.0",
       target: "1.6.0",
       update: true,
       required: "1.6.0",
+      standalone: false,
       platformUpdate: true,
       sha256: FRAUD_SHA,
       url: "https://example.test/1.6.0",
@@ -323,6 +328,7 @@ test("plans Fraud SDK updates for updated platforms", () => {
       target: "1.3.0",
       update: true,
       required: null,
+      standalone: false,
       platformUpdate: true,
       url: "https://central.sonatype.com/artifact/io.radar/sdk-fraud/1.3.0",
     },
@@ -343,11 +349,9 @@ test("leaves Fraud SDKs alone when their platform is not updated or current", ()
   assert.equal(notUpdated.ios.update, false);
   assert.equal(notUpdated.ios.target, "1.2.0");
   assert.equal(notUpdated.ios.sha256, null);
-  assert.equal(notUpdated.android.update, false);
   assert.equal(
-    describeFraudUpdate(notUpdated),
-    "- RadarSDKFraud (iOS) stays at `1.2.0` because the Radar iOS SDK is not updated.\n" +
-      "- `io.radar:sdk-fraud` (Android) stays at `1.2.0` because the Radar Android SDK is not updated."
+    describeFraudUpdate(notUpdated).split("\n")[0],
+    "- RadarSDKFraud (iOS) stays at `1.2.0` because the Radar iOS SDK is not updated."
   );
 
   const current = planFraudUpdate(
@@ -362,6 +366,63 @@ test("leaves Fraud SDKs alone when their platform is not updated or current", ()
     describeFraudUpdate(current),
     /`io.radar:sdk-fraud` \(Android\) stays at `1.2.0`, its latest stable release; the Radar Android SDK release notes require `1.2.0`\./
   );
+
+  const nothing = planFraudUpdate(
+    fraudInputs({
+      iosUpdate: false,
+      androidUpdate: false,
+      androidFraudMetadata: "<version>1.2.0</version>",
+    }),
+    root
+  );
+  assert.equal(nothing.anyUpdate, false);
+  assert.equal(nothing.fraudOnly, false);
+});
+
+test("moves Android Fraud on its own as a patch release of React Native", () => {
+  const root = fixtureRoot();
+  const plan = planFraudUpdate(
+    fraudInputs({ iosUpdate: false, androidUpdate: false }),
+    root
+  );
+  assert.equal(plan.fraudOnly, true);
+  assert.equal(plan.anyUpdate, true);
+  assert.equal(plan.targetRnVersion, "4.36.3");
+  assert.equal(plan.android.update, true);
+  assert.equal(plan.android.standalone, true);
+  assert.equal(plan.android.target, "1.3.0");
+  assert.equal(plan.ios.update, false);
+  assert.equal(
+    describeFraudUpdate(plan).split("\n")[1],
+    "- Updates `io.radar:sdk-fraud` (Android) from `1.2.0` to [`1.3.0`](https://central.sonatype.com/artifact/io.radar/sdk-fraud/1.3.0), its latest stable release, which is released independently of the Radar Android SDK."
+  );
+});
+
+test("keeps the minor bump when a native SDK also updates", () => {
+  const root = fixtureRoot();
+  const plan = planFraudUpdate(
+    fraudInputs({ iosUpdate: true, androidUpdate: false }),
+    root
+  );
+  assert.equal(plan.fraudOnly, false);
+  assert.equal(plan.targetRnVersion, "4.37.0");
+  assert.equal(plan.android.update, true);
+  assert.equal(plan.android.standalone, true);
+});
+
+test("does not move Android Fraud to a new major version on its own", () => {
+  const root = fixtureRoot();
+  const plan = planFraudUpdate(
+    fraudInputs({
+      iosUpdate: false,
+      androidUpdate: false,
+      androidFraudMetadata: "<version>1.2.0</version><version>2.0.0</version>",
+    }),
+    root
+  );
+  assert.equal(plan.android.update, false);
+  assert.equal(plan.anyUpdate, false);
+  assert.equal(nextPatchVersion("4.36.2"), "4.36.3");
 });
 
 test("fails when release notes require an unreleased Fraud SDK", () => {
