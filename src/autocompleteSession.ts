@@ -1,5 +1,6 @@
 import { Platform } from "react-native";
 
+import type { Spec } from "./NativeRadar";
 import type {
   RadarAddress,
   RadarAddressCallback,
@@ -7,10 +8,8 @@ import type {
   RadarAutocompleteSelectCallback,
 } from "./@types/types";
 
-const platformModule = () =>
-  Platform.OS === "web"
-    ? require("./index.web").default
-    : require("./index.native").default;
+// Lazy: the TurboModule cannot load on web.
+const nativeRadar = (): Spec => require("./NativeRadar").default;
 
 /**
  * An autocomplete search field and the selection a user makes in it.
@@ -27,8 +26,11 @@ export class AutocompleteSession {
 
   /** opens a session. The token is minted natively, so this is async. */
   public static async create(): Promise<AutocompleteSession> {
-    const sessionToken: string =
-      await platformModule().createAutocompleteSessionToken();
+    if (Platform.OS === "web") {
+      throw new Error("AutocompleteSession is not supported on web");
+    }
+
+    const sessionToken = await nativeRadar().createAutocompleteSessionToken();
 
     return new AutocompleteSession(sessionToken);
   }
@@ -40,10 +42,10 @@ export class AutocompleteSession {
   public autocomplete(
     options: Omit<RadarAutocompleteOptions, "sessionToken">,
   ): Promise<RadarAddressCallback> {
-    return platformModule().autocomplete({
+    return nativeRadar().autocomplete({
       ...options,
       sessionToken: this.sessionToken,
-    });
+    }) as Promise<RadarAddressCallback>;
   }
 
   /**
@@ -54,7 +56,9 @@ export class AutocompleteSession {
   public select(
     address: RadarAddress,
   ): Promise<RadarAutocompleteSelectCallback> {
-    return platformModule().selectAutocompleteAddress({ address });
+    return nativeRadar().selectAutocompleteAddress({
+      address,
+    }) as Promise<RadarAutocompleteSelectCallback>;
   }
 }
 

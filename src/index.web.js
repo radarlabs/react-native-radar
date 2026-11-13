@@ -1,5 +1,6 @@
 import RadarJS from 'radar-sdk-js';
 import { VERSION } from './version';
+import { AutocompleteSession } from './autocompleteSession';
 
 let throws = false;
 const throwOnUnimplemented = (value) => {
@@ -376,16 +377,6 @@ const autocomplete = (options) => {
   });
 };
 
-const createAutocompleteSessionToken = () => {
-  if (throws) throw new Error("createAutocompleteSessionToken() is not implemented on web");
-  return Promise.reject(new Error("autocomplete sessions are not implemented on web"));
-};
-
-const selectAutocompleteAddress = () => {
-  if (throws) throw new Error("selectAutocompleteAddress() is not implemented on web");
-  return Promise.resolve({ status: "ERROR_UNIMPLEMENTED" });
-};
-
 const geocode = (options) => {
   return new Promise((resolve, reject) => {
     let newOptions = options;
@@ -564,8 +555,7 @@ const Radar = {
   searchPlaces,
   searchGeofences,
   autocomplete,
-  createAutocompleteSessionToken,
-  selectAutocompleteAddress,
+  AutocompleteSession,
   geocode,
   reverseGeocode,
   ipGeocode,

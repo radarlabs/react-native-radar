@@ -35,8 +35,6 @@ import type {
   RadarAddress,
   RadarAddressCallback,
   RadarAutocompleteOptions,
-  RadarAutocompleteSelectCallback,
-  RadarSelectAutocompleteAddressOptions,
   RadarGeocodeOptions,
   RadarGetDistanceOptions,
   RadarGetMatrixOptions,
@@ -65,6 +63,7 @@ import type {
 } from "./@types/types";
 import { NativeEventEmitter, NativeModules } from "react-native";
 import { VERSION } from "./version";
+import { AutocompleteSession } from "./autocompleteSession";
 import NativeRadarMod, {
   ClientLocationEmitter,
   ErrorEmitter,
@@ -593,16 +592,7 @@ const Radar: RadarNativeInterface = {
   ): Promise<RadarAddressCallback> {
     return NativeRadar.autocomplete(options) as Promise<RadarAddressCallback>;
   },
-  createAutocompleteSessionToken: function (): Promise<string> {
-    return NativeRadar.createAutocompleteSessionToken() as Promise<string>;
-  },
-  selectAutocompleteAddress: function (
-    options: RadarSelectAutocompleteAddressOptions
-  ): Promise<RadarAutocompleteSelectCallback> {
-    return NativeRadar.selectAutocompleteAddress(
-      options
-    ) as Promise<RadarAutocompleteSelectCallback>;
-  },
+  AutocompleteSession,
   geocode: function (
     options: RadarGeocodeOptions
   ): Promise<RadarAddressCallback> {

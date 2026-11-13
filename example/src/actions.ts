@@ -1,5 +1,5 @@
 import { PermissionsAndroid, Platform } from "react-native";
-import Radar, { AutocompleteSession } from "react-native-radar";
+import Radar from "react-native-radar";
 import type { RadarEvent } from "react-native-radar";
 
 const stringify = (obj: any) => JSON.stringify(obj, null, 2);
@@ -605,7 +605,7 @@ export function createActions(
 
   const autocompleteSession = async () => {
     try {
-      const session = await AutocompleteSession.create();
+      const session = await Radar.AutocompleteSession.create();
       const { addresses } = await session.autocomplete({
         query: "841 broadway",
         near: { latitude: 40.7342, longitude: -73.9911 },

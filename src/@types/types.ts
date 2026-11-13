@@ -305,10 +305,6 @@ export interface RadarAutocompleteEnrichedAddress {
   locationDetails: RadarAddressLocationDetails;
 }
 
-export interface RadarSelectAutocompleteAddressOptions {
-  address: RadarAddress;
-}
-
 export interface RadarAutocompleteSelectCallback {
   status: string;
   address?: RadarAutocompleteEnrichedAddress;
