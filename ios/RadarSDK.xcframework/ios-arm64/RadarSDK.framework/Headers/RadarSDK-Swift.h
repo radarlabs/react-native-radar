@@ -393,6 +393,226 @@ extern "C" {
 @end
 
 @class NSString;
+@class RadarAddress;
+@interface Radar (SWIFT_EXTENSION(RadarSDK))
+/// Validates an address from its street and number, attaching a verification status, property type, and ZIP+4.
+/// Every field except <code>unit</code> is required. If one is empty, the completion handler is called with
+/// <code>RadarStatus.errorBadRequest</code> and no request is sent.
+/// seealso:
+/// https://radar.com/documentation/api#validate-an-address
+/// \param street The street name, such as <code>"Jay St"</code>.
+///
+/// \param number The street number, such as <code>"20"</code>.
+///
+/// \param unit The unit, such as an apartment or suite number.
+///
+/// \param city The city.
+///
+/// \param stateCode The state code, such as <code>"NY"</code>.
+///
+/// \param postalCode The postal code.
+///
+/// \param countryCode The two-letter country code, such as <code>"US"</code>.
+///
+/// \param completionHandler A completion handler, called on the main thread.
+///
++ (void)validateAddressWithStreet:(NSString * _Nonnull)street number:(NSString * _Nonnull)number unit:(NSString * _Nullable)unit city:(NSString * _Nonnull)city stateCode:(NSString * _Nonnull)stateCode postalCode:(NSString * _Nonnull)postalCode countryCode:(NSString * _Nonnull)countryCode completionHandler:(void (^ _Nonnull)(RadarStatus, RadarAddress * _Nullable, RadarAddressVerificationStatus))completionHandler;
+/// Validates an address from a single-line address label, attaching a verification status, property type, and
+/// ZIP+4.
+/// Every field except <code>unit</code> is required. If one is empty, the completion handler is called with
+/// <code>RadarStatus.errorBadRequest</code> and no request is sent.
+/// seealso:
+/// https://radar.com/documentation/api#validate-an-address
+/// \param addressLabel The street address on one line, such as <code>"20 Jay St"</code>.
+///
+/// \param unit The unit, such as an apartment or suite number.
+///
+/// \param city The city.
+///
+/// \param stateCode The state code, such as <code>"NY"</code>.
+///
+/// \param postalCode The postal code.
+///
+/// \param countryCode The two-letter country code, such as <code>"US"</code>.
+///
+/// \param completionHandler A completion handler, called on the main thread.
+///
++ (void)validateAddressWithAddressLabel:(NSString * _Nonnull)addressLabel unit:(NSString * _Nullable)unit city:(NSString * _Nonnull)city stateCode:(NSString * _Nonnull)stateCode postalCode:(NSString * _Nonnull)postalCode countryCode:(NSString * _Nonnull)countryCode completionHandler:(void (^ _Nonnull)(RadarStatus, RadarAddress * _Nullable, RadarAddressVerificationStatus))completionHandler;
+@end
+
+@class NSNumber;
+SWIFT_ENUM_FWD_DECL(NSInteger, RadarAddressConfidence)
+@class RadarTimeZone;
+/// Represents an address.
+/// seealso:
+/// https://radar.com/documentation/api#geocoding
+SWIFT_CLASS_NAMED("RadarAddress")
+@interface RadarAddress : NSObject
+/// The location coordinate of the address.
+@property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+/// The formatted string representation of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable formattedAddress;
+/// The name of the country of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable country;
+/// The unique code of the country of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable countryCode;
+/// The flag of the country of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable countryFlag;
+/// The name of the DMA of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable dma;
+/// The unique code of the DMA of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable dmaCode;
+/// The name of the state of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable state;
+/// The unique code of the state of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable stateCode;
+/// The postal code of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable postalCode;
+/// The city of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable city;
+/// The borough of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable borough;
+/// The county of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable county;
+/// The neighborhood of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable neighborhood;
+/// The street number of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable number;
+/// The street name of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable street;
+/// The label of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable addressLabel;
+/// The label of the place.
+@property (nonatomic, readonly, copy) NSString * _Nullable placeLabel;
+/// The unit of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable unit;
+/// The plus4 value for the zip of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable plus4;
+/// The distance to the search anchor in meters.
+@property (nonatomic, readonly, strong) NSNumber * _Nullable distance;
+/// The layer of the address, e.g. ‘place’, ‘address’, ‘intersection’, ‘street’, ‘state’, etc.
+@property (nonatomic, readonly, copy) NSString * _Nullable layer;
+/// The metadata of the address.
+@property (nonatomic, readonly, copy) NSDictionary * _Nullable metadata;
+/// The confidence level of the geocoding result.
+@property (nonatomic) enum RadarAddressConfidence confidence;
+/// The time zone information of the address.
+@property (nonatomic, readonly, strong) RadarTimeZone * _Nullable timeZone;
+/// The categories of the address.
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nullable categories;
+/// Identifies this result within the session that returned it, not the address itself.
+/// Short-lived; pass the whole address to <code>RadarAutocompleteSession.select</code> rather than
+/// storing this.
+@property (nonatomic, readonly, copy) NSString * _Nullable resultId;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
++ (RadarAddress * _Nullable)addressFromObject:(id _Nonnull)object SWIFT_WARN_UNUSED_RESULT;
++ (NSArray<NSDictionary *> * _Nullable)arrayForAddresses:(NSArray<RadarAddress *> * _Nullable)addresses SWIFT_WARN_UNUSED_RESULT;
+- (NSDictionary * _Nonnull)dictionaryValue SWIFT_WARN_UNUSED_RESULT;
+@end
+
+/// The confidence levels for geocoding results.
+typedef SWIFT_ENUM_NAMED(NSInteger, RadarAddressConfidence, "RadarAddressConfidence", open) {
+/// Unknown
+  RadarAddressConfidenceNone = 0,
+/// Exact
+  RadarAddressConfidenceExact = 1,
+/// Interpolated
+  RadarAddressConfidenceInterpolated = 2,
+/// Fallback
+  RadarAddressConfidenceFallback = 3,
+};
+
+@class RadarAddressPlace;
+/// What address enrichment knows about a location.
+SWIFT_CLASS_NAMED("RadarAddressLocationDetails")
+@interface RadarAddressLocationDetails : NSObject
+/// How the location is used, or <code>unknown</code>.
+@property (nonatomic, readonly, copy) NSString * _Nonnull usage;
+/// The dwelling type, <code>n/a</code> for usages that have none, or <code>unknown</code>.
+@property (nonatomic, readonly, copy) NSString * _Nonnull dwelling;
+/// The grounds of the location, like <code>campus</code> or <code>base</code>.
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nonnull grounds;
+/// The places on the grounds of the location.
+@property (nonatomic, readonly, copy) NSArray<RadarAddressPlace *> * _Nonnull places;
+- (NSDictionary * _Nonnull)dictionaryValue SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+/// A place on the grounds of an enriched address.
+SWIFT_CLASS_NAMED("RadarAddressPlace")
+@interface RadarAddressPlace : NSObject
+/// The name of the place.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// The categories of the place.
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nonnull categories;
+- (NSDictionary * _Nonnull)dictionaryValue SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+/// The enriched form of a selected address.
+/// Carries only these two fields. It is not a <code>RadarAddress</code>, and none of that type’s other fields
+/// are returned.
+/// seealso:
+/// https://radar.com/documentation/api#autocomplete
+SWIFT_CLASS_NAMED("RadarAutocompleteEnrichedAddress")
+@interface RadarAutocompleteEnrichedAddress : NSObject
+/// The formatted string representation of the address.
+@property (nonatomic, readonly, copy) NSString * _Nullable formattedAddress;
+/// What address enrichment knows about the location.
+@property (nonatomic, readonly, strong) RadarAddressLocationDetails * _Nonnull locationDetails;
+- (NSDictionary * _Nonnull)dictionaryValue SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class CLLocation;
+/// An autocomplete search field and the selection a user makes in it.
+/// Create one session per address field.
+/// seealso:
+/// https://radar.com/documentation/api#autocomplete
+SWIFT_CLASS_NAMED("RadarAutocompleteSession")
+@interface RadarAutocompleteSession : NSObject
+/// The token this session sends.
+@property (nonatomic, readonly, copy) NSString * _Nonnull sessionToken;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+/// Resumes a session from a token minted elsewhere.
+/// Intended for wrapper SDKs that cannot hold a session instance; prefer <code>init()</code>.
+/// \param sessionToken A UUID. Returns nil for anything else, which the API would reject.
+///
+- (nullable instancetype)initWithSessionToken:(NSString * _Nonnull)sessionToken OBJC_DESIGNATED_INITIALIZER;
+/// Autocompletes partial addresses and place names within this session, sorted by relevance.
+/// seealso:
+/// https://radar.com/documentation/api#autocomplete
+/// \param query The partial address or place name to autocomplete.
+///
+/// \param near A location for the search.
+///
+/// \param layers Optional layer filters.
+///
+/// \param limit The max number of addresses to return. A number between 1 and 100.
+///
+/// \param country An optional country filter. A string, the unique 2-letter country code.
+///
+/// \param mailable Whether to only include mailable addresses.
+///
+/// \param completionHandler A completion handler, called on the main thread.
+///
+- (void)autocompleteQuery:(NSString * _Nonnull)query near:(CLLocation * _Nullable)near layers:(NSArray<NSString *> * _Nullable)layers limit:(int32_t)limit country:(NSString * _Nullable)country mailable:(BOOL)mailable completionHandler:(void (^ _Nonnull)(RadarStatus, NSArray<RadarAddress *> * _Nullable))completionHandler;
+/// Reports which result the user chose. Selections are how autocomplete quality is
+/// measured and improved.
+/// Returns the enriched address where available.
+/// seealso:
+/// https://radar.com/documentation/api#autocomplete
+/// \param address The selected result, as returned by this session’s <code>autocomplete</code>. An address
+/// from anywhere else fails with <code>RadarStatusErrorBadRequest</code> and makes no request.
+///
+/// \param completionHandler An optional completion handler, called on the main thread.
+///
+- (void)selectAddress:(RadarAddress * _Nonnull)address completionHandler:(void (^ _Nullable)(RadarStatus, RadarAutocompleteEnrichedAddress * _Nullable))completionHandler;
+@end
+
 /// Represents the chain of a place.
 /// seealso:
 /// https://radar.com/documentation/places
@@ -499,7 +719,6 @@ SWIFT_CLASS("_TtC8RadarSDK23RadarEventNotifications")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-@class NSNumber;
 SWIFT_ENUM_FWD_DECL(NSInteger, RadarExpectedAddressConfidence)
 /// Represents a comparison between the user’s location and the expected address set with <code>setExpectedAddress:</code>.
 SWIFT_CLASS_NAMED("RadarExpectedAddress")
@@ -623,7 +842,9 @@ SWIFT_CLASS_NAMED("RadarInitializeOptions")
 
 @class NSTimer;
 @class CLLocationManager;
-@class RadarTrackingOptions;
+@class CMMotionActivity;
+@class CMAltitudeData;
+@class CMAbsoluteAltitudeData;
 SWIFT_PROTOCOL("_TtP8RadarSDK29RadarLocationManagerSwiftHost_")
 @protocol RadarLocationManagerSwiftHost
 - (BOOL)started SWIFT_WARN_UNUSED_RESULT;
@@ -631,15 +852,19 @@ SWIFT_PROTOCOL("_TtP8RadarSDK29RadarLocationManagerSwiftHost_")
 - (int32_t)startedInterval SWIFT_WARN_UNUSED_RESULT;
 - (void)setStartedInterval:(int32_t)interval;
 - (BOOL)sending SWIFT_WARN_UNUSED_RESULT;
+- (void)setSending:(BOOL)sending;
 - (NSTimer * _Nullable)timer SWIFT_WARN_UNUSED_RESULT;
 - (void)setTimer:(NSTimer * _Nullable)timer;
 - (void)cancelPendingShutdown;
 - (void)requestLocation;
 - (void)scheduleShutdownAfter:(NSTimeInterval)delay;
-- (void)addCompletionHandler:(RadarLocationCompletionHandler _Nullable)completionHandler;
+- (void)updateTracking:(CLLocation * _Nullable)location;
+- (void)replaceSyncedGeofences:(NSArray<RadarGeofence *> * _Nullable)geofences;
 @property (nonatomic, readonly, strong) CLLocationManager * _Nonnull locationManager;
 @property (nonatomic, readonly, strong) CLLocationManager * _Nonnull lowPowerLocationManager;
-- (void)startMotionUpdatesWithOptions:(RadarTrackingOptions * _Nonnull)options;
+- (void)startActivityUpdatesWithHandler:(void (^ _Nonnull)(CMMotionActivity * _Nonnull))handler;
+- (void)startRelativeAltitudeWithHandler:(void (^ _Nonnull)(CMAltitudeData * _Nullable))handler;
+- (void)startAbsoluteAltitudeWithHandler:(void (^ _Nonnull)(CMAbsoluteAltitudeData * _Nullable))handler;
 @end
 
 @class UNNotification;
@@ -678,6 +903,38 @@ SWIFT_CLASS_NAMED("RadarPolygonGeometry")
 @property (nonatomic, readonly, strong) RadarCoordinate * _Nonnull center;
 /// The calculated radius of the polygon geofence in meters.
 @property (nonatomic, readonly) double radius;
+@end
+
+/// Represents a region.
+/// seealso:
+/// https://radar.com/documentation/regions
+SWIFT_CLASS_NAMED("RadarRegion")
+@interface RadarRegion : NSObject
+/// The Radar ID of the region.
+@property (nonatomic, readonly, copy) NSString * _Nonnull _id;
+/// The name of the region.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// The unique code for the region.
+@property (nonatomic, readonly, copy) NSString * _Nonnull code;
+/// The type of the region.
+@property (nonatomic, readonly, copy) NSString * _Nonnull type;
+/// The optional flag of the region.
+@property (nonatomic, readonly, copy) NSString * _Nullable flag;
+/// A boolean indicating whether the jurisdiction is allowed. May be <code>false</code> if Fraud is not enabled.
+@property (nonatomic, readonly) BOOL allowed;
+/// A boolean indicating whether all jurisdiction checks for the region have passed. May be <code>false</code> if Fraud is not enabled.
+@property (nonatomic, readonly) BOOL passed;
+/// A boolean indicating whether the user is in an exclusion zone for the jurisdiction. May be <code>false</code> if Fraud is not enabled.
+@property (nonatomic, readonly) BOOL inExclusionZone;
+/// A boolean indicating whether the user is too close to the border for the jurisdiction. May be <code>false</code> if Fraud is not enabled.
+@property (nonatomic, readonly) BOOL inBufferZone;
+/// The distance in meters to the border of the jurisdiction. May be 0 if Fraud is not enabled.
+@property (nonatomic, readonly) double distanceToBorder;
+/// A boolean indicating whether the jurisdiction is expected based on the values passed to <code>setExpectedJurisdiction()</code>.
+@property (nonatomic, readonly) BOOL expected;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+- (NSDictionary * _Nonnull)dictionaryValue SWIFT_WARN_UNUSED_RESULT;
 @end
 
 SWIFT_CLASS_NAMED("RadarRevealRiskIpGeometry")
@@ -895,7 +1152,7 @@ SWIFT_CLASS_NAMED("RadarRoutes")
 - (NSDictionary * _Nonnull)dictionaryValue SWIFT_WARN_UNUSED_RESULT;
 @end
 
-@class CLLocation;
+@class RadarTrackingOptions;
 @class RadarUser;
 @class RadarBeacon;
 SWIFT_CLASS_NAMED("RadarSyncManager")
@@ -1296,6 +1553,101 @@ SWIFT_CLASS_NAMED("RadarTripOrder")
 - (NSDictionary * _Nonnull)dictionaryValue SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class RadarSegment;
+@class RadarUserLocationInsights;
+/// Represents the current user state.
+SWIFT_CLASS_NAMED("RadarUser")
+@interface RadarUser : NSObject
+/// The Radar ID of the user.
+@property (nonatomic, readonly, copy) NSString * _Nonnull _id;
+/// The unique ID of the user, provided when you identified the user. May be <code>nil</code> if the user has not been identified.
+@property (nonatomic, readonly, copy) NSString * _Nullable userId;
+/// The device ID of the user.
+@property (nonatomic, readonly, copy) NSString * _Nullable deviceId;
+/// The optional description of the user. Not to be confused with the <code>NSObject</code> <code>description</code> property.
+@property (nonatomic, readonly, copy) NSString * _Nullable __description;
+/// The optional set of custom key-value pairs for the user.
+@property (nonatomic, readonly, copy) NSDictionary * _Nullable metadata;
+/// The user’s current location.
+@property (nonatomic, readonly, strong) CLLocation * _Nonnull location;
+/// The user’s current activity type.
+@property (nonatomic, readonly) RadarActivityType activityType;
+/// An array of the user’s current geofences. May be <code>nil</code> or empty if the user is not in any geofences.
+/// seealso:
+/// https://radar.com/documentation/geofences
+@property (nonatomic, readonly, copy) NSArray<RadarGeofence *> * _Nullable geofences;
+/// The user’s current place. May be <code>nil</code> if the user is not at a place or if Places is not enabled.
+/// seealso:
+/// https://radar.com/documentation/places
+@property (nonatomic, readonly, strong) RadarPlace * _Nullable place;
+/// An array of the user’s nearby beacons. May be <code>nil</code> or empty if the user is not near any beacons or if Beacons is not enabled.
+/// seealso:
+/// https://radar.com/documentation/beacons
+@property (nonatomic, readonly, copy) NSArray<RadarBeacon *> * _Nullable beacons;
+/// A boolean indicating whether the user is stopped.
+@property (nonatomic, readonly) BOOL stopped;
+/// A boolean indicating whether the user was last updated in the foreground.
+@property (nonatomic, readonly) BOOL foreground;
+/// The user’s current country. May be <code>nil</code> if country is not available or if Regions is not enabled.
+/// seealso:
+/// https://radar.com/documentation/regions
+@property (nonatomic, readonly, strong) RadarRegion * _Nullable country;
+/// The user’s current state. May be <code>nil</code> if state is not available or if Regions is not enabled.
+/// seealso:
+/// https://radar.com/documentation/regions
+@property (nonatomic, readonly, strong) RadarRegion * _Nullable state;
+/// The user’s current designated market area (DMA). May be <code>nil</code> if DMA is not available or if Regions is not enabled.
+/// seealso:
+/// https://radar.com/documentation/regions
+@property (nonatomic, readonly, strong) RadarRegion * _Nullable dma;
+/// The user’s current postal code. May be <code>nil</code> if postal code is not available or if Regions is not enabled.
+/// seealso:
+/// https://radar.com/documentation/regions
+@property (nonatomic, readonly, strong) RadarRegion * _Nullable postalCode;
+/// The user’s nearby chains. May be <code>nil</code> if no chains are nearby or if nearby chains are not enabled.
+@property (nonatomic, readonly, copy) NSArray<RadarChain *> * _Nullable nearbyPlaceChains;
+/// The user’s segments. May be <code>nil</code> if segments are not enabled.
+@property (nonatomic, readonly, copy) NSArray<RadarSegment *> * _Nullable segments;
+/// The user’s nearby chains. May be <code>nil</code> if segments are not enabled.
+@property (nonatomic, readonly, copy) NSArray<RadarChain *> * _Nullable topChains;
+/// The source of the user’s current location.
+@property (nonatomic, readonly) RadarLocationSource source;
+/// The user’s current trip. May be <code>nil</code> if the user is not currently on a trip.
+/// seealso:
+/// https://radar.com/documentation/trip-tracking
+@property (nonatomic, readonly, strong) RadarTrip * _Nullable trip;
+/// A boolean indicating whether the user is marked as debug
+@property (nonatomic, readonly) BOOL debug;
+/// The user’s current fraud state. May be <code>nil</code> if Fraud is not enabled.
+/// seealso:
+/// https://radar.com/documentation/fraud
+@property (nonatomic, readonly, strong) RadarFraud * _Nullable fraud;
+/// The user’s learned home, work, and travel state. May be <code>nil</code> if location insights are not enabled.
+@property (nonatomic, readonly, strong) RadarUserLocationInsights * _Nullable locationInsights;
+/// The user’s expected address state. May be <code>nil</code> if an expected address has not been set with <code>setExpectedAddress:</code>.
+@property (nonatomic, readonly, strong) RadarExpectedAddress * _Nullable expectedAddress;
+@property (nonatomic, readonly) double altitude;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithObject:(id _Nonnull)object OBJC_DESIGNATED_INITIALIZER;
+- (NSDictionary * _Nonnull)dictionaryValue SWIFT_WARN_UNUSED_RESULT;
+@end
+
+/// Represents learned home, work, and travel state returned with a track response.
+SWIFT_CLASS_NAMED("RadarUserLocationInsights")
+@interface RadarUserLocationInsights : NSObject
+/// A boolean indicating whether the user is currently at their learned home location.
+@property (nonatomic, readonly) BOOL atHome;
+/// A boolean indicating whether the user is currently at their learned work location.
+@property (nonatomic, readonly) BOOL atWork;
+/// A boolean indicating whether the user is currently traveling away from home.
+@property (nonatomic, readonly) BOOL traveling;
+/// A nullable boolean indicating whether the user is currently commuting.
+@property (nonatomic, readonly, strong) NSNumber * _Nullable commuting;
+- (nonnull instancetype)init;
+- (nullable instancetype)initWithObject:(id _Nonnull)object;
+- (NSDictionary * _Nonnull)dictionaryValue SWIFT_WARN_UNUSED_RESULT;
 @end
 
 /// Represents a user’s verified location.

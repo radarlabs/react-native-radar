@@ -5,14 +5,18 @@
 //  Copyright © 2019 Radar Labs, Inc. All rights reserved.
 //
 
+#import "RadarBeacon.h"
 #import "RadarGeofence.h"
 #import "RadarPlace.h"
-#import "RadarRegion.h"
-#import "RadarUser.h"
+#import "RadarSegment.h"
+#import "RadarTrip.h"
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 
 @class RadarFraud;
+@class RadarRegion;
+@class RadarTrip;
+@class RadarUser;
 
 /**
  Represents a change in user state.

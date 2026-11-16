@@ -20,15 +20,18 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import io.radar.sdk.Radar;
+import io.radar.sdk.RadarAutocompleteSession;
 import io.radar.sdk.RadarTrackingOptions;
 import io.radar.sdk.RadarTrackingOptions.RadarTrackingOptionsForegroundService;
 import io.radar.sdk.RadarTripOptions;
 import io.radar.sdk.RadarVerifiedReceiver;
 import io.radar.sdk.model.RadarAddress;
+import io.radar.sdk.model.RadarAutocompleteEnrichedAddress;
 import io.radar.sdk.model.RadarContext;
 import io.radar.sdk.model.RadarEvent;
 import io.radar.sdk.model.RadarGeofence;
@@ -1145,7 +1148,27 @@ public class RadarModuleImpl {
 
         boolean mailable = optionsMap.hasKey("mailable") ? optionsMap.getBoolean("mailable") : false;
 
-        Radar.autocomplete(query, near, layers, limit, country, mailable, new Radar.RadarGeocodeCallback() {
+        String sessionToken = null;
+        if (optionsMap.hasKey("sessionToken") && !optionsMap.isNull("sessionToken")) {
+            if (optionsMap.getType("sessionToken") != ReadableType.String) {
+                promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), "sessionToken must be a UUID");
+
+                return;
+            }
+            sessionToken = optionsMap.getString("sessionToken");
+        }
+        RadarAutocompleteSession session = null;
+        if (sessionToken != null) {
+            try {
+                session = new RadarAutocompleteSession(sessionToken);
+            } catch (IllegalArgumentException e) {
+                promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), e.getMessage());
+
+                return;
+            }
+        }
+
+        Radar.RadarGeocodeCallback autocompleteCallback = new Radar.RadarGeocodeCallback() {
 
             public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAddress[] addresses) {
                 if (status == Radar.RadarStatus.SUCCESS) {
@@ -1162,6 +1185,66 @@ public class RadarModuleImpl {
                     }
                 } else {
                     promise.reject(status.toString(), status.toString());
+                }
+            }
+        };
+
+        if (session != null) {
+            session.autocomplete(query, near, layers, limit, country, mailable, autocompleteCallback);
+        } else {
+            Radar.autocomplete(query, near, layers, limit, country, mailable, autocompleteCallback);
+        }
+    }
+
+    public void createAutocompleteSessionToken(final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        promise.resolve(new RadarAutocompleteSession().getSessionToken());
+    }
+
+    public void selectAutocompleteAddress(ReadableMap optionsMap, final Promise promise) {
+        if (promise == null) {
+            return;
+        }
+
+        if (optionsMap == null || !optionsMap.hasKey("address") || optionsMap.getType("address") != ReadableType.Map) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+
+            return;
+        }
+
+        RadarAddress address;
+        try {
+            address = RadarAddress.fromJson(RadarUtils.jsonForMap(optionsMap.getMap("address")));
+        } catch (JSONException e) {
+            address = null;
+        }
+        if (address == null) {
+            promise.reject(Radar.RadarStatus.ERROR_BAD_REQUEST.toString(), Radar.RadarStatus.ERROR_BAD_REQUEST.toString());
+
+            return;
+        }
+
+        new RadarAutocompleteSession().select(address, new Radar.RadarAutocompleteSelectCallback() {
+
+            public void onComplete(@NonNull Radar.RadarStatus status, @Nullable RadarAutocompleteEnrichedAddress address) {
+                if (status != Radar.RadarStatus.SUCCESS) {
+                    promise.reject(status.toString(), status.toString());
+
+                    return;
+                }
+
+                try {
+                    WritableMap map = Arguments.createMap();
+                    map.putString("status", status.toString());
+                    if (address != null) {
+                        map.putMap("address", RadarUtils.mapForJson(address.toJson()));
+                    }
+                    promise.resolve(map);
+                } catch (JSONException e) {
+                    promise.reject(Radar.RadarStatus.ERROR_SERVER.toString(), Radar.RadarStatus.ERROR_SERVER.toString());
                 }
             }
         });

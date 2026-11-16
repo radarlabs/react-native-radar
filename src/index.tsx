@@ -23,5 +23,7 @@ export { Map };
 
 export type { RadarMapProps } from "./ui/map";
 
+export { AutocompleteSession } from "./autocompleteSession";
+
 export * from "./@types/types";
 export * from "./@types/RadarNativeInterface";

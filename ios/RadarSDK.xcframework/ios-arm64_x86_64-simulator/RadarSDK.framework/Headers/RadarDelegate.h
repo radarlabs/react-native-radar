@@ -9,7 +9,8 @@
 
 #import "Radar.h"
 #import "RadarEvent.h"
-#import "RadarUser.h"
+
+@class RadarUser;
 
 NS_ASSUME_NONNULL_BEGIN
 

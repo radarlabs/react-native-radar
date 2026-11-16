@@ -292,7 +292,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = publishableKey; 
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.40.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.41.0" forKey:@"radar-xPlatformSDKVersion"];
     
     RadarInitializeOptions *radarOptions = [self radarInitializeOptionsFromDictionary:options];
     [Radar initializeWithPublishableKey:publishableKey options:radarOptions];
@@ -301,7 +301,7 @@ RCT_EXPORT_METHOD(initialize:(NSString *)publishableKey fraud:(BOOL)fraud option
 RCT_EXPORT_METHOD(initializeWithAuthToken:(NSString *)authToken fraud:(BOOL)fraud options:(NSDictionary *)options) {
     _publishableKey = nil;
     [[NSUserDefaults standardUserDefaults] setObject:@"ReactNative" forKey:@"radar-xPlatformSDKType"];
-    [[NSUserDefaults standardUserDefaults] setObject:@"4.40.0" forKey:@"radar-xPlatformSDKVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:@"4.41.0" forKey:@"radar-xPlatformSDKVersion"];
     RadarInitializeOptions *radarOptions = [self radarInitializeOptionsFromDictionary:options];
     [Radar initializeWithAuthToken:authToken options:radarOptions];
 }
@@ -1301,7 +1301,20 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
     __block RCTPromiseResolveBlock resolver = resolve;
     __block RCTPromiseRejectBlock rejecter = reject;
 
-    [Radar autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
+    RadarAutocompleteSession *session = nil;
+    id sessionToken = optionsDict[@"sessionToken"];
+    if (sessionToken != nil && sessionToken != [NSNull null]) {
+        session = [sessionToken isKindOfClass:[NSString class]] ? [[RadarAutocompleteSession alloc] initWithSessionToken:sessionToken] : nil;
+        if (session == nil) {
+            if (reject) {
+                reject([Radar stringForStatus:RadarStatusErrorBadRequest], @"sessionToken must be a UUID", nil);
+            }
+
+            return;
+        }
+    }
+
+    void (^autocompleteCompletionHandler)(RadarStatus, NSArray<RadarAddress *> * _Nullable) = ^(RadarStatus status, NSArray<RadarAddress *> * _Nullable addresses) {
         if (status == RadarStatusSuccess && resolver) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
@@ -1314,6 +1327,56 @@ RCT_EXPORT_METHOD(autocomplete:(NSDictionary *)optionsDict resolve:(RCTPromiseRe
         }
         resolver = nil;
         rejecter = nil;
+    };
+
+    if (session) {
+        [session autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:autocompleteCompletionHandler];
+    } else {
+        [Radar autocompleteQuery:query near:near layers:layers limit:limit country:country mailable:mailable completionHandler:autocompleteCompletionHandler];
+    }
+}
+
+RCT_EXPORT_METHOD(createAutocompleteSessionToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    if (resolve) {
+        resolve([RadarAutocompleteSession new].sessionToken);
+    }
+}
+
+RCT_EXPORT_METHOD(selectAutocompleteAddress:(NSDictionary *)optionsDict resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject) {
+    NSDictionary *addressDict = optionsDict[@"address"];
+    if (![addressDict isKindOfClass:[NSDictionary class]]) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
+    }
+
+    RadarAddress *address = [RadarAddress addressFromObject:addressDict];
+    if (address == nil) {
+        if (reject) {
+            reject([Radar stringForStatus:RadarStatusErrorBadRequest], [Radar stringForStatus:RadarStatusErrorBadRequest], nil);
+        }
+
+        return;
+    }
+
+    __block RCTPromiseResolveBlock selectResolver = resolve;
+    __block RCTPromiseRejectBlock selectRejecter = reject;
+
+    [[RadarAutocompleteSession new] selectAddress:address completionHandler:^(RadarStatus status, RadarAutocompleteEnrichedAddress * _Nullable enriched) {
+        if (status == RadarStatusSuccess && selectResolver) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:[Radar stringForStatus:status] forKey:@"status"];
+            if (enriched) {
+                [dict setObject:[enriched dictionaryValue] forKey:@"address"];
+            }
+            selectResolver(dict);
+        } else if (selectRejecter) {
+            selectRejecter([Radar stringForStatus:status], [Radar stringForStatus:status], nil);
+        }
+        selectResolver = nil;
+        selectRejecter = nil;
     }];
 }
 

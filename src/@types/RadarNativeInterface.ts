@@ -55,6 +55,7 @@ import type {
   RadarTripLegCallback,
   RadarRevealRiskCallback,
 } from "./types";
+import type { AutocompleteSession } from "../autocompleteSession";
 
 export interface RadarNativeInterface {
   initialize: (publishableKey: string, fraud?: boolean, options?: RadarInitializeOptions | null) => void;
@@ -129,6 +130,7 @@ export interface RadarNativeInterface {
   autocomplete: (
     options: RadarAutocompleteOptions
   ) => Promise<RadarAddressCallback>;
+  AutocompleteSession: typeof AutocompleteSession;
   geocode: (options: RadarGeocodeOptions) => Promise<RadarAddressCallback>;
   reverseGeocode: (
     options?: RadarReverseGeocodeOptions

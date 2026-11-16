@@ -183,7 +183,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun initialize(publishableKey: String, fraud: Boolean, options: ReadableMap?): Unit {
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "4.40.0")
+        editor.putString("x_platform_sdk_version", "4.41.0")
         editor.apply()
 
         val initOptionsBuilder = io.radar.sdk.RadarInitializeOptions.builder()
@@ -202,7 +202,7 @@ class RadarModule(reactContext: ReactApplicationContext) :
     override fun initializeWithAuthToken(authToken: String, fraud: Boolean, options: ReadableMap?): Unit {
         val editor = reactApplicationContext.getSharedPreferences("RadarSDK", Context.MODE_PRIVATE).edit()
         editor.putString("x_platform_sdk_type", "ReactNative")
-        editor.putString("x_platform_sdk_version", "4.40.0")
+        editor.putString("x_platform_sdk_version", "4.41.0")
         editor.apply()
         
         val initOptions = io.radar.sdk.RadarInitializeOptions.builder()
@@ -502,6 +502,14 @@ class RadarModule(reactContext: ReactApplicationContext) :
 
     override fun autocomplete(options: ReadableMap, promise: Promise): Unit {
         radarModuleImpl.autocomplete(options, promise)
+    }
+
+    override fun createAutocompleteSessionToken(promise: Promise): Unit {
+        radarModuleImpl.createAutocompleteSessionToken(promise)
+    }
+
+    override fun selectAutocompleteAddress(options: ReadableMap, promise: Promise): Unit {
+        radarModuleImpl.selectAutocompleteAddress(options, promise)
     }
 
     override fun geocode(options: ReadableMap, promise: Promise): Unit {

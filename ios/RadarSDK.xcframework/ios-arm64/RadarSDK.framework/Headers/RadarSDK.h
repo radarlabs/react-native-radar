@@ -14,18 +14,15 @@ FOUNDATION_EXPORT double RadarSDKVersionNumber;
 FOUNDATION_EXPORT const unsigned char RadarSDKVersionString[];
 
 #import "Radar.h"
-#import "RadarAddress.h"
 #import "RadarDelegate.h"
 #import "RadarEvent.h"
 #import "RadarGeofence.h"
 #import "RadarPlace.h"
-#import "RadarRegion.h"
 #import "RadarRouteMode.h"
 #import "RadarTrackingOptions.h"
 #import "RadarTrip.h"
 #import "RadarTripLeg.h"
 #import "RadarTripOrder.h"
-#import "RadarUser.h"
 #import "RadarVerifiedDelegate.h"
 #import "RadarMotionProtocol.h"
 #import "RadarInAppMessage.h"
@@ -41,6 +38,7 @@ FOUNDATION_EXPORT const unsigned char RadarSDKVersionString[];
 
 // Compatibility headers for classes now declared in RadarSDK-Swift.h. Listed here so the
 // umbrella covers every public header; each one only re-imports this file.
+#import "RadarAddress.h"
 #import "RadarChain.h"
 #import "RadarCircleGeometry.h"
 #import "RadarContext.h"
@@ -50,6 +48,7 @@ FOUNDATION_EXPORT const unsigned char RadarSDKVersionString[];
 #import "RadarInitializeOptions.h"
 #import "RadarOperatingHours.h"
 #import "RadarPolygonGeometry.h"
+#import "RadarRegion.h"
 #import "RadarRevealRiskToken.h"
 #import "RadarRoute.h"
 #import "RadarRouteDistance.h"
@@ -59,4 +58,5 @@ FOUNDATION_EXPORT const unsigned char RadarSDKVersionString[];
 #import "RadarRoutes.h"
 #import "RadarTimeZone.h"
 #import "RadarTripOptions.h"
+#import "RadarUser.h"
 #import "RadarVerifiedLocationToken.h"

@@ -45,3 +45,5 @@ lib/
 
 # AI semantic search index
 .ai-index/
+
+.build/
